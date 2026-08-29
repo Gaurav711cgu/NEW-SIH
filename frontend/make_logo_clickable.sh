@@ -1,0 +1,2 @@
+sed -i '' 's/<div className="p-4 md:p-6 flex justify-center md:justify-start">/<NavLink to="\/" className="p-4 md:p-6 flex justify-center md:justify-start hover:opacity-80 transition-opacity">/g' src/components/layout/AppShell.tsx
+sed -i '' 's/          <\/div>\n        <\/div>\n\n        <div className="flex-1/          <\/div>\n        <\/NavLink>\n\n        <div className="flex-1/g' src/components/layout/AppShell.tsx
