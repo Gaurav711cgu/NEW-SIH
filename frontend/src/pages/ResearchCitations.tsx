@@ -5,7 +5,6 @@ import {
   Award, 
   CheckCircle2, 
   Layers, 
-  Search, 
   Building2, 
   FileCheck,
   Code2,
@@ -253,26 +252,17 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
 
 export default function ResearchCitations() {
   const [selectedCategory, setSelectedCategory] = useState<CitationCategory>('ALL');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredDossier = useMemo(() => {
     return RESEARCH_DOSSIER.filter(item => {
-      const matchCategory = 
+      return (
         selectedCategory === 'ALL' || 
         (selectedCategory === 'CORE_IMPLEMENTED' && item.isDirectlyImplemented) ||
         (selectedCategory === 'PHYSICS_SENSORS' && item.category === 'PHYSICS_SENSORS') ||
-        (selectedCategory === 'GOV_MISSIONS' && item.category === 'GOV_MISSIONS');
-
-      const matchSearch = searchQuery === '' || 
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.authors.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.publication.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.govAgencyAndMission.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.implementedLocationBadge.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchCategory && matchSearch;
+        (selectedCategory === 'GOV_MISSIONS' && item.category === 'GOV_MISSIONS')
+      );
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory]);
 
   const directlyImplementedList = useMemo(() => {
     return filteredDossier.filter(d => d.isDirectlyImplemented);
@@ -376,18 +366,6 @@ export default function ResearchCitations() {
             <Building2 className="w-3.5 h-3.5" />
             GOVT MISSIONS & IMPACT
           </button>
-        </div>
-
-        {/* Live Keyword Search */}
-        <div className="relative w-full sm:w-64">
-          <Search className="w-4 h-4 text-steel-500 absolute left-3 top-2.5" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search papers, code, equations..."
-            className="w-full pl-9 pr-3 py-1.5 bg-abyss-950 rounded-lg border border-steel-800 text-xs font-mono text-steel-200 placeholder-steel-600 focus:outline-none focus:border-ice-500"
-          />
         </div>
 
       </div>
