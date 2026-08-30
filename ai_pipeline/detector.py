@@ -132,11 +132,15 @@ class SonarDetector:
         self.model = None
         if model_path.exists():
             try:
-                from ultralytics import YOLO
-                self.model = YOLO(str(model_path))
-                log.info(f"Loaded YOLO model from {model_path}")
+                from ultralytics import RTDETR, YOLO
+                try:
+                    self.model = RTDETR(str(model_path))
+                    log.info(f"Loaded RT-DETR Transformer model from {model_path}")
+                except Exception:
+                    self.model = YOLO(str(model_path))
+                    log.info(f"Loaded YOLO model from {model_path}")
             except Exception as exc:
-                log.error(f"YOLO load exception: {exc}")
+                log.error(f"Model load exception: {exc}")
         else:
             log.error(f"Model not found at {model_path}")
 
@@ -218,7 +222,15 @@ class SonarDetector:
                 w_box = float(x2 - x1)
                 h_box = float(y2 - y1)
                 
-                if isinstance(self.class_names, list) and cls_id < len(self.class_names):
+                CLASS_MAPPINGS = {
+                    "ship": "shipwreck",
+                    "aircraft": "fuselage_debris",
+                    "human": "diver_anomaly",
+                }
+                if hasattr(self.model, "names") and isinstance(self.model.names, dict) and cls_id in self.model.names:
+                    model_cls = self.model.names[cls_id]
+                    cls_name = CLASS_MAPPINGS.get(model_cls, model_cls)
+                elif isinstance(self.class_names, list) and cls_id < len(self.class_names):
                     cls_name = self.class_names[cls_id]
                 elif isinstance(self.class_names, dict):
                     cls_name = self.class_names.get(cls_id, str(cls_id))
