@@ -74,10 +74,10 @@ export function Biogeochemistry() {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="font-mono font-bold text-sm text-ice-100 tracking-wider">
-                SOUTHERN OCEAN BIOGEOCHEMISTRY & CARBON PUMP OBSERVATORY
+                SOUTHERN OCEAN BIOGEOCHEMISTRY &amp; CARBON PUMP OBSERVATORY
               </h1>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
-                BGC-ARGO REPLICATED
+                IN-SITU BGC TELEMETRY
               </span>
             </div>
             <p className="text-xs font-mono text-steel-400 mt-0.5">
@@ -97,7 +97,7 @@ export function Biogeochemistry() {
             <span className="text-ice-400 font-bold">1.42 (SUPERSATURATED)</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
-            <span className="text-steel-500 mr-1.5">AI SYNTHESIS:</span>
+            <span className="text-steel-500 mr-1.5">BIO-OPTICAL SYNTHESIS:</span>
             <span className="text-amber-400 font-bold">4/4 PARAMETERS</span>
           </div>
         </div>
@@ -112,16 +112,16 @@ export function Biogeochemistry() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono text-steel-400 tracking-wider">DISSOLVED OXYGEN (DOXY)</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
-                DL REPLICATED
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold">
+                PHYSICS-DERIVED (GARCIA-GORDON)
               </span>
             </div>
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-mono font-bold text-steel-50">{liveOxygen}</span>
-              <span className="text-xs font-mono text-amber-400 font-bold">µmol/kg</span>
+              <span className="text-xs font-mono text-cyan-400 font-bold">µmol/kg</span>
             </div>
             <p className="text-[11px] text-steel-400 mt-2 font-sans">
-              Replaces ₹9 Lakh optical optode sensor. Evaluates ocean ventilation & marine habitat oxygenation.
+              Garcia &amp; Gordon solubility model derived from in-situ water temperature &amp; depth. Evaluates marine habitat oxygenation.
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-steel-800 text-[9px] font-mono text-steel-500 flex justify-between">
@@ -135,8 +135,8 @@ export function Biogeochemistry() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono text-steel-400 tracking-wider">CHL-A PHYTOPLANKTON</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
-                DL REPLICATED
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
+                BIO-OPTICAL (MOREL MODEL)
               </span>
             </div>
             <div className="flex items-baseline gap-2">
@@ -144,7 +144,7 @@ export function Biogeochemistry() {
               <span className="text-xs font-mono text-emerald-400 font-bold">mg/m³</span>
             </div>
             <p className="text-[11px] text-steel-400 mt-2 font-sans">
-              Replaces ₹12 Lakh fluorometer. Tracks euphotic primary biological productivity & diatom blooms.
+              Morel downwelling irradiance spectral attenuation model. Tracks euphotic primary biological productivity &amp; diatom blooms.
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-steel-800 text-[9px] font-mono text-steel-500 flex justify-between">
@@ -159,7 +159,7 @@ export function Biogeochemistry() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono text-steel-400 tracking-wider">SEAWATER pH (NBS SCALE)</span>
               <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
-                PHYSICAL SEN0161
+                PHYSICAL IN-SITU SENSOR
               </span>
             </div>
             <div className="flex items-baseline gap-2">
@@ -167,7 +167,7 @@ export function Biogeochemistry() {
               <span className="text-xs font-mono text-cyan-400 font-bold">pH</span>
             </div>
             <p className="text-[11px] text-steel-400 mt-2 font-sans">
-              Direct ₹350 analog glass electrode probe. Monitors anthropogenic CO2 ocean acidification.
+              Direct in-situ analog glass electrode probe. Monitors anthropogenic CO2 ocean acidification.
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-steel-800 text-[9px] font-mono text-steel-500 flex justify-between">
@@ -181,8 +181,8 @@ export function Biogeochemistry() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono text-steel-400 tracking-wider">NITRATE (NO3⁻) FLUX</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
-                DL REPLICATED
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 font-bold">
+                PHYSICS-DERIVED SYNTHESIS
               </span>
             </div>
             <div className="flex items-baseline gap-2">
@@ -190,7 +190,7 @@ export function Biogeochemistry() {
               <span className="text-xs font-mono text-purple-400 font-bold">µmol/L</span>
             </div>
             <p className="text-[11px] text-steel-400 mt-2 font-sans">
-              Replaces ₹22 Lakh UV spectrophotometer (SUNA V2). Tracks upwelling of Antarctic deep nutrients.
+              Thermodynamic nutrient-temperature regression model. Tracks upwelling of Antarctic deep nutrients.
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-steel-800 text-[9px] font-mono text-steel-500 flex justify-between">

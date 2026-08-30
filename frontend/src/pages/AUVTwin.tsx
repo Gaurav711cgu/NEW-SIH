@@ -901,7 +901,7 @@ export default function AUVTwin() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: selectedSensor.color }} />
                 <span className="text-[10px] font-mono font-bold tracking-widest text-steel-400 uppercase">
-                  {selectedSensor.tier.replace(/_/g, ' ')}
+                  {selectedSensor.tier === 'DL_VIRTUAL_REPLICATED' ? 'PHYSICS-DERIVED (UNESCO EOS-80 / TEOS-10)' : selectedSensor.tier.replace(/_/g, ' ')}
                 </span>
               </div>
               <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
