@@ -136,7 +136,7 @@ Key Test Scenarios:
 * **Frontend Architecture:** React 19, TypeScript, Vite, Tailwind CSS, Recharts, Lucide Icons
 * **Data Standards:** Compatible with standard raster exports (.jpg, .png, .tiff) and hydrographic metadata formats (.xtf, .csv, .json)
 
----
-
+--
 ## License and Compliance
-Developed for Smart India Hackathon 2026 by Team DEBUG THUGS. Aligned with standards established by the Ministry of Earth Sciences (MoES) and the National Institute of Ocean Technology (NIOT), Government of India.
+Developed for Smart India Hackathon 2026 by Team FUSSION X
+. Aligned with standards established by the Ministry of Earth Sciences (MoES) and the National Institute of Ocean Technology (NIOT), Government of India.
