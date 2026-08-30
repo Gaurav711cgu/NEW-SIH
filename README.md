@@ -1,128 +1,142 @@
-# 🌊 AQUILA — Autonomous Marine Intelligence & Seafloor Debris Detection OS
+# AQUILA: Autonomous Marine Intelligence & Seafloor Debris Detection OS
 
-[![Ministry of Earth Sciences](https://img.shields.io/badge/MoES-Govt._of_India-0284c7?style=flat-square)](https://moes.gov.in/)
-[![NIOT Aligned](https://img.shields.io/badge/NIOT-Deep_Ocean_Mission-059669?style=flat-square)](https://www.niot.res.in/)
-[![Problem Statement](https://img.shields.io/badge/SIH_2026-PS--26057_%26_PS--1-f59e0b?style=flat-square)]()
-[![Platform](https://img.shields.io/badge/Edge_AI-AUV_Matsya_6000-6366f1?style=flat-square)]()
-
-**AQUILA** is an indigenous, defense-grade Autonomous Underwater Vehicle (AUV) Command, Control, and AI Intelligence Operating System engineered for the **Ministry of Earth Sciences (MoES)** and the **National Institute of Ocean Technology (NIOT)**. 
-
-It solves both major national oceanographic mandates under India's **Deep Ocean Mission**:
-1. **PS-26057:** AI-powered Side-Scan Sonar (SSS) Marine Debris Detection with SAHI (Slicing Aided Hyper Inference) and Urick Acoustic Shadow Calibration.
-2. **PS-1:** Real-time In-Situ Ocean State Observation and Physics-Derived Thermodynamic Synthesis (UNESCO EOS-80 / TEOS-10).
+Ministry of Earth Sciences (MoES) | National Institute of Ocean Technology (NIOT)  
+Smart India Hackathon 2026 | Problem Statements: PS-26057 & PS-1  
+Target Platform: MATSYA 6000 Deep Ocean AUV  
 
 ---
 
-## ⚡ 1-Minute Quickstart (Run on Any PC)
+## Executive Summary
 
-### 🪟 On Windows (1-Click)
-1. Double-click **`start_windows.bat`**.
-2. It automatically sets up Python dependencies, installs frontend packages, starts the FastAPI backend (`http://localhost:8000`), launches the React frontend (`http://localhost:5173`), and opens your browser.
+AQUILA is an indigenous, defense-grade Autonomous Underwater Vehicle (AUV) Command, Control, and Oceanographic Artificial Intelligence Operating System developed for the Ministry of Earth Sciences (MoES) and the National Institute of Ocean Technology (NIOT) under the Deep Ocean Mission framework.
 
-### 🍎 On macOS / 🐧 Linux (1-Click)
+The platform addresses two operational mandates:
+1. **PS-26057 (Seafloor Intelligence):** Real-time Side-Scan Sonar (SSS) automated target recognition for marine debris, sunken ordnance (UXO/Mines), lost shipping containers, pipelines, and ghost fishing gear using Slicing Aided Hyper Inference (SAHI) coupled with Urick Acoustic Shadow Geometric Ray-Tracing.
+2. **PS-1 (Ocean State Observation):** In-situ ocean state telemetry processing with UNESCO EOS-80 / TEOS-10 thermodynamic formulations and bio-optical biogeochemical synthesis.
+
+---
+
+## Quickstart Guide
+
+### Windows (1-Click Deployment)
+1. Execute `start_windows.bat`.
+2. The batch script verifies Python 3.9+ and Node.js 18+, establishes the virtual environment, installs backend and frontend dependencies, launches the FastAPI service (Port 8000), starts the React interface (Port 5173), and opens the default web browser.
+
+### macOS and Linux (1-Click Deployment)
+1. Make the launcher executable and run:
 ```bash
+chmod +x start_mac_linux.sh
 ./start_mac_linux.sh
 ```
 
 ---
 
-## 🛠️ Manual Installation (If Preferred)
+## Manual Installation and Build
 
-### 1. Backend Setup (FastAPI + YOLOv8/v9 + Scikit-Learn)
+### Backend Installation (FastAPI, Ultralytics YOLO, Scikit-Learn)
 ```bash
-# From project root
 python3 -m venv venv
 source venv/bin/activate       # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-* Backend Health: `http://localhost:8000/api/health`
-* Swagger API Docs: `http://localhost:8000/docs`
+* API Health Check: `http://localhost:8000/api/health`
+* OpenAPI / Swagger Documentation: `http://localhost:8000/docs`
 
-### 2. Frontend Setup (React 19 + TypeScript + Vite + Tailwind)
+### Frontend Installation (React 19, TypeScript, Vite, Tailwind CSS)
 ```bash
-# In another terminal
 cd frontend
 npm install
 npm run dev
 ```
-* Frontend Dashboard: `http://localhost:5173`
+* Dashboard URL: `http://localhost:5173`
 
 ---
 
-## 📸 Testing Sonar Images Suite (Included in Repository)
+## Pre-Loaded Sonar Evaluation Suite
 
-The repository comes pre-loaded with **25 curated, high-difficulty side-scan sonar waterfall images** located in:
-* `/testing_images/`
-* `/frontend/public/testing_images/`
+The repository includes a curated test suite of 25 standardized high-resolution Side-Scan Sonar waterfall recordings in:
+* `testing_images/`
+* `frontend/public/testing_images/`
 
-You can drag and drop any of these directly into the **Seafloor Intelligence** dashboard:
-* `01_shipwreck_large_waterfall.jpg` — Massive shipwreck structure with broken hull.
-* `03_cylinder_mine_specular_highlight.jpg` — Subsea cylindrical mine with high-contrast specular return.
-* `05_subsea_pipeline_track.jpg` — Continuous linear pipeline track across 500+ pings.
-* `10_entangled_debris_cluster.jpg` — Entangled synthetic ghost gear cluster.
-* `19_rock_formation_natural_shadow.jpg` — Natural seabed boulder with soft organic shadow.
-* `22_natural_rock_outcrop_zero_shadow_trap.jpg` — Zero-shadow rock outcrop trap for triage testing.
-* `23_sunken_iso_cargo_container_40ft.jpg` — 40ft ISO container with orthogonal 90° corners.
-* `25_entangled_synthetic_fad_trawl_mesh.jpg` — Synthetic FAD net with chaotic texture entropy.
+Key Test Scenarios:
+* `01_shipwreck_large_waterfall.jpg` - Structural wreckage with acoustic shadow envelope.
+* `03_cylinder_mine_specular_highlight.jpg` - Cylindrical metallic ordnance with high-intensity specular highlight.
+* `05_subsea_pipeline_track.jpg` - Linear critical infrastructure tracking across consecutive pings.
+* `10_entangled_debris_cluster.jpg` - Synthetic monofilament polymer debris with diffuse acoustic signature.
+* `19_rock_formation_natural_shadow.jpg` - Geological seabed boulder demonstrating soft organic shadow decay.
+* `22_natural_rock_outcrop_zero_shadow_trap.jpg` - Natural rock outcrop for false-positive validation.
+* `23_sunken_iso_cargo_container_40ft.jpg` - 40ft ISO container exhibiting orthogonal 90-degree corner returns.
+* `25_entangled_synthetic_fad_trawl_mesh.jpg` - Derelict fishing gear mesh exhibiting high spatial entropy.
 
 ---
 
-## 🖥️ System Architecture & Visual Modules
+## System Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────────┐
-│                         AQUILA SYSTEM CAPABILITIES                               │
-├──────────────────────┬───────────────────────────────────────────────────────────┤
-│ 1. Ocean State (PS-1)│ 6 in-situ sensor cards (EOS-80 / TEOS-10), thermocline    │
-│                      │ profile, and AUV dynamic attitude roll/pitch visualizer.  │
-├──────────────────────┼───────────────────────────────────────────────────────────┤
-│ 2. Strategic Intel   │ High-resolution Sector 7G bathymetric heatmap with        │
-│                      │ 14-day detection rate analytics and classified reporting. │
-├──────────────────────┼───────────────────────────────────────────────────────────┤
-│ 3. Biogeochemistry   │ 0–1000m depth series for Oxygen, Chlorophyll-a, pH, and   │
-│                      │ Nitrate carbon pump sink quantification.                  │
-├──────────────────────┼───────────────────────────────────────────────────────────┤
-│ 4. Seafloor (PS26057)│ Pan/zoom sonar waterfall viewer, CLAHE contrast filter,   │
-│                      │ SAHI slicing YOLO detector, uncertainty triage queue,     │
-│                      │ and visual Natural vs Man-Made Acoustic Shadow Profiler. │
-├──────────────────────┼───────────────────────────────────────────────────────────┤
-│ 5. Mission Control   │ USBL acoustic modem telemetry link (8.5 kHz), Lawnmower,  │
-│                      │ Contour Follow, and Hover Station autopilot modes.        │
-├──────────────────────┼───────────────────────────────────────────────────────────┤
-│ 6. AUV Twin          │ Interactive MATSYA 6000 wireframe with 12 clickable       │
-│                      │ sensor nodes and live serial stream telemetry console.    │
-├──────────────────────┼───────────────────────────────────────────────────────────┤
-│ 7. Research Dossier  │ Peer-reviewed citations, Urick shadow equations, Garcia-  │
-│                      │ Gordon DO models, and Indian Navy hydrographic standards. │
-└──────────────────────┴───────────────────────────────────────────────────────────┘
++----------------------------------------------------------------------------------+
+|                            AQUILA CORE MODULES                                   |
++----------------------+-----------------------------------------------------------+
+| 1. Ocean State       | In-situ physical oceanography (UNESCO EOS-80 / TEOS-10),  |
+|    (PS-1)            | thermocline depth transects, and dynamic AUV attitude.    |
++----------------------+-----------------------------------------------------------+
+| 2. Strategic Intel   | Bathymetric survey heatmap (Sector 7G) with 14-day        |
+|                      | debris density analysis and classified report export.     |
++----------------------+-----------------------------------------------------------+
+| 3. Biogeochemistry   | 0 to 1000m depth profiles for Dissolved Oxygen,           |
+|                      | Chlorophyll-a, pH, and Nitrate carbon flux quantification.|
++----------------------+-----------------------------------------------------------+
+| 4. Seafloor Intel    | Contrast-Limited Adaptive Histogram Equalization (CLAHE), |
+|    (PS-26057)        | SAHI slicing detector, and Side-by-Side Acoustic          |
+|                      | Signature and Shadow Ray-Tracing Profiler.                |
++----------------------+-----------------------------------------------------------+
+| 5. Mission Control   | USBL acoustic modem link simulation (8.5 kHz),            |
+|                      | Lawnmower, Contour Follow, and Hover Station modes.       |
++----------------------+-----------------------------------------------------------+
+| 6. AUV Digital Twin  | Interactive MATSYA 6000 hull schematic with 12 clickable  |
+|                      | sensor nodes and real-time engineering telemetry feed.    |
++----------------------+-----------------------------------------------------------+
+| 7. Research Dossier  | Mathematical formulations (Urick ray-tracing, Garcia-    |
+|                      | Gordon DO models) and hydrographic standards.             |
++----------------------+-----------------------------------------------------------+
 ```
 
 ---
 
-## 🎥 Video Recording Script & Demo Flow (For Presenter)
+## Demonstration Script for Evaluators
 
-1. **Mission Header & Ocean State (`/ocean-state`):**
-   * Show MATSYA 6000 telemetry synced in the Southern Ocean Indian Sector.
-   * Point out the in-situ oceanographic sensors and thermocline depth transect.
+1. **Ocean State Dashboard (`/ocean-state`):**
+   * Review MATSYA 6000 navigation telemetry (Southern Ocean Indian Sector coordinates).
+   * Demonstrate in-situ thermodynamic profiles and water column stratification.
 
-2. **MATSYA 6000 Digital Twin (`/auv-twin`):**
-   * Hover and click sensor attachment nodes (Side-Scan Sonar, USBL Acoustic Transponder, CTD, Optical Optode) to inspect live engineering telemetry.
+2. **AUV Subsystem Digital Twin (`/auv-twin`):**
+   * Inspect the 12 sensor nodes across the vehicle hull (Side-Scan Sonar, USBL, CTD, Optical Optode) to review telemetry feeds.
 
-3. **Seafloor Intelligence AI Detection (`/seafloor`):**
-   * Click one of the 1-click **Govt Mission Scenarios** (e.g. `1. GHOST NET (94.2%)` or `2. SUBSEA UXO / MINE (91.4%)`).
-   * Drop `01_shipwreck_large_waterfall.jpg` or `03_cylinder_mine_specular_highlight.jpg` from `testing_images/`.
-   * Click **`RUN AQUILA AI DETECTION`** and watch the automated pipeline:
-     `PREPROCESSING (CLAHE)` $\rightarrow$ `INFERENCING (SAHI)` $\rightarrow$ `CALCULATING ACOUSTIC SHADOWS` $\rightarrow$ `DONE`.
-   * Use the **`+` / `-` / `RESET`** zoom controls to inspect the bounding box.
-   * Scroll down to demonstrate the **Acoustic Signature & Shadow Profiler (Natural vs Man-Made)** with real side-by-side sonar crops and cross-sectional waveforms!
+3. **Seafloor Intelligence Pipeline (`/seafloor`):**
+   * Select a mission scenario or upload a sonar image from `testing_images/`.
+   * Trigger the detection pipeline to observe CLAHE noise filtering, SAHI slicing inference, and acoustic shadow calibration.
+   * Pan and zoom using the interface controls (+, -, RESET).
+   * Review the Acoustic Signature & Shadow Profiler to inspect waveform differences between natural seabed geology and man-made debris.
 
-4. **Strategic Intelligence & Export (`/intel`):**
-   * Show the classified Sector 7G bathymetric heatmap.
-   * Click `Export Intelligence Report` (JSON/CSV) to show automated hydrographic report generation.
+4. **Strategic Intelligence & Reporting (`/intel`):**
+   * Review the Sector 7G bathymetric heatmap.
+   * Generate structured JSON/CSV reports for inter-agency coordination.
+
+5. **Scientific Dossier (`/research`):**
+   * Review the underlying physical principles, ray-tracing equations, and peer-reviewed research citations.
 
 ---
 
-## 🛡️ License & Acknowledgments
-Developed for **Smart India Hackathon 2026** by Team **DEBUG THUGS**.
-Data references aligned with **NIOT (National Institute of Ocean Technology)** and **Ministry of Earth Sciences (MoES)**.
+## Technical Specifications
+
+* **Backend Framework:** FastAPI / Python 3.9+
+* **Inference Engine:** Ultralytics YOLOv8 / YOLOv9 with Slicing Aided Hyper Inference (SAHI)
+* **Image Processing:** OpenCV (CLAHE contrast enhancement, median filter, shadow mask segmentation)
+* **Confidence Calibration:** Physics-based Acoustic Shadow verification (Urick Shadow Height Law)
+* **Frontend Architecture:** React 19, TypeScript, Vite, Tailwind CSS, Recharts, Lucide Icons
+* **Data Standards:** Compatible with standard raster exports (.jpg, .png, .tiff) and hydrographic metadata formats (.xtf, .csv, .json)
+
+---
+
+## License and Compliance
+Developed for Smart India Hackathon 2026 by Team DEBUG THUGS. Aligned with standards established by the Ministry of Earth Sciences (MoES) and the National Institute of Ocean Technology (NIOT), Government of India.
