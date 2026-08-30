@@ -1,0 +1,66 @@
+# config/pipeline_config.yaml
+# ----------------------------
+# Central configuration for the SSS AI pipeline.
+# All scripts read from here. No hardcoded values in source code.
+
+detector:
+  # Path to trained YOLOv8/v9 weights.
+  model_path: "models/sss_detector_v1-3/weights/best.pt"
+
+  # Minimum confidence for a detection to be retained
+  conf_threshold: 0.10
+
+  # IoU threshold for non-maximum suppression
+  iou_threshold: 0.45
+
+  # Inference image size (must match training imgsz)
+  imgsz: 640
+
+  # Class names must match dataset.yaml order exactly
+  class_names:
+    - shipwreck
+    - pipe
+    - cylinder
+    - ghost_net
+    - anomaly
+
+preprocessor:
+  # Median filter kernel size (must be odd). Controls speckle suppression.
+  median_kernel: 5
+
+  # CLAHE parameters for local contrast enhancement
+  clahe_clip_limit: 3.0
+  clahe_tile_grid: [8, 8]
+
+  # Shadow detection threshold (0-255). Pixels below this are candidate shadow.
+  shadow_threshold: 40
+
+  # Morphological closing kernel for shadow zone merging [width, height]
+  shadow_kernel: [20, 8]
+
+confidence_calibrator:
+  # Factor applied to detections whose centroid falls in an acoustic shadow zone.
+  # 0.5 = 50% penalty. Penalised detections are flagged, NOT suppressed.
+  shadow_penalty_factor: 0.50
+
+  # Detections below this calibrated threshold are routed to human review.
+  low_confidence_threshold: 0.35
+
+geotagging:
+  # Fallback position used when no XTF file is provided (demo mode).
+  # Set to the geographic region of the dataset being demonstrated.
+  fallback_lat: -54.2
+  fallback_lon: 60.8
+  fallback_heading: 90.0
+
+reporting:
+  output_dir: "data/reports"
+  # Supported formats: json, csv (both always generated)
+  formats:
+    - json
+    - csv
+
+platform:
+  platform_id: "001"
+  mqtt_broker: "localhost"
+  mqtt_port: 1883

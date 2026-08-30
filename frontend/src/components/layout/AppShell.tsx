@@ -6,7 +6,7 @@ import { MissionProvider } from './MissionContext';
 
 const navItems = [
   { path: '/', label: 'Ocean State', icon: Waves },
-  { path: '/biogeochemistry', label: 'Biogeochemistry', icon: Activity },
+  { path: '/biogeochemistry', label: 'MoES Strategic Intel', icon: Activity },
   { path: '/seafloor', label: 'Seafloor Intel', icon: Target },
   { path: '/mission', label: 'Mission Control', icon: Anchor },
 ];

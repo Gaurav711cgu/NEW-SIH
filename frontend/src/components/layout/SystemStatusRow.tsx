@@ -1,38 +1,65 @@
-import { useMission } from './MissionContext';
+import { useState, useEffect } from 'react';
+import { Activity, Database, Cpu } from 'lucide-react';
 
 export function SystemStatusRow() {
-  const { commsOnline, depth, uptime, phase } = useMission();
+  const [modelReady, setModelReady] = useState<boolean | null>(null);
+  
+  useEffect(() => {
+    let cancelled = false;
+    const checkHealth = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/api/health');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (!cancelled) setModelReady(data.model_ready);
+      } catch (err) {
+        if (!cancelled) setModelReady(false);
+      }
+    };
+    
+    checkHealth();
+    const interval = setInterval(checkHealth, 5000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
-  const formatUptime = (secs: number) => {
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor((secs % 3600) / 60);
-    const s = secs % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
+  const StatusIndicator = ({ label, active, icon: Icon }: any) => (
+    <div className="flex items-center justify-between px-1 group">
+      <div className="flex items-center gap-2">
+        <Icon size={12} className={
+          active 
+            ? "text-health-nominal group-hover:text-ice-400" 
+            : "text-health-degraded animate-pulse glitch-text"
+        } data-text={label} />
+        <span className={`${active ? 'text-steel-400' : 'text-red-500 font-bold'}`}>{label}</span>
+      </div>
+      <div className={`w-1.5 h-1.5 rounded-full ${
+        active 
+          ? 'bg-health-nominal shadow-[0_0_5px_rgba(16,185,129,0.5)]' 
+          : 'bg-red-500 animate-ping shadow-[0_0_8px_rgba(239,68,68,0.8)]'
+      }`} />
+    </div>
+  );
 
   return (
-    <div className="mt-auto p-4 border-t border-steel-800/60 hidden md:flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wider text-steel-500 font-sans font-semibold">Acoustic Link</span>
-        <div className="flex items-center gap-1.5">
-          <span className={`w-1.5 h-1.5 rounded-full ${commsOnline ? 'bg-health-nominal animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]' : 'bg-health-degraded animate-pulse'}`} />
-          <span className={`text-[10px] font-mono font-bold ${commsOnline ? 'text-health-nominal' : 'text-health-degraded'}`}>{commsOnline ? 'OK' : 'FAIL'}</span>
-        </div>
-      </div>
+    <div className="mt-auto p-4 border-t border-steel-800/60 hidden md:block relative overflow-hidden">
+      {/* Background hazard stripes if critical */}
+      {modelReady === false && (
+        <div className="absolute inset-0 opacity-10"
+             style={{ backgroundImage: 'repeating-linear-gradient(45deg, #ef4444, #ef4444 10px, transparent 10px, transparent 20px)' }} />
+      )}
       
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wider text-steel-500 font-sans font-semibold">Target Depth</span>
-        <span className="text-[10px] font-mono font-bold text-ice-400">{depth.toFixed(1)}m</span>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wider text-steel-500 font-sans font-semibold">Phase</span>
-        <span className="text-[10px] font-mono font-bold text-amber-400">{phase}</span>
-      </div>
+      <h3 className="text-[10px] font-mono font-bold text-steel-500 uppercase tracking-widest mb-3 px-1 relative z-10 flex justify-between">
+        <span>System Core</span>
+        {modelReady === false && <span className="text-red-500 animate-pulse">FAIL_DETECTED</span>}
+      </h3>
       
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wider text-steel-500 font-sans font-semibold">Mission Time</span>
-        <span className="text-[10px] font-mono text-steel-300">T+{formatUptime(uptime)}</span>
+      <div className="space-y-3 font-mono text-[10px] uppercase tracking-wider relative z-10">
+        <StatusIndicator label="Telemetry" active={true} icon={Activity} />
+        <StatusIndicator label="AI Engine" active={modelReady !== false} icon={Cpu} />
+        <StatusIndicator label="Store Link" active={true} icon={Database} />
       </div>
     </div>
   );
