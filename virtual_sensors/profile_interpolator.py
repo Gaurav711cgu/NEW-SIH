@@ -1,5 +1,3 @@
-# virtual_sensors/profile_interpolator.py
-
 import numpy as np
 import xarray as xr
 from scipy.interpolate import interp1d

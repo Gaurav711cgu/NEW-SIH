@@ -40,8 +40,8 @@ export function GovernmentIntel() {
         </div>
         <div className="text-right space-y-2">
           <div className="flex items-center justify-end gap-2">
-            <span className="px-2.5 py-1 bg-red-950/50 text-red-400 border border-red-900/60 rounded text-xs font-mono font-bold tracking-widest">OFFICIAL // RESTRICTED</span>
-            <span className="px-2.5 py-1 bg-cyan-950/50 text-cyan-400 border border-cyan-800/60 rounded text-xs font-mono font-bold tracking-wider">LIVE SENSOR TELEMETRY // NIOT-C2</span>
+            <span className="px-2.5 py-1 bg-red-950/50 text-red-400 border border-red-900/60 rounded text-xs font-mono font-bold tracking-widest">MISSION DEMONSTRATION DATA</span>
+            <span className="px-2.5 py-1 bg-cyan-950/50 text-cyan-400 border border-cyan-800/60 rounded text-xs font-mono font-bold tracking-wider">SIMULATED 14-DAY MISSION REPLAY</span>
           </div>
           <div className="font-mono text-sm text-slate-500">
             DATE: {currentDate} | ID: SO-INTEL-8492
@@ -421,58 +421,65 @@ export function GovernmentIntel() {
         </div>
       </div>
 
-      {/* SECTION 5.5: ATMANIRBHAR BHARAT & INDIGENOUS SOVEREIGNTY IMPACT */}
-      <div className="bg-gradient-to-r from-emerald-950/40 via-abyss-900 to-abyss-950 border border-emerald-500/40 rounded-xl p-6 relative shadow-2xl">
+      {/* SECTION 5.5: DEEP OCEAN MISSION (DOM) ALIGNMENT */}
+      <div className="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 border border-emerald-500/40 rounded-xl p-6 relative shadow-2xl">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-emerald-900/60">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-sm">
-              <ShieldCheck className="w-4 h-4" />
+              <Target className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-sm font-mono font-bold text-emerald-300 tracking-wider uppercase">
-                NATIONAL DEEP OCEAN MISSION // ATMANIRBHAR BHARAT DEFENSE IMPACT
+                DEEP OCEAN MISSION (DOM) ALIGNMENT — ₹4,077 CRORE INITIATIVE
               </h3>
-              <p className="text-xs text-steel-400 font-sans">
-                Sovereign replacement of foreign oceanographic instrumentation (Sea-Bird, Teledyne, Aanderaa, EdgeTech).
+              <p className="text-xs text-slate-400 font-sans">
+                Indigenous, low-cost prototype addressing the Ministry of Earth Sciences mandate.
               </p>
             </div>
           </div>
-          <span className="px-3 py-1 bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 rounded-lg font-mono text-xs font-bold">
-            FOREX SAVING: ~78% PER UNIT
+          <span className="px-3 py-1 bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 rounded-lg font-mono text-xs font-bold flex flex-col items-end">
+            <span>COST: ₹75,000 – ₹1,00,000</span>
+            <span className="text-[9px] text-emerald-500/70">VS ₹25-30 LAKH COMMERCIAL ARGO</span>
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 font-mono text-xs mb-4">
-          <div className="bg-abyss-950/80 p-3 rounded-lg border border-steel-800">
-            <span className="text-steel-500 text-[10px] block mb-1">1. FOREX CAPITAL RETENTION</span>
-            <span className="text-base font-bold text-emerald-400">₹27.2 LAKHS</span>
-            <p className="text-[10px] text-steel-400 mt-1 font-sans">
-              Direct foreign exchange savings per deployed float compared to imported ₹35L BGC Argo systems.
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs mb-4">
+          <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 opacity-50">
+            <span className="text-slate-500 text-[10px] block mb-1">PILLAR 1</span>
+            <span className="text-sm font-bold text-slate-400">Deep Sea Mining</span>
+          </div>
+
+          <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 opacity-50">
+            <span className="text-slate-500 text-[10px] block mb-1">PILLAR 2</span>
+            <span className="text-sm font-bold text-slate-400">Ocean Climate Change</span>
+          </div>
+
+          <div className="bg-emerald-950/80 p-3 rounded-lg border border-emerald-500/50 relative overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <div className="absolute right-0 top-0 bottom-0 w-1 bg-emerald-500 rounded-r"></div>
+            <span className="text-emerald-500 text-[10px] block mb-1 font-bold">PILLAR 3 (ADDRESSED)</span>
+            <span className="text-sm font-bold text-emerald-400">Technological Innovations</span>
+            <p className="text-[10px] text-emerald-400/70 mt-1 font-sans">
+              Edge AI for underwater debris & ghost net detection (PS-26057).
             </p>
           </div>
 
-          <div className="bg-abyss-950/80 p-3 rounded-lg border border-steel-800">
-            <span className="text-steel-500 text-[10px] block mb-1">2. EXPORT CONTROL IMMUNITY</span>
-            <span className="text-base font-bold text-cyan-400">100% INDIGENOUS</span>
-            <p className="text-[10px] text-steel-400 mt-1 font-sans">
-              Zero dependency on ITAR-controlled foreign acoustic arrays or proprietary European sensor firmware.
+          <div className="bg-emerald-950/80 p-3 rounded-lg border border-emerald-500/50 relative overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <div className="absolute right-0 top-0 bottom-0 w-1 bg-emerald-500 rounded-r"></div>
+            <span className="text-emerald-500 text-[10px] block mb-1 font-bold">PILLAR 4 (ADDRESSED)</span>
+            <span className="text-sm font-bold text-emerald-400">Deep Ocean Survey</span>
+            <p className="text-[10px] text-emerald-400/70 mt-1 font-sans">
+              Autonomous Southern Ocean Observation (PS-26065) at 1/100th cost.
             </p>
           </div>
 
-          <div className="bg-abyss-950/80 p-3 rounded-lg border border-steel-800">
-            <span className="text-steel-500 text-[10px] block mb-1">3. DOMESTIC CALIBRATION</span>
-            <span className="text-base font-bold text-amber-400">NIOT / INCOIS</span>
-            <p className="text-[10px] text-steel-400 mt-1 font-sans">
-              Serviced locally in Chennai/Hyderabad tow tanks — eliminates 9-month overseas shipping turnaround.
-            </p>
+          <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 opacity-50">
+            <span className="text-slate-500 text-[10px] block mb-1">PILLAR 5</span>
+            <span className="text-sm font-bold text-slate-400">Ocean Energy</span>
           </div>
 
-          <div className="bg-abyss-950/80 p-3 rounded-lg border border-steel-800">
-            <span className="text-steel-500 text-[10px] block mb-1">4. DATA SOVEREIGNTY</span>
-            <span className="text-base font-bold text-ice-400">RESTRICTED C2</span>
-            <p className="text-[10px] text-steel-400 mt-1 font-sans">
-              Sensitive Southern Ocean and Indian EEZ seabed acoustic models never touch foreign commercial cloud servers.
-            </p>
+          <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 opacity-50">
+            <span className="text-slate-500 text-[10px] block mb-1">PILLAR 6</span>
+            <span className="text-sm font-bold text-slate-400">Marine Station</span>
           </div>
         </div>
       </div>

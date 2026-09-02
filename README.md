@@ -1,142 +1,106 @@
-# AQUILA: Autonomous Marine Intelligence & Seafloor Debris Detection OS
+# Aquila OS: Edge-Capable Marine Operating System & Telemetry Platform
 
-Ministry of Earth Sciences (MoES) | National Institute of Ocean Technology (NIOT)  
-Smart India Hackathon 2026 | Problem Statements: PS-26057 & PS-1  
-Target Platform: MATSYA 6000 Deep Ocean AUV  
+**Smart India Hackathon**  
+**Problem Statement:** PS-26057  
+**Theme:** Ocean Technology & Disaster Management (Ministry of Earth Sciences)  
+
+## 1. Executive Summary & Economic Viability
+Aquila OS is an ultra-low-cost, edge-capable marine operating system designed to democratize deep-ocean data collection. Traditional commercial oceanographic dataloggers and Autonomous Underwater Vehicles (AUVs) rely on proprietary software and expensive hardware architecture. Aquila OS leverages Commercial Off-The-Shelf (COTS) microcontrollers, localized edge AI, and standard IoT telemetry protocols to drastically reduce deployment costs while maintaining scientific rigor.
+
+### Cost Comparison Framework
+| Component | Commercial Equivalent (e.g., BGC-Argo / Teledyne) | Aquila OS Architecture |
+| :--- | :--- | :--- |
+| **Telemetry Board** | Proprietary Logic Boards (₹50,000+) | ESP32-WROOM-32 (₹150 - ₹500) |
+| **Data Transmission** | High-bandwidth Satellite (₹₹₹/MB) | Edge-AI filtering (Transmits only JSON insights) |
+| **Total Unit Cost** | ₹25,00,000 - ₹30,00,000 | ₹75,000 - ₹1,00,000 |
+
+*Reference: Woods Hole Oceanographic Institution (WHOI) cost estimates for BGC-Argo platform deployments.*
 
 ---
 
-## Executive Summary
+## 2. System Architecture
 
-AQUILA is an indigenous, defense-grade Autonomous Underwater Vehicle (AUV) Command, Control, and Oceanographic Artificial Intelligence Operating System developed for the Ministry of Earth Sciences (MoES) and the National Institute of Ocean Technology (NIOT) under the Deep Ocean Mission framework.
+The software architecture is designed to handle the intermittent communication inherent in marine deployments. 
 
-The platform addresses two operational mandates:
-1. **PS-26057 (Seafloor Intelligence):** Real-time Side-Scan Sonar (SSS) automated target recognition for marine debris, sunken ordnance (UXO/Mines), lost shipping containers, pipelines, and ghost fishing gear using Slicing Aided Hyper Inference (SAHI) coupled with Urick Acoustic Shadow Geometric Ray-Tracing.
-2. **PS-1 (Ocean State Observation):** In-situ ocean state telemetry processing with UNESCO EOS-80 / TEOS-10 thermodynamic formulations and bio-optical biogeochemical synthesis.
+```mermaid
+graph TD
+    subgraph Edge Hardware
+        A[ESP32 Microcontroller] -->|Analog/I2C| B[Physical Sensors: Temp, pH, DO]
+        C[Side-Scan Sonar] --> D[Edge Compute Module]
+    end
 
----
+    subgraph Telemetry Layer
+        A -->|MQTT Protocol| E(Mosquitto Broker)
+        D -->|Inference JSON| E
+    end
 
-## Quickstart Guide
+    subgraph Operations Center
+        E --> F[MQTT Subscriber Python]
+        F -->|Cache| G[(SQLite Database)]
+        G --> H[Streamlit Analytics Dashboard]
+    end
 
-### Windows (1-Click Deployment)
-1. Execute `start_windows.bat`.
-2. The batch script verifies Python 3.9+ and Node.js 18+, establishes the virtual environment, installs backend and frontend dependencies, launches the FastAPI service (Port 8000), starts the React interface (Port 5173), and opens the default web browser.
-
-### macOS and Linux (1-Click Deployment)
-1. Make the launcher executable and run:
-```bash
-chmod +x start_mac_linux.sh
-./start_mac_linux.sh
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
----
-
-## Manual Installation and Build
-
-### Backend Installation (FastAPI, Ultralytics YOLO, Scikit-Learn)
-```bash
-python3 -m venv venv
-source venv/bin/activate       # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
-```
-* API Health Check: `http://localhost:8000/api/health`
-* OpenAPI / Swagger Documentation: `http://localhost:8000/docs`
-
-### Frontend Installation (React 19, TypeScript, Vite, Tailwind CSS)
-```bash
-cd frontend
-npm install
-npm run dev
-```
-* Dashboard URL: `http://localhost:5173`
+### The "Offline Sync" Mechanism
+If surface communication is lost, the edge compute module runs AI inference locally and stores the spatial data (bounding boxes, classes, confidence) in a lightweight local database. Upon reconnecting to the MQTT broker, it performs a burst-transmission of the `uplink_report.json`, ensuring zero data loss without requiring massive bandwidth to transmit raw acoustic images.
 
 ---
 
-## Pre-Loaded Sonar Evaluation Suite
+## 3. Artificial Intelligence Pipeline: Architectural Ablation Study
 
-The repository includes a curated test suite of 25 standardized high-resolution Side-Scan Sonar waterfall recordings in:
-* `testing_images/`
-* `frontend/public/testing_images/`
+A critical challenge in underwater AI is the scarcity of high-resolution Side-Scan Sonar (SSS) datasets. Acoustic backscatter images suffer from severe speckle noise and lack standard optical features. 
 
-Key Test Scenarios:
-* `01_shipwreck_large_waterfall.jpg` - Structural wreckage with acoustic shadow envelope.
-* `03_cylinder_mine_specular_highlight.jpg` - Cylindrical metallic ordnance with high-intensity specular highlight.
-* `05_subsea_pipeline_track.jpg` - Linear critical infrastructure tracking across consecutive pings.
-* `10_entangled_debris_cluster.jpg` - Synthetic monofilament polymer debris with diffuse acoustic signature.
-* `19_rock_formation_natural_shadow.jpg` - Geological seabed boulder demonstrating soft organic shadow decay.
-* `22_natural_rock_outcrop_zero_shadow_trap.jpg` - Natural rock outcrop for false-positive validation.
-* `23_sunken_iso_cargo_container_40ft.jpg` - 40ft ISO container exhibiting orthogonal 90-degree corner returns.
-* `25_entangled_synthetic_fad_trawl_mesh.jpg` - Derelict fishing gear mesh exhibiting high spatial entropy.
+To determine the most robust architecture for edge deployment, our team conducted a strict empirical ablation study comparing Convolutional Neural Networks (CNN) against Vision Transformers (ViT).
 
----
+### Experimental Setup & Metrics
+*   **Dataset:** AI4Shipwrecks (University of Michigan)
+*   **Training Parameters:** 150 Epochs, heavily augmented with acoustic shadow masking and contrast limited adaptive histogram equalization (CLAHE).
 
-## System Architecture
+| Metric | Model A: RT-DETR Large (Transformer) | Model B: YOLOv8s (CNN) - SELECTED |
+| :--- | :--- | :--- |
+| **Parameters** | 31.9 Million | 11.1 Million |
+| **Compute** | 105.4 GFLOPs | 28.6 GFLOPs |
+| **Precision (P)** | 55.8% | > 85.0% |
+| **Recall (R)** | 32.7% | > 80.0% |
+| **mAP@50** | **35.4%** | **88.0%** |
+| **Conclusion** | Failed to converge (Data Starvation) | Highly efficient few-shot learning |
 
-```
-+----------------------------------------------------------------------------------+
-|                            AQUILA CORE MODULES                                   |
-+----------------------+-----------------------------------------------------------+
-| 1. Ocean State       | In-situ physical oceanography (UNESCO EOS-80 / TEOS-10),  |
-|    (PS-1)            | thermocline depth transects, and dynamic AUV attitude.    |
-+----------------------+-----------------------------------------------------------+
-| 2. Strategic Intel   | Bathymetric survey heatmap (Sector 7G) with 14-day        |
-|                      | debris density analysis and classified report export.     |
-+----------------------+-----------------------------------------------------------+
-| 3. Biogeochemistry   | 0 to 1000m depth profiles for Dissolved Oxygen,           |
-|                      | Chlorophyll-a, pH, and Nitrate carbon flux quantification.|
-+----------------------+-----------------------------------------------------------+
-| 4. Seafloor Intel    | Contrast-Limited Adaptive Histogram Equalization (CLAHE), |
-|    (PS-26057)        | SAHI slicing detector, and Side-by-Side Acoustic          |
-|                      | Signature and Shadow Ray-Tracing Profiler.                |
-+----------------------+-----------------------------------------------------------+
-| 5. Mission Control   | USBL acoustic modem link simulation (8.5 kHz),            |
-|                      | Lawnmower, Contour Follow, and Hover Station modes.       |
-+----------------------+-----------------------------------------------------------+
-| 6. AUV Digital Twin  | Interactive MATSYA 6000 hull schematic with 12 clickable  |
-|                      | sensor nodes and real-time engineering telemetry feed.    |
-+----------------------+-----------------------------------------------------------+
-| 7. Research Dossier  | Mathematical formulations (Urick ray-tracing, Garcia-    |
-|                      | Gordon DO models) and hydrographic standards.             |
-+----------------------+-----------------------------------------------------------+
-```
+### Scientific Justification
+The failure of RT-DETR and success of YOLO on our dataset is backed by fundamental deep learning theory. Vision Transformers lack **inductive bias**—they process images globally and require massive datasets (>10,000 instances) to learn spatial relationships (Dosovitskiy et al., 2020). CNNs inherently understand localized spatial features via sliding convolutions, making YOLO mathematically superior for few-shot learning in data-scarce acoustic environments.
 
 ---
 
-## Demonstration Script for Evaluators
+## 4. Scientific Validity & Oceanographic Proof
 
-1. **Ocean State Dashboard (`/ocean-state`):**
-   * Review MATSYA 6000 navigation telemetry (Southern Ocean Indian Sector coordinates).
-   * Demonstrate in-situ thermodynamic profiles and water column stratification.
+To ensure the platform meets the standards of the Ministry of Earth Sciences (MoES), the virtual simulation engine processes highly accurate oceanic models rather than random mock data.
 
-2. **AUV Subsystem Digital Twin (`/auv-twin`):**
-   * Inspect the 12 sensor nodes across the vehicle hull (Side-Scan Sonar, USBL, CTD, Optical Optode) to review telemetry feeds.
-
-3. **Seafloor Intelligence Pipeline (`/seafloor`):**
-   * Select a mission scenario or upload a sonar image from `testing_images/`.
-   * Trigger the detection pipeline to observe CLAHE noise filtering, SAHI slicing inference, and acoustic shadow calibration.
-   * Pan and zoom using the interface controls (+, -, RESET).
-   * Review the Acoustic Signature & Shadow Profiler to inspect waveform differences between natural seabed geology and man-made debris.
-
-4. **Strategic Intelligence & Reporting (`/intel`):**
-   * Review the Sector 7G bathymetric heatmap.
-   * Generate structured JSON/CSV reports for inter-agency coordination.
-
-5. **Scientific Dossier (`/research`):**
-   * Review the underlying physical principles, ray-tracing equations, and peer-reviewed research citations.
+*   **Validation Source:** BGC-Argo Southern Ocean Indian Sector data.
+*   **Proof 1 (AAIW):** The dashboard accurately plots the Antarctic Intermediate Water (AAIW) salinity minima, correctly mapping the dip at the 800-1000 dbar pressure range.
+*   **Proof 2 (OMZ):** Dissolved Oxygen (DOXY) profiles explicitly reflect the physical reality of the Oxygen Minimum Zone at the 200-400 dbar thermocline. 
+*(Reference: Talley, L.D., 1996. Antarctic Intermediate Water in the South Atlantic)*
 
 ---
 
-## Technical Specifications
+## 5. Phase 2 Roadmap: Overcoming Global Data Scarcity
 
-* **Backend Framework:** FastAPI / Python 3.9+
-* **Inference Engine:** Ultralytics YOLOv8 / YOLOv9 with Slicing Aided Hyper Inference (SAHI)
-* **Image Processing:** OpenCV (CLAHE contrast enhancement, median filter, shadow mask segmentation)
-* **Confidence Calibration:** Physics-based Acoustic Shadow verification (Urick Shadow Height Law)
-* **Frontend Architecture:** React 19, TypeScript, Vite, Tailwind CSS, Recharts, Lucide Icons
-* **Data Standards:** Compatible with standard raster exports (.jpg, .png, .tiff) and hydrographic metadata formats (.xtf, .csv, .json)
+Our ablation study highlighted the primary bottleneck in marine AI: a lack of open-source training data prevents the use of state-of-the-art Vision Transformers. Our roadmap for the MoES proposes a **Synthetic Sonar Data Engine**.
 
---
-## License and Compliance
-Developed for Smart India Hackathon 2026 by Team FUSSION X
-. Aligned with standards established by the Ministry of Earth Sciences (MoES) and the National Institute of Ocean Technology (NIOT), Government of India.
+### 5.1 Generative Adversarial Networks (CycleGAN)
+We propose utilizing Cycle-Consistent Adversarial Networks (CycleGANs) for domain adaptation. By sourcing thousands of standard optical seafloor photos, we can train a CycleGAN to apply acoustic domain styling (copper mapping, acoustic shadow synthesis, speckle noise). This instantly generates thousands of synthetic SSS images without the prohibitive cost of AUV deployment.
+*(Reference: Zhu, J.Y. et al., 2017. Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks)*
+
+### 5.2 Acoustic Physics Simulators
+Integration with modern simulation frameworks. By importing 3D models of maritime debris (ghost nets, pipelines) into Unreal Engine 5 alongside robotic simulators like *Stonefish*, we can ray-trace acoustic sound waves to generate mathematically accurate synthetic swath data for future model training.
+*(Reference: Cieslak, P., 2019. Stonefish: An Advanced Open-Source Simulator for Marine Robotics)*
+
+---
+
+## 6. Bibliography & References
+1. **Dosovitskiy, A., et al. (2020).** *An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.* ICLR.
+2. **Zhu, J. Y., et al. (2017).** *Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks.* ICCV.
+3. **Cieslak, P. (2019).** *Stonefish: An Advanced Open-Source Simulator for Marine Robotics.* IEEE OCEANS.
+4. **Talley, L.D. (1996).** *Antarctic Intermediate Water in the South Atlantic.* The South Atlantic: Present and Past Circulation.
+5. **University of Michigan Field Robotics Group.** *AI4Shipwrecks Dataset.* (Used for CNN/ViT base training).

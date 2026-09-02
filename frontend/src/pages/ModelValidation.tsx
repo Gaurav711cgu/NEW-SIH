@@ -11,7 +11,7 @@ export function ModelValidation() {
           </div>
           <div>
             <h1 className="text-xl font-bold text-ice-100 font-mono tracking-wide">AI Validation & Benchmarks</h1>
-            <p className="text-xs text-steel-400 font-mono">RT-DETR-L vs State-of-the-Art Literature</p>
+            <p className="text-xs text-steel-400 font-mono">RT-DETR-L (Fine-Tuned) vs State-of-the-Art Literature</p>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ export function ModelValidation() {
             </div>
             <div className="flex items-center gap-2 text-xs font-mono text-steel-400 mt-2">
               <Zap className="w-4 h-4 text-steel-500" />
-              Inference Speed: 55 FPS (TensorRT FP16)
+              Inference Speed: 12 FPS (Estimated Edge Compute)
             </div>
           </div>
         </div>
@@ -73,13 +73,13 @@ export function ModelValidation() {
                   title="Architecture" 
                   v1="YOLOv7 + Attention" 
                   v2="CycleGAN + YOLOv8" 
-                  v3="RT-DETR-L + SAHI" 
+                  v3="RT-DETR-L (Fine-Tuned) + SAHI" 
                   highlight 
                 />
                 <TableRow 
                   title="mAP50 Accuracy" 
                   v1="82.4% (Server GPU)" 
-                  v2="88.6% (Large Ensemble)" 
+                  v2="89.6% (Large Ensemble)" 
                   v3="51.7% (Edge Baseline, Jetson Orin)" 
                   highlight 
                 />
@@ -93,7 +93,7 @@ export function ModelValidation() {
                   title="Inference Speed" 
                   v1="45 FPS" 
                   v2="30 FPS" 
-                  v3="55 FPS (Edge Optimized)" 
+                  v3="12 FPS (Estimated Edge Compute)" 
                   highlight 
                 />
                 <TableRow 
@@ -112,7 +112,7 @@ export function ModelValidation() {
               WHY OUR ARCHITECTURE EXCELS
             </h3>
             <p className="text-xs font-mono text-steel-400 leading-relaxed">
-              According to recent publications, the primary failure point for autonomous AUV object detection is dataset scarcity. We solved this by developing a Custom Synthetic Sonar Generator that injects <strong>Multiplicative Rayleigh Speckle Noise</strong>, allowing our RT-DETR-L model to learn actual acoustic shadow physics rather than overfitting on clean CAD renders. Furthermore, our use of <strong>SAHI (Slicing Aided Hyper Inference)</strong> ensures that micro-debris (like ghost nets) is perfectly detected even in massive 4K sonar logs.
+              According to recent publications, the primary failure point for autonomous AUV object detection is dataset scarcity. We solved this by developing a Custom Synthetic Sonar Generator that injects <strong>Multiplicative Rayleigh Speckle Noise</strong>, allowing our RT-DETR-L (Fine-Tuned) model to learn actual acoustic shadow physics rather than overfitting on clean CAD renders. Furthermore, our use of <strong>SAHI (Slicing Aided Hyper Inference)</strong> ensures that micro-debris (like ghost nets) is perfectly detected even in massive 4K sonar logs.
             </p>
           </div>
 

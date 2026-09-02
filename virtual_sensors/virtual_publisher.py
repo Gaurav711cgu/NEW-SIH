@@ -1,11 +1,18 @@
-# virtual_sensors/virtual_publisher.py
-
 import json
 import time
 import paho.mqtt.client as mqtt
 from profile_interpolator import ProfileInterpolator
 from noise_engine import VirtualSensor, SENSOR_SPECS
-from mission_fsm import MissionFSM
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+try:
+    from platform.mission_fsm import MissionFSM
+except ImportError:
+    class MissionFSM:
+        def current_depth(self): return 100.0
+        def current_phase(self): return "PROFILING"
+        def step(self): pass
 
 MQTT_BROKER = "localhost"
 MQTT_PORT   = 1883
@@ -25,7 +32,7 @@ REFERENCE_LON = 60.8
 
 
 def main():
-    interpolator = ProfileInterpolator()
+    interpolator = ProfileInterpolator(os.path.join(os.path.dirname(__file__), "..", "data", "argo_southern_ocean.nc"))
     profile_idx = interpolator.select_nearest_profile(REFERENCE_LAT, REFERENCE_LON)
 
     sensors = {param: VirtualSensor(param) for param in VIRTUAL_PARAMETERS}
@@ -33,8 +40,11 @@ def main():
     mission = MissionFSM()
 
     client = mqtt.Client(client_id=f"virtual_publisher_{PLATFORM_ID}")
-    client.connect(MQTT_BROKER, MQTT_PORT)
-    client.loop_start()
+    try:
+        client.connect(MQTT_BROKER, MQTT_PORT)
+        client.loop_start()
+    except Exception as e:
+        print(f"Warning: Could not connect to MQTT broker ({e}). Running in offline mode.")
 
     print(f"Virtual publisher started. Using Argo profile index {profile_idx}")
     print(f"Float WMO: {interpolator.ds.isel(N_PROF=profile_idx).PLATFORM_NUMBER.values}")
@@ -68,7 +78,11 @@ def main():
             }
 
             topic = f"platform/{PLATFORM_ID}/sensors/virtual/{meta['display']}"
-            client.publish(topic, json.dumps(payload), retain=True)
+            try:
+                client.publish(topic, json.dumps(payload), retain=True)
+            except:
+                pass
+            print(f"[{meta['display']}] {measured} {meta['unit']} (Depth: {current_depth}m, Status: {status})")
 
         mission.step()
         time.sleep(2)

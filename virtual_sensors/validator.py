@@ -1,13 +1,15 @@
-# virtual_sensors/validator.py
-
 import numpy as np
 import xarray as xr
 from sklearn.metrics import mean_absolute_error
 from scipy.stats import pearsonr
+import os
+import sys
+
+sys.path.append(os.path.dirname(__file__))
 from profile_interpolator import ProfileInterpolator
 
 def validate_interpolation_accuracy(
-    dataset_path: str = "data/argo_southern_ocean.nc",
+    dataset_path: str = os.path.join(os.path.dirname(__file__), "..", "data", "argo_southern_ocean.nc"),
     test_fraction: float = 0.2
 ) -> dict:
     """
@@ -17,9 +19,17 @@ def validate_interpolation_accuracy(
     This is the validation result to present to judges when asked
     about the accuracy of the virtual sensor data.
     """
+    if not os.path.exists(dataset_path):
+        print(f"Error: {dataset_path} not found. Please run datasets/fetch_argo.py first.")
+        return {}
+
     ds = xr.open_dataset(dataset_path)
     n = len(ds.N_PROF)
-    test_idx = np.random.choice(n, int(n * test_fraction), replace=False)
+    if n < 5:
+        print("Not enough profiles in dataset to run validation split.")
+        return {}
+        
+    test_idx = np.random.choice(n, max(1, int(n * test_fraction)), replace=False)
     train_idx = np.setdiff1d(np.arange(n), test_idx)
 
     interpolator = ProfileInterpolator.__new__(ProfileInterpolator)
@@ -51,7 +61,14 @@ def validate_interpolation_accuracy(
             y_pred = np.array(y_pred)
             rmse = np.sqrt(np.mean((y_true - y_pred) ** 2))
             mae = mean_absolute_error(y_true, y_pred)
-            r2 = pearsonr(y_true, y_pred)[0] ** 2
+            # handle case where predictions might be constant yielding nan R2
+            std_true = np.std(y_true)
+            std_pred = np.std(y_pred)
+            if std_true > 0 and std_pred > 0:
+                r2 = pearsonr(y_true, y_pred)[0] ** 2
+            else:
+                r2 = 0.0
+            
             results[param] = {
                 "MAE":  round(mae, 4),
                 "RMSE": round(rmse, 4),
@@ -64,12 +81,13 @@ def validate_interpolation_accuracy(
 
 if __name__ == "__main__":
     results = validate_interpolation_accuracy()
-    print("\nVirtual Sensor Validation Results")
-    print("Dataset: BGC-Argo Southern Ocean Indian sector (20E-90E, 75S-40S)")
-    print("Method: 80/20 profile split, cubic interpolation\n")
-    for param, metrics in results.items():
-        print(f"{param}")
-        print(f"  MAE:  {metrics['MAE']}")
-        print(f"  RMSE: {metrics['RMSE']}")
-        print(f"  R2:   {metrics['R2']}")
-        print(f"  N:    {metrics['n_points']}\n")
+    if results:
+        print("\nVirtual Sensor Validation Results")
+        print("Dataset: BGC-Argo Southern Ocean Indian sector (20E-90E, 75S-40S)")
+        print("Method: 80/20 profile split, cubic interpolation\n")
+        for param, metrics in results.items():
+            print(f"{param}")
+            print(f"  MAE:  {metrics['MAE']}")
+            print(f"  RMSE: {metrics['RMSE']}")
+            print(f"  R2:   {metrics['R2']}")
+            print(f"  N:    {metrics['n_points']}\n")
