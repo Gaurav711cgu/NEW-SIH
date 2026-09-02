@@ -46,18 +46,28 @@ export function Biogeochemistry() {
   const [liveChlorophyll, setLiveChlorophyll] = useState<number>(0.84);
   const [livePH, setLivePH] = useState<number>(8.06);
   const [liveNitrate, setLiveNitrate] = useState<number>(31.4);
-  const [carbonFlux, setCarbonFlux] = useState<number>(48.6);
+  const [carbonFlux] = useState<number>(48.6);
   const [selectedDepth, setSelectedDepth] = useState<number>(100);
 
-  // Live Jitter Simulation
+  // Live polling from backend API
   useEffect(() => {
-    const timer = setInterval(() => {
-      setLiveOxygen(prev => parseFloat((prev + (Math.random() - 0.5) * 0.8).toFixed(1)));
-      setLiveChlorophyll(prev => parseFloat((Math.max(0.01, prev + (Math.random() - 0.5) * 0.03)).toFixed(2)));
-      setLivePH(prev => parseFloat((prev + (Math.random() - 0.5) * 0.004).toFixed(3)));
-      setLiveNitrate(prev => parseFloat((prev + (Math.random() - 0.5) * 0.2).toFixed(1)));
-      setCarbonFlux(prev => parseFloat((prev + (Math.random() - 0.5) * 0.4).toFixed(1)));
-    }, 2500);
+    const fetchBgc = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/api/ocean/state', { signal: AbortSignal.timeout(2000) });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.oxygen?.value) setLiveOxygen(json.oxygen.value);
+          if (json.chlorophyll?.value) setLiveChlorophyll(json.chlorophyll.value);
+          if (json.ph?.value) setLivePH(json.ph.value);
+          if (json.nitrate?.value) setLiveNitrate(json.nitrate.value);
+        }
+      } catch (err) {
+        // Just keep the previous static values
+      }
+    };
+
+    fetchBgc();
+    const timer = setInterval(fetchBgc, 3000);
     return () => clearInterval(timer);
   }, []);
 

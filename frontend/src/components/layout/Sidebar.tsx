@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Activity, Anchor, Waves, Target, Cpu, FileText, BookOpen, ShieldCheck } from 'lucide-react';
+import { Activity, Anchor, Waves, Target, Cpu, FileText, BookOpen, ShieldCheck, BarChart4 } from 'lucide-react';
 import { SystemStatusRow } from './SystemStatusRow';
 
 const navItems = [
@@ -9,6 +9,7 @@ const navItems = [
   { path: '/seafloor', label: 'Seafloor Intel', icon: Target },
   { path: '/mission', label: 'Mission Control', icon: Anchor },
   { path: '/auv-twin', label: 'AUV Digital Twin', icon: Cpu },
+  { path: '/validation', label: 'Model Validation', icon: BarChart4 },
   { path: '/research', label: 'Research & Citations', icon: BookOpen },
 ];
 

@@ -4,12 +4,23 @@ import { FileText, ShieldAlert, Download, Share2, Target, TrendingUp, Map as Map
 export function GovernmentIntel() {
   const currentDate = new Date().toISOString().split('T')[0];
 
-  const trendData = Array.from({ length: 14 }).map((_, i) => ({
-    day: i + 1,
-    detections: Math.floor(20 + Math.random() * 40 + (i > 7 ? 20 : 0)),
-    confidence: Math.floor(70 + Math.random() * 15 + (i > 7 ? 10 : 0)),
-    reviewRate: Math.floor(40 + Math.random() * 20)
-  }));
+  // Historical intelligence trend data (deterministic)
+  const trendData = [
+    { day: 1, detections: 23, confidence: 72, reviewRate: 58 },
+    { day: 2, detections: 28, confidence: 75, reviewRate: 52 },
+    { day: 3, detections: 34, confidence: 78, reviewRate: 48 },
+    { day: 4, detections: 41, confidence: 76, reviewRate: 55 },
+    { day: 5, detections: 38, confidence: 81, reviewRate: 42 },
+    { day: 6, detections: 45, confidence: 82, reviewRate: 45 },
+    { day: 7, detections: 52, confidence: 84, reviewRate: 40 },
+    { day: 8, detections: 67, confidence: 88, reviewRate: 35 },
+    { day: 9, detections: 72, confidence: 91, reviewRate: 30 },
+    { day: 10, detections: 78, confidence: 93, reviewRate: 28 },
+    { day: 11, detections: 65, confidence: 92, reviewRate: 32 },
+    { day: 12, detections: 82, confidence: 94, reviewRate: 25 },
+    { day: 13, detections: 88, confidence: 95, reviewRate: 22 },
+    { day: 14, detections: 94, confidence: 96, reviewRate: 18 }
+  ];
 
   const handleExport = (type: string) => {
     // Mock export handler
@@ -35,7 +46,7 @@ export function GovernmentIntel() {
             <span className="px-2.5 py-1 bg-cyan-950/50 text-cyan-400 border border-cyan-800/60 rounded text-xs font-mono font-bold tracking-wider">LIVE SENSOR TELEMETRY // NIOT-C2</span>
           </div>
           <div className="font-mono text-sm text-slate-500">
-            DATE: {currentDate} | ID: SO-INTEL-{Math.floor(Math.random() * 10000).toString().padStart(4, '0')}
+            DATE: {currentDate} | ID: SO-INTEL-8492
           </div>
         </div>
       </div>

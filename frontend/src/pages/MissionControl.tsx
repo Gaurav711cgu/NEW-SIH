@@ -117,13 +117,7 @@ export function MissionControl() {
         }
       } catch {
         setData((prev: any) => ({
-          ...prev,
-          depth_m: 420 + Math.sin(Date.now() / 8000) * 40,
-          battery_pct: Math.max(15, (prev.battery_pct || 90) - 0.01),
-          imu_roll: (Math.random() - 0.5) * 2.0,
-          imu_pitch: -1.0 + (Math.random() - 0.5) * 1.5,
-          lat: -54.2184 + (Math.random() - 0.5) * 0.0002,
-          lon: 60.8312 + (Math.random() - 0.5) * 0.0002
+          ...prev
         }));
       }
     };

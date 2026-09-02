@@ -57,23 +57,22 @@ export function OceanState() {
 
   // Live polling from backend API with seamless fallback
   useEffect(() => {
-    let tickCount = 0;
     const fetchTelemetry = async () => {
       try {
         const res = await fetch('http://localhost:8000/api/telemetry', { signal: AbortSignal.timeout(2000) });
         if (res.ok) {
           const json = await res.json();
           setConnected(true);
-          const liveDepth = json.navigation?.depth_m ?? (400 + Math.sin(Date.now() / 10000) * 80);
-          const liveLat = json.navigation?.lat ?? (-54.218 + (Math.random() - 0.5) * 0.0004);
-          const liveLon = json.navigation?.lon ?? (60.831 + (Math.random() - 0.5) * 0.0004);
-          const liveBat = json.navigation?.battery_pct ?? Math.max(10, 90 - (tickCount * 0.02));
-          const liveState = json.mission_state ?? (liveDepth > 500 ? 'DEEP_SURVEY' : liveDepth > 50 ? 'SUBMERGED_EDGE_AI' : 'SURFACE');
+          const liveDepth = json.depth_m ?? 400;
+          const liveLat = json.lat ?? -54.218;
+          const liveLon = json.lon ?? 60.831;
+          const liveBat = json.battery_pct ?? 100;
+          const liveState = json.mission_state ?? 'SURFACE';
 
-          const tempVal = json.ocean?.temperature?.value ?? (1.8 + Math.sin(Date.now() / 8000) * 0.4);
-          const psalVal = json.ocean?.salinity?.value ?? (34.6 + Math.cos(Date.now() / 12000) * 0.15);
-          const doxyVal = json.ocean?.dissolved_oxygen?.value ?? (220 - (liveDepth * 0.08) + (Math.random() - 0.5) * 3);
-          const chlaVal = json.ocean?.chlorophyll?.value ?? Math.max(0.05, 1.2 - (liveDepth / 300));
+          const tempVal = json.temperature_c ?? 1.8;
+          const psalVal = json.salinity_psu ?? 34.6;
+          const doxyVal = json.doxy_umol_kg ?? 220;
+          const chlaVal = json.chla_mg_m3 ?? 0.05;
 
           setTelemetry({
             depth: liveDepth,
@@ -84,12 +83,12 @@ export function OceanState() {
             psal: psalVal,
             doxy: doxyVal,
             chla: chlaVal,
-            current_speed: 0.32 + Math.random() * 0.08,
+            current_speed: json.current_speed ?? 0.38,
             pressure: liveDepth * 0.1008,
-            roll: (Math.random() - 0.5) * 2.4,
-            pitch: -1.2 + (Math.random() - 0.5) * 1.6,
+            roll: json.imu_roll ?? 0,
+            pitch: json.imu_pitch ?? 0,
             mission_state: liveState,
-            uptime: (json.navigation?.uptime_s ?? 1200) + tickCount * 3
+            uptime: json.uptime_s ?? 1200
           });
 
           const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -100,24 +99,15 @@ export function OceanState() {
         }
       } catch {
         setConnected(false);
-        tickCount += 1;
-        const simDepth = 420 + Math.sin(Date.now() / 6000) * 50;
         const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const simTemp = 1.82 + (Math.random() - 0.5) * 0.08;
-        const simPsal = 34.61 + (Math.random() - 0.5) * 0.04;
 
         setTelemetry((prev: any) => ({
           ...prev,
-          depth: simDepth,
-          temp: simTemp,
-          psal: simPsal,
-          pressure: simDepth * 0.1008,
-          uptime: (prev.uptime || 1200) + 3,
-          battery: Math.max(15, (prev.battery || 90) - 0.02)
         }));
 
         setHistorySeries(prev => {
-          const next = [...prev, { time: nowStr, temp: parseFloat(simTemp.toFixed(2)), psal: parseFloat(simPsal.toFixed(2)), depth: Math.round(simDepth) }];
+          const last = prev[prev.length - 1] || { temp: 1.82, psal: 34.61, depth: 400 };
+          const next = [...prev, { time: nowStr, temp: last.temp, psal: last.psal, depth: last.depth }];
           return next.slice(-25);
         });
       }
@@ -138,7 +128,7 @@ export function OceanState() {
   const createSparkline = (baseVal: number, variance: number) => {
     return Array.from({ length: 14 }).map((_, i) => ({
       i,
-      val: parseFloat((baseVal + Math.sin(i * 0.8) * variance + (Math.random() - 0.5) * (variance * 0.4)).toFixed(3))
+      val: parseFloat((baseVal + Math.sin(i * 0.8) * variance).toFixed(3))
     }));
   };
 

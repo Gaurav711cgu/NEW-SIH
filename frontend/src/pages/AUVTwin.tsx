@@ -16,6 +16,20 @@ import {
 import { ResponsiveContainer, LineChart, Line, YAxis } from 'recharts';
 import MissionTerminal from '../components/MissionTerminal';
 
+function warpGeometry(geometry: THREE.BufferGeometry, noiseScale: number) {
+  const pos = geometry.attributes.position;
+  if (!pos) return;
+  for (let i = 0; i < pos.count; i++) {
+    pos.setXYZ(
+      i,
+      pos.getX(i) + (Math.random() - 0.5) * noiseScale,
+      pos.getY(i) + (Math.random() - 0.5) * noiseScale,
+      pos.getZ(i) + (Math.random() - 0.5) * noiseScale
+    );
+  }
+  geometry.computeVertexNormals();
+}
+
 type TierType = 'INDIGENOUS_PHYSICAL' | 'DL_VIRTUAL_REPLICATED' | 'MODULAR_UPGRADE';
 
 interface SensorSpec {
@@ -295,7 +309,46 @@ export default function AUVTwin() {
   const [wireframeMode, setWireframeMode] = useState<boolean>(false);
   const [beamVisible, setBeamVisible] = useState<boolean>(true);
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
-  const [viewPreset, setViewPreset] = useState<'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP'>('ISO');
+  const [viewPreset, setViewPreset] = useState<'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV'>('ISO');
+  const viewPresetRef = useRef(viewPreset);
+  const [detectionEvent, setDetectionEvent] = useState<any>(null);
+  const [terminalLogs, setTerminalLogs] = useState<string[]>([
+    '[SYSTEM] AUV Edge Node Online', 
+    '[SONAR] 900kHz Transducer Active',
+    '[AI] YOLOv8 TensorRT Engine Loaded'
+  ]);
+
+  useEffect(() => {
+    const handleSetHud = (e: any) => {
+      const d = e.detail;
+      if (!d.active) {
+         setDetectionEvent(null);
+         return;
+      }
+      setDetectionEvent(d);
+      
+      const newLogs = [
+        `> Sonar shadow extracted at Z=${(Math.random()*15).toFixed(1)}m`,
+        `> [AI] Applying CLAHE enhancement...`,
+        `> [AI] Inference -> Class: ${d.type}`,
+        `> [AI] Confidence Score: ${d.confidence}%`,
+        d.isRock
+          ? `> [AI] FILTERED: Organic structure ignored`
+          : d.isUnknown 
+            ? `> [DB] AMBIGUOUS: Tagged for HUMAN_VERIFICATION` 
+            : `> [DB] CRITICAL: Saved to local SQLite`
+      ];
+      
+      setTerminalLogs(prev => {
+        const combined = [...prev, ...newLogs];
+        return combined.slice(combined.length - 8);
+      });
+
+      setTimeout(() => setDetectionEvent(null), 3500);
+    };
+    window.addEventListener('SET_HUD', handleSetHud);
+    return () => window.removeEventListener('SET_HUD', handleSetHud);
+  }, []);
   
   const [liveMetric, setLiveMetric] = useState<number>(selectedSensor.baseVal);
   const [sparklineData, setSparklineData] = useState<{ i: number; v: number }[]>([]);
@@ -303,25 +356,33 @@ export default function AUVTwin() {
   // 3D Scene Refs
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const cameraPivotRef = useRef<THREE.Group | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const auvGroupRef = useRef<THREE.Group | null>(null);
   const propellerRef = useRef<THREE.Mesh | null>(null);
   const beamGroupRef = useRef<THREE.Group | null>(null);
   const hullMaterialRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const internalComponentsRef = useRef<THREE.Group | null>(null);
+  
   const hotspotMeshesRef = useRef<THREE.Mesh[]>([]);
+  const envGroupRef = useRef<THREE.Group | null>(null);
+  const gridRef = useRef<THREE.GridHelper | null>(null);
+  const debrisRef = useRef<THREE.Mesh[]>([]);
+  const rockRef = useRef<THREE.Mesh[]>([]);
 
-  // Telemetry stream generator
+
+  // Telemetry stream generator (deterministic visualization)
   useEffect(() => {
     setLiveMetric(selectedSensor.baseVal);
     const initialSeries = Array.from({ length: 18 }).map((_, i) => ({
       i,
-      v: parseFloat((selectedSensor.baseVal + (Math.random() - 0.5) * (selectedSensor.baseVal * 0.04)).toFixed(2))
+      v: parseFloat((selectedSensor.baseVal + (Math.sin(i) * (selectedSensor.baseVal * 0.04))).toFixed(2))
     }));
     setSparklineData(initialSeries);
 
     const timer = setInterval(() => {
-      const jitter = (Math.random() - 0.5) * (selectedSensor.baseVal * 0.03);
+      const t = Date.now() / 2000;
+      const jitter = Math.sin(t) * (selectedSensor.baseVal * 0.03);
       const nextVal = parseFloat((selectedSensor.baseVal + jitter).toFixed(selectedSensor.unit === 'PSU' ? 2 : 1));
       setLiveMetric(nextVal);
       setSparklineData(prev => [...prev.slice(1), { i: Date.now(), v: nextVal }]);
@@ -346,8 +407,14 @@ export default function AUVTwin() {
     camera.position.set(5.5, 2.5, 6.0);
     camera.lookAt(0, 0, 0);
     cameraRef.current = camera;
+    
+    const cameraPivot = new THREE.Group();
+    cameraPivot.add(camera);
+    scene.add(cameraPivot);
+    cameraPivotRef.current = cameraPivot;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -577,6 +644,68 @@ export default function AUVTwin() {
 
     scene.add(auvGroup);
 
+    // ── POV ENVIRONMENT SCENE ──
+    const envGroup = new THREE.Group();
+    envGroupRef.current = envGroup;
+    
+    // Infinite scrolling seabed grid
+    const grid = new THREE.GridHelper(80, 80, 0x00e5ff, 0x0f172a);
+    grid.position.y = -3.5;
+    envGroup.add(grid);
+    gridRef.current = grid;
+
+    // ── HIGH FIDELITY DEBRIS SCATTER ──
+    const debrisArray: THREE.Mesh[] = [];
+    for(let i=0; i<12; i++) {
+        // Randomly choose between a sunken tire (Torus) or a metal pipe/barrel (Cylinder)
+        const rand = Math.random();
+        let geo, typeStr, matColor, matMetal, matRough;
+        
+        if (rand > 0.6) {
+            geo = new THREE.TorusGeometry(0.5, 0.2, 16, 32);
+            typeStr = 'GHOST_NET_TIRE'; matColor = 0x1f2937; matMetal = 0.1; matRough = 0.9;
+        } else if (rand > 0.2) {
+            geo = new THREE.CylinderGeometry(0.3, 0.3, 1.5, 16, 4);
+            typeStr = 'UXO_PIPE'; matColor = 0x94a3b8; matMetal = 0.8; matRough = 0.4;
+        } else {
+            geo = new THREE.TetrahedronGeometry(0.6);
+            typeStr = 'UNKNOWN_ANOMALY'; matColor = 0x5c5c5c; matMetal = 0.3; matRough = 0.7;
+        }
+        
+        warpGeometry(geo, 0.1);
+        const mat = new THREE.MeshStandardMaterial({ color: matColor, metalness: matMetal, roughness: matRough });
+        const d = new THREE.Mesh(geo, mat);
+        d.userData = { type: typeStr, originalColor: matColor };
+        envGroup.add(d);
+        debrisArray.push(d);
+    }
+    debrisRef.current = debrisArray;
+    
+    // ── ROCKS / NATURAL SEABED FEATURES (AI SHOULD IGNORE THESE) ──
+    const rockArray: THREE.Mesh[] = [];
+    for(let i=0; i<40; i++) {
+        const size = Math.random() * 1.5 + 0.5;
+        const rockGeo = new THREE.IcosahedronGeometry(size, 1);
+        warpGeometry(rockGeo, 0.3); // Warp heavily to look organic
+        const rockMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 1.0, metalness: 0.0 });
+        const rock = new THREE.Mesh(rockGeo, rockMat);
+        rock.position.set(Math.random() * 100 - 20, -3.5 + size/2, (Math.random() - 0.5) * 60);
+        rock.userData = { type: 'NATURAL_ROCK_FORMATION', originalColor: 0x1e293b, detected: false };
+        envGroup.add(rock);
+        rockArray.push(rock);
+    }
+    rockRef.current = rockArray;
+
+    // ── SONAR PING RINGS ──
+    const pingGeo = new THREE.RingGeometry(0.1, 0.15, 32);
+    const pingMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.8, side: THREE.DoubleSide });
+    const pings: THREE.Mesh[] = [new THREE.Mesh(pingGeo, pingMat), new THREE.Mesh(pingGeo, pingMat)];
+    pings[0].rotation.x = Math.PI / 2; pings[0].position.set(0, -1.6, 0); // Port ping
+    pings[1].rotation.x = Math.PI / 2; pings[1].position.set(0, -1.6, 0); // Starboard ping
+    envGroup.add(pings[0]); envGroup.add(pings[1]);
+    (window as any).sonarPings = pings; // Hacky ref for animation loop
+    scene.add(envGroup);
+
     // Controls
     let isDragging = false;
     let prevMouseX = 0;
@@ -589,20 +718,33 @@ export default function AUVTwin() {
     };
 
     const onPointerMove = (e: PointerEvent) => {
-      if (!isDragging || !auvGroupRef.current) return;
-      const deltaX = e.clientX - prevMouseX;
-      const deltaY = e.clientY - prevMouseY;
-      prevMouseX = e.clientX;
-      prevMouseY = e.clientY;
-      auvGroupRef.current.rotation.y += deltaX * 0.008;
-      auvGroupRef.current.rotation.x += deltaY * 0.008;
+      if (!isDragging || !cameraPivotRef.current) return;
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+      
+      // Orbit the camera instead of spinning the submarine!
+      cameraPivotRef.current.rotation.y -= deltaX * 0.005;
+      cameraPivotRef.current.rotation.x -= deltaY * 0.005;
+      
+      // Clamp vertical rotation so we don't flip upside down
+      cameraPivotRef.current.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, cameraPivotRef.current.rotation.x));
     };
 
     const onPointerUp = () => { isDragging = false; };
     const onWheel = (e: WheelEvent) => {
       if (!cameraRef.current) return;
       e.preventDefault();
-      cameraRef.current.position.z = Math.min(12, Math.max(3.2, cameraRef.current.position.z + e.deltaY * 0.005));
+      // Translate camera along its local Z axis for zooming
+      cameraRef.current.translateZ(e.deltaY * 0.005);
+      
+      // Clamp distance from origin
+      const dist = cameraRef.current.position.length();
+      if (dist < 2.0) {
+          cameraRef.current.position.setLength(2.0);
+      } else if (dist > 15.0) {
+          cameraRef.current.position.setLength(15.0);
+      }
     };
 
     const raycaster = new THREE.Raycaster();
@@ -640,21 +782,111 @@ export default function AUVTwin() {
     let animationFrameId: number;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      if (propellerRef.current) propellerRef.current.rotation.x += 0.25;
-      if (autoRotate && auvGroupRef.current && !isDragging) auvGroupRef.current.rotation.y += 0.004;
+      if (propellerRef.current) propellerRef.current.rotation.x += 0.1;
+      if (autoRotate && auvGroupRef.current && !isDragging && viewPresetRef.current !== 'POV') auvGroupRef.current.rotation.y += 0.004;
 
       hotspotMeshesRef.current.forEach((mesh, idx) => {
-        const ring = mesh.children[0] as THREE.Mesh;
-        if (ring) {
-          ring.rotation.z += 0.02;
-          const s = 1.0 + Math.sin(Date.now() * 0.005 + idx) * 0.18;
-          ring.scale.set(s, s, s);
-        }
+        mesh.rotation.y += 0.02;
+        mesh.rotation.x += 0.01;
+        const scale = 1 + Math.sin(Date.now() * 0.003 + idx) * 0.2;
+        mesh.scale.set(scale, scale, scale);
       });
+      
+      if (viewPresetRef.current === 'POV') {
+          if (envGroupRef.current) envGroupRef.current.position.x = 0;
+          if (gridRef.current) {
+              gridRef.current.position.x -= 0.06;
+              if (gridRef.current.position.x < -1) gridRef.current.position.x += 1;
+          }
+          
+          const checkDetection = (d: THREE.Mesh) => {
+              if (d.position.x < 1.0 && d.position.x > -1.0) {
+                  if (!d.userData.detected) {
+                      d.userData.detected = true;
+                      const isUnknown = d.userData.type === 'UNKNOWN_ANOMALY';
+                      const isRock = d.userData.type === 'NATURAL_ROCK_FORMATION';
+                      
+                      if (isRock) {
+                          (d.material as THREE.MeshStandardMaterial).color.setHex(0x38bdf8);
+                          (d.material as THREE.MeshStandardMaterial).emissive.setHex(0x0284c7);
+                      } else {
+                          (d.material as THREE.MeshStandardMaterial).color.setHex(isUnknown ? 0xffaa00 : 0xff0044);
+                          (d.material as THREE.MeshStandardMaterial).emissive.setHex(isUnknown ? 0xaa5500 : 0xaa0000);
+                      }
+                      (d.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.8;
+                      
+                      if (internalComponentsRef.current) {
+                          const piNode = internalComponentsRef.current.children[0] as THREE.Mesh;
+                          if (piNode) {
+                             (piNode.material as THREE.MeshStandardMaterial).emissive.setHex(0x00ff00);
+                             (piNode.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.0;
+                             setTimeout(() => {
+                                 if (piNode) (piNode.material as THREE.MeshStandardMaterial).emissive.setHex(0x000000);
+                             }, 500);
+                          }
+                      }
+                      
+                      const conf = isUnknown ? Math.floor(Math.random() * 15 + 40) : isRock ? Math.floor(Math.random() * 10 + 85) : Math.floor(Math.random() * 10 + 85);
+                      const yOff = Math.floor(Math.random() * 60 + 20);
+                      const xOff = d.position.z > 0 ? Math.floor(Math.random() * 20 + 60) : Math.floor(Math.random() * 20 + 10);
 
-      if (rendererRef.current && sceneRef.current && cameraRef.current) {
-        rendererRef.current.render(sceneRef.current, cameraRef.current);
+                      window.dispatchEvent(new CustomEvent('SET_HUD', { 
+                          detail: { active: true, type: d.userData.type, confidence: conf, isUnknown, isRock, yOff, xOff }
+                      }));
+                      
+                      setTimeout(() => window.dispatchEvent(new CustomEvent('SET_HUD', { detail: { active: false } })), 3500);
+                  }
+              } else if (d.position.x > 1.0) {
+                  d.userData.detected = false;
+                  (d.material as THREE.MeshStandardMaterial).color.setHex(d.userData.originalColor);
+                  (d.material as THREE.MeshStandardMaterial).emissive.setHex(0x000000);
+              }
+          };
+
+          if (debrisRef.current) {
+              debrisRef.current.forEach(d => {
+                  d.position.x -= 0.06;
+                  if (d.position.x < -5) {
+                      d.position.x = 30 + Math.random() * 20;
+                      d.position.z = (Math.random() - 0.5) * 30;
+                      (d.material as THREE.MeshStandardMaterial).color.setHex(d.userData.originalColor);
+                      (d.material as THREE.MeshStandardMaterial).emissive.setHex(0x000000);
+                      d.userData.detected = false;
+                  }
+                  checkDetection(d);
+              });
+          }
+
+          if (rockRef.current) {
+              rockRef.current.forEach(r => {
+                  r.position.x -= 0.06;
+                  if (r.position.x < -20) {
+                      r.position.x = 80 + Math.random() * 20;
+                      r.position.z = (Math.random() - 0.5) * 60;
+                      (r.material as THREE.MeshStandardMaterial).color.setHex(r.userData.originalColor);
+                      (r.material as THREE.MeshStandardMaterial).emissive.setHex(0x000000);
+                      r.userData.detected = false;
+                  }
+                  checkDetection(r);
+              });
+          }
+          
+          const pings = (window as any).sonarPings;
+          if (pings) {
+              pings.forEach((p: THREE.Mesh, i: number) => {
+                  p.scale.x += 0.15; p.scale.y += 0.15;
+                  p.position.z = i === 0 ? p.scale.x * 0.5 : -p.scale.x * 0.5;
+                  (p.material as THREE.MeshBasicMaterial).opacity = Math.max(0, 0.9 - p.scale.x * 0.03);
+                  if (p.scale.x > 22) {
+                      p.scale.set(1,1,1);
+                      p.position.set(0, -1.6, 0);
+                      (p.material as THREE.MeshBasicMaterial).opacity = 0.9;
+                  }
+              });
+          }
       }
+
+      rendererRef.current?.render(sceneRef.current!, cameraRef.current!);
     };
     animate();
 
@@ -686,18 +918,28 @@ export default function AUVTwin() {
     beamGroupRef.current.visible = beamVisible;
   }, [xrayMode, wireframeMode, beamVisible]);
 
-  const handleSetPreset = (preset: 'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP') => {
+  const handleSetPreset = (preset: 'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV') => {
     setViewPreset(preset);
-    if (!cameraRef.current || !auvGroupRef.current) return;
-    auvGroupRef.current.rotation.set(0, 0, 0);
+    viewPresetRef.current = preset;
+    if (!cameraRef.current || !cameraPivotRef.current) return;
+    
+    // Reset pivot rotation so the preset angle is absolute
+    cameraPivotRef.current.rotation.set(0, 0, 0);
+    // Ensure AUV isn't spun around
+    if (auvGroupRef.current) auvGroupRef.current.rotation.set(0, 0, 0);
     switch (preset) {
       case 'ISO': cameraRef.current.position.set(5.5, 2.5, 6.0); break;
       case 'BOW': cameraRef.current.position.set(6.2, 0.4, 0.0); break;
       case 'BELLY': cameraRef.current.position.set(0.0, -5.2, 4.5); break;
       case 'STERN': cameraRef.current.position.set(-6.5, 1.2, 0.0); break;
       case 'TOP': cameraRef.current.position.set(0.0, 7.5, 0.0); break;
+      case 'POV': cameraRef.current.position.set(-9.0, 4.5, 0.0); break;
     }
-    cameraRef.current.lookAt(0, 0, 0);
+    if (preset === 'POV') {
+      cameraRef.current.lookAt(3, -2, 0); // Look slightly ahead of the submarine to see the seabed
+    } else {
+      cameraRef.current.lookAt(0, 0, 0);
+    }
   };
 
   const filteredSensors = useMemo(() => {
@@ -812,12 +1054,71 @@ export default function AUVTwin() {
         {/* Left (8 Cols): Interactive Three.js 3D Viewport */}
         <div className="lg:col-span-8 bg-abyss-950/90 border border-steel-800/80 rounded-xl overflow-hidden shadow-2xl relative flex flex-col justify-between min-h-[500px]">
           
+          {/* === NEW PiP UI SYSTEM === */}
+          {viewPreset === 'POV' && (
+            <>
+              {/* Top Right: Raw Sonar Waterfall PiP */}
+              <div className="absolute top-16 right-4 w-40 h-40 bg-[#111] border border-steel-600 rounded overflow-hidden flex flex-col shadow-2xl z-30 pointer-events-none">
+                <div className="bg-steel-800 text-[8px] font-mono font-bold text-ice-300 px-2 py-1 flex justify-between items-center">
+                  <span>RAW SONAR WATERFALL</span>
+                  <span className="text-red-400 animate-pulse flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>REC</span>
+                </div>
+                <div className="flex-1 relative overflow-hidden flex justify-center items-center" style={{ backgroundImage: 'radial-gradient(circle, #333 1px, transparent 1px)', backgroundSize: '6px 6px' }}>
+                  <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-ice-500/30"></div>
+                  <div className="absolute left-0 right-0 h-1 bg-ice-400/50 animate-[scan_2s_linear_infinite]" style={{ top: '0%' }}>
+                     <style>{`@keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }`}</style>
+                  </div>
+                  {detectionEvent && (
+                    <div 
+                      className={`absolute w-6 h-12 blur-[2px] rounded-full ${detectionEvent.isRock ? 'bg-sky-400/50 shadow-[0_0_15px_rgba(56,189,248,0.5)]' : detectionEvent.isUnknown ? 'bg-yellow-200 shadow-[0_0_20px_rgba(253,224,71,1)]' : 'bg-white shadow-[0_0_20px_rgba(255,255,255,1)]'} animate-pulse`}
+                      style={{ top: `${detectionEvent.yOff}%`, left: `${detectionEvent.xOff}%`, transform: 'translate(-50%, -50%)' }}
+                    ></div>
+                  )}
+                </div>
+              </div>
+
+              {/* Bottom Right: Edge AI Terminal Logs */}
+              <div className="absolute bottom-16 right-4 w-64 h-36 bg-black/90 border border-steel-700 rounded overflow-hidden flex flex-col shadow-2xl z-30 pointer-events-none">
+                <div className="bg-steel-900 text-[8px] font-mono font-bold text-emerald-400 px-2 py-1 border-b border-steel-700">
+                  EDGE_AI_INFERENCE_STDOUT
+                </div>
+                <div className="flex-1 p-2 font-mono text-[9px] text-steel-400 flex flex-col justify-end gap-0.5">
+                  {terminalLogs.map((log, i) => (
+                    <div key={i} className={`${log.includes('HUMAN_VERIFICATION') ? 'text-yellow-400 font-bold' : log.includes('CRITICAL') ? 'text-red-400 font-bold' : log.includes('[AI]') ? 'text-purple-300' : ''}`}>
+                      {log}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Center Action Alert */}
+              {detectionEvent ? (
+                <div className={`absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/95 border-2 ${detectionEvent.isRock ? 'border-sky-500/50 shadow-[0_0_30px_rgba(56,189,248,0.3)]' : detectionEvent.isUnknown ? 'border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.3)]' : 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.4)]'} px-6 py-3 rounded-full flex flex-col items-center pointer-events-none z-30 transition-colors`}>
+                  <div className="flex items-center gap-3 mb-1">
+                    <Crosshair className={`w-5 h-5 ${detectionEvent.isRock ? 'text-sky-400' : detectionEvent.isUnknown ? 'text-yellow-400' : 'text-red-400'}`} />
+                    <span className={`${detectionEvent.isRock ? 'text-sky-100' : detectionEvent.isUnknown ? 'text-yellow-100' : 'text-red-100'} font-mono font-bold text-sm tracking-wider`}>
+                      {detectionEvent.type} (CONF: {detectionEvent.confidence}%)
+                    </span>
+                  </div>
+                  <span className={`text-[10px] font-mono ${detectionEvent.isRock ? 'text-sky-400' : detectionEvent.isUnknown ? 'text-yellow-400' : 'text-red-400'}`}>
+                    {detectionEvent.isRock ? 'ACTION: FILTERED (ORGANIC SHAPE)' : detectionEvent.isUnknown ? 'ACTION: FLAGGED FOR HUMAN REVIEW' : 'ACTION: LOGGED AS HIGH THREAT'}
+                  </span>
+                </div>
+              ) : (
+                <div className="absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/80 border border-ice-500/30 px-6 py-2 rounded-full flex items-center gap-3 pointer-events-none z-30">
+                  <div className="w-2 h-2 rounded-full bg-ice-400 animate-pulse" />
+                  <span className="text-ice-300 font-mono font-bold text-xs tracking-widest">SCANNING SEABED...</span>
+                </div>
+              )}
+            </>
+          )}
+
           {/* Top 3D Control Bar Overlay */}
           <div className="absolute top-3 left-3 right-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
             
             {/* View Presets */}
             <div className="flex items-center gap-1 bg-abyss-900/90 p-1 rounded-lg border border-steel-800 pointer-events-auto backdrop-blur-md">
-              {(['ISO', 'BOW', 'BELLY', 'STERN', 'TOP'] as const).map(p => (
+              {(['ISO', 'BOW', 'BELLY', 'STERN', 'TOP', 'POV'] as const).map(p => (
                 <button
                   key={p}
                   onClick={() => handleSetPreset(p)}
@@ -1034,6 +1335,76 @@ export default function AUVTwin() {
 
         </div>
 
+      </div>
+
+      
+      {/* ── AUTONOMOUS EDGE PROCESSING PIPELINE EXPLAINER ── */}
+      <div className="mt-8 mb-4 border-t border-steel-800/60 pt-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Cpu className="w-5 h-5 text-ice-400" />
+          <h2 className="text-sm font-mono font-bold tracking-widest text-steel-100 uppercase">
+            Autonomous Edge Processing Architecture (No Cloud Dependency)
+          </h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-ice-500/50 transition-colors">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-ice-500/20 text-ice-400 text-[10px] font-bold border border-ice-500/40">1</span>
+              <h3 className="text-xs font-mono font-bold text-ice-300">Acoustic Insonification</h3>
+            </div>
+            <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
+              The Side-Scan Sonar (SSS) emits high-frequency acoustic pulses (chirps) forming a swath across the ocean floor. 
+              Because light cannot penetrate deep ocean turbidity, sound is used to map the seabed topography.
+            </p>
+          </div>
+
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-ice-500/50 transition-colors">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-ice-500/20 text-ice-400 text-[10px] font-bold border border-ice-500/40">2</span>
+              <h3 className="text-xs font-mono font-bold text-ice-300">Geometric Shadow Analysis</h3>
+            </div>
+            <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
+              Return echoes (backscatter) create 2D intensity maps. The AI does not just look at the object; it looks at the <strong>Acoustic Shadow</strong> behind it. 
+              Natural rocks cast irregular, tapered shadows. Man-made UXOs and pipes cast sharp, geometric, symmetrical shadows.
+            </p>
+          </div>
+
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-red-500/50 transition-colors">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold border border-red-500/40">3</span>
+              <h3 className="text-xs font-mono font-bold text-red-400">Edge AI Threat Classification</h3>
+            </div>
+            <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
+              The onboard Raspberry Pi runs the custom YOLOv8/RT-DETR model against the sonar waterfall. 
+              It ignores the natural boulders and isolates anomalous shapes (Ghost Nets, Shipwrecks, Munitions) with 88.6% mAP50 precision.
+            </p>
+          </div>
+
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-emerald-500/50 transition-colors">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/40">4</span>
+              <h3 className="text-xs font-mono font-bold text-emerald-400">Priority Flagging & Geotagging</h3>
+            </div>
+            <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
+              If a UXO (Unexploded Ordnance) is detected, it is immediately flagged with <code className="text-red-400 bg-red-900/30 px-1 rounded">PRIORITY=CRITICAL</code>. 
+              The system merges the detection with the Dead Reckoning/IMU localization module to calculate the exact Latitude/Longitude of the debris.
+            </p>
+          </div>
+
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-purple-500/50 transition-colors md:col-span-2 lg:col-span-2">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 text-[10px] font-bold border border-purple-500/40">5</span>
+              <h3 className="text-xs font-mono font-bold text-purple-400">Local SQLite DB -&gt; Surface Transmission</h3>
+            </div>
+            <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
+              Because radio waves (WiFi/4G) cannot travel through water, the AUV stores the geotagged detections in an embedded <strong>SQLite Database</strong> inside its pressure hull. 
+              Once the mission ends, the AUV ascends to the surface and uses its dorsal antenna to burst-transmit the JSON data packets back to the Mothership Mission Control over LoRa/Iridium.
+            </p>
+          </div>
+
+        </div>
       </div>
 
       {/* ── ROW 3: LIVE C2 MISSION TERMINAL ── */}
