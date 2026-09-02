@@ -369,8 +369,8 @@ export function GovernmentIntel() {
             <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-800 pb-2">LOC: 55.11°S, 71.44°E | SHIPWRECK SIGNATURE</div>
             <p className="text-sm text-slate-300 leading-relaxed mb-4">Large acoustic shadow consistent with 40-80m vessel wreck. Preliminary classification: merchant vessel, circa 1970-1990.</p>
             <div className="bg-black/20 p-3 rounded mb-4 text-xs font-mono text-slate-400">
-              <div className="flex justify-between mb-1"><span>RT-DETR Confidence</span> <span className="text-green-400">89.7%</span></div>
-              <div className="w-full h-1 bg-slate-800 rounded-full"><div className="h-full bg-green-500 rounded-full" style={{width: '89.7%'}}></div></div>
+              <div className="flex justify-between mb-1"><span>RT-DETR Baseline Confidence</span> <span className="text-green-400">61.2%</span></div>
+              <div className="w-full h-1 bg-slate-800 rounded-full"><div className="h-full bg-green-500 rounded-full" style={{width: '61.2%'}}></div></div>
               <div className="mt-2 text-slate-500">Evidence: Acoustic shadow analysis complete</div>
             </div>
             <div className="text-xs text-amber-400 bg-amber-950/20 p-2 rounded border border-amber-900/30 font-medium">
