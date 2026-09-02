@@ -4,8 +4,8 @@
 # All scripts read from here. No hardcoded values in source code.
 
 detector:
-  # Path to trained YOLOv8/v9 weights.
-  model_path: "models/sss_detector_v1-3/weights/best.pt"
+  # Path to trained YOLOv8/v9/RT-DETR weights.
+  model_path: "models/stage2_rtdetr_sctd/weights/best.pt"
 
   # Minimum confidence for a detection to be retained
   conf_threshold: 0.10
