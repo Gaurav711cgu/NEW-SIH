@@ -10,15 +10,19 @@ import { GovernmentIntel } from './pages/GovernmentIntel';
 import ResearchCitations from './pages/ResearchCitations';
 import { ModelValidation } from './pages/ModelValidation';
 
+import bgImage from './assets/bg.png';
+
 function App() {
   return (
     <MissionProvider>
       <BrowserRouter>
-        {/* AQUILA OVERLAYS */}
-        <div className="scanlines"></div>
-        <div className="crt-flicker"></div>
+        {/* Background Image */}
+        <div 
+          className="fixed inset-0 w-full h-full z-0 opacity-20 pointer-events-none"
+          style={{ backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
         
-        <div className="flex h-screen bg-abyss-950 text-steel-100 font-sans selection:bg-ice-500/30 overflow-hidden relative z-10">
+        <div className="flex h-screen bg-abyss-950/90 text-steel-100 font-sans selection:bg-ice-500/30 overflow-hidden relative z-10 backdrop-blur-sm">
           <Sidebar />
           <main className="flex-1 overflow-hidden relative bg-abyss-900/50">
             <Routes>
