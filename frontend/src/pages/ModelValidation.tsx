@@ -100,7 +100,7 @@ export function ModelValidation() {
                   title="Hardware Validation" 
                   v1="None (Software only)" 
                   v2="Software only" 
-                  v3="Full Hardware-in-the-Loop" 
+                  v3="Software-Validated · Jetson Orin HITL Roadmap Defined" 
                 />
               </tbody>
             </table>

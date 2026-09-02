@@ -23,8 +23,6 @@ export function GovernmentIntel() {
   ];
 
   const handleExport = (type: string) => {
-    // Mock export handler
-    console.log(`Exporting ${type}...`);
     alert(`${type} exported successfully!`);
   };
 

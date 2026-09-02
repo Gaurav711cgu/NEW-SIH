@@ -309,8 +309,10 @@ export default function AUVTwin() {
   const [wireframeMode, setWireframeMode] = useState<boolean>(false);
   const [beamVisible, setBeamVisible] = useState<boolean>(true);
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
+  const autoRotateRef = useRef(true);
   const [viewPreset, setViewPreset] = useState<'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV'>('ISO');
   const viewPresetRef = useRef(viewPreset);
+  const sonarPingsRef = useRef<THREE.Mesh[]>([]);
   const [detectionEvent, setDetectionEvent] = useState<any>(null);
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
     '[SYSTEM] AUV Edge Node Online', 
@@ -343,8 +345,6 @@ export default function AUVTwin() {
         const combined = [...prev, ...newLogs];
         return combined.slice(combined.length - 8);
       });
-
-      setTimeout(() => setDetectionEvent(null), 3500);
     };
     window.addEventListener('SET_HUD', handleSetHud);
     return () => window.removeEventListener('SET_HUD', handleSetHud);
@@ -703,7 +703,7 @@ export default function AUVTwin() {
     pings[0].rotation.x = Math.PI / 2; pings[0].position.set(0, -1.6, 0); // Port ping
     pings[1].rotation.x = Math.PI / 2; pings[1].position.set(0, -1.6, 0); // Starboard ping
     envGroup.add(pings[0]); envGroup.add(pings[1]);
-    (window as any).sonarPings = pings; // Hacky ref for animation loop
+    sonarPingsRef.current = pings;
     scene.add(envGroup);
 
     // Controls
@@ -783,7 +783,7 @@ export default function AUVTwin() {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       if (propellerRef.current) propellerRef.current.rotation.x += 0.1;
-      if (autoRotate && auvGroupRef.current && !isDragging && viewPresetRef.current !== 'POV') auvGroupRef.current.rotation.y += 0.004;
+      if (autoRotateRef.current && auvGroupRef.current && !isDragging && viewPresetRef.current !== 'POV') auvGroupRef.current.rotation.y += 0.004;
 
       hotspotMeshesRef.current.forEach((mesh, idx) => {
         mesh.rotation.y += 0.02;
@@ -871,8 +871,8 @@ export default function AUVTwin() {
               });
           }
           
-          const pings = (window as any).sonarPings;
-          if (pings) {
+          const pings = sonarPingsRef.current;
+          if (pings && pings.length) {
               pings.forEach((p: THREE.Mesh, i: number) => {
                   p.scale.x += 0.15; p.scale.y += 0.15;
                   p.position.z = i === 0 ? p.scale.x * 0.5 : -p.scale.x * 0.5;
@@ -1044,7 +1044,7 @@ export default function AUVTwin() {
         </div>
 
         <span className="text-[10px] font-mono text-steel-500 pr-2 hidden md:inline">
-          HACKATHON QUALIFICATION STACK
+          AQUILA OS · AUTONOMOUS SUBSEA INTELLIGENCE PLATFORM
         </span>
       </div>
 
@@ -1167,7 +1167,7 @@ export default function AUVTwin() {
               </button>
 
               <button
-                onClick={() => setAutoRotate(!autoRotate)}
+                onClick={() => { autoRotateRef.current = !autoRotate; setAutoRotate(!autoRotate); }}
                 className={`p-1.5 rounded transition-all ${
                   autoRotate ? 'text-ice-400 bg-steel-800' : 'text-steel-500 hover:text-steel-300'
                 }`}
@@ -1377,7 +1377,7 @@ export default function AUVTwin() {
               <h3 className="text-xs font-mono font-bold text-red-400">Edge AI Threat Classification</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
-              The onboard Raspberry Pi runs the custom YOLOv8/RT-DETR model against the sonar waterfall. 
+              The onboard NVIDIA Jetson Orin NX runs the custom RT-DETR-L model against the sonar waterfall. 
               It ignores the natural boulders and isolates anomalous shapes (Ghost Nets, Shipwrecks, Munitions) with 88.6% mAP50 precision.
             </p>
           </div>
@@ -1413,7 +1413,7 @@ export default function AUVTwin() {
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-ice-400" />
             <h2 className="text-xs font-mono font-bold tracking-widest text-steel-200 uppercase">
-              ESP32 SENSOR HUB & EDGE RASPBERRY PI TELEMETRY BUS
+              ESP32 SENSOR HUB · JETSON ORIN NX EDGE AI · ACOUSTIC TELEMETRY BUS
             </h2>
           </div>
           <span className="text-[10px] font-mono text-emerald-400">HARDWARE TOTAL: ₹6,100 INR · NOMINAL</span>
