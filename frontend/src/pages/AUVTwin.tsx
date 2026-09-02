@@ -1378,7 +1378,7 @@ export default function AUVTwin() {
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
               The onboard NVIDIA Jetson Orin NX runs the custom RT-DETR-L model against the sonar waterfall. 
-              It ignores the natural boulders and isolates anomalous shapes (Ghost Nets, Shipwrecks, Munitions) with 88.6% mAP50 precision.
+              It ignores the natural boulders and isolates anomalous shapes (Shipwrecks, Aircraft, Small Targets) with a 51.7% mAP50 Edge baseline precision.
             </p>
           </div>
 

@@ -510,7 +510,7 @@ export function SeafloorIntelligence() {
             title="Navigation Fairway Hazard Clearance (DG Shipping / Port Authority)"
           >
             <Target size={12} className="text-orange-400" />
-            3. CARGO CONTAINER (88.6%)
+            3. CARGO CONTAINER (74.2%)
           </button>
           <button
             onClick={() => handleLoadDemoPreset('PIPELINE_CABLE')}
@@ -1071,7 +1071,7 @@ export function SeafloorIntelligence() {
                 </td>
                 <td className="py-3 px-3 text-center">
                   <span className="px-2 py-0.5 rounded bg-orange-950/60 text-orange-300 border border-orange-500/40 font-bold">
-                    88.6%
+                    74.2%
                   </span>
                 </td>
                 <td className="py-3 px-3 text-steel-200">

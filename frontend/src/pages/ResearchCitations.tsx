@@ -715,7 +715,7 @@ export default function ResearchCitations() {
                 </td>
                 <td className="py-3 px-3 text-center">
                   <span className="px-2 py-0.5 rounded bg-orange-950/60 text-orange-300 border border-orange-500/40 font-bold">
-                    88.6%
+                    51.7%
                   </span>
                 </td>
                 <td className="py-3 px-3 text-steel-200">

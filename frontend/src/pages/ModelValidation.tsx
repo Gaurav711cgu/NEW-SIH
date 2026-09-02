@@ -31,12 +31,12 @@ export function ModelValidation() {
                 <Target className="w-16 h-16" />
               </div>
               <div className="text-[10px] font-mono text-steel-400 mb-1">OVERALL MODEL ACCURACY</div>
-              <div className="text-3xl font-bold text-emerald-400 font-mono tracking-tight">88.6%</div>
+              <div className="text-3xl font-bold text-emerald-400 font-mono tracking-tight">51.7%</div>
             </div>
 
-            <MetricBar label="Shipwreck / Metal Debris" value={95.9} color="bg-emerald-400" />
-            <MetricBar label="Ghost Nets / Organic" value={90.4} color="bg-ice-400" />
-            <MetricBar label="Fallen Aircraft (Anomalous)" value={79.6} color="bg-yellow-400" />
+            <MetricBar label="Shipwrecks / Maritime Wreckage" value={61.2} color="bg-emerald-400" />
+            <MetricBar label="Fallen Aircraft (Anomalous)" value={58.4} color="bg-ice-400" />
+            <MetricBar label="Divers / Small Anomalies" value={35.5} color="bg-yellow-400" />
           </div>
 
           <div className="mt-6 pt-6 border-t border-steel-800">
@@ -78,9 +78,9 @@ export function ModelValidation() {
                 />
                 <TableRow 
                   title="mAP50 Accuracy" 
-                  v1="82.4%" 
-                  v2="88.6% (Synthetic)" 
-                  v3="88.6% (Overall) | 95.9% (Debris)" 
+                  v1="82.4% (Server GPU)" 
+                  v2="88.6% (Large Ensemble)" 
+                  v3="51.7% (Edge Baseline, Jetson Orin)" 
                   highlight 
                 />
                 <TableRow 
