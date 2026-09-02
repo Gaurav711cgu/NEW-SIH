@@ -10,7 +10,7 @@ import { GovernmentIntel } from './pages/GovernmentIntel';
 import ResearchCitations from './pages/ResearchCitations';
 import { ModelValidation } from './pages/ModelValidation';
 
-import bgImage from './assets/bg.png';
+import bgImage from './assets/new_bg1.jpg';
 
 function App() {
   return (
