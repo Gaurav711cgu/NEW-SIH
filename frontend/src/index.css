@@ -80,3 +80,25 @@
   0% { transform: translateY(0); }
   100% { transform: translateY(-50%); }
 }
+
+/* Prefers-reduced-motion media query for motion safety (WCAG 2.2.2 & 2.3.1) */
+@media (prefers-reduced-motion: reduce) {
+  .crt-flicker {
+    animation: none !important;
+    display: none !important;
+  }
+  .glitch-text::before,
+  .glitch-text::after {
+    animation: none !important;
+    display: none !important;
+  }
+  .hex-dump {
+    animation: none !important;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

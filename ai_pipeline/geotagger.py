@@ -22,8 +22,8 @@ def parse_xtf(xtf_path: str) -> list:
 
 def geotag_detections(
     detections: List[dict],
-    pings: list,
-    frame_index: int,
+    pings: Optional[list] = None,
+    frame_index: int = 0,
     depth_m: float = 0.0
 ) -> List[dict]:
     """

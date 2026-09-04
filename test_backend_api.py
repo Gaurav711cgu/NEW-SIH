@@ -16,7 +16,7 @@ import io
 from fastapi.testclient import TestClient
 from api.main import app, ALLOWED_ORIGINS
 from telemetry_simulator import get_mission_state
-from platform.database import initialise, insert_reading, get_latest_readings
+from platform_pkg.database import initialise, insert_reading, get_latest_readings
 
 def run_tests():
     print("=" * 60)
@@ -38,7 +38,7 @@ def run_tests():
     insert_reading({"sensor": "imu_pitch", "value": -0.8, "unit": "deg", "source": "SIMULATOR"})
     insert_reading({"sensor": "mission_state", "value": "SUBMERGED_EDGE_AI", "unit": "", "source": "SIMULATOR"})
     insert_reading({"sensor": "phase", "value": "SUBMERGED_EDGE_AI", "unit": "", "source": "SIMULATOR"})
-    insert_reading({"sensor": "TEMP", "value": 3.8, "unit": "C", "source": "SIMULATOR"})
+    insert_reading({"sensor": "TEMP", "value": 1.85, "unit": "C", "source": "SIMULATOR"})
     insert_reading({"sensor": "PSAL", "value": 34.62, "unit": "PSU", "source": "SIMULATOR"})
     insert_reading({"sensor": "DOXY", "value": 210.5, "unit": "umol/kg", "source": "SIMULATOR"})
     insert_reading({"sensor": "CHLA", "value": 0.45, "unit": "mg/m3", "source": "SIMULATOR"})

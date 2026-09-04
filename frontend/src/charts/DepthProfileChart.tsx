@@ -14,15 +14,20 @@ interface Props {
 }
 
 const chartDefaults = {
-  axisStroke: '#475569',
+  axisStroke: '#94a3b8',
   tickFill: '#94a3b8',
   gridStroke: 'rgba(30, 41, 59, 0.4)',
 };
 
 export const DepthProfileChart: React.FC<Props> = ({ data, dataKey, color, title, unit }) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart 
+    <div 
+      role="img" 
+      aria-label={`Depth profile chart for ${title || dataKey}, measuring ${unit || 'units'} against inverted water depth from 0 to 1000 meters`}
+      className="w-full h-full"
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart 
         data={data} 
         layout="vertical" 
         margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
@@ -77,5 +82,6 @@ export const DepthProfileChart: React.FC<Props> = ({ data, dataKey, color, title
         />
       </AreaChart>
     </ResponsiveContainer>
+    </div>
   );
 };

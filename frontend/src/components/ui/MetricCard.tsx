@@ -13,22 +13,22 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   const isDropout = status === 'dropout';
   const isDegraded = status === 'degraded';
   
-  let baseClass = 'bg-ocean-800/60 backdrop-blur-md border border-white/[0.07] rounded-xl transition-all duration-200 hover:bg-ocean-700/65 hover:border-ice-500/25 p-5 relative overflow-hidden group';
+  let baseClass = 'bg-ocean-800/60 backdrop-blur-md border border-white/[0.07] rounded-lg transition-all duration-200 hover:bg-ocean-700/65 hover:border-ice-500/25 p-5 relative overflow-hidden group';
   
   if (isDegraded) {
-    baseClass = 'bg-ocean-800/60 backdrop-blur-md border border-health-degraded/40 rounded-xl p-5 relative overflow-hidden group';
+    baseClass = 'bg-ocean-800/60 backdrop-blur-md border border-health-degraded/40 rounded-lg p-5 relative overflow-hidden group';
   } else if (isDropout) {
-    baseClass = 'bg-ocean-800/40 backdrop-blur-[8px] border border-steel-400/15 rounded-xl p-5 relative overflow-hidden';
+    baseClass = 'bg-ocean-800/40 backdrop-blur-[8px] border border-steel-400/15 rounded-lg p-5 relative overflow-hidden';
   }
 
   return (
     <div className={baseClass}>
       {!isDropout && (
-        <div className="absolute top-0 right-0 w-20 h-20 bg-ice-500/5 rounded-full blur-2xl group-hover:bg-ice-500/10 transition-all duration-500 pointer-events-none" aria-hidden="true" />
+        <div className="absolute top-0 right-0 w-20 h-20 bg-ice-500/5 rounded-md blur-2xl group-hover:bg-ice-500/10 transition-all duration-500 pointer-events-none" aria-hidden="true" />
       )}
       
       {isDropout && (
-        <div className="absolute inset-0 rounded-xl pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(148, 163, 184, 0.04) 8px, rgba(148, 163, 184, 0.04) 16px)' }} aria-hidden="true" />
+        <div className="absolute inset-0 rounded-lg pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(148, 163, 184, 0.04) 8px, rgba(148, 163, 184, 0.04) 16px)' }} aria-hidden="true" />
       )}
 
       <div className="flex items-center justify-between mb-3 relative z-10">

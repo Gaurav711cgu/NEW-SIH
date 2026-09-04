@@ -115,7 +115,11 @@ export const SonarCanvas = ({ detections, pingCount, processed, showShadows }: P
       ref={canvasRef} 
       width={800} 
       height={600} 
+      role="img"
+      aria-label="Side-scan sonar acoustic waterfall visualization canvas"
       className="w-full h-full object-fill rounded shadow-inner"
-    />
+    >
+      Side-scan sonar acoustic waterfall visualization canvas displaying {detections.length} acoustic targets.
+    </canvas>
   );
 };

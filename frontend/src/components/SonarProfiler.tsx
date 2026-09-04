@@ -187,13 +187,13 @@ export default function SonarProfiler({ className = '' }: { className?: string }
   const currentScenario = COMPARISON_SCENARIOS.find(s => s.id === selectedScenarioId) || COMPARISON_SCENARIOS[0];
 
   return (
-    <div className={`bg-abyss-950 p-5 md:p-6 rounded-2xl border border-steel-800 text-white shadow-2xl space-y-6 ${className}`}>
+    <div className={`bg-abyss-950 p-5 md:p-6 rounded-lg border border-steel-800 text-white shadow-md space-y-6 ${className}`}>
       
       {/* ── HEADER ── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-steel-800 pb-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900/50 border border-white/10 flex items-center justify-center text-zinc-300">
               <Eye className="w-4 h-4" />
             </div>
             <div>
@@ -209,8 +209,8 @@ export default function SonarProfiler({ className = '' }: { className?: string }
 
         {/* Status Badge */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5">
-            <Zap className="w-3 h-3 text-cyan-400" />
+          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded bg-zinc-900/50 text-zinc-300 border border-white/10 flex items-center gap-1.5">
+            <Zap className="w-3 h-3 text-zinc-300" />
             ACOUSTIC SHADOW RAY-TRACING (URICK LAW)
           </span>
         </div>
@@ -220,9 +220,9 @@ export default function SonarProfiler({ className = '' }: { className?: string }
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-mono text-steel-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-            <Target className="w-3.5 h-3.5 text-cyan-400" /> SELECT COMPARATIVE MISSION SCENARIO:
+            <Target className="w-3.5 h-3.5 text-zinc-300" /> SELECT COMPARATIVE MISSION SCENARIO:
           </span>
-          <span className="text-[10px] font-mono text-cyan-400">
+          <span className="text-[10px] font-mono text-zinc-300">
             {currentScenario.category}
           </span>
         </div>
@@ -234,9 +234,9 @@ export default function SonarProfiler({ className = '' }: { className?: string }
               <button
                 key={sc.id}
                 onClick={() => setSelectedScenarioId(sc.id)}
-                className={`p-3 rounded-xl border text-left font-mono transition-all duration-200 flex flex-col justify-between ${
+                className={`p-3 rounded-lg border text-left font-mono transition-all duration-200 flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-cyan-950/40 border-cyan-500/80 text-ice-100 shadow-[0_0_15px_-3px_rgba(0,229,255,0.3)] ring-1 ring-cyan-500/50'
+                    ? 'bg-zinc-900/50 border-white/10 text-ice-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ring-1 ring-cyan-500/50'
                     : 'bg-ocean-900/60 border-steel-800/80 text-steel-400 hover:bg-ocean-800/80 hover:text-steel-200 hover:border-steel-700'
                 }`}
               >
@@ -258,8 +258,8 @@ export default function SonarProfiler({ className = '' }: { className?: string }
         {/* ═══════════════════════════════════════════════════════════════════ */}
         {/* LEFT WINDOW: NATURAL FORMATION (SEABED ROCK / GEOLOGY) */}
         {/* ═══════════════════════════════════════════════════════════════════ */}
-        <div className="bg-ocean-950/80 border-2 border-amber-500/30 rounded-xl p-4 md:p-5 flex flex-col justify-between space-y-4 relative overflow-hidden shadow-xl">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="bg-ocean-950/80 border-2 border-amber-500/30 rounded-lg p-4 md:p-5 flex flex-col justify-between space-y-4 relative overflow-hidden shadow-md">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-md blur-3xl pointer-events-none" />
 
           {/* Window Header */}
           <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
@@ -306,7 +306,11 @@ export default function SonarProfiler({ className = '' }: { className?: string }
               </span>
               <span>Gaussian Bell Curve (Gradual)</span>
             </div>
-            <div className="h-28 w-full bg-black/60 rounded-lg border border-amber-900/40 p-2">
+            <div 
+              role="img" 
+              aria-label={`Acoustic backscatter intensity transect for natural target ${currentScenario.natural.name}, showing Gaussian bell curve waveform`}
+              className="h-28 w-full bg-black/60 rounded-lg border border-amber-900/40 p-2"
+            >
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={currentScenario.natural.waveform} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="2 2" stroke="#1e293b" />
@@ -338,25 +342,25 @@ export default function SonarProfiler({ className = '' }: { className?: string }
         {/* ═══════════════════════════════════════════════════════════════════ */}
         {/* RIGHT WINDOW: MAN-MADE OBJECT (ARTIFICIAL DEBRIS / STRUCTURE) */}
         {/* ═══════════════════════════════════════════════════════════════════ */}
-        <div className="bg-ocean-950/80 border-2 border-cyan-500/40 rounded-xl p-4 md:p-5 flex flex-col justify-between space-y-4 relative overflow-hidden shadow-xl">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="bg-ocean-950/80 border-2 border-white/10 rounded-lg p-4 md:p-5 flex flex-col justify-between space-y-4 relative overflow-hidden shadow-md">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-zinc-900/50 rounded-md blur-3xl pointer-events-none" />
 
           {/* Window Header */}
-          <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3">
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-sm bg-cyan-400" />
-              <h3 className="text-xs md:text-sm font-mono font-bold text-cyan-300 uppercase tracking-wider">
+              <h3 className="text-xs md:text-sm font-mono font-bold text-zinc-300 uppercase tracking-wider">
                 MAN-MADE DEBRIS: {currentScenario.manMade.name}
               </h3>
             </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-400/50 font-bold animate-pulse">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900/50 text-zinc-300 border border-white/10 font-bold animate-pulse">
               SHARP RAYLEIGH OCCLUSION
             </span>
           </div>
 
           {/* Real Sonar Image Preview Window */}
           <div className="space-y-2">
-            <div className="relative rounded-lg overflow-hidden border border-cyan-500/50 bg-black h-48 group">
+            <div className="relative rounded-lg overflow-hidden border border-white/10 bg-black h-48 group">
               <img 
                 src={currentScenario.manMade.image} 
                 alt="Man Made Sonar Target"
@@ -364,16 +368,16 @@ export default function SonarProfiler({ className = '' }: { className?: string }
               />
               
               {/* Overlaid Annotation Badges on the Sonar Image */}
-              <div className="absolute top-2 left-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded border border-cyan-400 text-[10px] font-mono text-cyan-300 font-bold shadow-lg">
+              <div className="absolute top-2 left-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded border border-zinc-800 text-[10px] font-mono text-zinc-300 font-bold shadow-sm">
                 SPECULAR METALLIC HIGHLIGHT (+18.4 dB)
               </div>
-              <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded border border-red-500 text-[10px] font-mono text-red-400 font-bold shadow-lg">
+              <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded border border-red-500 text-[10px] font-mono text-red-400 font-bold shadow-sm">
                 ABSOLUTE ZERO-RETURN SHADOW (0 dB)
               </div>
             </div>
             
             <div className="text-[11px] font-mono text-steel-400 leading-relaxed bg-ocean-900/60 p-2.5 rounded-lg border border-steel-800">
-              <span className="text-cyan-400 font-bold">Visual Characteristics: </span>
+              <span className="text-zinc-300 font-bold">Visual Characteristics: </span>
               {currentScenario.manMade.highlightDesc} {currentScenario.manMade.shadowDesc}
             </div>
           </div>
@@ -381,12 +385,16 @@ export default function SonarProfiler({ className = '' }: { className?: string }
           {/* Acoustic Cross-Sectional Waveform (Step Function Cliff) */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-[10px] font-mono text-steel-400">
-              <span className="flex items-center gap-1 text-cyan-400 font-bold">
+              <span className="flex items-center gap-1 text-zinc-300 font-bold">
                 <Activity className="w-3 h-3" /> ACOUSTIC BACKSCATTER INTENSITY TRANSECT
               </span>
               <span>Step-Function Drop to 0 dB</span>
             </div>
-            <div className="h-28 w-full bg-black/60 rounded-lg border border-cyan-900/40 p-2">
+            <div 
+              role="img" 
+              aria-label={`Acoustic backscatter intensity transect for target ${currentScenario.manMade.name}, showing step-function drop to 0 dB shadow envelope`}
+              className="h-28 w-full bg-black/60 rounded-lg border border-white/10 p-2"
+            >
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={currentScenario.manMade.waveform} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="2 2" stroke="#1e293b" />
@@ -409,14 +417,14 @@ export default function SonarProfiler({ className = '' }: { className?: string }
           </div>
 
           {/* Quantitative Metrics Badge */}
-          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-cyan-500/20 text-[10px] font-mono">
+          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-[10px] font-mono">
             <div className="bg-ocean-900/70 p-2 rounded border border-steel-800">
               <span className="text-steel-500 block">PEAK REFLECTIVITY:</span>
-              <span className="text-cyan-300 font-bold">{currentScenario.manMade.backscatterPeak}</span>
+              <span className="text-zinc-300 font-bold">{currentScenario.manMade.backscatterPeak}</span>
             </div>
             <div className="bg-ocean-900/70 p-2 rounded border border-steel-800">
               <span className="text-steel-500 block">SHADOW GRADIENT:</span>
-              <span className="text-cyan-300 font-bold">{currentScenario.manMade.shadowGradient}</span>
+              <span className="text-zinc-300 font-bold">{currentScenario.manMade.shadowGradient}</span>
             </div>
           </div>
         </div>
@@ -426,7 +434,7 @@ export default function SonarProfiler({ className = '' }: { className?: string }
       {/* ── 4 KEY PHYSICAL CHARACTERISTIC COMPARISON STRIPS ── */}
       <div className="space-y-3 pt-2">
         <div className="flex items-center gap-2">
-          <Layers className="w-4 h-4 text-cyan-400" />
+          <Layers className="w-4 h-4 text-zinc-300" />
           <h4 className="text-xs font-mono font-bold tracking-wider text-steel-200 uppercase">
             PHYSICAL CHARACTERISTICS MATRIX &amp; ACOUSTIC CRITERIA STRIPS
           </h4>
@@ -435,64 +443,64 @@ export default function SonarProfiler({ className = '' }: { className?: string }
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           
           {/* Strip 1: Highlight Edge Geometry */}
-          <div className="bg-ocean-900/80 border border-steel-800 rounded-xl p-3.5 space-y-2">
+          <div className="bg-ocean-900/80 border border-steel-800 rounded-lg p-3.5 space-y-2">
             <div className="text-[10px] font-mono font-bold text-steel-400 uppercase tracking-wider flex items-center justify-between">
               <span>1. HIGHLIGHT GEOMETRY</span>
-              <span className="text-cyan-400">EDGE SHAPE</span>
+              <span className="text-zinc-300">EDGE SHAPE</span>
             </div>
             <div className="space-y-1.5 text-xs font-mono">
               <div className="p-1.5 rounded bg-amber-950/40 border border-amber-500/30 text-amber-300 text-[11px]">
                 <span className="font-bold block">NATURAL:</span> Organic, fractal contour with diffuse scatter.
               </div>
-              <div className="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-[11px]">
+              <div className="p-1.5 rounded bg-zinc-900/50 border border-white/10 text-zinc-300 text-[11px]">
                 <span className="font-bold block">MAN-MADE:</span> Orthogonal 90° or cylindrical symmetry.
               </div>
             </div>
           </div>
 
           {/* Strip 2: Shadow Envelope Cutoff */}
-          <div className="bg-ocean-900/80 border border-steel-800 rounded-xl p-3.5 space-y-2">
+          <div className="bg-ocean-900/80 border border-steel-800 rounded-lg p-3.5 space-y-2">
             <div className="text-[10px] font-mono font-bold text-steel-400 uppercase tracking-wider flex items-center justify-between">
               <span>2. SHADOW ENVELOPE</span>
-              <span className="text-cyan-400">OCCLUSION</span>
+              <span className="text-zinc-300">OCCLUSION</span>
             </div>
             <div className="space-y-1.5 text-xs font-mono">
               <div className="p-1.5 rounded bg-amber-950/40 border border-amber-500/30 text-amber-300 text-[11px]">
                 <span className="font-bold block">NATURAL:</span> Tapered decay (-1.2 dB/m) with ambient bleed.
               </div>
-              <div className="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-[11px]">
+              <div className="p-1.5 rounded bg-zinc-900/50 border border-white/10 text-zinc-300 text-[11px]">
                 <span className="font-bold block">MAN-MADE:</span> Instant step cliff (-20 dB/m) to dead black 0 dB.
               </div>
             </div>
           </div>
 
           {/* Strip 3: Acoustic Impedance */}
-          <div className="bg-ocean-900/80 border border-steel-800 rounded-xl p-3.5 space-y-2">
+          <div className="bg-ocean-900/80 border border-steel-800 rounded-lg p-3.5 space-y-2">
             <div className="text-[10px] font-mono font-bold text-steel-400 uppercase tracking-wider flex items-center justify-between">
               <span>3. ACOUSTIC IMPEDANCE</span>
-              <span className="text-cyan-400">MATERIAL</span>
+              <span className="text-zinc-300">MATERIAL</span>
             </div>
             <div className="space-y-1.5 text-xs font-mono">
               <div className="p-1.5 rounded bg-amber-950/40 border border-amber-500/30 text-amber-300 text-[11px]">
                 <span className="font-bold block">NATURAL:</span> 2.5–3.2 × 10⁶ Pa·s/m (Sediment &amp; granite).
               </div>
-              <div className="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-[11px]">
+              <div className="p-1.5 rounded bg-zinc-900/50 border border-white/10 text-zinc-300 text-[11px]">
                 <span className="font-bold block">MAN-MADE:</span> 44–48 × 10⁶ Pa·s/m (Corten &amp; alloy steel).
               </div>
             </div>
           </div>
 
           {/* Strip 4: 3D Height Ray-Tracing */}
-          <div className="bg-ocean-900/80 border border-steel-800 rounded-xl p-3.5 space-y-2">
+          <div className="bg-ocean-900/80 border border-steel-800 rounded-lg p-3.5 space-y-2">
             <div className="text-[10px] font-mono font-bold text-steel-400 uppercase tracking-wider flex items-center justify-between">
               <span>4. HEIGHT RAY-TRACING</span>
-              <span className="text-cyan-400">3D RELIEF</span>
+              <span className="text-zinc-300">3D RELIEF</span>
             </div>
             <div className="space-y-1.5 text-xs font-mono">
               <div className="p-1.5 rounded bg-amber-950/40 border border-amber-500/30 text-amber-300 text-[11px]">
                 <span className="font-bold block">NATURAL:</span> Uneven height slopes along bedrock ridges.
               </div>
-              <div className="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-[11px]">
+              <div className="p-1.5 rounded bg-zinc-900/50 border border-white/10 text-zinc-300 text-[11px]">
                 <span className="font-bold block">MAN-MADE:</span> Constant height (h = H·Ls / (Rs+Ls)) ±5cm.
               </div>
             </div>
@@ -502,10 +510,10 @@ export default function SonarProfiler({ className = '' }: { className?: string }
       </div>
 
       {/* ── FOOTER CALLOUT ── */}
-      <div className="p-3 bg-cyan-950/30 border border-cyan-500/30 rounded-xl flex items-start gap-3 text-xs font-mono text-steel-300">
-        <Info className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+      <div className="p-3 bg-zinc-900/50 border border-white/10 rounded-lg flex items-start gap-3 text-xs font-mono text-steel-300">
+        <Info className="w-4 h-4 text-zinc-300 flex-shrink-0 mt-0.5" />
         <div>
-          <span className="text-cyan-300 font-bold">Why This Acoustic Physics Architecture is Unrivaled in SIH: </span>
+          <span className="text-zinc-300 font-bold">Why This Acoustic Physics Architecture is Unrivaled in SIH: </span>
           Traditional vision models confuse rocky seafloor ridges with sunken containers or mines because both appear as bright pixels. By coupling YOLO with the <strong>Urick Acoustic Shadow Occlusion Law</strong>, AQUILA physically measures the shadow cliff behind each target. If the shadow is gradual or missing, the system penalizes the score and routes it to the human verification queue.
         </div>
       </div>

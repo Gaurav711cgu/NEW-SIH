@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from platform.database import get_connection, initialise
+from platform_pkg.database import get_connection, initialise
 
 def hitl_serial_worker(port, baudrate, data_queue):
     """Worker thread to blast JSON telemetry to physical hardware."""

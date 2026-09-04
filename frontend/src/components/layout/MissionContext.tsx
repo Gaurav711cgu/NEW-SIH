@@ -1,36 +1,7 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-
-export type MissionPhase = 'SURFACE' | 'DESCENDING' | 'SURVEY' | 'ASCENDING';
-
-export interface LogEntry {
-  id: number;
-  time: string;
-  message: string;
-  type: 'INFO' | 'WARN' | 'ERROR' | 'DATA';
-}
-
-interface MissionState {
-  depth: number;
-  phase: MissionPhase;
-  battery: number;
-  uptime: number;
-  internalTemp: number;
-  hullPressure: number;
-  powerDraw: number;
-  cpuLoad: number;
-  commsOnline: boolean;
-  logs: LogEntry[];
-  cacheSize: number;
-}
-
-const MissionContext = createContext<MissionState | null>(null);
-
-export const useMission = () => {
-  const ctx = useContext(MissionContext);
-  if (!ctx) throw new Error("useMission must be used within MissionProvider");
-  return ctx;
-};
+import { MissionContext } from './missionContextDef';
+import type { MissionState, MissionPhase } from './missionContextDef';
 
 export const MissionProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<MissionState>({
@@ -85,7 +56,7 @@ export const MissionProvider = ({ children }: { children: ReactNode }) => {
             };
           });
         }
-      } catch (err) {
+      } catch {
         setState(prev => {
           const newLogs = [...prev.logs];
           newLogs.push({

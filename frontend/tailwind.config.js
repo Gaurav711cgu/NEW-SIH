@@ -5,35 +5,47 @@ export default {
     extend: {
       colors: {
         ocean: {
-          950: '#020b14',
-          900: '#041527',
-          800: '#0a2540',
-          700: '#144272',
-          600: '#1a5276',
+          950: '#09090b', // zinc-950
+          900: '#18181b', // zinc-900
+          800: '#27272a', // zinc-800
+          700: '#3f3f46', // zinc-700
+          600: '#52525b', // zinc-600
+        },
+        abyss: {
+          950: '#09090b',
+          900: '#18181b',
+          800: '#27272a',
+          700: '#3f3f46',
         },
         ice: {
-          100: '#e0f7fa',
-          200: '#b2ebf2',
-          400: '#4dd0e1',
-          500: '#00e5ff',
-          600: '#00b8d4',
+          100: '#f4f4f5', // zinc-100
+          200: '#e4e4e7', // zinc-200
+          400: '#a1a1aa', // zinc-400
+          500: '#a1a1aa', // enhanced from #71717a for WCAG AA 4.5:1 contrast
+          600: '#52525b', // zinc-600
         },
         steel: {
-          400: '#94a3b8',
-          600: '#475569',
-          800: '#1e293b',
-          900: '#0f172a',
+          50: '#fafafa',
+          100: '#f4f4f5',
+          200: '#e4e4e7',
+          300: '#d4d4d8',
+          400: '#a1a1aa',
+          500: '#a1a1aa', // enhanced from #71717a for WCAG AA 4.5:1 contrast
+          600: '#52525b',
+          700: '#3f3f46',
+          800: '#27272a',
+          900: '#18181b',
         },
         health: {
-          nominal: '#22c55e',
-          degraded: '#f59e0b',
-          critical: '#ef4444',
-          offline: '#64748b',
+          nominal: '#10b981', // emerald-500
+          degraded: '#f59e0b', // amber-500
+          critical: '#ef4444', // red-500
+          offline: '#71717a', // zinc-500
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['"Segoe UI"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'Consolas', 'monospace'],
       },
     },
   },

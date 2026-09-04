@@ -1,5 +1,32 @@
 import { useState, useEffect } from 'react';
+import type { ComponentType } from 'react';
 import { Activity, Database, Cpu } from 'lucide-react';
+
+interface StatusIndicatorProps {
+  label: string;
+  active: boolean;
+  icon: ComponentType<{ size?: number; className?: string }>;
+}
+
+function StatusIndicator({ label, active, icon: Icon }: StatusIndicatorProps) {
+  return (
+    <div className="flex items-center justify-between px-1 group">
+      <div className="flex items-center gap-2">
+        <Icon size={12} className={
+          active 
+            ? "text-health-nominal group-hover:text-ice-400" 
+            : "text-health-degraded animate-pulse glitch-text"
+        } data-text={label} />
+        <span className={`${active ? 'text-steel-400' : 'text-red-500 font-bold'}`}>{label}</span>
+      </div>
+      <div className={`w-1.5 h-1.5 rounded-full ${
+        active 
+          ? 'bg-health-nominal shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' 
+          : 'bg-red-500 animate-ping shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
+      }`} />
+    </div>
+  );
+}
 
 export function SystemStatusRow() {
   const [modelReady, setModelReady] = useState<boolean | null>(null);
@@ -12,7 +39,7 @@ export function SystemStatusRow() {
         if (!res.ok) throw new Error();
         const data = await res.json();
         if (!cancelled) setModelReady(data.model_ready);
-      } catch (err) {
+      } catch {
         if (!cancelled) setModelReady(false);
       }
     };
@@ -24,24 +51,6 @@ export function SystemStatusRow() {
       clearInterval(interval);
     };
   }, []);
-
-  const StatusIndicator = ({ label, active, icon: Icon }: any) => (
-    <div className="flex items-center justify-between px-1 group">
-      <div className="flex items-center gap-2">
-        <Icon size={12} className={
-          active 
-            ? "text-health-nominal group-hover:text-ice-400" 
-            : "text-health-degraded animate-pulse glitch-text"
-        } data-text={label} />
-        <span className={`${active ? 'text-steel-400' : 'text-red-500 font-bold'}`}>{label}</span>
-      </div>
-      <div className={`w-1.5 h-1.5 rounded-full ${
-        active 
-          ? 'bg-health-nominal shadow-[0_0_5px_rgba(16,185,129,0.5)]' 
-          : 'bg-red-500 animate-ping shadow-[0_0_8px_rgba(239,68,68,0.8)]'
-      }`} />
-    </div>
-  );
 
   return (
     <div className="mt-auto p-4 border-t border-steel-800/60 hidden md:block relative overflow-hidden">

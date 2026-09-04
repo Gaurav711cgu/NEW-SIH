@@ -9,21 +9,21 @@ const badgeConfig: Record<DataSource, { bg: string; border: string; text: string
     dot: true,
   },
   VIRTUAL: {
-    bg: 'bg-purple-500/10',
-    border: 'border-purple-400/40',
-    text: 'text-purple-400',
+    bg: 'bg-zinc-900/50',
+    border: 'border-white/10',
+    text: 'text-zinc-300',
     dot: false,
   },
   DATASET: {
-    bg: 'bg-emerald-500/10',
-    border: 'border-emerald-400/40',
+    bg: 'bg-zinc-900/50',
+    border: 'border-white/10',
     text: 'text-emerald-400',
     dot: false,
   },
   PLANNED: {
     bg: 'bg-orange-500/10',
     border: 'border-orange-400/40',
-    text: 'text-orange-400',
+    text: 'text-zinc-400',
     dot: false,
   },
 };

@@ -19,13 +19,13 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
   const numericValue = parseFloat(value);
   
   const baseClass = isDropout 
-    ? 'bg-ocean-800/40 backdrop-blur-[8px] border border-steel-400/15 rounded-xl p-5 relative overflow-hidden'
-    : 'bg-ocean-800/60 backdrop-blur-md border border-white/[0.07] rounded-xl p-5 relative overflow-hidden transition-all duration-200 hover:bg-ocean-700/65 hover:border-ice-500/25';
+    ? 'bg-ocean-800/40 backdrop-blur-[8px] border border-steel-400/15 rounded-lg p-5 relative overflow-hidden'
+    : 'bg-ocean-800/60 backdrop-blur-md border border-white/[0.07] rounded-lg p-5 relative overflow-hidden transition-all duration-200 hover:bg-ocean-700/65 hover:border-ice-500/25';
 
   return (
     <div className={baseClass}>
       {isDropout && (
-        <div className="absolute inset-0 rounded-xl pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(148, 163, 184, 0.04) 8px, rgba(148, 163, 184, 0.04) 16px)' }} aria-hidden="true" />
+        <div className="absolute inset-0 rounded-lg pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(148, 163, 184, 0.04) 8px, rgba(148, 163, 184, 0.04) 16px)' }} aria-hidden="true" />
       )}
       
       <div className="flex items-start justify-between mb-2 relative z-10">
@@ -36,7 +36,11 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
         {label}
       </p>
 
-      <div className="h-12 w-full mb-4 relative z-10">
+      <div 
+        role="img" 
+        aria-label={`Telemetry trend line for ${label}, current value ${isDropout ? 'signal lost' : `${value} ${unit}`}`}
+        className="h-12 w-full mb-4 relative z-10"
+      >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <YAxis domain={['auto', 'auto']} hide />

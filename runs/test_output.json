@@ -1,0 +1,15 @@
+[
+  {
+    "bbox": [
+      0.5578,
+      0.1278,
+      0.1946,
+      0.6498
+    ],
+    "confidence": 0.9403,
+    "class_name": "shipwreck",
+    "class_id": 0,
+    "class": "shipwreck",
+    "object_class": "shipwreck"
+  }
+]

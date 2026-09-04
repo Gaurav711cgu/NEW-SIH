@@ -1,13 +1,19 @@
 import json
 import time
 import paho.mqtt.client as mqtt
-from profile_interpolator import ProfileInterpolator
-from noise_engine import VirtualSensor, SENSOR_SPECS
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(os.path.dirname(__file__))
+
 try:
-    from platform.mission_fsm import MissionFSM
+    from virtual_sensors.profile_interpolator import ProfileInterpolator
+    from virtual_sensors.noise_engine import VirtualSensor, SENSOR_SPECS
+except ImportError:
+    from profile_interpolator import ProfileInterpolator
+    from noise_engine import VirtualSensor, SENSOR_SPECS
+try:
+    from platform_pkg.mission_fsm import MissionFSM
 except ImportError:
     class MissionFSM:
         def current_depth(self): return 100.0

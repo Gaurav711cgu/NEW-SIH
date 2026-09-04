@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from pathlib import Path
+from typing import Union
 from dataclasses import dataclass
 
 @dataclass
@@ -9,7 +11,12 @@ class PreprocessedImage:
     shadow_mask: np.ndarray
     shadow_coverage_pct: float
 
-def preprocess_sss(image_path: str) -> PreprocessedImage:
+    @property
+    def enhanced(self) -> np.ndarray:
+        """Alias for processed image to ensure seamless compatibility with api/main.py."""
+        return self.processed
+
+def preprocess_sss(image_input: Union[str, Path, np.ndarray]) -> PreprocessedImage:
     """
     Applies the standard SSS preprocessing chain.
 
@@ -32,9 +39,15 @@ def preprocess_sss(image_path: str) -> PreprocessedImage:
     Natural rock formations produce similar shadows. Identifying shadow
     zones allows downstream confidence calibration.
     """
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    if img is None:
-        raise FileNotFoundError(f"Cannot read image: {image_path}")
+    if isinstance(image_input, np.ndarray):
+        if len(image_input.shape) == 3:
+            img = cv2.cvtColor(image_input, cv2.COLOR_BGR2GRAY)
+        else:
+            img = image_input.copy()
+    else:
+        img = cv2.imread(str(image_input), cv2.IMREAD_GRAYSCALE)
+        if img is None:
+            raise FileNotFoundError(f"Cannot read image: {image_input}")
 
     # Stage 1: Speckle reduction
     denoised = cv2.medianBlur(img, 5)

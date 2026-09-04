@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from platform.database import get_connection, initialise
+from platform_pkg.database import get_connection, initialise
 
 def get_mission_state(depth_m: float, ascending: bool = False) -> str:
     """Determine Edge AI mission state based on depth and dive phase."""

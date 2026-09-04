@@ -11,15 +11,20 @@ interface Props {
 }
 
 const chartDefaults = {
-  axisStroke: '#475569',
+  axisStroke: '#94a3b8',
   tickFill: '#94a3b8',
   gridStroke: 'rgba(30, 41, 59, 0.4)',
 };
 
 export const TSDiagram: React.FC<Props> = ({ data }) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <ScatterChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+    <div 
+      role="img" 
+      aria-label="Temperature-Salinity diagram plotting in-situ water mass observations against practical salinity PSU and temperature Celsius"
+      className="w-full h-full"
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
         <CartesianGrid strokeDasharray="3 3" stroke={chartDefaults.gridStroke} />
         
         {/* Salinity on X, Temp on Y is standard TS diagram */}
@@ -60,5 +65,6 @@ export const TSDiagram: React.FC<Props> = ({ data }) => {
         <Scatter name="Water Mass" data={data} fill="#00e5ff" opacity={0.6} />
       </ScatterChart>
     </ResponsiveContainer>
+    </div>
   );
 };

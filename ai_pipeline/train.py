@@ -17,9 +17,12 @@ Benchmark References:
 """
 import os
 import sys
+import random
 import shutil
 import logging
+import argparse
 from pathlib import Path
+import numpy as np
 
 logging.basicConfig(
     level=logging.INFO,
@@ -60,8 +63,29 @@ def check_dataset() -> bool:
     return True
 
 
-def detect_best_device() -> str:
-    """Auto-detect best available device: MPS (Apple Silicon) > CUDA > CPU."""
+def set_seed(seed: int = 42):
+    """Lock random seeds across random, numpy, and torch for full reproducibility."""
+    random.seed(seed)
+    np.random.seed(seed)
+    try:
+        import torch
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
+        if hasattr(torch.backends, 'cudnn'):
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
+    except ImportError:
+        pass
+    log.info(f"Reproducibility seed locked: {seed}")
+
+
+def detect_best_device(requested: str = "auto") -> str:
+    """Auto-detect best available device: MPS (Apple Silicon) > CUDA > CPU, or honor explicit request."""
+    if requested and requested.lower() != "auto":
+        log.info(f"Device: explicitly specified via CLI — using '{requested}'")
+        return requested
+
     try:
         import torch
         if torch.backends.mps.is_available():
@@ -76,14 +100,19 @@ def detect_best_device() -> str:
     return "cpu"
 
 
-def copy_best_weights(run_dir: Path, stage: str):
-    """Copy best.pt to the canonical backend path after each stage."""
+def copy_best_weights(run_dir: Path, stage: str, save_enabled: bool = False):
+    """Copy best.pt to the canonical backend path after each stage, gated by save_enabled flag."""
     src = run_dir / "weights" / "best.pt"
     dst = MODELS / "sss_detector_v1" / "weights" / "best.pt"
+    if not save_enabled:
+        log.warning(f"[{stage}] [PROTECTED] '--save' flag not passed. Skipping overwrite of production weights at {dst}.")
+        log.info(f"[{stage}] Candidate weights preserved safely at: {src}")
+        return
+
     dst.parent.mkdir(parents=True, exist_ok=True)
     if src.exists():
         shutil.copy2(src, dst)
-        log.info(f"[{stage}] Copied best.pt → {dst}")
+        log.info(f"[{stage}] [SAVED] Copied best.pt → {dst}")
     else:
         log.warning(f"[{stage}] best.pt not found at {src}")
 
@@ -91,7 +120,7 @@ def copy_best_weights(run_dir: Path, stage: str):
 # ══════════════════════════════════════════════════════════════════════════════
 # STAGE 1: YOLOv9c (GELAN backbone) — Fast, Strong Baseline
 # ══════════════════════════════════════════════════════════════════════════════
-def stage1_yolov9c(device: str, epochs: int = 80) -> Path:
+def stage1_yolov9c(device: str, epochs: int = 80, batch_size: int = 16, save_enabled: bool = False) -> Path:
     """
     YOLOv9c with GELAN (Generalized Efficient Layer Aggregation Network).
 
@@ -108,7 +137,7 @@ def stage1_yolov9c(device: str, epochs: int = 80) -> Path:
     from ultralytics import YOLO
     log.info("=" * 60)
     log.info("STAGE 1: YOLOv9c + GELAN Backbone")
-    log.info(f"Epochs: {epochs} | Device: {device}")
+    log.info(f"Epochs: {epochs} | Batch Size: {batch_size} | Device: {device} | Save Enabled: {save_enabled}")
     log.info("Expected mAP50: ~82-84% on SCTD (SOCA-YOLO lineage)")
     log.info("=" * 60)
 
@@ -118,7 +147,7 @@ def stage1_yolov9c(device: str, epochs: int = 80) -> Path:
         data        = str(DATA_YAML),
         epochs      = epochs,
         imgsz       = 640,
-        batch       = 4,
+        batch       = batch_size,
         device      = device,
         project     = str(MODELS),
         name        = "stage1_yolov9c",
@@ -130,14 +159,14 @@ def stage1_yolov9c(device: str, epochs: int = 80) -> Path:
     )
 
     run_dir = Path(results.save_dir)
-    copy_best_weights(run_dir, "Stage 1 YOLOv9c")
+    copy_best_weights(run_dir, "Stage 1 YOLOv9c", save_enabled=save_enabled)
     return run_dir / "weights" / "best.pt"
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # STAGE 2: RT-DETR-L (Real-Time Detection Transformer) Fine-tune
 # ══════════════════════════════════════════════════════════════════════════════
-def stage2_rtdetr(device: str, pretrain_weights: Path = None, epochs: int = 40) -> Path:
+def stage2_rtdetr(device: str, pretrain_weights: Path = None, epochs: int = 40, batch_size: int = 8, save_enabled: bool = False) -> Path:
     """
     RT-DETR-L: Hybrid CNN-Transformer — gold standard for SSS precision.
 
@@ -159,7 +188,7 @@ def stage2_rtdetr(device: str, pretrain_weights: Path = None, epochs: int = 40) 
         from ultralytics import RTDETR
         log.info("=" * 60)
         log.info("STAGE 2: RT-DETR-L (Transformer Backbone)")
-        log.info(f"Epochs: {epochs} | Device: {device}")
+        log.info(f"Epochs: {epochs} | Batch Size: {batch_size} | Device: {device} | Save Enabled: {save_enabled}")
         log.info("Expected mAP50: ~87-90% on SCTD (US-DETR lineage)")
         log.info("Self-Attention models acoustic shadow-highlight relationship")
         log.info("=" * 60)
@@ -170,7 +199,7 @@ def stage2_rtdetr(device: str, pretrain_weights: Path = None, epochs: int = 40) 
             data    = str(DATA_YAML),
             epochs  = epochs,
             imgsz   = 640,
-            batch   = 2,        # RT-DETR is larger, needs smaller batch
+            batch   = batch_size,
             device  = device,
             project = str(MODELS),
             name    = "stage2_rtdetr",
@@ -185,7 +214,7 @@ def stage2_rtdetr(device: str, pretrain_weights: Path = None, epochs: int = 40) 
         )
 
         run_dir = Path(results.save_dir)
-        copy_best_weights(run_dir, "Stage 2 RT-DETR-L")
+        copy_best_weights(run_dir, "Stage 2 RT-DETR-L", save_enabled=save_enabled)
         return run_dir / "weights" / "best.pt"
 
     except Exception as e:
@@ -193,10 +222,51 @@ def stage2_rtdetr(device: str, pretrain_weights: Path = None, epochs: int = 40) 
         return pretrain_weights
 
 
+def parse_args(args_list=None):
+    """CLI Argument parser for DeepScan training pipeline."""
+    parser = argparse.ArgumentParser(
+        description="DeepScan SSS Training Pipeline (YOLOv9c + RT-DETR-L)"
+    )
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=80,
+        help="Number of training epochs (default: 80)"
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=16,
+        help="Batch size for training (default: 16)"
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="auto",
+        help="Compute device: auto, mps, cuda, 0, cpu (default: auto)"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Validate dataset existence and environment capabilities, then exit cleanly without starting training"
+    )
+    parser.add_argument(
+        "--save",
+        action="store_true",
+        default=False,
+        help="Explicitly enable copying trained candidate weights to production best.pt (models/sss_detector_v1/weights/best.pt)"
+    )
+    return parser.parse_args(args_list)
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # MAIN ORCHESTRATOR
 # ══════════════════════════════════════════════════════════════════════════════
-def train_model():
+def train_model(cli_args=None):
+    args = parse_args(cli_args)
+    set_seed(42)
+
     log.info("╔══════════════════════════════════════════════════════════╗")
     log.info("║   DeepScan SSS Training Pipeline — Production Grade     ║")
     log.info("╠══════════════════════════════════════════════════════════╣")
@@ -210,17 +280,36 @@ def train_model():
     if not check_dataset():
         sys.exit(1)
 
-    device = detect_best_device()
+    device = detect_best_device(args.device)
+
+    # ── Dry-Run Mode ───────────────────────────────────────────────────────
+    if args.dry_run:
+        log.info("=" * 60)
+        log.info("[DRY-RUN] Execution parameters verified successfully:")
+        log.info(f"[DRY-RUN]   Dataset YAML:     {DATA_YAML} (exists: {DATA_YAML.exists()})")
+        log.info(f"[DRY-RUN]   Target Device:    {device}")
+        log.info(f"[DRY-RUN]   Planned Epochs:   {args.epochs}")
+        log.info(f"[DRY-RUN]   Batch Size:       {args.batch_size}")
+        log.info(f"[DRY-RUN]   Weight Save Gate: {'ENABLED (--save)' if args.save else 'PROTECTED (production best.pt will NOT be overwritten)'}")
+        log.info("[DRY-RUN] Dry run complete. Safe exit with code 0.")
+        log.info("=" * 60)
+        return 0
 
     # ── Stage 1: YOLOv9c ──────────────────────────────────────────────────
-    best_pt_s1 = stage1_yolov9c(device=device, epochs=80)
+    best_pt_s1 = stage1_yolov9c(device=device, epochs=args.epochs, batch_size=args.batch_size, save_enabled=args.save)
     log.info(f"Stage 1 complete. Best weights: {best_pt_s1}")
 
     # ── Stage 2: RT-DETR-L fine-tune ──────────────────────────────────────
     # Fine-tunes on the same dataset with transformer attention.
     # Run only if Stage 1 completed successfully.
     if best_pt_s1 and best_pt_s1.exists():
-        best_pt_s2 = stage2_rtdetr(device=device, pretrain_weights=best_pt_s1, epochs=30)
+        best_pt_s2 = stage2_rtdetr(
+            device=device,
+            pretrain_weights=best_pt_s1,
+            epochs=max(1, args.epochs // 2),
+            batch_size=max(1, args.batch_size // 2),
+            save_enabled=args.save
+        )
         log.info(f"Stage 2 complete. Best weights: {best_pt_s2}")
     else:
         log.warning("Stage 1 weights not found. Skipping Stage 2.")
@@ -229,10 +318,14 @@ def train_model():
     log.info("╔══════════════════════════════════════════════════════════╗")
     log.info("║               TRAINING PIPELINE COMPLETE                 ║")
     log.info("╠══════════════════════════════════════════════════════════╣")
-    log.info(f"║  Final best.pt → {MODELS}/sss_detector_v1/weights/best.pt")
+    if args.save:
+        log.info(f"║  Final best.pt → {MODELS}/sss_detector_v1/weights/best.pt")
+    else:
+        log.info("║  Production weights unchanged (pass --save to deploy)   ║")
     log.info("║  At inference time, wrap with SAHI for +12-22% mAP      ║")
     log.info("╚══════════════════════════════════════════════════════════╝")
+    return 0
 
 
 if __name__ == "__main__":
-    train_model()
+    sys.exit(train_model())

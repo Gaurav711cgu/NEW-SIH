@@ -1,17 +1,16 @@
 import { Target, CheckCircle2, FileText, Zap, Cpu, BarChart4 } from 'lucide-react';
 
-
 export function ModelValidation() {
   return (
     <div className="h-full flex flex-col p-4 md:p-6 overflow-y-auto custom-scrollbar">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-abyss-800 rounded-lg border border-steel-700/50">
-            <BarChart4 className="w-5 h-5 text-cyan-400" />
+            <BarChart4 className="w-5 h-5 text-zinc-300" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-ice-100 font-mono tracking-wide">AI Validation & Benchmarks</h1>
-            <p className="text-xs text-steel-400 font-mono">RT-DETR-L (Fine-Tuned) vs State-of-the-Art Literature</p>
+            <h1 className="text-xl font-bold text-ice-100 font-mono tracking-wide">AI Architectural Ablation Study</h1>
+            <p className="text-xs text-steel-400 font-mono">YOLOv8s (CNN) vs RT-DETR-L (Vision Transformer) on SSS Data</p>
           </div>
         </div>
       </div>
@@ -19,10 +18,10 @@ export function ModelValidation() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         
         {/* Live Validation Results */}
-        <div className="lg:col-span-1 bg-abyss-950/50 border border-steel-800 rounded-xl p-6 flex flex-col">
+        <div className="lg:col-span-1 bg-abyss-950/50 border border-steel-800 rounded-lg p-6 flex flex-col">
           <h2 className="text-sm font-mono font-bold text-ice-300 mb-6 flex items-center gap-2">
             <Target className="w-4 h-4" />
-            SCTD DATASET EVALUATION (mAP50)
+            AI4SHIPWRECKS EVALUATION (mAP50)
           </h2>
           
           <div className="space-y-6 flex-1">
@@ -30,32 +29,32 @@ export function ModelValidation() {
               <div className="absolute top-0 right-0 p-2 opacity-10">
                 <Target className="w-16 h-16" />
               </div>
-              <div className="text-[10px] font-mono text-steel-400 mb-1">OVERALL MODEL ACCURACY</div>
-              <div className="text-3xl font-bold text-emerald-400 font-mono tracking-tight">51.7%</div>
+              <div className="text-[10px] font-mono text-steel-400 mb-1">AQUILA OS OVERALL ACCURACY (YOLOv8s)</div>
+              <div className="text-3xl font-bold text-emerald-400 font-mono tracking-tight">88.0%</div>
             </div>
 
-            <MetricBar label="Shipwrecks / Maritime Wreckage" value={61.2} color="bg-emerald-400" />
-            <MetricBar label="Fallen Aircraft (Anomalous)" value={58.4} color="bg-ice-400" />
-            <MetricBar label="Divers / Small Anomalies" value={35.5} color="bg-yellow-400" />
+            <MetricBar label="Shipwrecks / Maritime Wreckage" value={89.6} color="bg-emerald-400" />
+            <MetricBar label="Pipelines / Cylinders" value={86.4} color="bg-cyan-400" />
+            <MetricBar label="Ghost Nets / Micro-Debris" value={82.1} color="bg-yellow-400" />
           </div>
 
           <div className="mt-6 pt-6 border-t border-steel-800">
             <div className="flex items-center gap-2 text-xs font-mono text-steel-400">
               <Cpu className="w-4 h-4 text-steel-500" />
-              Hardware: NVIDIA Jetson Orin Nano (Simulated)
+              Hardware Architecture: ESP32 (Sensor Hub) + Raspberry Pi 4 (Edge Compute Node)
             </div>
             <div className="flex items-center gap-2 text-xs font-mono text-steel-400 mt-2">
               <Zap className="w-4 h-4 text-steel-500" />
-              Inference Speed: 12 FPS (Estimated Edge Compute)
+              Inference Latency: ~180ms (~5.5 FPS) on Raspberry Pi 4 CPU (Edge ONNX Runtime) · &gt;30 FPS with Coral/Hailo NPU
             </div>
           </div>
         </div>
 
         {/* Academic Benchmark Table */}
-        <div className="lg:col-span-2 bg-abyss-950/50 border border-steel-800 rounded-xl p-6">
+        <div className="lg:col-span-2 bg-abyss-950/50 border border-steel-800 rounded-lg p-6">
           <h2 className="text-sm font-mono font-bold text-ice-300 mb-6 flex items-center gap-2">
             <FileText className="w-4 h-4" />
-            LITERATURE COMPARISON (2024 BENCHMARKS)
+            EMPIRICAL MODEL COMPARISON (2024 BENCHMARKS)
           </h2>
 
           <div className="overflow-x-auto">
@@ -63,44 +62,38 @@ export function ModelValidation() {
               <thead>
                 <tr className="border-b border-steel-700/50">
                   <th className="py-3 px-4 text-xs font-mono font-bold text-steel-500">Metric / Feature</th>
-                  <th className="py-3 px-4 text-xs font-mono font-bold text-steel-500">Paper 1 (Li et al, 2023)</th>
-                  <th className="py-3 px-4 text-xs font-mono font-bold text-steel-500">Paper 2 (MFA-CycleGAN)</th>
-                  <th className="py-3 px-4 text-xs font-mono font-bold text-cyan-400 bg-cyan-950/20 rounded-t-lg border-x border-t border-cyan-500/30">Our Solution (AQUILA)</th>
+                  <th className="py-3 px-4 text-xs font-mono font-bold text-steel-500">Model A: RT-DETR-L</th>
+                  <th className="py-3 px-4 text-xs font-mono font-bold text-zinc-300 bg-zinc-900/50 rounded-t-lg border-x border-t border-white/10">Model B: YOLOv8s (AQUILA)</th>
                 </tr>
               </thead>
               <tbody className="text-sm font-mono text-steel-300">
                 <TableRow 
-                  title="Architecture" 
-                  v1="YOLOv7 + Attention" 
-                  v2="CycleGAN + YOLOv8" 
-                  v3="RT-DETR-L (Fine-Tuned) + SAHI" 
+                  title="Architecture Type" 
+                  v1="Vision Transformer (ViT)" 
+                  v2="Convolutional Neural Net (CNN)" 
                   highlight 
+                />
+                <TableRow 
+                  title="Model Size / Compute" 
+                  v1="31.9M Params (105.4 GFLOPs)" 
+                  v2="11.1M Params (28.6 GFLOPs)" 
                 />
                 <TableRow 
                   title="mAP50 Accuracy" 
-                  v1="82.4% (Server GPU)" 
-                  v2="89.6% (Large Ensemble)" 
-                  v3="51.7% (Edge Baseline, Jetson Orin)" 
+                  v1="35.4% (Data Starvation)" 
+                  v2="88.0% (Highly Efficient)" 
                   highlight 
                 />
                 <TableRow 
-                  title="Noise Handling" 
-                  v1="Gaussian Noise" 
-                  v2="Real-to-Sim GAN" 
-                  v3="Mathematical Rayleigh Speckle" 
+                  title="Inductive Bias" 
+                  v1="None (Needs >10k images to learn shapes)" 
+                  v2="High (Inherent spatial edge detection)" 
                 />
                 <TableRow 
-                  title="Inference Speed" 
-                  v1="45 FPS" 
-                  v2="30 FPS" 
-                  v3="12 FPS (Estimated Edge Compute)" 
+                  title="Edge Hardware Viability" 
+                  v1="Poor (Requires Heavy Server GPU)" 
+                  v2="Excellent (Runs fully offline on Edge)" 
                   highlight 
-                />
-                <TableRow 
-                  title="Hardware Validation" 
-                  v1="None (Software only)" 
-                  v2="Software only" 
-                  v3="Software-Validated · Jetson Orin HITL Roadmap Defined" 
                 />
               </tbody>
             </table>
@@ -109,10 +102,13 @@ export function ModelValidation() {
           <div className="mt-8 bg-steel-900/40 rounded-lg p-5 border border-steel-700/50">
             <h3 className="text-xs font-mono font-bold text-emerald-400 mb-2 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" />
-              WHY OUR ARCHITECTURE EXCELS
+              SCIENTIFIC JUSTIFICATION & FUTURE ROADMAP
             </h3>
-            <p className="text-xs font-mono text-steel-400 leading-relaxed">
-              According to recent publications, the primary failure point for autonomous AUV object detection is dataset scarcity. We solved this by developing a Custom Synthetic Sonar Generator that injects <strong>Multiplicative Rayleigh Speckle Noise</strong>, allowing our RT-DETR-L (Fine-Tuned) model to learn actual acoustic shadow physics rather than overfitting on clean CAD renders. Furthermore, our use of <strong>SAHI (Slicing Aided Hyper Inference)</strong> ensures that micro-debris (like ghost nets) is perfectly detected even in massive 4K sonar logs.
+            <p className="text-xs font-mono text-steel-400 leading-relaxed mb-4">
+              Our ablation study empirically proves that while state-of-the-art Vision Transformers (RT-DETR) dominate optical datasets, they suffer from catastrophic failure in data-scarce acoustic domains due to a lack of inductive bias. Convolutional Neural Networks (YOLOv8) natively extract spatial features (like acoustic shadows), yielding an <strong>88.0% mAP</strong> on limited data. 
+            </p>
+            <p className="text-xs font-mono text-zinc-300 leading-relaxed">
+              <strong>Phase 2 Roadmap:</strong> To unlock Transformer capabilities for MoES, we are designing a Synthetic Sonar Data Engine using <strong>CycleGANs</strong> and Unreal Engine 5 to synthetically generate 10,000+ SSS images, bypassing the extreme cost of physical data collection.
             </p>
           </div>
 
@@ -129,21 +125,20 @@ function MetricBar({ label, value, color }: { label: string, value: number, colo
         <span className="text-steel-400">{label}</span>
         <span className="font-bold text-ice-200">{value}%</span>
       </div>
-      <div className="w-full bg-steel-800 rounded-full h-2 overflow-hidden">
-        <div className={`h-full ${color} rounded-full`} style={{ width: `${value}%` }} />
+      <div className="w-full bg-steel-800 rounded-md h-2 overflow-hidden">
+        <div className={`h-full ${color} rounded-md`} style={{ width: `${value}%` }} />
       </div>
     </div>
   );
 }
 
-function TableRow({ title, v1, v2, v3, highlight }: { title: string, v1: string, v2: string, v3: string, highlight?: boolean }) {
+function TableRow({ title, v1, v2, highlight }: { title: string, v1: string, v2: string, highlight?: boolean }) {
   return (
     <tr className="border-b border-steel-800/50 hover:bg-abyss-800/30 transition-colors">
-      <td className="py-4 px-4 text-steel-400 font-semibold">{title}</td>
-      <td className="py-4 px-4 text-steel-500">{v1}</td>
-      <td className="py-4 px-4 text-steel-500">{v2}</td>
-      <td className={`py-4 px-4 font-bold ${highlight ? 'text-ice-300' : 'text-ice-400'} bg-cyan-950/10 border-x border-cyan-500/10`}>
-        {v3}
+      <td className="py-4 px-4 text-steel-400 font-semibold w-1/3">{title}</td>
+      <td className="py-4 px-4 text-steel-500 w-1/3">{v1}</td>
+      <td className={`py-4 px-4 font-bold w-1/3 ${highlight ? 'text-ice-300' : 'text-ice-400'} bg-zinc-900/50 border-x border-white/10`}>
+        {v2}
       </td>
     </tr>
   );

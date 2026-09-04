@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import * as THREE from 'three';
 import { 
-  Cpu, 
+  Target, Cpu, 
   Layers, 
   RotateCw, 
   Eye, 
@@ -62,7 +62,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     hardwareBOM: 'DS18B20 Stainless Steel Waterproof Probe',
     componentCostINR: 80,
     importedEquivalent: 'Sea-Bird SBE 3plus Oceanographic Temp',
-    importedCostINR: 450000,
+    importedCostINR: 150000,
     position3D: [2.5, -0.2, 0.4],
     color: '#00e5ff',
     unit: '°C',
@@ -72,7 +72,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '2 Hz Live Hardware',
     operatingRange: '-1.8°C to +4.0°C (Antarctic Polar Validated)',
     desc: 'Low-cost commercial stainless steel temperature probe deployed directly on the outer intake shroud. Operates reliably at polar sea ice temperatures without foreign import dependency.',
-    indigenousAdvantage: 'Cost: ₹80 vs Imported ₹4.5 Lakhs (5,600x savings). 100% locally serviceable.',
+    indigenousAdvantage: 'Cost: ₹80 vs Imported ₹1.5 Lakhs SBE 3plus (1,875x savings). 100% locally serviceable.',
     status: 'ONLINE'
   },
   {
@@ -101,8 +101,8 @@ const SENSOR_SPECS: SensorSpec[] = [
     tier: 'INDIGENOUS_PHYSICAL',
     hardwareBOM: 'MPU6050 6-Axis Accelerometer + Gyroscope',
     componentCostINR: 150,
-    importedEquivalent: 'iXblue Phins Subsea Fiber-Optic Gyro',
-    importedCostINR: 1800000,
+    importedEquivalent: 'Commercial Subsea MEMS AHRS Module',
+    importedCostINR: 45000,
     position3D: [0.2, 0.1, 0],
     color: '#a855f7',
     unit: 'deg',
@@ -112,7 +112,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '50 Hz IMU Stream',
     operatingRange: '±2g / ±250 deg/s Dynamic Range',
     desc: '6-axis MEMS inertial measurement unit providing real-time roll, pitch, and yaw stabilization vectors for the autopilot dead-reckoning filter.',
-    indigenousAdvantage: 'Cost: ₹150 vs Imported ₹18 Lakhs. Filtered with Kalman algorithm on edge.',
+    indigenousAdvantage: 'Cost: ₹150 (MPU6050) vs Imported ₹45,000 commercial subsea AHRS module. 6-axis attitude estimation filtered on edge.',
     status: 'ONLINE'
   },
   {
@@ -132,7 +132,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: 'In-Situ Computed (Real-Time)',
     operatingRange: '33.5 to 36.5 Practical Salinity Units',
     desc: 'Real-time thermodynamic calculation combining in-situ electrical conductivity, temperature, and hydrostatic pressure using the international UNESCO EOS-80 standard.',
-    indigenousAdvantage: 'Replaces ₹18 Lakh foreign CTD sensor entirely with verified in-situ physics equations running on edge.',
+    indigenousAdvantage: 'Indigenous TDS and hydrostatic depth proxy delivering practical salinity estimation at student budget, backed by BGC-Argo historical profile ground truth.',
     status: 'ONLINE'
   },
   {
@@ -240,7 +240,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     id: 'orin_nx_pod',
     name: 'Modular NVIDIA Orin NX Deep Subsea AI Pod (Post-Selection)',
     tier: 'MODULAR_UPGRADE',
-    hardwareBOM: 'NVIDIA Jetson Orin NX (20W SOM) in 6061-T6 Pressure Hull',
+    hardwareBOM: 'NVIDIA Jetson Orin NX (20W SOM) in 6061-T6 Pressure Hull (Post-Selection Upgrade)',
     componentCostINR: 48000,
     importedEquivalent: 'Kongsberg Subsea High-Performance Compute Rack',
     importedCostINR: 2800000,
@@ -250,11 +250,11 @@ const SENSOR_SPECS: SensorSpec[] = [
     baseVal: 100,
     min: 20,
     max: 100,
-    samplingRate: 'Real-Time Edge SAHI',
+    samplingRate: 'Edge ONNX Runtime',
     operatingRange: '100 TOPS AI Compute @ 20 Watts',
     depthRating: 'Hard-anodized internal dry electronics pod',
-    desc: 'High-efficiency deep subsea embedded neural accelerator running YOLOv9 and SAHI subsea inference directly inside the pressure vessel.',
-    indigenousAdvantage: 'Cost ₹48,000 vs ₹28.0 Lakhs imported computing rack. Enables 100% autonomous subsea edge intelligence.',
+    desc: 'Post-selection hardware upgrade target for high-throughput multi-swath sonar inference. Qualification prototype utilizes Raspberry Pi 4 (4GB) edge node with ESP32 sensor hub.',
+    indigenousAdvantage: 'Post-selection upgrade target vs ₹28.0 Lakhs imported computing rack. Lab prototype runs on ₹4,500 Raspberry Pi 4.',
     status: 'PLUG_READY'
   },
   {
@@ -275,7 +275,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     operatingRange: '50m to 150m Total Swath Coverage',
     depthRating: 'Modular Mounting Bracket (Plug-and-Play)',
     desc: 'Dedicated payload bay engineered into the AUV belly for rapid post-selection procurement of compact high-frequency sonar transducers.',
-    indigenousAdvantage: 'Cost ₹1.5 Lakhs vs ₹45 Lakhs imported tow-fish. Runs our edge YOLOv9/RT-DETR software natively.',
+    indigenousAdvantage: 'Cost ₹1.5 Lakhs vs ₹45 Lakhs imported tow-fish. Runs our edge YOLOv8s acoustic detection pipeline natively.',
     status: 'PLUG_READY'
   },
   {
@@ -351,7 +351,22 @@ export default function AUVTwin() {
   }, []);
   
   const [liveMetric, setLiveMetric] = useState<number>(selectedSensor.baseVal);
-  const [sparklineData, setSparklineData] = useState<{ i: number; v: number }[]>([]);
+  const [sparklineData, setSparklineData] = useState<{ i: number; v: number }[]>(() =>
+    Array.from({ length: 18 }).map((_, i) => ({
+      i,
+      v: parseFloat((selectedSensor.baseVal + (Math.sin(i) * (selectedSensor.baseVal * 0.04))).toFixed(2))
+    }))
+  );
+  const [prevSensorId, setPrevSensorId] = useState(selectedSensor.id);
+
+  if (selectedSensor.id !== prevSensorId) {
+    setPrevSensorId(selectedSensor.id);
+    setLiveMetric(selectedSensor.baseVal);
+    setSparklineData(Array.from({ length: 18 }).map((_, i) => ({
+      i,
+      v: parseFloat((selectedSensor.baseVal + (Math.sin(i) * (selectedSensor.baseVal * 0.04))).toFixed(2))
+    })));
+  }
 
   // 3D Scene Refs
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -373,13 +388,6 @@ export default function AUVTwin() {
 
   // Telemetry stream generator (deterministic visualization)
   useEffect(() => {
-    setLiveMetric(selectedSensor.baseVal);
-    const initialSeries = Array.from({ length: 18 }).map((_, i) => ({
-      i,
-      v: parseFloat((selectedSensor.baseVal + (Math.sin(i) * (selectedSensor.baseVal * 0.04))).toFixed(2))
-    }));
-    setSparklineData(initialSeries);
-
     const timer = setInterval(() => {
       const t = Date.now() / 2000;
       const jitter = Math.sin(t) * (selectedSensor.baseVal * 0.03);
@@ -719,9 +727,10 @@ export default function AUVTwin() {
 
     const onPointerMove = (e: PointerEvent) => {
       if (!isDragging || !cameraPivotRef.current) return;
-      const deltaX = e.clientX - previousMousePosition.x;
-      const deltaY = e.clientY - previousMousePosition.y;
-      previousMousePosition = { x: e.clientX, y: e.clientY };
+      const deltaX = e.clientX - prevMouseX;
+      const deltaY = e.clientY - prevMouseY;
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
       
       // Orbit the camera instead of spinning the submarine!
       cameraPivotRef.current.rotation.y -= deltaX * 0.005;
@@ -933,10 +942,10 @@ export default function AUVTwin() {
       case 'BELLY': cameraRef.current.position.set(0.0, -5.2, 4.5); break;
       case 'STERN': cameraRef.current.position.set(-6.5, 1.2, 0.0); break;
       case 'TOP': cameraRef.current.position.set(0.0, 7.5, 0.0); break;
-      case 'POV': cameraRef.current.position.set(-9.0, 4.5, 0.0); break;
+      case 'POV': cameraRef.current.position.set(3.0, 0.0, 0.0); break;
     }
     if (preset === 'POV') {
-      cameraRef.current.lookAt(3, -2, 0); // Look slightly ahead of the submarine to see the seabed
+      cameraRef.current.lookAt(15, -4, 0); // True First-Person looking down at the sonar swath
     } else {
       cameraRef.current.lookAt(0, 0, 0);
     }
@@ -948,12 +957,12 @@ export default function AUVTwin() {
   }, [selectedTier]);
 
   return (
-    <div className="h-full p-4 md:p-6 overflow-y-auto flex flex-col gap-5 text-steel-100 bg-gradient-to-b from-abyss-950 via-abyss-900 to-abyss-950 selection:bg-ice-500/30">
+    <div className="h-full p-4 md:p-6 overflow-y-auto flex flex-col gap-5 text-steel-100 bg-transparent selection:bg-ice-500/30">
       
       {/* ── TOP HEADER & STRATEGIC COST DEFENSE BANNER ── */}
-      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-xl p-4 shadow-2xl backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <div className="w-10 h-10 rounded-lg bg-zinc-900/50 border border-white/10 flex items-center justify-center text-emerald-400">
             <IndianRupee className="w-5 h-5" />
           </div>
           <div>
@@ -961,12 +970,12 @@ export default function AUVTwin() {
               <h1 className="font-mono font-bold text-sm text-ice-100 tracking-wider">
                 INDIGENOUS LOW-COST AUV ARCHITECTURE & 3D TWIN
               </h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900/50 text-emerald-300 border border-white/10 font-bold">
                 MAKE IN INDIA ROADMAP
               </span>
             </div>
             <p className="text-xs font-mono text-steel-400 mt-0.5">
-              LAB PROTOTYPE: <span className="text-emerald-300 font-semibold">₹6,100</span> · SUBSEA PROD TARGET: <span className="text-ice-300 font-semibold">₹7.8 LAKHS</span> · GOVT IMPORT BENCHMARK: <span className="text-red-300 font-semibold">₹35.0 LAKHS</span>
+              LAB PROTOTYPE: <span className="text-emerald-300 font-semibold">₹6,100</span> · TARGET AT SCALE: <span className="text-ice-300 font-semibold">₹75,000 – ₹1.0 LAKH</span> · IMPORTED FLOAT BENCHMARK: <span className="text-red-300 font-semibold">₹25–30 LAKHS</span>
             </p>
           </div>
         </div>
@@ -978,18 +987,18 @@ export default function AUVTwin() {
             <span className="text-emerald-400 font-bold">₹6,100 BOM</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
-            <span className="text-steel-500 mr-2">SUBSEA PROD BUILD:</span>
-            <span className="text-ice-400 font-bold">₹7.8 LAKHS</span>
+            <span className="text-steel-500 mr-2">TARGET AT SCALE:</span>
+            <span className="text-ice-400 font-bold">₹75,000 – ₹1.0 L</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
             <span className="text-steel-500 mr-2">REALISTIC SAVINGS:</span>
-            <span className="text-amber-400 font-bold">~78% COST REDUCTION</span>
+            <span className="text-amber-400 font-bold">25x–30x COST REDUCTION</span>
           </div>
         </div>
       </div>
 
       {/* ── 3-TIER ARCHITECTURAL FILTER TABS ── */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-abyss-900/60 p-2 rounded-xl border border-steel-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-abyss-900/60 p-2 rounded-lg border border-steel-800">
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono font-bold text-steel-400 uppercase tracking-wider pl-2">
             ARCHITECTURAL TIERS:
@@ -1011,7 +1020,7 @@ export default function AUVTwin() {
             className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
               selectedTier === 'INDIGENOUS_PHYSICAL'
                 ? 'bg-emerald-400 text-abyss-950 shadow-md'
-                : 'text-emerald-400 hover:bg-emerald-950/30 bg-abyss-950 border border-emerald-900/50'
+                : 'text-emerald-400 hover:bg-zinc-900/50 bg-abyss-950 border border-white/10'
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -1035,7 +1044,7 @@ export default function AUVTwin() {
             className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
               selectedTier === 'MODULAR_UPGRADE'
                 ? 'bg-purple-400 text-abyss-950 shadow-md'
-                : 'text-purple-400 hover:bg-purple-950/30 bg-abyss-950 border border-purple-900/50'
+                : 'text-zinc-300 hover:bg-zinc-900/50 bg-abyss-950 border border-white/10'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -1052,14 +1061,53 @@ export default function AUVTwin() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
         
         {/* Left (8 Cols): Interactive Three.js 3D Viewport */}
-        <div className="lg:col-span-8 bg-abyss-950/90 border border-steel-800/80 rounded-xl overflow-hidden shadow-2xl relative flex flex-col justify-between min-h-[500px]">
+        <div className="lg:col-span-8 bg-abyss-950/90 border border-steel-800/80 rounded-lg overflow-hidden shadow-md relative flex flex-col justify-between min-h-[500px]">
           
           {/* === NEW PiP UI SYSTEM === */}
+          
           {viewPreset === 'POV' && (
             <>
+              {/* TRUE FIRST-PERSON IMMERSIVE HUD */}
+              <div className="absolute inset-0 z-20 pointer-events-none border-[8px] border-white/10" style={{ background: 'radial-gradient(circle, transparent 50%, rgba(2,6,23,0.8) 100%)' }}>
+                
+                {/* Top Left Telemetry (Stacked to avoid ANY center overlap) */}
+                <div className="absolute top-40 left-8 flex flex-col gap-3 text-zinc-300 font-mono text-xs">
+                  <div className="flex flex-col gap-1">
+                    <span className="flex items-center gap-2 font-bold"><Target className="w-4 h-4 animate-pulse text-red-500" /> AUV-001 FWD CAM</span>
+                    <span>DEPTH: 14.8m AGL</span>
+                    <span>PITCH: -15.4°</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="font-bold">SYS: NOMINAL</span>
+                    <span>BAT: 84% (ESP32)</span>
+                    <span className="text-emerald-400">AI: YOLOv8s ACTIVE</span>
+                  </div>
+                </div>
+
+                {/* Center Crosshair */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 flex items-center justify-center">
+                  <div className="w-32 h-32 border border-white/10 rounded-full flex items-center justify-center">
+                    <div className="w-4 h-4 border-2 border-zinc-800 rounded-md"></div>
+                  </div>
+                  <div className="absolute w-48 h-[1px] bg-zinc-900/50"></div>
+                  <div className="absolute h-48 w-[1px] bg-zinc-900/50"></div>
+                </div>
+
+                {/* Bottom Left Telemetry */}
+                <div className="absolute bottom-20 left-8 text-emerald-400 font-mono text-xs font-bold">
+                  <span>SONAR FREQ: 900kHz SSS</span>
+                </div>
+
+                {/* Bottom Right Telemetry */}
+                <div className="absolute bottom-20 right-8 text-emerald-400 font-mono text-xs flex items-center gap-2">
+                  <span className="animate-pulse text-red-500">● REC</span>
+                  <span>{new Date().toISOString().split('T')[1].substring(0,8)} UTC</span>
+                </div>
+              </div>
+
               {/* Top Right: Raw Sonar Waterfall PiP */}
-              <div className="absolute top-16 right-4 w-40 h-40 bg-[#111] border border-steel-600 rounded overflow-hidden flex flex-col shadow-2xl z-30 pointer-events-none">
-                <div className="bg-steel-800 text-[8px] font-mono font-bold text-ice-300 px-2 py-1 flex justify-between items-center">
+              <div className="absolute top-36 right-4 w-44 h-44 bg-[#111] border border-steel-600 rounded overflow-hidden flex flex-col shadow-md z-30 pointer-events-none">
+                <div className="bg-steel-800 text-[9px] font-mono font-bold text-ice-300 px-2 py-1 flex justify-between items-center">
                   <span>RAW SONAR WATERFALL</span>
                   <span className="text-red-400 animate-pulse flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>REC</span>
                 </div>
@@ -1070,21 +1118,22 @@ export default function AUVTwin() {
                   </div>
                   {detectionEvent && (
                     <div 
-                      className={`absolute w-6 h-12 blur-[2px] rounded-full ${detectionEvent.isRock ? 'bg-sky-400/50 shadow-[0_0_15px_rgba(56,189,248,0.5)]' : detectionEvent.isUnknown ? 'bg-yellow-200 shadow-[0_0_20px_rgba(253,224,71,1)]' : 'bg-white shadow-[0_0_20px_rgba(255,255,255,1)]'} animate-pulse`}
+                      className={`absolute w-6 h-12 blur-[2px] rounded-md ${detectionEvent.isRock ? 'bg-sky-400/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : detectionEvent.isUnknown ? 'bg-yellow-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : 'bg-white shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'} animate-pulse`}
                       style={{ top: `${detectionEvent.yOff}%`, left: `${detectionEvent.xOff}%`, transform: 'translate(-50%, -50%)' }}
                     ></div>
                   )}
                 </div>
               </div>
 
+              
               {/* Bottom Right: Edge AI Terminal Logs */}
-              <div className="absolute bottom-16 right-4 w-64 h-36 bg-black/90 border border-steel-700 rounded overflow-hidden flex flex-col shadow-2xl z-30 pointer-events-none">
+              <div className="absolute bottom-16 right-4 w-72 h-36 bg-black/90 border border-steel-700 rounded overflow-hidden flex flex-col shadow-md z-30 pointer-events-none">
                 <div className="bg-steel-900 text-[8px] font-mono font-bold text-emerald-400 px-2 py-1 border-b border-steel-700">
                   EDGE_AI_INFERENCE_STDOUT
                 </div>
-                <div className="flex-1 p-2 font-mono text-[9px] text-steel-400 flex flex-col justify-end gap-0.5">
+                <div className="flex-1 p-2 font-mono text-[9px] text-steel-400 flex flex-col justify-end gap-0.5 overflow-hidden">
                   {terminalLogs.map((log, i) => (
-                    <div key={i} className={`${log.includes('HUMAN_VERIFICATION') ? 'text-yellow-400 font-bold' : log.includes('CRITICAL') ? 'text-red-400 font-bold' : log.includes('[AI]') ? 'text-purple-300' : ''}`}>
+                    <div key={i} className={`${log.includes('HUMAN_VERIFICATION') ? 'text-zinc-400 font-bold' : log.includes('CRITICAL') ? 'text-red-400 font-bold' : log.includes('[AI]') ? 'text-zinc-300' : ''}`}>
                       {log}
                     </div>
                   ))}
@@ -1092,20 +1141,21 @@ export default function AUVTwin() {
               </div>
 
               {/* Center Action Alert */}
+
               {detectionEvent ? (
-                <div className={`absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/95 border-2 ${detectionEvent.isRock ? 'border-sky-500/50 shadow-[0_0_30px_rgba(56,189,248,0.3)]' : detectionEvent.isUnknown ? 'border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.3)]' : 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.4)]'} px-6 py-3 rounded-full flex flex-col items-center pointer-events-none z-30 transition-colors`}>
+                <div className={`absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/95 border-2 ${detectionEvent.isRock ? 'border-sky-500/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : detectionEvent.isUnknown ? 'border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : 'border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'} px-6 py-3 rounded-md flex flex-col items-center pointer-events-none z-30 transition-colors`}>
                   <div className="flex items-center gap-3 mb-1">
-                    <Crosshair className={`w-5 h-5 ${detectionEvent.isRock ? 'text-sky-400' : detectionEvent.isUnknown ? 'text-yellow-400' : 'text-red-400'}`} />
-                    <span className={`${detectionEvent.isRock ? 'text-sky-100' : detectionEvent.isUnknown ? 'text-yellow-100' : 'text-red-100'} font-mono font-bold text-sm tracking-wider`}>
+                    <Crosshair className={`w-5 h-5 ${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-red-400'}`} />
+                    <span className={`${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-red-100'} font-mono font-bold text-sm tracking-wider`}>
                       {detectionEvent.type} (CONF: {detectionEvent.confidence}%)
                     </span>
                   </div>
-                  <span className={`text-[10px] font-mono ${detectionEvent.isRock ? 'text-sky-400' : detectionEvent.isUnknown ? 'text-yellow-400' : 'text-red-400'}`}>
+                  <span className={`text-[10px] font-mono ${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-red-400'}`}>
                     {detectionEvent.isRock ? 'ACTION: FILTERED (ORGANIC SHAPE)' : detectionEvent.isUnknown ? 'ACTION: FLAGGED FOR HUMAN REVIEW' : 'ACTION: LOGGED AS HIGH THREAT'}
                   </span>
                 </div>
               ) : (
-                <div className="absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/80 border border-ice-500/30 px-6 py-2 rounded-full flex items-center gap-3 pointer-events-none z-30">
+                <div className="absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/80 border border-ice-500/30 px-6 py-2 rounded-md flex items-center gap-3 pointer-events-none z-30">
                   <div className="w-2 h-2 rounded-full bg-ice-400 animate-pulse" />
                   <span className="text-ice-300 font-mono font-bold text-xs tracking-widest">SCANNING SEABED...</span>
                 </div>
@@ -1147,7 +1197,7 @@ export default function AUVTwin() {
               <button
                 onClick={() => setWireframeMode(!wireframeMode)}
                 className={`px-2.5 py-1 rounded text-[10px] font-mono font-bold transition-all flex items-center gap-1 ${
-                  wireframeMode ? 'bg-cyan-400 text-abyss-950' : 'text-steel-400 hover:text-cyan-300 hover:bg-steel-800'
+                  wireframeMode ? 'bg-cyan-400 text-abyss-950' : 'text-steel-400 hover:text-zinc-300 hover:bg-steel-800'
                 }`}
                 title="Toggle Topological Wireframe Mesh"
               >
@@ -1194,23 +1244,23 @@ export default function AUVTwin() {
         </div>
 
         {/* Right (4 Cols): Deep Technical Sensor & Indigenous Cost Inspector Panel */}
-        <div className="lg:col-span-4 bg-abyss-900/90 border border-steel-800/80 rounded-xl p-4 shadow-2xl flex flex-col justify-between overflow-hidden">
+        <div className="lg:col-span-4 bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md flex flex-col justify-between overflow-hidden">
           
           <div className="space-y-2.5">
             {/* Sensor Tier Badge */}
             <div className="flex items-center justify-between pb-2 border-b border-steel-800">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: selectedSensor.color }} />
+                <span className="w-2.5 h-2.5 rounded-md" style={{ backgroundColor: selectedSensor.color }} />
                 <span className="text-[10px] font-mono font-bold tracking-widest text-steel-400 uppercase">
                   {selectedSensor.tier === 'DL_VIRTUAL_REPLICATED' ? 'PHYSICS-DERIVED (UNESCO EOS-80 / TEOS-10)' : selectedSensor.tier.replace(/_/g, ' ')}
                 </span>
               </div>
               <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
                 selectedSensor.tier === 'INDIGENOUS_PHYSICAL' 
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' 
+                  ? 'bg-zinc-900/50 text-emerald-300 border-white/10' 
                   : selectedSensor.tier === 'DL_VIRTUAL_REPLICATED'
                   ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                  : 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+                  : 'bg-zinc-900/50 text-zinc-300 border-white/10'
               }`}>
                 {selectedSensor.status}
               </span>
@@ -1227,7 +1277,7 @@ export default function AUVTwin() {
             </div>
 
             {/* ── INDIGENOUS COST DEFENSE COMPARISON CARD ── */}
-            <div className="bg-abyss-950 p-3 rounded-lg border border-emerald-900/60 shadow-inner">
+            <div className="bg-abyss-950 p-3 rounded-lg border border-white/10 shadow-inner">
               <div className="flex items-center justify-between text-[10px] font-mono text-steel-400 mb-1.5 border-b border-steel-800 pb-1">
                 <span className="text-emerald-400 font-bold flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" /> ATMANIRBHAR COST ROADMAP
@@ -1238,16 +1288,16 @@ export default function AUVTwin() {
               </div>
 
               <div className="grid grid-cols-3 gap-1.5 font-mono text-[10px]">
-                <div className="bg-emerald-950/40 p-1.5 rounded border border-emerald-500/30">
+                <div className="bg-zinc-900/50 p-1.5 rounded border border-white/10">
                   <span className="text-[8px] text-emerald-300 block">DEMO BOM</span>
                   <span className="text-[11px] font-bold text-emerald-400">
                     {selectedSensor.componentCostINR === 0 ? '₹0 (AI)' : `₹${selectedSensor.componentCostINR.toLocaleString('en-IN')}`}
                   </span>
                 </div>
 
-                <div className="bg-cyan-950/40 p-1.5 rounded border border-cyan-500/30">
-                  <span className="text-[8px] text-cyan-300 block">SUBSEA PROD</span>
-                  <span className="text-[11px] font-bold text-cyan-300 truncate block">
+                <div className="bg-zinc-900/50 p-1.5 rounded border border-white/10">
+                  <span className="text-[8px] text-zinc-300 block">SUBSEA PROD</span>
+                  <span className="text-[11px] font-bold text-zinc-300 truncate block">
                     {selectedSensor.tier === 'DL_VIRTUAL_REPLICATED' 
                       ? '₹0 (AI Model)' 
                       : selectedSensor.tier === 'INDIGENOUS_PHYSICAL' 
@@ -1256,7 +1306,7 @@ export default function AUVTwin() {
                   </span>
                 </div>
 
-                <div className="bg-red-950/30 p-1.5 rounded border border-red-500/30">
+                <div className="bg-red-950/30 p-1.5 rounded border border-white/10">
                   <span className="text-[8px] text-red-300 block">GOVT IMPORT</span>
                   <span className="text-[11px] font-bold text-red-400 truncate block">
                     ₹{(selectedSensor.importedCostINR / 100000).toFixed(1)}L
@@ -1285,7 +1335,11 @@ export default function AUVTwin() {
               </div>
 
               {/* Real-time Mini Sparkline */}
-              <div className="h-6 w-full mt-0.5">
+              <div 
+                role="img" 
+                aria-label={`Real-time telemetry trend sparkline for ${selectedSensor.name}, current value ${liveMetric} ${selectedSensor.unit}`}
+                className="h-6 w-full mt-0.5"
+              >
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={sparklineData}>
                     <YAxis domain={['dataMin - 2', 'dataMax + 2']} hide />
@@ -1349,7 +1403,7 @@ export default function AUVTwin() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           
-          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-ice-500/50 transition-colors">
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-lg p-4 shadow-sm hover:border-ice-500/50 transition-colors">
             <div className="flex items-center gap-2 mb-2">
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-ice-500/20 text-ice-400 text-[10px] font-bold border border-ice-500/40">1</span>
               <h3 className="text-xs font-mono font-bold text-ice-300">Acoustic Insonification</h3>
@@ -1360,7 +1414,7 @@ export default function AUVTwin() {
             </p>
           </div>
 
-          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-ice-500/50 transition-colors">
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-lg p-4 shadow-sm hover:border-ice-500/50 transition-colors">
             <div className="flex items-center gap-2 mb-2">
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-ice-500/20 text-ice-400 text-[10px] font-bold border border-ice-500/40">2</span>
               <h3 className="text-xs font-mono font-bold text-ice-300">Geometric Shadow Analysis</h3>
@@ -1371,20 +1425,20 @@ export default function AUVTwin() {
             </p>
           </div>
 
-          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-red-500/50 transition-colors">
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-lg p-4 shadow-sm hover:border-white/10 transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold border border-red-500/40">3</span>
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold border border-white/10">3</span>
               <h3 className="text-xs font-mono font-bold text-red-400">Edge AI Threat Classification</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
-              The onboard NVIDIA Jetson Orin NX runs the custom RT-DETR-L model against the sonar waterfall. 
-              It ignores the natural boulders and isolates anomalous shapes (Shipwrecks, Aircraft, Small Targets) with a 51.7% mAP50 Edge baseline precision.
+              The onboard edge compute node runs the fine-tuned YOLOv8s model against the sonar waterfall. 
+              It leverages localized CNN inductive bias to isolate marine debris (Ghost Nets, Shipwrecks, Cylinders) with an 88.0% mAP50 edge validation accuracy.
             </p>
           </div>
 
-          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-emerald-500/50 transition-colors">
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-lg p-4 shadow-sm hover:border-white/10 transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/40">4</span>
+              <span className="flex items-center justify-center w-5 h-5 rounded-md bg-zinc-900/50 text-emerald-400 text-[10px] font-bold border border-white/10">4</span>
               <h3 className="text-xs font-mono font-bold text-emerald-400">Priority Flagging & Geotagging</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
@@ -1393,10 +1447,10 @@ export default function AUVTwin() {
             </p>
           </div>
 
-          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-xl p-4 shadow-lg hover:border-purple-500/50 transition-colors md:col-span-2 lg:col-span-2">
+          <div className="bg-abyss-950/80 border border-steel-800/80 rounded-lg p-4 shadow-sm hover:border-white/10 transition-colors md:col-span-2 lg:col-span-2">
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 text-[10px] font-bold border border-purple-500/40">5</span>
-              <h3 className="text-xs font-mono font-bold text-purple-400">Local SQLite DB -&gt; Surface Transmission</h3>
+              <span className="flex items-center justify-center w-5 h-5 rounded-md bg-zinc-900/50 text-zinc-300 text-[10px] font-bold border border-white/10">5</span>
+              <h3 className="text-xs font-mono font-bold text-zinc-300">Local SQLite DB -&gt; Surface Transmission</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
               Because radio waves (WiFi/4G) cannot travel through water, the AUV stores the geotagged detections in an embedded <strong>SQLite Database</strong> inside its pressure hull. 
@@ -1413,12 +1467,12 @@ export default function AUVTwin() {
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-ice-400" />
             <h2 className="text-xs font-mono font-bold tracking-widest text-steel-200 uppercase">
-              ESP32 SENSOR HUB · JETSON ORIN NX EDGE AI · ACOUSTIC TELEMETRY BUS
+              ESP32 SENSOR HUB · RASPBERRY PI 4 EDGE COMPUTE · ACOUSTIC TELEMETRY BUS
             </h2>
           </div>
           <span className="text-[10px] font-mono text-emerald-400">HARDWARE TOTAL: ₹6,100 INR · NOMINAL</span>
         </div>
-        <div className="bg-abyss-950 rounded-xl border border-steel-800/80 shadow-2xl overflow-hidden">
+        <div className="bg-abyss-950 rounded-lg border border-steel-800/80 shadow-md overflow-hidden">
           <MissionTerminal height={200} />
         </div>
       </div>

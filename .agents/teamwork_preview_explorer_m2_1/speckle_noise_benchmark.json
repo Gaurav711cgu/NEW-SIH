@@ -1,0 +1,470 @@
+{
+  "01_shipwreck_large_waterfall.jpg": [
+    {
+      "noise_scale": 0.0,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9403,
+        "iou_to_baseline": 0.9999999999999996,
+        "shadow_pct": 25.3,
+        "prep_time_ms": 1.9
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9337,
+        "iou_to_baseline": 0.9429044447402334
+      },
+      "clahe_only_no_blur": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.9368,
+        "iou_to_baseline": 0.955803014592068
+      }
+    },
+    {
+      "noise_scale": 0.1,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9407,
+        "iou_to_baseline": 0.9955995583969068,
+        "shadow_pct": 26.7,
+        "prep_time_ms": 1.76
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9361,
+        "iou_to_baseline": 0.9508682794071537
+      },
+      "clahe_only_no_blur": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.9371,
+        "iou_to_baseline": 0.9515116159518515
+      }
+    },
+    {
+      "noise_scale": 0.25,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9413,
+        "iou_to_baseline": 0.9960008880596958,
+        "shadow_pct": 27.7,
+        "prep_time_ms": 1.69
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9366,
+        "iou_to_baseline": 0.9516014892058374
+      },
+      "clahe_only_no_blur": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.9373,
+        "iou_to_baseline": 0.9431824756443797
+      }
+    },
+    {
+      "noise_scale": 0.5,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9419,
+        "iou_to_baseline": 0.9829297288632082,
+        "shadow_pct": 26.9,
+        "prep_time_ms": 1.72
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9372,
+        "iou_to_baseline": 0.9569670856757116
+      },
+      "clahe_only_no_blur": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.9382,
+        "iou_to_baseline": 0.9648630252815559
+      }
+    },
+    {
+      "noise_scale": 0.75,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9395,
+        "iou_to_baseline": 0.9628953964336454,
+        "shadow_pct": 25.8,
+        "prep_time_ms": 1.85
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9384,
+        "iou_to_baseline": 0.970409552912912
+      },
+      "clahe_only_no_blur": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.9388,
+        "iou_to_baseline": 0.9736196384292053
+      }
+    }
+  ],
+  "07_shipwreck_broken_keel.jpg": [
+    {
+      "noise_scale": 0.0,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.924,
+        "iou_to_baseline": 1.0,
+        "shadow_pct": 44.6,
+        "prep_time_ms": 0.6
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9388,
+        "iou_to_baseline": 0.9643877969538007
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9354,
+        "iou_to_baseline": 0.9524150410964966
+      }
+    },
+    {
+      "noise_scale": 0.1,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9271,
+        "iou_to_baseline": 0.983449252724047,
+        "shadow_pct": 44.6,
+        "prep_time_ms": 0.76
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9398,
+        "iou_to_baseline": 0.9606813723548786
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9316,
+        "iou_to_baseline": 0.9607156262636122
+      }
+    },
+    {
+      "noise_scale": 0.25,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9294,
+        "iou_to_baseline": 0.9842376253060868,
+        "shadow_pct": 42.8,
+        "prep_time_ms": 0.61
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.94,
+        "iou_to_baseline": 0.9527159322544636
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9309,
+        "iou_to_baseline": 0.9552701233440373
+      }
+    },
+    {
+      "noise_scale": 0.5,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.918,
+        "iou_to_baseline": 0.9777149547631719,
+        "shadow_pct": 41.0,
+        "prep_time_ms": 0.62
+      },
+      "raw_no_clahe": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.9269,
+        "iou_to_baseline": 0.9643436547540091
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9277,
+        "iou_to_baseline": 0.969142177728455
+      }
+    },
+    {
+      "noise_scale": 0.75,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9134,
+        "iou_to_baseline": 0.9398791420592006,
+        "shadow_pct": 41.4,
+        "prep_time_ms": 0.59
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9276,
+        "iou_to_baseline": 0.9627833801815122
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9281,
+        "iou_to_baseline": 0.9615571834001474
+      }
+    }
+  ],
+  "13_shallow_water_heavy_speckle.jpg": [
+    {
+      "noise_scale": 0.0,
+      "pipeline": {
+        "count": 3,
+        "top_class": "shipwreck",
+        "top_conf": 0.4656,
+        "iou_to_baseline": 1.0,
+        "shadow_pct": 18.3,
+        "prep_time_ms": 2.73
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "human",
+        "top_conf": 0.8669,
+        "iou_to_baseline": 0.011140789844998682
+      },
+      "clahe_only_no_blur": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.2816,
+        "iou_to_baseline": 0.9644898728316295
+      }
+    },
+    {
+      "noise_scale": 0.1,
+      "pipeline": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.4443,
+        "iou_to_baseline": 0.9834600337974392,
+        "shadow_pct": 18.8,
+        "prep_time_ms": 2.61
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "human",
+        "top_conf": 0.8692,
+        "iou_to_baseline": 0.01110996521152739
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.3246,
+        "iou_to_baseline": 0.9439307766990432
+      }
+    },
+    {
+      "noise_scale": 0.25,
+      "pipeline": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.6647,
+        "iou_to_baseline": 0.9792133461834679,
+        "shadow_pct": 18.6,
+        "prep_time_ms": 2.56
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "human",
+        "top_conf": 0.864,
+        "iou_to_baseline": 0.01103986379186855
+      },
+      "clahe_only_no_blur": {
+        "count": 3,
+        "top_class": "shipwreck",
+        "top_conf": 0.3658,
+        "iou_to_baseline": 0.9590589187953328
+      }
+    },
+    {
+      "noise_scale": 0.5,
+      "pipeline": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.4996,
+        "iou_to_baseline": 0.9740787616570253,
+        "shadow_pct": 16.4,
+        "prep_time_ms": 2.75
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "human",
+        "top_conf": 0.8314,
+        "iou_to_baseline": 0.011449183173671927
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.4505,
+        "iou_to_baseline": 0.941523950475618
+      }
+    },
+    {
+      "noise_scale": 0.75,
+      "pipeline": {
+        "count": 2,
+        "top_class": "shipwreck",
+        "top_conf": 0.6224,
+        "iou_to_baseline": 0.982146167222907,
+        "shadow_pct": 17.1,
+        "prep_time_ms": 2.59
+      },
+      "raw_no_clahe": {
+        "count": 5,
+        "top_class": "human",
+        "top_conf": 0.7837,
+        "iou_to_baseline": 0.011857708788089779
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.3904,
+        "iou_to_baseline": 0.9294386215400305
+      }
+    }
+  ],
+  "21_extreme_speckle_noise_ghost_net.jpg": [
+    {
+      "noise_scale": 0.0,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9301,
+        "iou_to_baseline": 0.9999999999999997,
+        "shadow_pct": 80.7,
+        "prep_time_ms": 1.41
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.912,
+        "iou_to_baseline": 0.9704035818800265
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9154,
+        "iou_to_baseline": 0.9766732356900409
+      }
+    },
+    {
+      "noise_scale": 0.1,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9303,
+        "iou_to_baseline": 0.9950581452556678,
+        "shadow_pct": 72.9,
+        "prep_time_ms": 1.49
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9156,
+        "iou_to_baseline": 0.9658580039601499
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9161,
+        "iou_to_baseline": 0.9751946471469093
+      }
+    },
+    {
+      "noise_scale": 0.25,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9318,
+        "iou_to_baseline": 0.9905698384572322,
+        "shadow_pct": 59.4,
+        "prep_time_ms": 1.49
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9184,
+        "iou_to_baseline": 0.9677239260735153
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9173,
+        "iou_to_baseline": 0.9754931307778648
+      }
+    },
+    {
+      "noise_scale": 0.5,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9305,
+        "iou_to_baseline": 0.9871226664490285,
+        "shadow_pct": 45.3,
+        "prep_time_ms": 1.4
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9168,
+        "iou_to_baseline": 0.9649286933095218
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9169,
+        "iou_to_baseline": 0.9760900872371384
+      }
+    },
+    {
+      "noise_scale": 0.75,
+      "pipeline": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9288,
+        "iou_to_baseline": 0.9813850132047377,
+        "shadow_pct": 37.5,
+        "prep_time_ms": 1.38
+      },
+      "raw_no_clahe": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9155,
+        "iou_to_baseline": 0.9690191705167008
+      },
+      "clahe_only_no_blur": {
+        "count": 1,
+        "top_class": "shipwreck",
+        "top_conf": 0.9163,
+        "iou_to_baseline": 0.9753162424203965
+      }
+    }
+  ]
+}

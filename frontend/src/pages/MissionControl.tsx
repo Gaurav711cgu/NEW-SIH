@@ -158,10 +158,10 @@ export function MissionControl() {
   const currentProfile = MODE_PROFILES[activeMode];
 
   return (
-    <div className="h-full p-4 md:p-6 overflow-y-auto flex flex-col gap-5 text-steel-100 bg-gradient-to-b from-abyss-950 via-abyss-900 to-abyss-950">
+    <div className="h-full p-4 md:p-6 overflow-y-auto flex flex-col gap-5 text-steel-100 bg-transparent">
       
       {/* ── TOP OPERATIONAL LINK STATUS BAR ── */}
-      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-xl p-4 shadow-2xl backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
         
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-ice-500/10 border border-ice-500/30 flex items-center justify-center text-ice-400">
@@ -170,7 +170,7 @@ export function MissionControl() {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="font-mono font-bold text-sm text-ice-100 tracking-wider">AUV MISSION COMMAND & CONTROL</h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900/50 text-emerald-300 border border-white/10 font-semibold">
                 LINK: USBL ACOUSTIC MODEM (8.5 kHz)
               </span>
             </div>
@@ -185,7 +185,7 @@ export function MissionControl() {
           <div className={`px-3.5 py-1.5 rounded-lg border font-mono text-xs tracking-wider flex items-center gap-2 ${
             phase === 'SATCOM_UPLINK' 
               ? 'border-ice-500/50 text-ice-300 bg-ice-950/40 shadow-ice-500/10' 
-              : 'border-cyan-500/40 text-cyan-300 bg-cyan-950/30'
+              : 'border-white/10 text-zinc-300 bg-zinc-900/50'
           }`}>
             <Radio className="w-3.5 h-3.5 animate-pulse text-ice-400" />
             <span>
@@ -196,7 +196,7 @@ export function MissionControl() {
           </div>
 
           <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-steel-800">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="w-2.5 h-2.5 rounded-md bg-emerald-400 animate-pulse" />
             <span className="text-[11px] font-mono text-steel-300 font-semibold">C2 LINK: NOMINAL</span>
           </div>
         </div>
@@ -207,7 +207,7 @@ export function MissionControl() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         
         {/* Metric 1: Depth */}
-        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-xl p-4 shadow-lg relative group">
+        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-lg p-4 shadow-sm relative group">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-mono text-steel-400 tracking-wider">VEHICLE DEPTH</span>
             <Activity className="w-4 h-4 text-ice-400" />
@@ -225,7 +225,7 @@ export function MissionControl() {
         </div>
 
         {/* Metric 2: Battery */}
-        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-xl p-4 shadow-lg relative group">
+        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-lg p-4 shadow-sm relative group">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-mono text-steel-400 tracking-wider">POWER CONSUMPTION</span>
             <Battery className={`w-4 h-4 ${(data?.battery_pct || 88) < 25 ? 'text-red-400' : 'text-emerald-400'}`} />
@@ -243,10 +243,10 @@ export function MissionControl() {
         </div>
 
         {/* Metric 3: Survey Speed */}
-        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-xl p-4 shadow-lg relative group">
+        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-lg p-4 shadow-sm relative group">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-mono text-steel-400 tracking-wider">NAV SPEED & FREQ</span>
-            <Compass className="w-4 h-4 text-cyan-400" />
+            <Compass className="w-4 h-4 text-zinc-300" />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-mono font-bold text-steel-50">
@@ -261,7 +261,7 @@ export function MissionControl() {
         </div>
 
         {/* Metric 4: Navigation Lock */}
-        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-xl p-4 shadow-lg relative group">
+        <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-lg p-4 shadow-sm relative group">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-mono text-steel-400 tracking-wider">SUBSEA POSITIONING</span>
             <Navigation className="w-4 h-4 text-amber-400" />
@@ -281,7 +281,7 @@ export function MissionControl() {
       </div>
 
       {/* ── ROW 2: INTERACTIVE DYNAMIC TRAJECTORY & FLIGHT PATH VISUALIZER ── */}
-      <div className="bg-abyss-900/80 border border-steel-800/80 rounded-xl p-5 shadow-2xl">
+      <div className="bg-abyss-900/80 border border-steel-800/80 rounded-lg p-5 shadow-md">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-steel-800/80">
           <div>
             <div className="flex items-center gap-2">
@@ -301,7 +301,7 @@ export function MissionControl() {
               onClick={() => handleSelectMode('LAWNMOWER')}
               className={`px-3 py-2 rounded-md font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
                 activeMode === 'LAWNMOWER'
-                  ? 'bg-ice-500 text-abyss-950 shadow-lg shadow-ice-500/25 scale-[1.02]'
+                  ? 'bg-ice-500 text-abyss-950 shadow-sm shadow-ice-500/25 scale-[1.02]'
                   : 'text-steel-400 hover:text-ice-300 hover:bg-steel-900'
               }`}
             >
@@ -313,7 +313,7 @@ export function MissionControl() {
               onClick={() => handleSelectMode('CONTOUR_FOLLOW')}
               className={`px-3 py-2 rounded-md font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
                 activeMode === 'CONTOUR_FOLLOW'
-                  ? 'bg-amber-400 text-abyss-950 shadow-lg shadow-amber-400/25 scale-[1.02]'
+                  ? 'bg-amber-400 text-abyss-950 shadow-sm shadow-amber-400/25 scale-[1.02]'
                   : 'text-steel-400 hover:text-amber-300 hover:bg-steel-900'
               }`}
             >
@@ -325,7 +325,7 @@ export function MissionControl() {
               onClick={() => handleSelectMode('HOVER_STATION')}
               className={`px-3 py-2 rounded-md font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
                 activeMode === 'HOVER_STATION'
-                  ? 'bg-emerald-400 text-abyss-950 shadow-lg shadow-emerald-400/25 scale-[1.02]'
+                  ? 'bg-emerald-400 text-abyss-950 shadow-sm shadow-none scale-[1.02]'
                   : 'text-steel-400 hover:text-emerald-300 hover:bg-steel-900'
               }`}
             >
@@ -339,7 +339,7 @@ export function MissionControl() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           
           {/* Visual Vector Trajectory Display with Real Bathymetry & Tactical Navigation */}
-          <div className="lg:col-span-8 bg-abyss-950 rounded-xl border border-steel-800 p-3 relative overflow-hidden h-[340px] flex flex-col justify-between">
+          <div className="lg:col-span-8 bg-abyss-950 rounded-lg border border-steel-800 p-3 relative overflow-hidden h-[340px] flex flex-col justify-between">
             
             {/* Real Bathymetric Map Header Overlay */}
             <div className="absolute top-2.5 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
@@ -352,7 +352,7 @@ export function MissionControl() {
               </div>
 
               {/* Compass Rose */}
-              <div className="bg-abyss-900/90 p-1.5 rounded-full border border-steel-800 flex items-center justify-center w-8 h-8 shadow-md">
+              <div className="bg-abyss-900/90 p-1.5 rounded-md border border-steel-800 flex items-center justify-center w-8 h-8 shadow-md">
                 <div className="relative w-full h-full flex items-center justify-center font-mono text-[8px] font-bold text-steel-400">
                   <span className="absolute -top-1 text-red-400 font-black">N</span>
                   <div className="w-[1px] h-4 bg-gradient-to-b from-red-500 to-steel-600 rotate-12" />
@@ -536,12 +536,12 @@ export function MissionControl() {
               {/* Tactical Legend */}
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1 text-emerald-400">
-                  <span className="w-2.5 h-2 rounded bg-emerald-500/30 border border-emerald-400 inline-block" /> SCANNED SWATH
+                  <span className="w-2.5 h-2 rounded bg-zinc-900/50 border border-emerald-400 inline-block" /> SCANNED SWATH
                 </span>
                 <span className="flex items-center gap-1 text-ice-400">
                   <span className="w-2.5 h-0.5 bg-ice-400 inline-block" /> FLIGHT TRANSECT
                 </span>
-                <span className="flex items-center gap-1 text-yellow-300">
+                <span className="flex items-center gap-1 text-zinc-400">
                   <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" /> AUV VESSEL
                 </span>
                 <span className="flex items-center gap-1 text-red-400">
@@ -563,7 +563,7 @@ export function MissionControl() {
 
           </div>
 
-          <div className="lg:col-span-4 bg-abyss-950 rounded-xl border border-steel-800 p-3.5 flex flex-col justify-between">
+          <div className="lg:col-span-4 bg-abyss-950 rounded-lg border border-steel-800 p-3.5 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-steel-800">
                 <span className="text-[10px] font-mono font-bold text-steel-400 tracking-wider">
@@ -629,13 +629,13 @@ export function MissionControl() {
             <span className="text-[10px] font-mono text-emerald-400">STREAM: 8.5 kHz CARRIER</span>
           </div>
 
-          <div className="bg-abyss-950 rounded-xl border border-steel-800/80 shadow-2xl overflow-hidden">
+          <div className="bg-abyss-950 rounded-lg border border-steel-800/80 shadow-md overflow-hidden">
             <MissionTerminal height={340} />
           </div>
         </div>
 
         {/* Right (5 Cols): Command Dispatch Actions */}
-        <div className="lg:col-span-5 bg-abyss-900/80 border border-steel-800/80 rounded-xl p-4 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-abyss-900/80 border border-steel-800/80 rounded-lg p-4 shadow-md flex flex-col justify-between">
           
           <div>
             <div className="flex items-center justify-between mb-3 border-b border-steel-800 pb-2">
@@ -654,7 +654,7 @@ export function MissionControl() {
               <button 
                 onClick={() => handleSendCommand('CALIBRATE', 'EXEC_SWATH_CALIBRATION')}
                 disabled={calibrating}
-                className="p-3 bg-abyss-950 hover:bg-steel-800/80 border border-steel-800 hover:border-ice-500/60 rounded-xl text-left text-steel-200 flex items-center justify-between transition-all group shadow-md"
+                className="p-3 bg-abyss-950 hover:bg-steel-800/80 border border-steel-800 hover:border-ice-500/60 rounded-lg text-left text-steel-200 flex items-center justify-between transition-all group shadow-md"
               >
                 <div>
                   <span className="font-bold text-ice-300 block">CALIBRATE SSS</span>
@@ -665,18 +665,18 @@ export function MissionControl() {
 
               <button 
                 onClick={() => handleSendCommand('BURST', 'TRIGGER_BURST_SATCOM')}
-                className="p-3 bg-abyss-950 hover:bg-steel-800/80 border border-steel-800 hover:border-cyan-500/60 rounded-xl text-left text-steel-200 flex items-center justify-between transition-all group shadow-md"
+                className="p-3 bg-abyss-950 hover:bg-steel-800/80 border border-steel-800 hover:border-white/10 rounded-lg text-left text-steel-200 flex items-center justify-between transition-all group shadow-md"
               >
                 <div>
-                  <span className="font-bold text-cyan-300 block">BURST SYNC</span>
+                  <span className="font-bold text-zinc-300 block">BURST SYNC</span>
                   <span className="text-[9px] text-steel-500">Flush data buffer</span>
                 </div>
-                <DatabaseZap className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+                <DatabaseZap className="w-4 h-4 text-zinc-300 group-hover:scale-110 transition-transform" />
               </button>
 
               <button 
                 onClick={() => handleSendCommand('HOLD', 'HOLD_DEPTH_STATION')}
-                className="p-3 bg-abyss-950 hover:bg-steel-800/80 border border-steel-800 hover:border-amber-500/60 rounded-xl text-left text-steel-200 flex items-center justify-between transition-all group shadow-md"
+                className="p-3 bg-abyss-950 hover:bg-steel-800/80 border border-steel-800 hover:border-amber-500/60 rounded-lg text-left text-steel-200 flex items-center justify-between transition-all group shadow-md"
               >
                 <div>
                   <span className="font-bold text-amber-300 block">HOLD DEPTH</span>
@@ -687,7 +687,7 @@ export function MissionControl() {
 
               <button 
                 onClick={() => setEmergencyModal(true)}
-                className="p-3 bg-red-950/30 hover:bg-red-900/50 border border-red-800/60 hover:border-red-500 rounded-xl text-left text-red-300 flex items-center justify-between transition-all group shadow-md"
+                className="p-3 bg-red-950/30 hover:bg-red-900/50 border border-white/10 hover:border-red-500 rounded-lg text-left text-red-300 flex items-center justify-between transition-all group shadow-md"
               >
                 <div>
                   <span className="font-bold text-red-400 block">EMERGENCY SURFACE</span>
@@ -708,7 +708,7 @@ export function MissionControl() {
                 <div className="text-ice-400 animate-pulse font-bold">CALIBRATING SLANT-RANGE & RADIOMETRIC SSS TRANSDUCER...</div>
               )}
               {syncing && !calibrating && (
-                <div className="text-cyan-400 animate-pulse">TRANSMITTING ACOUSTIC TELECOMMAND VIA USBL MODEM...</div>
+                <div className="text-zinc-300 animate-pulse">TRANSMITTING ACOUSTIC TELECOMMAND VIA USBL MODEM...</div>
               )}
               {commandLog.map((log, idx) => (
                 <div key={idx} className="text-emerald-400/90 truncate">{log}</div>
@@ -729,7 +729,7 @@ export function MissionControl() {
       {/* Emergency Abort Confirmation Modal */}
       {emergencyModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-abyss-900 border-2 border-red-500 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+          <div className="bg-abyss-900 border-2 border-red-500 rounded-lg max-w-md w-full p-6 shadow-md space-y-4">
             <div className="flex items-center gap-3 text-red-500">
               <AlertTriangle className="w-8 h-8 animate-bounce" />
               <h3 className="text-lg font-mono font-bold">CONFIRM EMERGENCY SURFACE</h3>
@@ -751,7 +751,7 @@ export function MissionControl() {
                   setEmergencyModal(false);
                   handleSendCommand('EMERGENCY_SURFACE', 'CRITICAL_BALLAST_DROP_INITIATED');
                 }}
-                className="px-4 py-2 rounded-lg font-mono text-xs bg-red-600 hover:bg-red-500 text-white font-bold shadow-lg shadow-red-600/30"
+                className="px-4 py-2 rounded-lg font-mono text-xs bg-red-600 hover:bg-red-500 text-white font-bold shadow-sm shadow-red-600/30"
               >
                 DISPATCH BALLAST DROP
               </button>

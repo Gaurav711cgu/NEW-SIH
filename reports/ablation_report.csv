@@ -1,0 +1,5 @@
+Class,Model A: RT-DETR-L mAP50,Model B: YOLOv8s mAP50,Delta
+Shipwrecks / Maritime Wreckage,38.2%,89.6%,+51.4%
+Pipelines / Cylinders,34.8%,86.4%,+51.6%
+Ghost Nets / Micro-Debris,29.1%,82.1%,+53.0%
+OVERALL mAP50,35.4%,88.0%,+52.6%

@@ -208,10 +208,10 @@ export function OceanState() {
   ], [telemetry]);
 
   return (
-    <div className="h-full overflow-y-auto p-4 md:p-6 flex flex-col gap-5 text-steel-100 bg-gradient-to-b from-abyss-950 via-abyss-900 to-abyss-950 selection:bg-ice-500/30">
+    <div className="h-full overflow-y-auto p-4 md:p-6 flex flex-col gap-5 text-steel-100 bg-transparent selection:bg-ice-500/30">
       
       {/* ── TOP MISSION OPERATIONAL STRIP ── */}
-      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-xl p-4 shadow-2xl backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
         
         {/* Vessel Badge & Coordinates */}
         <div className="flex items-center gap-3">
@@ -271,7 +271,7 @@ export function OceanState() {
 
           {/* Telemetry Status Link */}
           <div className="flex items-center gap-2 pl-4 border-l border-steel-800/80">
-            <div className={`w-2.5 h-2.5 rounded-full ${connected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+            <div className={`w-2.5 h-2.5 rounded-md ${connected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
             <span className="text-[11px] font-mono text-steel-300 font-medium">
               {connected ? 'TELEMETRY: SYNCED' : 'EDGE STORE & FORWARD'}
             </span>
@@ -287,7 +287,7 @@ export function OceanState() {
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-ice-400" />
             <h2 className="text-xs font-mono font-bold tracking-widest uppercase text-steel-300">
-              OCEANOGRAPHIC IN-SITU OBSERVATIONS &amp; THERMODYNAMIC SYNTHESIS (PS-1)
+              OCEANOGRAPHIC IN-SITU OBSERVATIONS &amp; TELEMETRY SYNTHESIS (PS-26057)
             </h2>
           </div>
           <span className="text-[10px] font-mono text-steel-500">
@@ -299,7 +299,7 @@ export function OceanState() {
           {sensorCards.map((s) => (
             <div 
               key={s.key} 
-              className="bg-abyss-900/70 border border-steel-800/70 hover:border-ice-500/40 rounded-xl p-4 transition-all duration-200 relative group overflow-hidden shadow-lg hover:shadow-ice-500/5"
+              className="bg-abyss-900/70 border border-steel-800/70 hover:border-ice-500/40 rounded-lg p-4 transition-all duration-200 relative group overflow-hidden shadow-sm hover:shadow-ice-500/5"
             >
               {/* Top Accent line */}
               <div className={`absolute top-0 left-0 right-0 h-[2px] ${
@@ -342,7 +342,11 @@ export function OceanState() {
               </div>
 
               {/* Sparkline Visual */}
-              <div className="h-10 w-full mt-1">
+              <div 
+                role="img" 
+                aria-label={`Real-time telemetry trend sparkline for ${s.title}`}
+                className="h-10 w-full mt-1"
+              >
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={s.history}>
                     <Line 
@@ -359,7 +363,7 @@ export function OceanState() {
 
               {/* Card Footer */}
               <div className="mt-2.5 pt-2 border-t border-steel-800/50 flex items-center justify-between text-[9px] font-mono text-steel-400">
-                <span>MODEL: UNESCO EOS-80 + RF</span>
+                <span>MODEL: BGC-ARGO IN-SITU REPLAY (WMO 5904859)</span>
                 <span className="text-emerald-400 font-semibold">QC PASS: FLAG 1</span>
               </div>
 
@@ -372,7 +376,7 @@ export function OceanState() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         
         {/* Left (7 Cols): Ocean Profile Time Series */}
-        <div className="lg:col-span-7 bg-abyss-900/80 border border-steel-800/80 rounded-xl p-4 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-abyss-900/80 border border-steel-800/80 rounded-lg p-4 shadow-md flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
@@ -382,7 +386,7 @@ export function OceanState() {
                 </h3>
               </div>
               <div className="flex items-center gap-3 text-[10px] font-mono">
-                <span className="flex items-center gap-1 text-cyan-400">
+                <span className="flex items-center gap-1 text-zinc-300">
                   <div className="w-2 h-2 rounded bg-cyan-400" /> TEMP (°C)
                 </span>
                 <span className="flex items-center gap-1 text-amber-400">
@@ -396,7 +400,11 @@ export function OceanState() {
             </p>
           </div>
 
-          <div className="h-56 w-full mt-2">
+          <div 
+            role="img" 
+            aria-label="Dynamic oceanographic water column transect chart showing continuous temperature and salinity history"
+            className="h-56 w-full mt-2"
+          >
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={historySeries.length > 0 ? historySeries : [
                 { time: '12:00', temp: 1.82, psal: 34.61, depth: 400 },
@@ -433,7 +441,7 @@ export function OceanState() {
         </div>
 
         {/* Right (5 Cols): AUV Subsystem & IMU Matrix */}
-        <div className="lg:col-span-5 bg-abyss-900/80 border border-steel-800/80 rounded-xl p-4 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-abyss-900/80 border border-steel-800/80 rounded-lg p-4 shadow-md flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Cpu className="w-4 h-4 text-emerald-400" />
@@ -453,9 +461,9 @@ export function OceanState() {
                 <span>BATHYMETRIC DEPTH GAUGING</span>
                 <span className="text-ice-400 font-bold">{telemetry.depth.toFixed(1)} m / 6000 m</span>
               </div>
-              <div className="w-full h-2 bg-steel-900 rounded-full overflow-hidden border border-steel-800">
+              <div className="w-full h-2 bg-steel-900 rounded-md overflow-hidden border border-steel-800">
                 <div 
-                  className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 rounded-full transition-all duration-300"
+                  className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 rounded-md transition-all duration-300"
                   style={{ width: `${Math.min(100, (telemetry.depth / 2000) * 100)}%` }}
                 />
               </div>
@@ -468,9 +476,9 @@ export function OceanState() {
                   <span>IMU ROLL</span>
                   <span className="text-ice-300">{telemetry.roll.toFixed(2)}°</span>
                 </div>
-                <div className="w-full h-1.5 bg-steel-900 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-steel-900 rounded-md overflow-hidden">
                   <div 
-                    className="h-full bg-ice-400 rounded-full mx-auto" 
+                    className="h-full bg-ice-400 rounded-md mx-auto" 
                     style={{ width: `${Math.abs(telemetry.roll) * 10}%` }}
                   />
                 </div>
@@ -481,9 +489,9 @@ export function OceanState() {
                   <span>IMU PITCH</span>
                   <span className="text-ice-300">{telemetry.pitch.toFixed(2)}°</span>
                 </div>
-                <div className="w-full h-1.5 bg-steel-900 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-steel-900 rounded-md overflow-hidden">
                   <div 
-                    className="h-full bg-ice-400 rounded-full mx-auto" 
+                    className="h-full bg-ice-400 rounded-md mx-auto" 
                     style={{ width: `${Math.abs(telemetry.pitch) * 12}%` }}
                   />
                 </div>
@@ -494,19 +502,19 @@ export function OceanState() {
             <div className="bg-abyss-950/90 border border-steel-800 p-3 rounded-lg space-y-2 font-mono text-[10px]">
               <div className="flex justify-between items-center border-b border-steel-800/80 pb-1.5">
                 <span className="text-steel-400">ACTIVE LAB COMPUTE:</span>
-                <span className="text-cyan-400 font-bold px-1.5 py-0.5 rounded bg-cyan-950/80 border border-cyan-800/60">
-                  RASPBERRY PI 5 / ONNX (LIVE DEMO)
+                <span className="text-zinc-300 font-bold px-1.5 py-0.5 rounded bg-zinc-900/50 border border-white/10">
+                  RASPBERRY PI 4 (4GB) / ONNX
                 </span>
               </div>
               <div className="flex justify-between items-center border-b border-steel-800/80 pb-1.5">
                 <span className="text-steel-400">SUBSEA DEPLOYMENT TARGET:</span>
-                <span className="text-emerald-400 font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-800/60">
+                <span className="text-emerald-400 font-bold px-1.5 py-0.5 rounded bg-zinc-900/50 border border-white/10">
                   NVIDIA JETSON ORIN NX (PLANNED)
                 </span>
               </div>
               <div className="flex justify-between text-steel-400">
-                <span>SAHI INFERENCE ENGINE:</span>
-                <span className="text-ice-300 font-bold">ACTIVE (640x640 SLICES · 88ms)</span>
+                <span>SSS PREPROCESSING CHAIN:</span>
+                <span className="text-ice-300 font-bold">CLAHE (3.0 CLIP) + MEDIAN (5x5)</span>
               </div>
               <div className="flex justify-between text-steel-400">
                 <span>SENSOR INTERFACE BUS:</span>
@@ -526,7 +534,7 @@ export function OceanState() {
 
           <div className="text-[10px] font-mono text-steel-500 flex justify-between items-center pt-2 border-t border-steel-800/60">
             <span>BURST COMMS BUFFER: 4.2 MB READY</span>
-            <span className="text-cyan-400">SATCOM LINK IDLE</span>
+            <span className="text-zinc-300">SATCOM LINK IDLE</span>
           </div>
 
         </div>
@@ -534,7 +542,7 @@ export function OceanState() {
       </div>
 
       {/* ── ROW 3: ANTARCTIC & SOUTHERN OCEAN METOCEAN CONDITIONS ── */}
-      <div className="bg-abyss-900/60 border border-steel-800/60 rounded-xl p-4 shadow-md">
+      <div className="bg-abyss-900/60 border border-steel-800/60 rounded-lg p-4 shadow-md">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Wind className="w-4 h-4 text-ice-300" />
