@@ -6,8 +6,7 @@
 
 **Smart India Hackathon 2026**  
 **Team:** DEBUG THUGS  
-**Primary Problem Statement:** PS-26065 (NCPOR) - Autonomous, low-cost ocean observation platform.  
-**X-Factor Integration:** PS-26057 (NIOT) - Edge-AI underwater debris detection via Side-Scan Sonar.
+**Problem Statement:** PS-26065 (NCPOR) - Autonomous, low-cost ocean observation platform.
 
 ---
 
@@ -35,7 +34,7 @@ Our virtual sensors for expensive parameters (Dissolved Oxygen, Chlorophyll, Nit
 
 ---
 
-## 3. The Differentiator: Edge-AI Debris Detection (PS-26057 Integration)
+## 3. The Differentiator: Edge-AI Underwater Debris Detection
 
 While most teams only build the physical observation platform, AQUILA OS includes a fully integrated Edge-AI inference engine capable of processing Side-Scan Sonar (SSS) imagery in real-time. 
 
