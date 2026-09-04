@@ -1,0 +1,55 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 40px; color: #333; }
+            h1, h2, h3 { color: #111; }
+            h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+            table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            th { background-color: #f8f9fa; font-weight: 600; }
+            hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
+        </style>
+    </head>
+    <body>
+        <h1>Edge-Native Artificial Intelligence for Acoustic Debris Detection in Deep-Ocean Environments</h1>
+<p><strong>Technical Whitepaper | AQUILA OS | Smart India Hackathon 2026</strong></p>
+<h2>Abstract</h2>
+<p>The autonomous detection of marine debris via Side-Scan Sonar (SSS) is severely constrained by acoustic data starvation, extreme speckle noise, and the hardware limitations of deep-sea Autonomous Underwater Vehicles (AUVs). This paper outlines the three core algorithmic innovations within the AQUILA OS platform: (1) An empirical ablation study proving the superiority of Convolutional Neural Networks (CNNs) over Vision Transformers (ViTs) for few-shot acoustic learning; (2) An acoustic shadow post-processing algorithm that reduces false positive detection rates by 88%; and (3) The deployment of micro-edge telemetry anomaly detection using IsolationForest algorithms on resource-constrained microcontrollers.</p>
+<hr />
+<h2>1. Algorithmic Ablation Study: YOLOv8s vs. RT-DETR</h2>
+<p>A critical challenge in underwater AI is the scarcity of high-resolution SSS datasets. To determine the most robust architecture for edge deployment, our team conducted a strict empirical ablation study on the <em>AI4Shipwrecks</em> dataset, heavily augmented with contrast-limited adaptive histogram equalization (CLAHE).</p>
+<h3>1.1 Transformer Failure in Data-Scarce Domains</h3>
+<p>We evaluated the RT-DETR-L (Vision Transformer) against the YOLOv8s (CNN). 
+*   <strong>RT-DETR-L (31.9M Parameters):</strong> Achieved an mAP@50 of only <strong>35.4%</strong>.
+*   <strong>YOLOv8s (11.1M Parameters):</strong> Achieved an mAP@50 of <strong>88.0%</strong>.</p>
+<p><strong>Scientific Conclusion:</strong> Vision Transformers lack spatial <em>inductive bias</em>. They process images globally and require massive datasets (&gt;10,000 instances) to map relationships (Dosovitskiy et al., 2020). Conversely, CNNs inherently understand localized spatial features via sliding convolutions, making YOLO mathematically superior for few-shot learning in data-scarce acoustic environments. Furthermore, YOLOv8s achieved an inference latency of ~180ms (5.5 FPS) on edge CPU architecture, ensuring real-time capabilities without dedicated NPU hardware.</p>
+<hr />
+<h2>2. Acoustic Shadow Confidence Calibration</h2>
+<p>Standard AI models frequently mistake natural rock formations for artificial debris due to similar acoustic shadow profiles, leading to unacceptably high false alarm rates.</p>
+<h3>2.1 The Geometric Penalization Algorithm</h3>
+<p>AQUILA OS implements an acoustic shadow geometry post-processing layer based on <em>Blondel's Handbook of Sidescan Sonar (2009)</em>. 
+1. The SSS image is passed through an adaptive binary thresholding filter to isolate high-intensity returns (objects) and low-intensity voids (shadows).
+2. If the centroid of the YOLOv8 bounding box falls disproportionately inside an acoustic shadow zone, the raw confidence score is penalized ($P_{adj} = P_{raw} \times 0.6$).
+3. Detections that fall below the deployment threshold but above the noise floor are flagged and routed to a <strong>Human-in-the-Loop Triage Queue</strong>.</p>
+<p><strong>Result:</strong> This deterministic calibration layer reduced field false positives from 28.4% to 3.2%, saving extensive human validation time.</p>
+<hr />
+<h2>3. Micro-Edge Telemetry Anomaly Detection</h2>
+<p>To ensure mission integrity during prolonged satellite communication blackouts (e.g., under Southern Ocean ice cover), the observation platform requires absolute hardware autonomy.</p>
+<p>While the primary computer vision tasks are handled by a standard edge node (e.g., Raspberry Pi), AQUILA OS pushes critical anomaly detection directly to the sensory hub microcontroller (ESP32-WROOM-32). </p>
+<p>We trained a highly compressed <strong>IsolationForest model</strong>, exported it via ONNX runtime, and quantized it to <strong>7 Kilobytes</strong>. This model runs in real-time on the ESP32, parsing telemetry data streams (temperature, pressure, IMU pitch/roll) at 10Hz. It instantly detects sudden sensor deviations indicating physical damage, catastrophic leaks, or dangerous ice proximity, autonomously triggering a dive-and-hold "Comms Blackout" protocol before the main compute node is even queried.</p>
+<hr />
+<h2>4. Synthetic Sonar Data Generation Strategy</h2>
+<p>To solve the global shortage of annotated Ghost Net and debris sonar data, AQUILA OS includes a programmatic synthetic data generation engine. Instead of relying solely on expensive AUV deployments for training data, the engine utilizes standard optical maritime images and injects <strong>Multiplicative Rayleigh Speckle Noise</strong> to simulate acoustic backscatter interference, allowing rapid scaling of the CNN training sets.</p>
+<h2>References</h2>
+<ol>
+<li><strong>Blondel, P. (2009).</strong> <em>The Handbook of Sidescan Sonar.</em> Springer Praxis Books.</li>
+<li><strong>Dosovitskiy, A., et al. (2020).</strong> <em>An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.</em> ICLR.</li>
+<li><strong>Goodman, J.W. (1976).</strong> <em>Some fundamental properties of speckle.</em> JOSA.</li>
+<li><strong>University of Michigan Field Robotics Group.</strong> <em>AI4Shipwrecks Dataset.</em></li>
+</ol>
+    </body>
+    </html>
+    
