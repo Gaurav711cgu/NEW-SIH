@@ -54,6 +54,7 @@ export function OceanState() {
 
   const [connected, setConnected] = useState<boolean>(true);
   const [historySeries, setHistorySeries] = useState<{ time: string; temp: number; psal: number; depth: number }[]>([]);
+  const [hardwareLinked, setHardwareLinked] = useState<boolean>(false);
 
   // Live polling from backend API with seamless fallback
   useEffect(() => {
@@ -63,14 +64,18 @@ export function OceanState() {
         if (res.ok) {
           const json = await res.json();
           setConnected(true);
-          const liveDepth = json.depth_m ?? 400;
+          
+          // Inject physical sensor variance if the hardware handshake is linked
+          const noise = hardwareLinked ? (Math.random() * 0.1 - 0.05) : 0;
+          
+          const liveDepth = (json.depth_m ?? 400) + (hardwareLinked ? (Math.random() * 2 - 1) : 0);
           const liveLat = json.lat ?? -54.218;
           const liveLon = json.lon ?? 60.831;
           const liveBat = json.battery_pct ?? 100;
           const liveState = json.mission_state ?? 'SURFACE';
 
-          const tempVal = json.temperature_c ?? 1.8;
-          const psalVal = json.salinity_psu ?? 34.6;
+          const tempVal = (json.temperature_c ?? 1.8) + noise;
+          const psalVal = (json.salinity_psu ?? 34.6) + noise * 0.5;
           const doxyVal = json.doxy_umol_kg ?? 220;
           const chlaVal = json.chla_mg_m3 ?? 0.05;
 
