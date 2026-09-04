@@ -65,3 +65,4 @@ Thumbs.db
 *.pt
 *.rar
 telemetry.db
+data/platform.db
