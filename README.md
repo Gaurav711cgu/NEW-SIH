@@ -1,8 +1,6 @@
 # AQUILA OS: Edge-Native Marine Intelligence & Telemetry Platform
 
-<div align="center">
-  <img src="./frontend/public/logo.png" alt="AQUILA OS" width="150" onError="this.style.display='none'"/>
-</div>
+
 
 **Smart India Hackathon 2026**  
 **Team:** DEBUG THUGS  
