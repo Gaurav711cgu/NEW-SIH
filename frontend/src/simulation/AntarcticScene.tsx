@@ -39,32 +39,36 @@ function GodRays() {
   const depth = useSimulationStore((s) => s.depth);
   const groupRef = useRef<THREE.Group>(null);
   
+  // Memoize random positions so they don't jump every frame
+  const rays = React.useMemo(() => {
+    return [...Array(12)].map(() => ({
+      position: [(Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100] as [number, number, number],
+      rotation: [Math.random() * 0.2, Math.random() * Math.PI, Math.random() * 0.2] as [number, number, number],
+      args: [10 + Math.random() * 20, 150, 16, 1, true, 0, Math.PI * 2] as any,
+      opacityMult: 0.3 + Math.random() * 0.7
+    }));
+  }, []);
+
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      // Slowly sway the light rays to simulate caustics and waves
       groupRef.current.rotation.x = Math.sin(clock.elapsedTime * 0.2) * 0.1;
       groupRef.current.rotation.z = Math.cos(clock.elapsedTime * 0.15) * 0.1;
     }
   });
 
-  const opacity = Math.max(0, 0.25 - (depth / 200)); // Fades out completely by 50m
+  const opacity = Math.max(0, 0.25 - (depth / 200));
 
   if (opacity <= 0) return null;
 
   return (
     <group ref={groupRef} position={[0, 10, 0]}>
-      {[...Array(12)].map((_, i) => (
-        <mesh 
-          key={i} 
-          position={[(Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100]}
-          rotation={[Math.random() * 0.2, Math.random() * Math.PI, Math.random() * 0.2]}
-        >
-          {/* Much softer, wider cones spreading downwards */}
-          <coneGeometry args={[10 + Math.random() * 20, 150, 16, 1, true, 0, Math.PI * 2]} />
+      {rays.map((ray, i) => (
+        <mesh key={i} position={ray.position} rotation={ray.rotation}>
+          <coneGeometry args={ray.args} />
           <meshBasicMaterial 
             color="#aae6ff" 
             transparent 
-            opacity={opacity * (0.3 + Math.random() * 0.7)} 
+            opacity={opacity * ray.opacityMult} 
             blending={THREE.AdditiveBlending} 
             depthWrite={false} 
             side={THREE.DoubleSide} 
@@ -115,21 +119,21 @@ function Seafloor() {
 function OceanEnvironment() {
   const depth = useSimulationStore((s) => s.depth);
 
-  // Deep ocean color gradient
-  const surfaceColor = new THREE.Color('#1a2530');
-  const deepColor = new THREE.Color('#00050a');
+  const surfaceColor = new THREE.Color('#001122'); // Darker ocean blue
+  const deepColor = new THREE.Color('#000205');   // Pitch black/blue
   const fogColor = surfaceColor.clone().lerp(deepColor, Math.min(depth / 80, 1));
-  const fogDensity = THREE.MathUtils.lerp(0.002, 0.04, Math.min(depth / 150, 1));
-  const ambientIntensity = Math.max(0.01, 0.8 - (depth / 40));
-  const sunIntensity = Math.max(0, 2.0 - (depth / 20));
+  const fogDensity = THREE.MathUtils.lerp(0.005, 0.03, Math.min(depth / 150, 1));
+  
+  // Dramatic moody lighting
+  const ambientIntensity = Math.max(0.01, 0.3 - (depth / 100));
+  const sunIntensity = Math.max(0, 1.5 - (depth / 50));
 
   const scene = useThree((state) => state.scene);
   
   useFrame(() => {
-    // Dynamically update background and fog
-    scene.background = fogColor;
+    // Only use fog, not background, to keep the sky dome visible
     if (scene.fog instanceof THREE.FogExp2) {
-      scene.fog.color = fogColor;
+      scene.fog.color.lerp(fogColor, 0.1);
       scene.fog.density = fogDensity;
     } else {
       scene.fog = new THREE.FogExp2(fogColor, fogDensity);
@@ -138,11 +142,11 @@ function OceanEnvironment() {
 
   return (
     <>
-      <ambientLight intensity={ambientIntensity} color="#90d0ff" />
+      <ambientLight intensity={ambientIntensity} color="#4080ff" />
       <directionalLight 
         position={[20, 50, -20]} 
         intensity={sunIntensity} 
-        color="#ffffff" 
+        color="#aaddff" 
         castShadow
         shadow-mapSize={[2048, 2048]}
       />
@@ -157,7 +161,6 @@ function OceanEnvironment() {
       <DebrisField />
       <SonarSweep />
       
-      {/* AAA Rippled Seafloor */}
       <Seafloor />
     </>
   );

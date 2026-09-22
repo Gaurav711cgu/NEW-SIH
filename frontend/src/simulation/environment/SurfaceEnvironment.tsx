@@ -23,7 +23,7 @@ export default function SurfaceEnvironment() {
       const x = pos.getX(i);
       const z = pos.getZ(i);
       // Gentle ocean swells
-      const wave = Math.sin(x * 0.05 + time) * 0.5 + Math.cos(z * 0.05 + time) * 0.5;
+      const wave = Math.sin(x * 0.05 + time * 1.5) * 0.8 + Math.cos(z * 0.04 + time) * 1.0;
       pos.setY(i, wave);
     }
     waterRef.current.geometry.attributes.position.needsUpdate = true;
