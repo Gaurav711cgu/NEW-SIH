@@ -2,7 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useSimulationStore } from '../store/simulationStore';
-import { Environment, Sky, Cloud, Sparkles } from '@react-three/drei';
+import { Cloud, Sparkles } from '@react-three/drei';
 
 export default function SurfaceEnvironment() {
   const depth = useSimulationStore((s) => s.depth);
@@ -34,20 +34,11 @@ export default function SurfaceEnvironment() {
 
   return (
     <group>
-      {/* AAA Lighting and Environment Map for reflections */}
-      <Environment preset="city" />
-      
-      {/* Moody Antarctic Sky */}
-      <Sky 
-        distance={3000} 
-        turbidity={1.5} 
-        rayleigh={2} 
-        mieCoefficient={0.05} 
-        mieDirectionalG={0.8} 
-        sunPosition={[0, 2, -10]} 
-        inclination={0.49} 
-        azimuth={0.25} 
-      />
+      {/* Tactical Stormy Sky Dome */}
+      <mesh position={[0, -10, 0]}>
+        <sphereGeometry args={[900, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshBasicMaterial color="#0a1118" side={THREE.BackSide} />
+      </mesh>
 
       {/* Atmospheric Fog over the water */}
       <Cloud position={[0, 5, -50]} speed={0.2} opacity={0.5} color="#c0d0e0" />
@@ -56,13 +47,17 @@ export default function SurfaceEnvironment() {
       {/* Light snow/particles in the air */}
       <Sparkles count={500} scale={200} size={2} speed={0.4} opacity={0.5} color="#ffffff" position={[0, 20, 0]} />
 
-      {/* Opaque, reflective ocean surface */}
-      <mesh ref={waterRef} position={[0, -0.5, 0]} geometry={geometry} receiveShadow>
-        <meshStandardMaterial 
-          color="#002233" 
+      {/* Semi-transparent ocean surface */}
+      <mesh ref={waterRef} position={[0, 0, 0]} geometry={geometry} receiveShadow>
+        <meshPhysicalMaterial 
+          color="#001a22" 
           roughness={0.1}
-          metalness={0.9}
+          metalness={0.5}
+          transmission={0.8}
+          opacity={0.8}
+          transparent={true}
           flatShading={true}
+          side={THREE.DoubleSide}
         />
       </mesh>
     </group>
