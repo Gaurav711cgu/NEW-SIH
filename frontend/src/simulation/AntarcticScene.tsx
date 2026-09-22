@@ -4,21 +4,30 @@ import * as THREE from 'three';
 import { useSimulationStore } from './store/simulationStore';
 import AUVModel from './auv/AUVModel';
 import BubbleSystem from "./environment/BubbleSystem";
+import IceShelf from "./environment/IceShelf";
+import DebrisField from "./environment/DebrisField";
+import SonarSweep from "./environment/SonarSweep";
 import CameraManager from './cameras/CameraManager';
 import MissionDirector from './mission/MissionDirector';
 import { useRef } from 'react';
 
 // Highly realistic marine snow (particulates)
 function MarineSnow() {
+  const currentAssist = useSimulationStore(s => s.currentAssist);
+  
+  // When currentAssist is high, speed up the particles drastically to simulate riding the flow
+  const particleSpeed = 0.2 + (currentAssist * 2.0);
+  const particleOpacity = 0.15 + (currentAssist * 0.1);
+  
   return (
     <Sparkles 
       count={4000} 
       scale={[200, 200, 200]} 
       size={1.5} 
-      speed={0.2} 
-      opacity={0.15} 
+      speed={particleSpeed} 
+      opacity={particleOpacity} 
       color="#aaddff" 
-      noise={[10, 10, 10]}
+      noise={[20, 5, 20]}
     />
   );
 }
@@ -101,6 +110,10 @@ function OceanEnvironment() {
         </mesh>
       )}
 
+      <IceShelf />
+      <DebrisField />
+      <SonarSweep />
+      
       {/* Realistic Seafloor */}
       <group position={[0, -142, 0]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>

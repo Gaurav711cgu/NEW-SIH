@@ -92,6 +92,8 @@ export interface SimulationState {
   gpsSatellites: number;
 
   cameraMode: CameraMode;
+  currentAssist: number;
+  powerMode: "ACTIVE_THRUST" | "ECO_GLIDE";
   selectedComponent: string | null;
 
   sonarActive: boolean;
@@ -191,6 +193,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
 
   cameraMode: 'CINEMATIC',
   selectedComponent: null,
+  currentAssist: 0,
+  powerMode: "ACTIVE_THRUST",
 
   sonarActive: false,
   sonarSweepAngle: 0,
@@ -273,6 +277,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     detections: [],
     cameraMode: 'CINEMATIC',
     selectedComponent: null,
+  currentAssist: 0,
+  powerMode: "ACTIVE_THRUST",
     sonarActive: false,
     sonarSweepAngle: 0,
   }),

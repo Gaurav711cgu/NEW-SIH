@@ -7,6 +7,9 @@ export default function TelemetryPanel() {
   const sal = useSimulationStore((state) => state.salinity);
   const do2 = useSimulationStore((state) => state.dissolvedOxygen);
   const press = useSimulationStore((state) => state.pressure);
+  const powerMode = useSimulationStore((state) => state.powerMode);
+  const currentAssist = useSimulationStore((state) => state.currentAssist);
+  const powerDraw = useSimulationStore((state) => state.powerDraw);
 
   // Convert radians to degrees for display
   const pitch = (auvRotation[0] * 180) / Math.PI;
@@ -32,6 +35,15 @@ export default function TelemetryPanel() {
           <TelemetryRow label="PITCH" value={Math.abs(pitch).toFixed(1)} unit={pitch >= 0 ? '▲' : '▼'} />
           <TelemetryRow label="ROLL" value={roll.toFixed(1)} unit="°" />
           <TelemetryRow label="YAW" value={yaw.toFixed(1)} unit="°" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-[10px] font-bold text-ice-500 tracking-wider mb-2 uppercase mt-1">Power Management</h4>
+        <div className="flex flex-col">
+          <TelemetryRow label="MODE" value={powerMode === 'ECO_GLIDE' ? 'GLIDE' : 'ACTIVE'} unit="" />
+          <TelemetryRow label="ASSIST" value={`+${currentAssist.toFixed(1)}`} unit="m/s" />
+          <TelemetryRow label="PWR" value={(powerMode === 'ECO_GLIDE' ? powerDraw * 0.2 : powerDraw).toFixed(1)} unit="kW" />
         </div>
       </div>
 

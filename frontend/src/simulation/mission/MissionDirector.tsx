@@ -34,9 +34,10 @@ export default function MissionDirector() {
         transitionTo('STAGE_2_DESCENT', 5000);
         break;
       case 'STAGE_2_DESCENT':
-        addAILog('[AI] Adjusting pitch for thermal layer transition.');
-        addAILog('[PHYS] Ambient light levels dropping.');
-        setCameraMode('TPP'); // Switch to FPP for descent!
+        addAILog('[AI] Engaging ECO-GLIDE. Thrusters minimized.');
+        addAILog('[PHYS] Riding thermohaline current (-1.2 m/s).');
+        useSimulationStore.getState().updateTelemetry({ powerMode: 'ECO_GLIDE', currentAssist: 1.2 });
+        setCameraMode('TPP'); 
         transitionTo('STAGE_3_MIDWATER', 8000);
         break;
       case 'STAGE_3_MIDWATER':
@@ -46,6 +47,8 @@ export default function MissionDirector() {
         break;
       case 'STAGE_4_SEAFLOOR':
         addAILog('[SYS] Seafloor proximity alert: 42m.');
+        addAILog('[AI] Resuming ACTIVE THRUST for precise navigation.');
+        useSimulationStore.getState().updateTelemetry({ powerMode: 'ACTIVE_THRUST', currentAssist: 0.1 });
         addAILog('[AI] Activating Sonar sweep logic.');
         setCameraMode('TPP'); // Switch back to TPP to see seafloor approach
         transitionTo('STAGE_5_SONAR', 7000);
