@@ -65,9 +65,9 @@ function App() {
               
               <div className="flex h-screen bg-abyss-950/60 text-steel-100 font-sans selection:bg-ice-500/30 overflow-hidden relative z-10 backdrop-blur-sm">
                 <Sidebar />
-                <main id="main-content" tabIndex={-1} className="flex-1 overflow-hidden relative bg-abyss-900/30">
+                <main id="main-content" tabIndex={-1} className="flex-1 overflow-y-auto relative bg-abyss-900/30 custom-scrollbar">
                   <Routes>
-                    <Route path="/" element={<Navigate to="/ocean-state" replace />} />
+                    <Route path="/" element={<Navigate to="/simulation" replace />} />
                     <Route path="/ocean-state" element={<OceanState />} />
                     <Route path="/intel" element={<GovernmentIntel />} />
                     <Route path="/biogeo" element={<Biogeochemistry />} />
