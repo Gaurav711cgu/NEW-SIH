@@ -64,7 +64,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     importedEquivalent: 'Sea-Bird SBE 3plus Oceanographic Temp',
     importedCostINR: 150000,
     position3D: [2.5, -0.2, 0.4],
-    color: '#00e5ff',
+    color: '#ffffff',
     unit: '°C',
     baseVal: 1.84,
     min: -55.0,
@@ -1240,7 +1240,7 @@ export default function AUVTwin() {
               </div>
 
                             {/* Vertical Depth Gauge */}
-              <div className="absolute top-16 right-6 h-64 w-14 bg-black/80 border border-steel-700/50 rounded flex flex-col items-center py-3 pointer-events-none shadow-lg">
+              <div className="absolute top-16 right-6 h-64 w-14 bg-[#2c2c2e] border border-steel-700/50 rounded flex flex-col items-center py-3 pointer-events-none shadow-lg">
                 <div className="text-[9px] text-ice-400 font-mono font-bold mb-2 text-center">SURF<br/>0m</div>
                 <div className="flex-1 w-1.5 bg-steel-900 rounded-full relative overflow-visible shadow-inner">
                   {/* Indicator Track */}
@@ -1250,7 +1250,7 @@ export default function AUVTwin() {
                   />
                   {/* Submarine Blip */}
                   <div 
-                    className="absolute left-1/2 -translate-x-1/2 w-5 h-5 bg-black border-2 border-ice-400 rounded-full shadow-[0_0_12px_#00e5ff] flex items-center justify-center transition-all duration-[2500ms] ease-linear z-10"
+                    className="absolute left-1/2 -translate-x-1/2 w-5 h-5 bg-black border-2 border-ice-400 rounded-full shadow-[0_0_12px_#ffffff] flex items-center justify-center transition-all duration-[2500ms] ease-linear z-10"
                     style={{ top: `calc(${(obsDepth / 500) * 100}% - 10px)` }}
                   >
                     <div className="w-1.5 h-1.5 bg-ice-400 rounded-full animate-pulse" />
@@ -1269,11 +1269,11 @@ export default function AUVTwin() {
                   <ShieldCheck className="w-3 h-3" /> TEOS-10 PHYSICS CAGE
                 </div>
                 <div className="flex-1 p-2 font-mono text-[8px] flex flex-col justify-end gap-1 overflow-hidden">
-                  <div className={`font-bold p-1 rounded text-center mb-1 ${obsFlag === 1 ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-red-400'}`}>
+                  <div className={`font-bold p-1 rounded text-center mb-1 ${obsFlag === 1 ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-[#ff453a]'}`}>
                     QC FLAG: {obsFlag}
                   </div>
                   {obsLogs.map((log, i) => (
-                    <div key={i} className={`${log.includes('CRITICAL') || log.includes('REJECTED') ? 'text-red-400 font-bold' : log.includes('VALID') ? 'text-emerald-400' : 'text-zinc-300'}`}>
+                    <div key={i} className={`${log.includes('CRITICAL') || log.includes('REJECTED') ? 'text-[#ff453a] font-bold' : log.includes('VALID') ? 'text-emerald-400' : 'text-zinc-300'}`}>
                       {log}
                     </div>
                   ))}
@@ -1327,7 +1327,7 @@ export default function AUVTwin() {
               <div className="absolute top-36 right-4 w-44 h-44 bg-[#111] border border-steel-600 rounded overflow-hidden flex flex-col shadow-md z-30 pointer-events-none">
                 <div className="bg-steel-800 text-[9px] font-mono font-bold text-ice-300 px-2 py-1 flex justify-between items-center">
                   <span>RAW SONAR WATERFALL</span>
-                  <span className="text-red-400 animate-pulse flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>REC</span>
+                  <span className="text-[#ff453a] animate-pulse flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>REC</span>
                 </div>
                 <div className="flex-1 relative overflow-hidden flex justify-center items-center" style={{ backgroundImage: 'radial-gradient(circle, #333 1px, transparent 1px)', backgroundSize: '6px 6px' }}>
                   <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-ice-500/30"></div>
@@ -1351,7 +1351,7 @@ export default function AUVTwin() {
                 </div>
                 <div className="flex-1 p-2 font-mono text-[9px] text-steel-400 flex flex-col justify-end gap-0.5 overflow-hidden">
                   {terminalLogs.map((log, i) => (
-                    <div key={i} className={`${log.includes('HUMAN_VERIFICATION') ? 'text-zinc-400 font-bold' : log.includes('CRITICAL') ? 'text-red-400 font-bold' : log.includes('[AI]') ? 'text-zinc-300' : ''}`}>
+                    <div key={i} className={`${log.includes('HUMAN_VERIFICATION') ? 'text-zinc-400 font-bold' : log.includes('CRITICAL') ? 'text-[#ff453a] font-bold' : log.includes('[AI]') ? 'text-zinc-300' : ''}`}>
                       {log}
                     </div>
                   ))}
@@ -1363,12 +1363,12 @@ export default function AUVTwin() {
               {detectionEvent ? (
                 <div className={`absolute top-16 left-1/2 -translate-x-1/2 bg-abyss-950/95 border-2 ${detectionEvent.isRock ? 'border-sky-500/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : detectionEvent.isUnknown ? 'border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : 'border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'} px-6 py-3 rounded-md flex flex-col items-center pointer-events-none z-30 transition-colors`}>
                   <div className="flex items-center gap-3 mb-1">
-                    <Crosshair className={`w-5 h-5 ${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-red-400'}`} />
+                    <Crosshair className={`w-5 h-5 ${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-[#ff453a]'}`} />
                     <span className={`${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-red-100'} font-mono font-bold text-sm tracking-wider`}>
                       {detectionEvent.type} (CONF: {detectionEvent.confidence}%)
                     </span>
                   </div>
-                  <span className={`text-[10px] font-mono ${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-red-400'}`}>
+                  <span className={`text-[10px] font-mono ${detectionEvent.isRock ? 'text-zinc-300' : detectionEvent.isUnknown ? 'text-zinc-400' : 'text-[#ff453a]'}`}>
                     {detectionEvent.isRock ? 'ACTION: FILTERED (ORGANIC SHAPE)' : detectionEvent.isUnknown ? 'ACTION: FLAGGED FOR HUMAN REVIEW' : 'ACTION: LOGGED AS HIGH THREAT'}
                   </span>
                 </div>
@@ -1526,7 +1526,7 @@ export default function AUVTwin() {
 
                 <div className="bg-red-950/30 p-1.5 rounded border border-white/10">
                   <span className="text-[8px] text-red-300 block">GOVT IMPORT</span>
-                  <span className="text-[11px] font-bold text-red-400 truncate block">
+                  <span className="text-[11px] font-bold text-[#ff453a] truncate block">
                     ₹{(selectedSensor.importedCostINR / 100000).toFixed(1)}L
                   </span>
                 </div>
@@ -1645,8 +1645,8 @@ export default function AUVTwin() {
 
           <div className="bg-abyss-950/80 border border-steel-800/80 rounded-lg p-4 shadow-sm hover:border-white/10 transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold border border-white/10">3</span>
-              <h3 className="text-xs font-mono font-bold text-red-400">Edge AI Threat Classification</h3>
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500/20 text-[#ff453a] text-[10px] font-bold border border-white/10">3</span>
+              <h3 className="text-xs font-mono font-bold text-[#ff453a]">Edge AI Threat Classification</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
               The onboard edge compute node runs the fine-tuned YOLOv8s model against the sonar waterfall. 
@@ -1660,7 +1660,7 @@ export default function AUVTwin() {
               <h3 className="text-xs font-mono font-bold text-emerald-400">Priority Flagging & Geotagging</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
-              If a UXO (Unexploded Ordnance) is detected, it is immediately flagged with <code className="text-red-400 bg-red-900/30 px-1 rounded">PRIORITY=CRITICAL</code>. 
+              If a UXO (Unexploded Ordnance) is detected, it is immediately flagged with <code className="text-[#ff453a] bg-red-900/30 px-1 rounded">PRIORITY=CRITICAL</code>. 
               The system merges the detection with the Dead Reckoning/IMU localization module to calculate the exact Latitude/Longitude of the debris.
             </p>
           </div>

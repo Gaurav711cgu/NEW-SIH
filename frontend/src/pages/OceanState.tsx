@@ -260,7 +260,7 @@ export function OceanState() {
           <div className="flex flex-col">
             <span className="text-[9px] font-mono text-steel-500 tracking-widest uppercase">POWER CELL</span>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <BatteryCharging className={`w-4 h-4 ${telemetry.battery < 25 ? 'text-red-400' : 'text-emerald-400'}`} />
+              <BatteryCharging className={`w-4 h-4 ${telemetry.battery < 25 ? 'text-[#ff453a]' : 'text-emerald-400'}`} />
               <span className="text-xs font-mono font-bold text-steel-100">{telemetry.battery.toFixed(1)}%</span>
             </div>
           </div>
@@ -357,7 +357,7 @@ export function OceanState() {
                     <Line 
                       type="monotone" 
                       dataKey="val" 
-                      stroke={s.source === 'DL_REPLICATED' ? '#f59e0b' : '#00e5ff'} 
+                      stroke={s.source === 'DL_REPLICATED' ? '#f59e0b' : '#ffffff'} 
                       strokeWidth={1.8} 
                       dot={false}
                       isAnimationActive={false}
@@ -419,8 +419,8 @@ export function OceanState() {
               ]}>
                 <defs>
                   <linearGradient id="tempGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00e5ff" stopOpacity={0.4}/>
-                    <stop offset="95%" stopColor="#00e5ff" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#ffffff" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#ffffff" stopOpacity={0.0}/>
                   </linearGradient>
                   <linearGradient id="psalGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
@@ -429,10 +429,10 @@ export function OceanState() {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis dataKey="time" stroke="#64748b" tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                <YAxis yAxisId="left" domain={[1.0, 3.0]} stroke="#00e5ff" tick={{ fontSize: 10, fill: '#00e5ff' }} unit="°C" />
+                <YAxis yAxisId="left" domain={[1.0, 3.0]} stroke="#ffffff" tick={{ fontSize: 10, fill: '#ffffff' }} unit="°C" />
                 <YAxis yAxisId="right" orientation="right" domain={[34.2, 35.0]} stroke="#f59e0b" tick={{ fontSize: 10, fill: '#f59e0b' }} unit="PSU" />
                 <Tooltip contentStyle={{ backgroundColor: '#020617', borderColor: '#334155', borderRadius: '8px', fontSize: '11px', fontFamily: 'monospace' }} />
-                <Area yAxisId="left" type="monotone" dataKey="temp" stroke="#00e5ff" strokeWidth={2} fillOpacity={1} fill="url(#tempGrad)" name="Temperature" />
+                <Area yAxisId="left" type="monotone" dataKey="temp" stroke="#ffffff" strokeWidth={2} fillOpacity={1} fill="url(#tempGrad)" name="Temperature" />
                 <Area yAxisId="right" type="monotone" dataKey="psal" stroke="#f59e0b" strokeWidth={2} fillOpacity={1} fill="url(#psalGrad)" name="Salinity" />
               </AreaChart>
             </ResponsiveContainer>

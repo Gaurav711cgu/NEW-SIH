@@ -434,7 +434,7 @@ ${wptXml}
             <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 54.23°S, 72.01°E | GHOST NET CONCENTRATION</div>
             <p className="text-sm text-slate-300 leading-relaxed mb-4">Anomalous debris concentration detected across 2.3km² sector. Sonar signature consistent with derelict fishing gear entanglement.</p>
             <div className="bg-black/20 p-3 rounded mb-4 text-xs font-mono text-slate-400">
-              <div className="flex justify-between mb-1"><span>Confidence Level</span> <span className="text-green-400">94.2%</span></div>
+              <div className="flex justify-between mb-1"><span>Confidence Level</span> <span className="text-[#34c759]">94.2%</span></div>
               <div className="w-full h-1 bg-slate-800 rounded-md"><div className="h-full bg-green-500 rounded-md" style={{width: '94.2%'}}></div></div>
               <div className="mt-2 text-slate-500">Evidence: 3 independent detection passes</div>
             </div>

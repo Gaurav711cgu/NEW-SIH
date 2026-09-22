@@ -91,7 +91,7 @@ function drawBboxes(
 
   detections.forEach(det => {
     const [bx, by, bw, bh] = getBbox(det);
-    const color = CLASS_COLORS[det.object_class] ?? '#00e5ff';
+    const color = CLASS_COLORS[det.object_class] ?? '#ffffff';
     const x = bx * scaleX;
     const y = by * scaleY;
     const w = bw * scaleX;
@@ -516,7 +516,7 @@ export function SeafloorIntelligence() {
             className="px-2.5 py-1.5 bg-red-950/40 hover:bg-red-900/60 border border-white/10 text-red-300 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-[1.02]"
             title="Harbor Security & Naval Defense (Indian Navy / Coast Guard)"
           >
-            <Target size={12} className="text-red-400" />
+            <Target size={12} className="text-[#ff453a]" />
             2. SUBSEA UXO / MINE (91.4%)
           </button>
           <button
@@ -614,7 +614,7 @@ export function SeafloorIntelligence() {
                       setPreviewUrl(null); setFile(null);
                       setDetections([]); setStage('idle'); setErrMsg(null);
                     }}
-                    className="px-2.5 py-1 text-xs font-mono text-steel-400 hover:text-red-400 hover:bg-red-950/30 border border-steel-800 hover:border-white/10 rounded-lg transition-colors flex items-center gap-1"
+                    className="px-2.5 py-1 text-xs font-mono text-steel-400 hover:text-[#ff453a] hover:bg-red-950/30 border border-steel-800 hover:border-white/10 rounded-lg transition-colors flex items-center gap-1"
                   >
                     <X size={12} /> Change Image
                   </button>
@@ -871,7 +871,7 @@ export function SeafloorIntelligence() {
                     </h3>
                   </div>
                   {sorted.filter(d => (d.confidence_cal ?? 0) < 0.70).map((det, i) => {
-                    const color = CLASS_COLORS[det.object_class] ?? '#00e5ff';
+                    const color = CLASS_COLORS[det.object_class] ?? '#ffffff';
                     const confCal = det.confidence_cal ?? 0;
                     const detId = det.timestamp ? `${det.object_class}-${det.timestamp}-${det.ping_number ?? i}` : `${det.object_class}-${det.lat ?? 0}-${det.lon ?? 0}-${i}`;
                     const isFlagged = flaggedForRevisit.has(detId);
@@ -965,7 +965,7 @@ export function SeafloorIntelligence() {
                     Auto-Logged Detections (High Confidence)
                   </h3>
                   {sorted.filter(d => (d.confidence_cal ?? 0) >= 0.70).map((det, i) => {
-                    const color = CLASS_COLORS[det.object_class] ?? '#00e5ff';
+                    const color = CLASS_COLORS[det.object_class] ?? '#ffffff';
                     const confCal = det.confidence_cal ?? 0;
                     return (
                       <motion.div

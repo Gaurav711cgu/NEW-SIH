@@ -228,7 +228,7 @@ export function MissionControl() {
         <div className="bg-abyss-900/80 border border-steel-800/80 hover:border-ice-500/40 rounded-lg p-4 shadow-sm relative group">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-mono text-steel-400 tracking-wider">POWER CONSUMPTION</span>
-            <Battery className={`w-4 h-4 ${(data?.battery_pct || 88) < 25 ? 'text-red-400' : 'text-emerald-400'}`} />
+            <Battery className={`w-4 h-4 ${(data?.battery_pct || 88) < 25 ? 'text-[#ff453a]' : 'text-emerald-400'}`} />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-mono font-bold text-steel-50">
@@ -354,7 +354,7 @@ export function MissionControl() {
               {/* Compass Rose */}
               <div className="bg-abyss-900/90 p-1.5 rounded-md border border-steel-800 flex items-center justify-center w-8 h-8 shadow-md">
                 <div className="relative w-full h-full flex items-center justify-center font-mono text-[8px] font-bold text-steel-400">
-                  <span className="absolute -top-1 text-red-400 font-black">N</span>
+                  <span className="absolute -top-1 text-[#ff453a] font-black">N</span>
                   <div className="w-[1px] h-4 bg-gradient-to-b from-red-500 to-steel-600 rotate-12" />
                 </div>
               </div>
@@ -398,7 +398,7 @@ export function MissionControl() {
                 <text x="72" y="66" fill="#10b981" fontSize="10" fontFamily="monospace" fontWeight="bold">WP-01 [SCANNED]</text>
 
                 {/* Turn Radius 1 */}
-                <path d="M 610 62 C 640 62 640 130 610 130" fill="none" stroke="#00e5ff" strokeWidth="2" strokeDasharray="3 3" />
+                <path d="M 610 62 C 640 62 640 130 610 130" fill="none" stroke="#ffffff" strokeWidth="2" strokeDasharray="3 3" />
                 <circle cx="625" cy="96" r="4" fill="#f59e0b" />
                 <text x="560" y="100" fill="#f59e0b" fontSize="9" fontFamily="monospace">TURN R=25m</text>
 
@@ -407,21 +407,21 @@ export function MissionControl() {
                 <rect x="360" y="113" width="250" height="34" fill="url(#swathGlow)" rx="4" />
                 {/* Upcoming unscanned portion */}
                 <rect x="50" y="113" width="310" height="34" fill="rgba(30, 41, 59, 0.35)" stroke="rgba(71, 85, 105, 0.4)" strokeDasharray="4 4" rx="4" />
-                <line x1="610" y1="130" x2="50" y2="130" stroke="#00e5ff" strokeWidth="2.5" strokeDasharray="8 4" />
+                <line x1="610" y1="130" x2="50" y2="130" stroke="#ffffff" strokeWidth="2.5" strokeDasharray="8 4" />
 
                 {/* Sonar Acoustic Swath Waves emitting from AUV */}
-                <path d="M 360 130 L 320 95 L 320 165 Z" fill="rgba(0, 229, 255, 0.2)" stroke="#00e5ff" strokeWidth="1" />
-                <path d="M 360 130 L 400 95 L 400 165 Z" fill="rgba(0, 229, 255, 0.2)" stroke="#00e5ff" strokeWidth="1" />
+                <path d="M 360 130 L 320 95 L 320 165 Z" fill="rgba(0, 229, 255, 0.2)" stroke="#ffffff" strokeWidth="1" />
+                <path d="M 360 130 L 400 95 L 400 165 Z" fill="rgba(0, 229, 255, 0.2)" stroke="#ffffff" strokeWidth="1" />
                 
                 {/* AUV Submarine Vessel Glyph */}
                 <g transform="translate(360, 130) rotate(180)">
                   <ellipse cx="0" cy="0" rx="14" ry="6" fill="#facc15" stroke="#ffffff" strokeWidth="1.5" />
                   <rect x="-16" y="-3" width="4" height="6" fill="#ef4444" />
-                  <circle cx="10" cy="0" r="2.5" fill="#00e5ff" />
+                  <circle cx="10" cy="0" r="2.5" fill="#ffffff" />
                 </g>
 
                 <text x="385" y="125" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="bold">AUV MATSYA 6000</text>
-                <text x="385" y="139" fill="#00e5ff" fontSize="9" fontFamily="monospace">SPD: 2.8 kts · ALT: 14.8m</text>
+                <text x="385" y="139" fill="#ffffff" fontSize="9" fontFamily="monospace">SPD: 2.8 kts · ALT: 14.8m</text>
 
                 {/* Detected Target Marker along transect */}
                 <circle cx="210" cy="130" r="8" fill="rgba(239, 68, 68, 0.3)" className="animate-ping" />
@@ -473,7 +473,7 @@ export function MissionControl() {
                 {/* Active AUV on Terrain Lock */}
                 <g transform="translate(360, 168)">
                   <ellipse cx="0" cy="0" rx="14" ry="6" fill="#facc15" stroke="#ffffff" strokeWidth="1.5" />
-                  <circle cx="10" cy="0" r="2.5" fill="#00e5ff" />
+                  <circle cx="10" cy="0" r="2.5" fill="#ffffff" />
                   {/* Downward Altimeter Laser Ping */}
                   <line x1="0" y1="6" x2="0" y2="48" stroke="#ef4444" strokeWidth="2" strokeDasharray="2 2" className="animate-pulse" />
                   <circle cx="0" cy="48" r="4" fill="#ef4444" />
@@ -519,7 +519,7 @@ export function MissionControl() {
                   {/* Active AUV at 45 degree station */}
                   <g transform="translate(49, -49) rotate(-135)">
                     <ellipse cx="0" cy="0" rx="12" ry="5" fill="#facc15" stroke="#ffffff" strokeWidth="1.5" />
-                    <line x1="0" y1="0" x2="0" y2="-60" stroke="#00e5ff" strokeWidth="1.5" strokeDasharray="2 2" />
+                    <line x1="0" y1="0" x2="0" y2="-60" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="2 2" />
                     {/* Camera Spotlight Cone */}
                     <polygon points="0,0 -20,-50 20,-50" fill="rgba(0, 229, 255, 0.2)" />
                   </g>
@@ -544,7 +544,7 @@ export function MissionControl() {
                 <span className="flex items-center gap-1 text-zinc-400">
                   <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" /> AUV VESSEL
                 </span>
-                <span className="flex items-center gap-1 text-red-400">
+                <span className="flex items-center gap-1 text-[#ff453a]">
                   <span className="w-2 h-2 bg-red-500 inline-block" /> TARGET CONTACT
                 </span>
               </div>
@@ -690,10 +690,10 @@ export function MissionControl() {
                 className="p-3 bg-red-950/30 hover:bg-red-900/50 border border-white/10 hover:border-red-500 rounded-lg text-left text-red-300 flex items-center justify-between transition-all group shadow-md"
               >
                 <div>
-                  <span className="font-bold text-red-400 block">EMERGENCY SURFACE</span>
+                  <span className="font-bold text-[#ff453a] block">EMERGENCY SURFACE</span>
                   <span className="text-[9px] text-red-500">Drop ballast</span>
                 </div>
-                <AlertTriangle className="w-4 h-4 text-red-400 group-hover:scale-110 transition-transform" />
+                <AlertTriangle className="w-4 h-4 text-[#ff453a] group-hover:scale-110 transition-transform" />
               </button>
 
             </div>
@@ -728,7 +728,7 @@ export function MissionControl() {
 
       {/* Emergency Abort Confirmation Modal */}
       {emergencyModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#2c2c2e] backdrop-blur-md z-50 flex items-center justify-center p-4">
           <div className="bg-abyss-900 border-2 border-red-500 rounded-lg max-w-md w-full p-6 shadow-md space-y-4">
             <div className="flex items-center gap-3 text-red-500">
               <AlertTriangle className="w-8 h-8 animate-bounce" />

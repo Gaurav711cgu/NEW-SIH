@@ -61,31 +61,31 @@ export default function DigitalTwin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a1628] text-white p-6 font-mono overflow-y-auto">
+    <div className="min-h-screen bg-[#1c1c1e] text-white p-6 font-mono overflow-y-auto">
       {/* HEADER */}
-      <header className="mb-6 flex items-center justify-between border-b border-cyan-500/30 pb-4">
+      <header className="mb-6 flex items-center justify-between border-b border-[#38383a] pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-cyan-400 tracking-wider flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[#ffffff] tracking-wider flex items-center gap-3">
             <Activity className="w-6 h-6" />
             AQUILA DIGITAL TWIN — PREDICTIVE MAINTENANCE
           </h1>
-          <p className="text-sm text-cyan-200/60 mt-1">Global Fleet Diagnostics & Prognostics</p>
+          <p className="text-sm text-[#ebebf599] mt-1">Global Fleet Diagnostics & Prognostics</p>
         </div>
-        <div className="flex gap-6 bg-black/40 px-6 py-3 rounded-lg border border-cyan-500/20 backdrop-blur-md">
+        <div className="flex gap-6 bg-black/40 px-6 py-3 rounded-lg border border-[#38383a] backdrop-blur-md">
           <div className="flex flex-col items-center">
-            <span className="text-xs text-cyan-500/80">ACTIVE FLEET</span>
+            <span className="text-xs text-[#ebebf5]">ACTIVE FLEET</span>
             <span className="text-xl font-bold">{activeCount}</span>
           </div>
           <div className="w-px bg-cyan-500/20" />
           <div className="flex flex-col items-center">
-            <span className="text-xs text-red-400/80">CRITICAL</span>
-            <span className="text-xl font-bold text-red-400">{criticalCount}</span>
+            <span className="text-xs text-[#ff453a]/80">CRITICAL</span>
+            <span className="text-xl font-bold text-[#ff453a]">{criticalCount}</span>
           </div>
           <div className="w-px bg-cyan-500/20" />
           <div className="flex flex-col items-center">
-            <span className="text-xs text-green-400/80">AVG HEALTH</span>
+            <span className="text-xs text-[#34c759]/80">AVG HEALTH</span>
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-green-400">{avgHealth}%</span>
+              <span className="text-xl font-bold text-[#34c759]">{avgHealth}%</span>
             </div>
           </div>
         </div>
@@ -96,21 +96,21 @@ export default function DigitalTwin() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="lg:col-span-1 bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-xl p-4 flex flex-col h-[600px]"
+          className="lg:col-span-1 bg-[#1c1c1e] border border-[#38383a] rounded-xl p-4 flex flex-col h-[600px]"
         >
-          <h2 className="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-[#ffffff] mb-4 flex items-center gap-2">
             <Anchor className="w-5 h-5" />
             ANTARCTIC DEPLOYMENT
           </h2>
           
-          <div className="flex-1 relative border border-cyan-500/20 rounded-lg bg-[#050f1a] overflow-hidden group">
+          <div className="flex-1 relative border border-[#38383a] rounded-lg bg-[#1c1c1e] overflow-hidden group">
             {/* Mock Antarctic Shape */}
-            <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-20 pointer-events-none text-cyan-400 fill-current">
+            <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-20 pointer-events-none text-[#ffffff] fill-current">
               <path d="M 50 10 C 70 10, 90 30, 85 60 C 80 80, 50 90, 30 85 C 10 75, 5 45, 15 25 C 25 15, 40 10, 50 10 Z" />
             </svg>
             
             {/* Grid lines */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#00e5ff1a_1px,transparent_1px),linear-gradient(to_bottom,#00e5ff1a_1px,transparent_1px)] bg-[size:20px_20px]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#38383a_1px,transparent_1px),linear-gradient(to_bottom,#38383a_1px,transparent_1px)] bg-[size:20px_20px]" />
 
             {/* Buoy Markers */}
             {FLEET_DATA.map((buoy) => (
@@ -126,7 +126,7 @@ export default function DigitalTwin() {
                   boxShadow: `0 0 10px ${buoy.color}`
                 }}
               >
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap border border-cyan-500/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-[#2c2c2e] px-2 py-1 rounded text-[10px] whitespace-nowrap border border-[#38383a] opacity-0 group-hover:opacity-100 transition-opacity">
                   {buoy.name}
                 </div>
               </button>
@@ -140,7 +140,7 @@ export default function DigitalTwin() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             key={selectedBuoy.id}
-            className="bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-xl p-6"
+            className="bg-[#1c1c1e] border border-[#38383a] rounded-xl p-6"
           >
             <div className="flex justify-between items-start mb-6">
               <div>
@@ -149,30 +149,30 @@ export default function DigitalTwin() {
                   <span className="px-3 py-1 rounded-full text-xs font-bold border" style={{ color: selectedBuoy.color, borderColor: selectedBuoy.color }}>
                     {selectedBuoy.status}
                   </span>
-                  <span className="text-sm text-cyan-200/60">Lat: {selectedBuoy.lat.toFixed(2)}°S | Lng: {selectedBuoy.lng.toFixed(2)}°E</span>
+                  <span className="text-sm text-[#ebebf599]">Lat: {selectedBuoy.lat.toFixed(2)}°S | Lng: {selectedBuoy.lng.toFixed(2)}°E</span>
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-4xl font-bold" style={{ color: selectedBuoy.color }}>
                   {selectedBuoy.health}%
                 </div>
-                <div className="text-xs text-cyan-500/60 mt-1">OVERALL HEALTH</div>
+                <div className="text-xs text-[#ebebf599] mt-1">OVERALL HEALTH</div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* HEALTH TIMELINE */}
-              <div className="bg-[#050f1a] rounded-lg p-4 border border-cyan-500/10">
-                <h3 className="text-sm text-cyan-500 mb-4 font-bold">30-DAY HEALTH TREND</h3>
+              <div className="bg-[#1c1c1e] rounded-lg p-4 border border-[#38383a]">
+                <h3 className="text-sm text-[#ebebf599] mb-4 font-bold">30-DAY HEALTH TREND</h3>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={HEALTH_TIMELINE}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#00e5ff1a" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#38383a" />
                       <XAxis dataKey="day" hide />
-                      <YAxis domain={[0, 100]} stroke="#00e5ff40" fontSize={10} />
+                      <YAxis domain={[0, 100]} stroke="#38383a" fontSize={10} />
                       <RechartsTooltip 
-                        contentStyle={{ backgroundColor: '#0a1628', borderColor: '#00e5ff40', color: '#fff' }}
-                        itemStyle={{ color: '#00e5ff' }}
+                        contentStyle={{ backgroundColor: '#1c1c1e', borderColor: '#38383a', color: '#fff' }}
+                        itemStyle={{ color: '#ffffff' }}
                       />
                       <Line type="monotone" dataKey="score" stroke={selectedBuoy.color} strokeWidth={2} dot={false} />
                     </LineChart>
@@ -181,20 +181,20 @@ export default function DigitalTwin() {
               </div>
 
               {/* MAINTENANCE PREDICTIONS */}
-              <div className="bg-[#050f1a] rounded-lg p-4 border border-cyan-500/10">
-                <h3 className="text-sm text-cyan-500 mb-4 font-bold flex items-center gap-2">
+              <div className="bg-[#1c1c1e] rounded-lg p-4 border border-[#38383a]">
+                <h3 className="text-sm text-[#ebebf599] mb-4 font-bold flex items-center gap-2">
                   <Wrench className="w-4 h-4" />
                   PREDICTED FAILURES
                 </h3>
                 <div className="space-y-4">
                   {MAINTENANCE_RECS.map((rec, i) => (
-                    <div key={i} className="flex justify-between items-center bg-black/30 p-2 rounded border border-white/5">
+                    <div key={i} className="flex justify-between items-center bg-[#2c2c2e] p-2 rounded border border-[#38383a]">
                       <div>
                         <div className="text-sm text-white">{rec.component}</div>
-                        <div className="text-xs text-cyan-500/60">{rec.action}</div>
+                        <div className="text-xs text-[#ebebf599]">{rec.action}</div>
                       </div>
                       <div className="text-right">
-                        <div className={`text-sm font-bold ${rec.urgency === 'CRITICAL' ? 'text-red-400' : rec.urgency === 'WARNING' ? 'text-yellow-400' : 'text-green-400'}`}>
+                        <div className={`text-sm font-bold ${rec.urgency === 'CRITICAL' ? 'text-[#ff453a]' : rec.urgency === 'WARNING' ? 'text-[#ff9f0a]' : 'text-[#34c759]'}`}>
                           {rec.days} Days
                         </div>
                       </div>
@@ -210,18 +210,18 @@ export default function DigitalTwin() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-xl p-6"
+            className="bg-[#1c1c1e] border border-[#38383a] rounded-xl p-6"
           >
-            <h3 className="text-sm text-cyan-500 mb-4 font-bold">SUBSYSTEM HEALTH MATRIX</h3>
+            <h3 className="text-sm text-[#ebebf599] mb-4 font-bold">SUBSYSTEM HEALTH MATRIX</h3>
             <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={COMPONENT_HEALTH} layout="vertical" margin={{ top: 0, right: 20, left: 20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#00e5ff1a" horizontal={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#38383a" horizontal={false} />
                   <XAxis type="number" domain={[0, 100]} hide />
-                  <YAxis type="category" dataKey="name" stroke="#00e5ff80" fontSize={10} width={80} />
+                  <YAxis type="category" dataKey="name" stroke="#ebebf599" fontSize={10} width={80} />
                   <RechartsTooltip 
-                    cursor={{ fill: '#00e5ff1a' }}
-                    contentStyle={{ backgroundColor: '#0a1628', borderColor: '#00e5ff40', color: '#fff' }}
+                    cursor={{ fill: '#38383a' }}
+                    contentStyle={{ backgroundColor: '#1c1c1e', borderColor: '#38383a', color: '#fff' }}
                   />
                   <Bar dataKey="health" radius={[0, 4, 4, 0]}>
                     {COMPONENT_HEALTH.map((entry, index) => (
@@ -240,21 +240,21 @@ export default function DigitalTwin() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-xl p-6"
+        className="bg-[#1c1c1e] border border-[#38383a] rounded-xl p-6"
       >
-        <h3 className="text-sm text-cyan-500 mb-4 font-bold flex items-center gap-2">
+        <h3 className="text-sm text-[#ebebf599] mb-4 font-bold flex items-center gap-2">
           <ShieldAlert className="w-4 h-4" />
           FLEET ALERT LOG
         </h3>
         <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
           {ALERTS.map((alert, i) => (
-            <div key={i} className="flex gap-4 items-center p-3 rounded bg-[#050f1a] border border-cyan-500/10">
-              <span className="text-xs text-cyan-500/50 w-12">{alert.time}</span>
-              {alert.type === 'CRITICAL' && <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />}
-              {alert.type === 'WARNING' && <Activity className="w-4 h-4 text-yellow-400 flex-shrink-0" />}
-              {alert.type === 'NOMINAL' && <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />}
-              <span className="text-sm font-bold text-cyan-100 w-24">{alert.unit}</span>
-              <span className={`text-sm ${alert.type === 'CRITICAL' ? 'text-red-200' : alert.type === 'WARNING' ? 'text-yellow-200' : 'text-cyan-200/80'}`}>
+            <div key={i} className="flex gap-4 items-center p-3 rounded bg-[#1c1c1e] border border-[#38383a]">
+              <span className="text-xs text-[#ebebf599] w-12">{alert.time}</span>
+              {alert.type === 'CRITICAL' && <AlertTriangle className="w-4 h-4 text-[#ff453a] flex-shrink-0" />}
+              {alert.type === 'WARNING' && <Activity className="w-4 h-4 text-[#ff9f0a] flex-shrink-0" />}
+              {alert.type === 'NOMINAL' && <CheckCircle className="w-4 h-4 text-[#34c759] flex-shrink-0" />}
+              <span className="text-sm font-bold text-[#ffffff] w-24">{alert.unit}</span>
+              <span className={`text-sm ${alert.type === 'CRITICAL' ? 'text-[#ff453a]' : alert.type === 'WARNING' ? 'text-[#ff9f0a]' : 'text-[#ebebf599]'}`}>
                 {alert.msg}
               </span>
             </div>
