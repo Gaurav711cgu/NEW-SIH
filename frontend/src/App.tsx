@@ -32,10 +32,10 @@ const BackgroundWrapper = ({ children }: { children: React.ReactNode }) => {
   else if (location.pathname.includes('/digital-twin')) bgImage = bg3;
   else if (location.pathname.includes('/validation')) bgImage = bg1;
   else if (location.pathname.includes('/research')) bgImage = new_bg2;
+  else if (location.pathname.includes('/simulation')) return <>{children}</>; // No background for 3D simulation
 
   return (
     <>
-      {/* Background Image */}
       <div 
         className="fixed inset-0 w-full h-full z-0 opacity-50 pointer-events-none transition-all duration-700 ease-in-out"
         style={{ backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -49,41 +49,34 @@ function App() {
   return (
     <MissionProvider>
       <BrowserRouter>
-        <Routes>
-          {/* Full-screen simulation (no sidebar, no background) */}
-          <Route path="/simulation" element={<AntarcticSimulation />} />
-
-          {/* Main app with sidebar */}
-          <Route path="/*" element={
-            <BackgroundWrapper>
-              <a 
-                href="#main-content" 
-                className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white focus:rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
-              >
-                Skip to main content
-              </a>
-              
-              <div className="flex h-screen bg-abyss-950/60 text-steel-100 font-sans selection:bg-ice-500/30 overflow-hidden relative z-10 backdrop-blur-sm">
-                <Sidebar />
-                <main id="main-content" tabIndex={-1} className="flex-1 overflow-y-auto relative bg-abyss-900/30 custom-scrollbar">
-                  <Routes>
-                    <Route path="/" element={<Navigate to="/simulation" replace />} />
-                    <Route path="/ocean-state" element={<OceanState />} />
-                    <Route path="/intel" element={<GovernmentIntel />} />
-                    <Route path="/biogeo" element={<Biogeochemistry />} />
-                    <Route path="/seafloor" element={<SeafloorIntelligence />} />
-                    <Route path="/mission" element={<MissionControl />} />
-                    <Route path="/auv-twin" element={<AUVTwin />} />
-                    <Route path="/digital-twin" element={<DigitalTwin />} />
-                    <Route path="/validation" element={<ModelValidation />} />
-                    <Route path="/research" element={<ResearchCitations />} />
-                    <Route path="*" element={<Navigate to="/ocean-state" replace />} />
-                  </Routes>
-                </main>
-              </div>
-            </BackgroundWrapper>
-          } />
-        </Routes>
+        <BackgroundWrapper>
+          <a 
+            href="#main-content" 
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white focus:rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+          >
+            Skip to main content
+          </a>
+          
+          <div className="flex h-screen bg-[#000000]/60 text-[#ebebf599] font-sans overflow-hidden relative z-10 backdrop-blur-sm">
+            <Sidebar />
+            <main id="main-content" tabIndex={-1} className="flex-1 relative flex flex-col custom-scrollbar overflow-hidden">
+              <Routes>
+                <Route path="/" element={<Navigate to="/ocean-state" replace />} />
+                <Route path="/ocean-state" element={<OceanState />} />
+                <Route path="/intel" element={<GovernmentIntel />} />
+                <Route path="/biogeo" element={<Biogeochemistry />} />
+                <Route path="/seafloor" element={<SeafloorIntelligence />} />
+                <Route path="/mission" element={<MissionControl />} />
+                <Route path="/auv-twin" element={<AUVTwin />} />
+                <Route path="/digital-twin" element={<DigitalTwin />} />
+                <Route path="/validation" element={<ModelValidation />} />
+                <Route path="/research" element={<ResearchCitations />} />
+                <Route path="/simulation" element={<AntarcticSimulation />} />
+                <Route path="*" element={<Navigate to="/ocean-state" replace />} />
+              </Routes>
+            </main>
+          </div>
+        </BackgroundWrapper>
       </BrowserRouter>
     </MissionProvider>
   );

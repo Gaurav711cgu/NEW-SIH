@@ -185,7 +185,7 @@ export default function AntarcticSimulation() {
   };
 
   return (
-    <div className="flex flex-col w-screen h-screen overflow-hidden bg-[#000000] text-[#ffffff] font-sans">
+    <div className="flex flex-col w-full h-full overflow-hidden flex-1 bg-[#000000] text-[#ffffff] font-sans">
       {/* Boot Sequence */}
       <AnimatePresence>
         {!booted && <BootScreen onComplete={handleBootComplete} />}

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useSimulationStore } from "../store/simulationStore";
 import type { MissionPhase } from '../store/simulationStore';
@@ -6,9 +6,6 @@ import * as THREE from 'three';
 
 export default function MissionDirector() {
   const phase = useSimulationStore((s) => s.missionPhase);
-  const auvPosition = useSimulationStore((s) => s.auvPosition);
-  const setAUVPosition = useSimulationStore((s) => s.setAUVPosition);
-  const setAUVRotation = useSimulationStore((s) => s.setAUVRotation);
   const setMissionPhase = useSimulationStore((s) => s.setMissionPhase);
   const addAlert = useSimulationStore((s) => s.addAlert);
   const addAILog = useSimulationStore((s) => s.addAILog);
@@ -82,16 +79,20 @@ export default function MissionDirector() {
     return () => clearTimeout(timeout);
   }, [phase, setMissionPhase, addAlert, addAILog, setCameraMode]);
 
+  // Keep track of smooth logical values to prevent state oscillation
+  const logicalY = useRef(0);
+  const logicalPitch = useRef(0);
+
   // ── Physics & Animation ──
   useFrame((state, delta) => {
     const time = state.clock.getElapsedTime();
-    const bob = Math.sin(time * 2) * 0.1;
+    const currentPhase = useSimulationStore.getState().missionPhase;
     const sway = Math.cos(time * 0.5) * 0.02;
 
-    let targetY = auvPosition[1];
+    let targetY = logicalY.current;
     let targetPitch = 0;
     
-    switch (phase) {
+    switch (currentPhase) {
       case 'IDLE':
       case 'STAGE_0_SURFACE':
         targetY = 0;
@@ -113,7 +114,7 @@ export default function MissionDirector() {
       case 'STAGE_5_SONAR':
       case 'STAGE_6_ANOMALY':
         targetY = -142;
-        targetPitch = phase === 'STAGE_6_ANOMALY' ? 0.1 : sway;
+        targetPitch = currentPhase === 'STAGE_6_ANOMALY' ? 0.1 : sway;
         break;
       case 'STAGE_7_ASCENT':
         targetY = 0;
@@ -126,11 +127,15 @@ export default function MissionDirector() {
     }
 
     // Smoothly interpolate position and rotation
-    const currentY = THREE.MathUtils.lerp(auvPosition[1], targetY, delta * 0.5);
-    setAUVPosition([0, currentY + bob, 0]); // bob applied directly so it doesn't fight lerp
+    logicalY.current = THREE.MathUtils.lerp(logicalY.current, targetY, delta * 0.5);
+    logicalPitch.current = THREE.MathUtils.lerp(logicalPitch.current, targetPitch, delta * 2);
     
-    const currentPitch = THREE.MathUtils.lerp(useSimulationStore.getState().auvRotation[0], targetPitch, delta * 2);
-    setAUVRotation([currentPitch, sway * 2, sway]);
+    // Add visual bobbing ONLY for rendering via auvPosition, but we shouldn't feed it back into lerp
+    // Wait, setting state every frame is still heavy. Let's just set the logical base in the store, 
+    // and let AUVModel add the bobbing locally.
+    
+    useSimulationStore.getState().setAUVPosition([0, logicalY.current, 0]);
+    useSimulationStore.getState().setAUVRotation([logicalPitch.current, sway * 2, sway]);
   });
 
   return null;
