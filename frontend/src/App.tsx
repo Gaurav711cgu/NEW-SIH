@@ -9,6 +9,7 @@ import AUVTwin from './pages/AUVTwin';
 import { GovernmentIntel } from './pages/GovernmentIntel';
 import ResearchCitations from './pages/ResearchCitations';
 import { ModelValidation } from './pages/ModelValidation';
+import { CycleGANStudio } from './pages/CycleGANStudio';
 import AntarcticSimulation from './pages/AntarcticSimulation';
 import DigitalTwin from './pages/DigitalTwin';
 
@@ -31,6 +32,7 @@ const BackgroundWrapper = ({ children }: { children: React.ReactNode }) => {
   else if (location.pathname.includes('/auv-twin')) bgImage = bg3;
   else if (location.pathname.includes('/digital-twin')) bgImage = bg3;
   else if (location.pathname.includes('/validation')) bgImage = bg1;
+  else if (location.pathname.includes('/cyclegan')) bgImage = bg4;
   else if (location.pathname.includes('/research')) bgImage = new_bg2;
   else if (location.pathname.includes('/simulation')) return <>{children}</>; // No background for 3D simulation
 
@@ -70,6 +72,7 @@ function App() {
                 <Route path="/auv-twin" element={<AUVTwin />} />
                 <Route path="/digital-twin" element={<DigitalTwin />} />
                 <Route path="/validation" element={<ModelValidation />} />
+                <Route path="/cyclegan" element={<CycleGANStudio />} />
                 <Route path="/research" element={<ResearchCitations />} />
                 <Route path="/simulation" element={<AntarcticSimulation />} />
                 <Route path="*" element={<Navigate to="/ocean-state" replace />} />

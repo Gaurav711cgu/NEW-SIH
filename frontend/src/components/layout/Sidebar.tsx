@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Activity, Anchor, Waves, Target, Cpu, FileText, BookOpen, ShieldCheck, BarChart4, Compass } from 'lucide-react';
+import { Activity, Anchor, Waves, Target, Cpu, FileText, BookOpen, ShieldCheck, BarChart4, Compass, Layers } from 'lucide-react';
 import { SystemStatusRow } from './SystemStatusRow';
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
   { path: '/auv-twin', label: 'AUV Digital Twin', icon: Cpu },
   { path: '/digital-twin', label: 'Digital Twin', icon: Activity },
   { path: '/validation', label: 'Model Validation', icon: BarChart4 },
+  { path: '/cyclegan', label: 'Synthetic Data', icon: Layers },
   { path: '/research', label: 'Research & Citations', icon: BookOpen },
 ];
 
