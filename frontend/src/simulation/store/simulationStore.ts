@@ -232,14 +232,14 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         ? { ...c, health: Math.max(0, c.health - 40), status: c.health - 40 <= 30 ? 'CRITICAL' : 'WARNING' }
         : c
     ),
-    alerts: [...s.alerts, `⚠️ FAILURE: ${s.components.find(c => c.id === componentId)?.name} degraded`]
+    alerts: [...s.alerts, `FAILURE: ${s.components.find(c => c.id === componentId)?.name} degraded`]
   })),
   initiateDive: () => set({
     missionPhase: 'STAGE_0_SURFACE',
     diveStepIndex: 0,
     diveStepProgress: 0,
     cameraMode: 'TPP',
-    alerts: ['🚀 DIVE SEQUENCE INITIATED'],
+    alerts: ['DIVE SEQUENCE INITIATED'],
     aiLogs: ['[SYS] Booting mission control...'],
   }),
   emergencyAscent: () => {
@@ -248,7 +248,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       missionPhase: 'EMERGENCY',
       ballastLevel: 0,
       targetDepth: 0,
-      alerts: [...s.alerts, '🚨 EMERGENCY ASCENT — ALL BALLAST PURGED'],
+      alerts: [...s.alerts, 'EMERGENCY ASCENT — ALL BALLAST PURGED'],
     });
   },
   reset: () => set({

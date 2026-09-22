@@ -29,7 +29,7 @@ export default function MissionDirector() {
         transitionTo('STAGE_1_ENTRY', 4000);
         break;
       case 'STAGE_1_ENTRY':
-        addAlert('🌊 WATER ENTRY DETECTED');
+        addAlert('WATER ENTRY DETECTED');
         addAILog('[PHYS] Ballast flooding... -5m descent rate.');
         transitionTo('STAGE_2_DESCENT', 5000);
         break;
@@ -40,7 +40,7 @@ export default function MissionDirector() {
         transitionTo('STAGE_3_MIDWATER', 8000);
         break;
       case 'STAGE_3_MIDWATER':
-        addAlert('✅ REACHED CRUISING DEPTH (100m)');
+        addAlert('REACHED CRUISING DEPTH (100m)');
         addAILog('[DL] Virtual Sensor Matrix online. Predicting salinity/turbidity.');
         transitionTo('STAGE_4_SEAFLOOR', 6000);
         break;
@@ -56,19 +56,19 @@ export default function MissionDirector() {
         transitionTo('STAGE_6_ANOMALY', 8000);
         break;
       case 'STAGE_6_ANOMALY':
-        addAlert('🚨 ANOMALY DETECTED: GHOST NET');
+        addAlert('ANOMALY DETECTED: GHOST NET');
         addAILog('[AI] Confidence: 89%. Extracting coordinates.');
         addAILog('[SYS] Geotag locked: -65.201, 48.712.');
         transitionTo('STAGE_7_ASCENT', 6000);
         break;
       case 'STAGE_7_ASCENT':
         addAILog('[PHYS] Purging ballast. Reversing thrusters.');
-        addAlert('⬆️ ASCENT INITIATED');
+        addAlert('ASCENT INITIATED');
         setCameraMode('TPP');
         transitionTo('STAGE_8_RECOVERY', 8000);
         break;
       case 'STAGE_8_RECOVERY':
-        addAlert('✅ SURFACE RECOVERY NOMINAL');
+        addAlert('SURFACE RECOVERY NOMINAL');
         addAILog('[SYS] Establishing Iridium SATCOM uplink.');
         addAILog('[SYS] Transmitting payload to MoES-DASH.');
         setCameraMode('TPP');
