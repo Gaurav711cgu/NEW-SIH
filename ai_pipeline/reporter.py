@@ -10,7 +10,7 @@ def to_csv(detections: List[dict]) -> str:
     if not detections:
         return ""
     fields = ["object_class", "confidence_cal", "shadow_penalty",
-              "lat", "lon", "depth_m", "timestamp", "ping_number"]
+              "lat", "lon", "auv_lat", "auv_lon", "depth_m", "heading_deg", "timestamp", "ping_number"]
     buf = io.StringIO()
     writer = csv.DictWriter(buf, fieldnames=fields, extrasaction="ignore")
     writer.writeheader()

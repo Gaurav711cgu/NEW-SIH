@@ -1,4 +1,5 @@
 import time
+import math
 from typing import List, Optional
 
 try:
@@ -18,6 +19,35 @@ def parse_xtf(xtf_path: str) -> list:
     (fh, packets) = pyxtf.xtf_read(xtf_path)
     pings = packets.get(pyxtf.XTFHeaderType.sonar, [])
     return pings
+
+
+def project_bbox_to_latlon(bbox: List[int], auv_lat: float, auv_lon: float, auv_heading: float, meters_per_pixel: float = 0.05) -> tuple:
+    """
+    Projects a bounding box from image coordinates to real-world Lat/Lon
+    using the AUV's position, heading, and an assumed resolution.
+    """
+    # Calculate bounding box center
+    cx = (bbox[0] + bbox[2]) / 2.0
+    cy = (bbox[1] + bbox[3]) / 2.0
+    
+    # Calculate offsets in meters (assuming cy is along-track and cx is across-track)
+    dx_m = cx * meters_per_pixel
+    dy_m = cy * meters_per_pixel
+    
+    # Rotate by AUV heading to get North/East offsets
+    heading_rad = math.radians(auv_heading)
+    delta_n = dy_m * math.cos(heading_rad) + dx_m * math.sin(heading_rad)
+    delta_e = dy_m * math.sin(heading_rad) - dx_m * math.cos(heading_rad)
+    
+    # Convert metric offsets to Lat/Lon degrees
+    earth_radius = 6378137.0
+    d_lat = delta_n / earth_radius
+    d_lon = delta_e / (earth_radius * math.cos(math.radians(auv_lat)))
+    
+    det_lat = auv_lat + math.degrees(d_lat)
+    det_lon = auv_lon + math.degrees(d_lon)
+    
+    return det_lat, det_lon
 
 
 def geotag_detections(
@@ -53,13 +83,19 @@ def geotag_detections(
             ping_number = frame_index
             ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
+        # Project bbox to lat/lon
+        bbox = det["bbox"]
+        det_lat, det_lon = project_bbox_to_latlon(bbox, lat, lon, heading)
+
         tagged.append({
             "object_class":   det["class"],
             "confidence_raw": det["confidence_raw"],
             "confidence_cal": det["confidence_cal"],
             "shadow_penalty": det["shadow_penalty"],
-            "lat":            round(lat, 6),
-            "lon":            round(lon, 6),
+            "lat":            round(det_lat, 6),
+            "lon":            round(det_lon, 6),
+            "auv_lat":        round(lat, 6),
+            "auv_lon":        round(lon, 6),
             "depth_m":        depth_m,
             "heading_deg":    round(heading, 1),
             "bbox":           det["bbox"],

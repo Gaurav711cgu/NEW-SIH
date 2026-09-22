@@ -60,7 +60,8 @@ class ECABlock(nn.Module):
     def __init__(self, channels: int):
         super().__init__()
         import math
-        t = int(abs(math.log2(channels) / 1 + 1 / 1))
+        gamma, b = 2, 1
+        t = int(abs((math.log2(channels) + b) / gamma))
         k = t if t % 2 else t + 1
         self.avg  = nn.AdaptiveAvgPool2d(1)
         self.conv = nn.Conv1d(1, 1, kernel_size=k, padding=k // 2, bias=False)

@@ -206,6 +206,9 @@ class SonarDetector:
         conf: Optional[float] = None,
         iou: float = 0.45,
         use_clahe: Optional[bool] = None,
+        use_sahi: bool = False,
+        sahi_slice_size: int = 512,
+        sahi_overlap: float = 0.2,
     ) -> List[Detection]:
         """
         Execute SSS inference on an input image.
@@ -216,6 +219,9 @@ class SonarDetector:
             iou: NMS IoU threshold.
             use_clahe: If True, applies CLAHE contrast normalization.
                        Defaults to True for file paths and False for pre-enhanced numpy arrays.
+            use_sahi: If True, uses Slicing Aided Hyper Inference (SAHI) for small object detection.
+            sahi_slice_size: Slice size for SAHI.
+            sahi_overlap: Overlap ratio for SAHI slices.
 
         Returns:
             List of Detection objects with normalized [x, y, w, h] coordinates.
@@ -254,6 +260,59 @@ class SonarDetector:
 
         threshold = float(conf) if conf is not None else self.conf
 
+        detections: List[Detection] = []
+        
+        if use_sahi:
+            try:
+                from sahi import AutoDetectionModel
+                from sahi.predict import get_sliced_prediction
+                
+                if not hasattr(self, "sahi_model"):
+                    self.sahi_model = AutoDetectionModel.from_pretrained(
+                        model_type='ultralytics',
+                        model_path=str(self.weights_path),
+                        confidence_threshold=threshold,
+                        device=self.device,
+                    )
+                else:
+                    self.sahi_model.confidence_threshold = threshold
+                
+                result = get_sliced_prediction(
+                    inference_img,
+                    self.sahi_model,
+                    slice_height=sahi_slice_size,
+                    slice_width=sahi_slice_size,
+                    overlap_height_ratio=sahi_overlap,
+                    overlap_width_ratio=sahi_overlap,
+                    verbose=False
+                )
+                
+                for obj in result.object_prediction_list:
+                    x1, y1, x2, y2 = obj.bbox.minx, obj.bbox.miny, obj.bbox.maxx, obj.bbox.maxy
+                    x1n, y1n, x2n, y2n = x1 / orig_w, y1 / orig_h, x2 / orig_w, y2 / orig_h
+                    
+                    x = max(0.0, min(1.0, float(x1n)))
+                    y = max(0.0, min(1.0, float(y1n)))
+                    bw = max(0.0, min(1.0 - x, float(x2n - x1n)))
+                    bh = max(0.0, min(1.0 - y, float(y2n - y1n)))
+                    
+                    cls_id = obj.category.id
+                    raw_name = obj.category.name
+                    class_name = CLASS_MAPPING.get(cls_id, CLASS_MAPPING.get(raw_name.lower(), raw_name))
+                    
+                    detections.append(
+                        Detection(
+                            bbox=[round(x, 4), round(y, 4), round(bw, 4), round(bh, 4)],
+                            confidence=round(float(obj.score.value), 4),
+                            class_name=class_name,
+                            class_id=cls_id,
+                        )
+                    )
+                return detections
+            except ImportError:
+                log.warning("SAHI is not installed. Falling back to standard inference. Run: pip install sahi")
+                # Fall back to normal execution
+
         try:
             results = self.model(
                 inference_img,
@@ -276,7 +335,6 @@ class SonarDetector:
             else:
                 raise exc
 
-        detections: List[Detection] = []
         if not results or len(results) == 0:
             return detections
 

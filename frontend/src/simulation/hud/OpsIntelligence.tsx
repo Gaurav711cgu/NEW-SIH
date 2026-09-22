@@ -84,7 +84,7 @@ export default function OpsIntelligence() {
               {anomalyDetected && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-[#ff453a] w-12 h-12 bg-[#ff453a]/20">
                   <div className="absolute -top-4 left-0 bg-[#ff453a] text-white text-[8px] font-bold px-1 whitespace-nowrap">
-                    GHOST NET 89%
+                    UXO / MINE 88%
                   </div>
                 </div>
               )}

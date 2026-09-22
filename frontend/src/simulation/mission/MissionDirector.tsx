@@ -23,49 +23,59 @@ export default function MissionDirector() {
 
     switch (phase) {
       case 'STAGE_0_SURFACE':
-        addAILog('[SYS] Calibrating IMU... Nominal.');
-        addAILog('[SYS] Commencing dive sequence.');
+        addAILog('[SATCOM ACTIVE] GPS Lock is acquired. Lat: -65.20, Lon: 48.71.');
+        addAILog('[COMMS] Downloading final mission parameters.');
+        addAILog('[ENVIRONMENTAL SCAN] Surface weather state: Sea State 4, Winds 25kts.');
+        addAILog('[PRE-DIVE] Checking ballast tanks & battery health.');
+        addAILog('[SYS] Command received. Initiating descent.');
         setCameraMode('TPP');
-        transitionTo('STAGE_1_ENTRY', 4000);
+        transitionTo('STAGE_1_ENTRY', 5000);
         break;
       case 'STAGE_1_ENTRY':
         addAlert('WATER ENTRY DETECTED');
-        addAILog('[PHYS] Ballast flooding... -5m descent rate.');
+        addAILog('[PHYS] Ballast flooding... SATCOM antenna retracting.');
         transitionTo('STAGE_2_DESCENT', 5000);
         break;
       case 'STAGE_2_DESCENT':
-        addAILog('[AI] Engaging ECO-GLIDE. Thrusters minimized.');
-        addAILog('[PHYS] Riding thermohaline current (-1.2 m/s).');
+        addAILog('[SATCOM LOST] Switching to Inertial Navigation (INS) and DVL.');
+        addAILog('[ACOUSTIC COMM] Heartbeat established with surface buoy.');
         useSimulationStore.getState().updateTelemetry({ powerMode: 'ECO_GLIDE', currentAssist: 1.2 });
         setCameraMode('TPP'); 
         transitionTo('STAGE_3_MIDWATER', 8000);
         break;
       case 'STAGE_3_MIDWATER':
-        addAlert('REACHED CRUISING DEPTH (100m)');
-        addAILog('[DL] Virtual Sensor Matrix online. Predicting salinity/turbidity.');
+        addAlert('REACHED MIDWATER (100m)');
+        addAILog('[PS1 VIRTUAL SENSORS ENGAGED] Deep Learning predicting Salinity/Turbidity.');
+        addAILog('[OBSTACLE AVOIDANCE] Forward-looking sonar pinging for ice keels.');
+        addAILog('[PHYS] Trimming buoyancy for neutral hover.');
         transitionTo('STAGE_4_SEAFLOOR', 6000);
         break;
       case 'STAGE_4_SEAFLOOR':
-        addAILog('[SYS] Seafloor proximity alert: 42m.');
-        addAILog('[AI] Resuming ACTIVE THRUST for precise navigation.');
+        addAlert('ABYSSAL SEAFLOOR REACHED');
+        addAILog('[SYS] Dual high-intensity headlights ON.');
+        addAILog('[PS2 AI VISION ENGAGED] Activating Sonar Sweep and Camera Array.');
         useSimulationStore.getState().updateTelemetry({ powerMode: 'ACTIVE_THRUST', currentAssist: 0.1 });
-        addAILog('[AI] Activating Sonar sweep logic.');
-        setCameraMode('TPP'); // Switch back to TPP to see seafloor approach
+        setCameraMode('TPP'); 
         transitionTo('STAGE_5_SONAR', 7000);
         break;
       case 'STAGE_5_SONAR':
-        addAlert('📡 SONAR SCAN IN PROGRESS');
-        addAILog('[AI] Running YOLOv8 on acoustic returns...');
+        addAlert('📡 MAPPING SECTOR');
+        addAILog('[MAPPING] Flying precision lawnmower pattern.');
+        addAILog('[TARGET DETECTION] YOLOv8 + CBAM pipeline processing acoustic shadows...');
         transitionTo('STAGE_6_ANOMALY', 8000);
         break;
       case 'STAGE_6_ANOMALY':
-        addAlert('ANOMALY DETECTED: GHOST NET');
-        addAILog('[AI] Confidence: 89%. Extracting coordinates.');
-        addAILog('[SYS] Geotag locked: -65.201, 48.712.');
-        transitionTo('STAGE_7_ASCENT', 6000);
+        addAlert('ANOMALY DETECTED: UXO / MINE');
+        addAILog('[DECISION MATRIX] Target identified. Breaking search pattern to circle target.');
+        addAILog('[PS2 PIPELINE OUTPUT]');
+        addAILog('  "object_class": "mine"');
+        addAILog('  "confidence_cal": 0.88');
+        addAILog('  "lat": -54.199991, "lon": 60.800015');
+        addAILog('  "depth_m": 142.0, "heading_deg": 90.0');
+        transitionTo('STAGE_7_ASCENT', 8000);
         break;
       case 'STAGE_7_ASCENT':
-        addAILog('[PHYS] Purging ballast. Reversing thrusters.');
+        addAILog('[PHYS] Dropping drop-weights. Initiating emergency ascent.');
         addAlert('ASCENT INITIATED');
         setCameraMode('TPP');
         transitionTo('STAGE_8_RECOVERY', 8000);
@@ -73,9 +83,9 @@ export default function MissionDirector() {
       case 'STAGE_8_RECOVERY':
         addAlert('SURFACE RECOVERY NOMINAL');
         addAILog('[SYS] Establishing Iridium SATCOM uplink.');
-        addAILog('[SYS] Transmitting payload to MoES-DASH.');
+        addAILog('[SYS] Exfiltrating PS2 JSON payload to MoES-DASH.');
         setCameraMode('TPP');
-        transitionTo('IDLE', 5000);
+        transitionTo('IDLE', 6000);
         break;
     }
 
