@@ -119,6 +119,13 @@ function AlertFeed() {
 }
 
 export default function AntarcticSimulation() {
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => console.log(err));
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  };
   const phase = useSimulationStore((s) => s.missionPhase);
   const [booted, setBooted] = useState(false);
 
@@ -147,7 +154,7 @@ export default function AntarcticSimulation() {
               <span className="font-bold tracking-widest text-[11px] text-steel-100">SOUTHERN OCEAN SIMULATION</span>
             </div>
             <div className="flex gap-2">
-              <button className="p-1.5 bg-abyss-900/60 backdrop-blur-md border border-steel-800/80 rounded-full hover:bg-abyss-800 transition-colors pointer-events-auto">
+              <button onClick={toggleFullScreen} className="p-1.5 bg-abyss-900/60 backdrop-blur-md border border-steel-800/80 rounded-full hover:bg-abyss-800 transition-colors pointer-events-auto cursor-pointer">
                 <Maximize2 className="w-4 h-4 text-steel-400" />
               </button>
             </div>

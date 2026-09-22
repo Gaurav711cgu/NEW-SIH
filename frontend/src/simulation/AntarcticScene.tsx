@@ -6,11 +6,12 @@ import AUVModel from './auv/AUVModel';
 import BubbleSystem from "./environment/BubbleSystem";
 import IceShelf from "./environment/IceShelf";
 import SurfaceEnvironment from "./environment/SurfaceEnvironment";
+import DeepEnvironment from "./environment/DeepEnvironment";
 import DebrisField from "./environment/DebrisField";
 import SonarSweep from "./environment/SonarSweep";
 import CameraManager from './cameras/CameraManager';
 import MissionDirector from './mission/MissionDirector';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 // Highly realistic marine snow (particulates)
 function MarineSnow() {
@@ -33,37 +34,80 @@ function MarineSnow() {
   );
 }
 
-// Light shafts penetrating the water from the surface
+// AAA Light shafts penetrating the water from the surface
 function GodRays() {
   const depth = useSimulationStore((s) => s.depth);
-  const meshRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<THREE.Group>(null);
   
   useFrame(({ clock }) => {
-    if (meshRef.current) {
-      meshRef.current.position.y = -depth * 0.2; // Move rays slightly as we go down
-      meshRef.current.rotation.y = Math.sin(clock.elapsedTime * 0.1) * 0.1;
+    if (groupRef.current) {
+      // Slowly sway the light rays to simulate caustics and waves
+      groupRef.current.rotation.x = Math.sin(clock.elapsedTime * 0.2) * 0.1;
+      groupRef.current.rotation.z = Math.cos(clock.elapsedTime * 0.15) * 0.1;
     }
   });
 
-  const opacity = Math.max(0, 0.15 - (depth / 100)); // Fades out completely by 15m depth
+  const opacity = Math.max(0, 0.25 - (depth / 200)); // Fades out completely by 50m
 
   if (opacity <= 0) return null;
 
   return (
-    <group ref={meshRef} position={[0, 20, 0]}>
-      {Array.from({ length: 8 }).map((_, i) => (
-        <mesh key={i} rotation={[0, (i * Math.PI) / 4, 0]}>
-          <cylinderGeometry args={[2, 40, 150, 16, 1, true]} />
+    <group ref={groupRef} position={[0, 10, 0]}>
+      {[...Array(12)].map((_, i) => (
+        <mesh 
+          key={i} 
+          position={[(Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100]}
+          rotation={[Math.random() * 0.2, Math.random() * Math.PI, Math.random() * 0.2]}
+        >
+          {/* Much softer, wider cones spreading downwards */}
+          <coneGeometry args={[10 + Math.random() * 20, 150, 16, 1, true, 0, Math.PI * 2]} />
           <meshBasicMaterial 
-            color="#55ccff" 
+            color="#aae6ff" 
             transparent 
-            opacity={opacity * (0.5 + Math.random() * 0.5)} 
+            opacity={opacity * (0.3 + Math.random() * 0.7)} 
             blending={THREE.AdditiveBlending} 
             depthWrite={false} 
             side={THREE.DoubleSide} 
           />
         </mesh>
       ))}
+    </group>
+  );
+}
+
+function Seafloor() {
+  const geo = React.useMemo(() => {
+    const g = new THREE.PlaneGeometry(1000, 1000, 128, 128);
+    const pos = g.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i);
+      const y = pos.getY(i);
+      // Create sand dunes / ripples
+      const z = Math.sin(x * 0.1) * 2 + Math.cos(y * 0.05) * 3 + Math.sin((x+y)*0.01)*5;
+      pos.setZ(i, z);
+    }
+    g.computeVertexNormals();
+    return g;
+  }, []);
+  
+  return (
+    <group position={[0, -142, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} receiveShadow>
+        <meshStandardMaterial color="#0b1b24" roughness={0.9} metalness={0.0} flatShading />
+      </mesh>
+      
+      {/* Tactical Grid overlaid on seafloor */}
+      <Grid 
+        position={[0, 5, 0]} 
+        args={[1000, 1000]} 
+        cellSize={10} 
+        cellThickness={1.5} 
+        cellColor="#004466" 
+        sectionSize={50} 
+        sectionThickness={2} 
+        sectionColor="#0088aa" 
+        fadeDistance={300}
+      />
     </group>
   );
 }
@@ -109,34 +153,12 @@ function OceanEnvironment() {
       <SurfaceEnvironment />
 
       <IceShelf />
+      <DeepEnvironment />
       <DebrisField />
       <SonarSweep />
       
-      {/* Realistic Seafloor */}
-      <group position={[0, -142, 0]}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[1000, 1000, 128, 128]} />
-          <meshStandardMaterial 
-            color="#051014" 
-            roughness={0.95} 
-            metalness={0.1}
-            wireframe={false}
-          />
-        </mesh>
-        
-        {/* Tactical Grid overlaid on seafloor */}
-        <Grid 
-          position={[0, 0.1, 0]} 
-          args={[1000, 1000]} 
-          cellSize={10} 
-          cellThickness={1.5} 
-          cellColor="#004466" 
-          sectionSize={50} 
-          sectionThickness={2} 
-          sectionColor="#0088aa" 
-          fadeDistance={300}
-        />
-      </group>
+      {/* AAA Rippled Seafloor */}
+      <Seafloor />
     </>
   );
 }
