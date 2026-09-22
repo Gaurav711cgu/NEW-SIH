@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Anchor, Activity, Maximize2, ShieldAlert } from 'lucide-react';
 import AntarcticScene from '../simulation/AntarcticScene';
 import OpsIntelligence from "../simulation/hud/OpsIntelligence";
+import SubsystemHealthMatrix from "../simulation/hud/SubsystemHealthMatrix";
 import HUD from '../simulation/hud/HUD';
 import { useSimulationStore } from '../simulation/store/simulationStore';
 
@@ -207,6 +208,8 @@ export default function AntarcticSimulation() {
                 </div>
               </div>
             </div>
+
+            <SubsystemHealthMatrix />
 
             <AlertFeed />
             
