@@ -897,8 +897,6 @@ export default function AUVTwin() {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       if (propellerRef.current) propellerRef.current.rotation.x += 0.1;
-      // Add natural bobbing motion to AUV
-      if (auvGroupRef.current) auvGroupRef.current.position.y = Math.sin(Date.now() * 0.002) * 0.15;
       if (autoRotateRef.current && auvGroupRef.current && !isDragging && viewPresetRef.current !== 'POV') auvGroupRef.current.rotation.y += 0.004;
 
       hotspotMeshesRef.current.forEach((mesh, idx) => {
@@ -1104,16 +1102,10 @@ export default function AUVTwin() {
   }, [selectedTier]);
 
   return (
-    <div className="w-full h-full relative overflow-hidden text-steel-100 bg-[#020617] selection:bg-ice-500/30">
-      {/* FULL SCREEN 3D BACKGROUND */}
-      <div ref={mountRef} className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing" />
-      
-      {/* SCROLLABLE UI OVERLAY */}
-      <div className="absolute inset-0 z-10 pointer-events-none overflow-y-auto p-4 md:p-6 custom-scrollbar">
-        <div className="flex flex-col gap-5 min-h-max pb-10">
+    <div className="h-full p-4 md:p-6 overflow-y-auto flex flex-col gap-5 text-steel-100 bg-transparent selection:bg-ice-500/30">
       
       {/* ── TOP HEADER & STRATEGIC COST DEFENSE BANNER ── */}
-      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md backdrop-blur-md flex flex-wrap items-center justify-between gap-4 pointer-events-auto shrink-0">
+      <div className="bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md backdrop-blur-md flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-zinc-900/50 border border-white/10 flex items-center justify-center text-emerald-400">
             <IndianRupee className="w-5 h-5" />
@@ -1151,7 +1143,7 @@ export default function AUVTwin() {
       </div>
 
       {/* ── 3-TIER ARCHITECTURAL FILTER TABS ── */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-abyss-900/80 p-2 rounded-lg border border-steel-800 pointer-events-auto backdrop-blur-md shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-abyss-900/60 p-2 rounded-lg border border-steel-800">
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono font-bold text-steel-400 uppercase tracking-wider pl-2">
             ARCHITECTURAL TIERS:
@@ -1455,10 +1447,11 @@ export default function AUVTwin() {
 
           </div>
 
-          
+          {/* WebGL Canvas Mounting Point */}
+          <div ref={mountRef} className="w-full h-full min-h-[460px] cursor-grab active:cursor-grabbing relative z-10" />
 
           {/* Bottom 3D Guidance Bar */}
-          <div className="flex items-center justify-between font-mono text-[9px] text-steel-500 bg-abyss-900/80 px-3 py-1.5 rounded-lg border border-steel-800/80 backdrop-blur-sm pointer-events-auto mt-auto">
+          <div className="absolute bottom-3 left-3 right-3 z-20 flex items-center justify-between font-mono text-[9px] text-steel-500 bg-abyss-900/80 px-3 py-1.5 rounded-lg border border-steel-800/80 backdrop-blur-sm pointer-events-none">
             <span className="flex items-center gap-2">
               <Crosshair className="w-3 h-3 text-ice-400" />
               DRAG TO ROTATE 360° · SCROLL WHEEL TO ZOOM · CLICK ANY GLOWING NODE TO INSPECT
@@ -1469,7 +1462,7 @@ export default function AUVTwin() {
         </div>
 
         {/* Right (4 Cols): Deep Technical Sensor & Indigenous Cost Inspector Panel */}
-        <div className="lg:col-span-4 bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md flex flex-col justify-between overflow-hidden pointer-events-auto backdrop-blur-md">
+        <div className="lg:col-span-4 bg-abyss-900/90 border border-steel-800/80 rounded-lg p-4 shadow-md flex flex-col justify-between overflow-hidden">
           
           <div className="space-y-2.5">
             {/* Sensor Tier Badge */}
@@ -1618,7 +1611,7 @@ export default function AUVTwin() {
 
       
       {/* ── AUTONOMOUS EDGE PROCESSING PIPELINE EXPLAINER ── */}
-      <div className="mt-8 mb-4 border-t border-steel-800/60 pt-6 pointer-events-auto">
+      <div className="mt-8 mb-4 border-t border-steel-800/60 pt-6">
         <div className="flex items-center gap-2 mb-4">
           <Cpu className="w-5 h-5 text-ice-400" />
           <h2 className="text-sm font-mono font-bold tracking-widest text-steel-100 uppercase">
@@ -1687,7 +1680,7 @@ export default function AUVTwin() {
       </div>
 
       {/* ── ROW 3: LIVE C2 MISSION TERMINAL ── */}
-      <div className="mt-6 pointer-events-auto">
+      <div className="mt-6">
         <div className="flex items-center justify-between px-1 mb-2">
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-ice-400" />
@@ -1702,8 +1695,6 @@ export default function AUVTwin() {
         </div>
       </div>
 
-        </div>
-      </div>
     </div>
   );
 }
