@@ -46,16 +46,19 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
   return (
     <div className="absolute inset-0 z-50 bg-[#020617] text-ice-400 font-mono text-xs sm:text-sm p-4 sm:p-8 flex flex-col items-start justify-end overflow-hidden">
       <div className="w-full max-w-3xl space-y-1">
-        {lines.map((line, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className={line.startsWith('> ═') ? 'text-steel-400' : ''}
-          >
-            {line}
-          </motion.div>
-        ))}
+        {lines.map((line, i) => {
+          if (!line) return null;
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className={line.startsWith('> ═') ? 'text-steel-400' : ''}
+            >
+              {line}
+            </motion.div>
+          );
+        })}
         <motion.div
           animate={{ opacity: [1, 0] }}
           transition={{ repeat: Infinity, duration: 0.8 }}
