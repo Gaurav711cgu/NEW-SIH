@@ -36,7 +36,7 @@ export default function MissionDirector() {
       case 'STAGE_2_DESCENT':
         addAILog('[AI] Adjusting pitch for thermal layer transition.');
         addAILog('[PHYS] Ambient light levels dropping.');
-        setCameraMode('FPP'); // Switch to FPP for descent!
+        setCameraMode('TPP'); // Switch to FPP for descent!
         transitionTo('STAGE_3_MIDWATER', 8000);
         break;
       case 'STAGE_3_MIDWATER':
@@ -64,7 +64,7 @@ export default function MissionDirector() {
       case 'STAGE_7_ASCENT':
         addAILog('[PHYS] Purging ballast. Reversing thrusters.');
         addAlert('⬆️ ASCENT INITIATED');
-        setCameraMode('FPP');
+        setCameraMode('TPP');
         transitionTo('STAGE_8_RECOVERY', 8000);
         break;
       case 'STAGE_8_RECOVERY':
