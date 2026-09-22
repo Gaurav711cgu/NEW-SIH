@@ -186,7 +186,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
 
   components: DEFAULT_COMPONENTS,
   alerts: [],
-  aiLogs: [],
+  aiLogs: ['[SATCOM] GPS Lock Acquired. Lat: -65.20, Lon: 48.71', '[ENV] Surface state: Sea State 4, Winds 25kts', '[SYS] Pre-dive checklist complete. Awaiting command.'],
   sensorDrift: {},
 
   detections: [],
@@ -273,7 +273,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     estimatedEndurance: 8.0,
     components: DEFAULT_COMPONENTS,
     alerts: [],
-    aiLogs: [],
+    aiLogs: ['[SATCOM] GPS Lock Acquired. Lat: -65.20, Lon: 48.71', '[ENV] Surface state: Sea State 4, Winds 25kts', '[SYS] Pre-dive checklist complete. Awaiting command.'],
     detections: [],
     cameraMode: 'CINEMATIC',
     selectedComponent: null,

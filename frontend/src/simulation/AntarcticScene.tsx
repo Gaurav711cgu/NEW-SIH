@@ -5,6 +5,7 @@ import { useSimulationStore } from './store/simulationStore';
 import AUVModel from './auv/AUVModel';
 import BubbleSystem from "./environment/BubbleSystem";
 import IceShelf from "./environment/IceShelf";
+import SurfaceEnvironment from "./environment/SurfaceEnvironment";
 import DebrisField from "./environment/DebrisField";
 import SonarSweep from "./environment/SonarSweep";
 import CameraManager from './cameras/CameraManager';
@@ -71,7 +72,7 @@ function OceanEnvironment() {
   const depth = useSimulationStore((s) => s.depth);
 
   // Deep ocean color gradient
-  const surfaceColor = new THREE.Color('#004466');
+  const surfaceColor = new THREE.Color('#1a2530');
   const deepColor = new THREE.Color('#00050a');
   const fogColor = surfaceColor.clone().lerp(deepColor, Math.min(depth / 80, 1));
   const fogDensity = THREE.MathUtils.lerp(0.015, 0.04, Math.min(depth / 150, 1));
@@ -95,20 +96,7 @@ function OceanEnvironment() {
       <MarineSnow />
       <GodRays />
 
-      {/* Surface Water Caustics (Simulated) */}
-      {depth < 15 && (
-        <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[2000, 2000]} />
-          <meshPhysicalMaterial 
-            color="#001122" 
-            transparent 
-            opacity={0.8} 
-            roughness={0.0} 
-            transmission={0.9} 
-            thickness={2}
-          />
-        </mesh>
-      )}
+      <SurfaceEnvironment />
 
       <IceShelf />
       <DebrisField />

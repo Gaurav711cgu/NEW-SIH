@@ -137,6 +137,22 @@ export default function MissionDirector() {
     // Wait, setting state every frame is still heavy. Let's just set the logical base in the store, 
     // and let AUVModel add the bobbing locally.
     
+    const currentDepth = Math.max(0, -logicalY.current);
+    
+    // Dynamic Environmental Profiling based on depth
+    // Temperature drops through the thermocline
+    const targetTemp = currentDepth < 20 ? 1.84 : Math.max(-1.5, 1.84 - (currentDepth / 30));
+    // Salinity increases slightly with depth
+    const targetSalin = 34.5 + (currentDepth / 100);
+    // Dissolved oxygen drops
+    const targetDoxy = Math.max(4.2, 7.2 - (currentDepth / 40));
+
+    useSimulationStore.getState().updateTelemetry({
+      temperature: targetTemp,
+      salinity: targetSalin,
+      dissolvedOxygen: targetDoxy,
+    });
+    
     useSimulationStore.getState().setAUVPosition([0, logicalY.current, 0]);
     useSimulationStore.getState().setAUVRotation([logicalPitch.current, sway * 2, sway]);
   });
