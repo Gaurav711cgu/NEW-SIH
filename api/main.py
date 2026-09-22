@@ -40,9 +40,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.get("/")
+def read_root():
+    return {"status": "online", "service": "DeepScan API", "version": "1.0", "message": "Backend is active and receiving telemetry."}
+
+
 # Explicit CORS configuration for frontend clients
 ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:5173", "*",
     "http://127.0.0.1:5173",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
