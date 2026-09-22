@@ -39,26 +39,27 @@ function GodRays() {
   const depth = useSimulationStore((s) => s.depth);
   const groupRef = useRef<THREE.Group>(null);
   
-  // Memoize random positions so they don't jump every frame
   const rays = React.useMemo(() => {
-    return [...Array(12)].map(() => ({
-      position: [(Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100] as [number, number, number],
-      rotation: [Math.random() * 0.2, Math.random() * Math.PI, Math.random() * 0.2] as [number, number, number],
-      args: [10 + Math.random() * 20, 150, 16, 1, true, 0, Math.PI * 2] as any,
-      opacityMult: 0.3 + Math.random() * 0.7
+    return [...Array(6)].map(() => ({
+      // Keep them away from the direct 0,0,0 center where the camera is
+      position: [(Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 30), 0, (Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 30)] as [number, number, number],
+      rotation: [Math.random() * 0.1, Math.random() * Math.PI, Math.random() * 0.1] as [number, number, number],
+      args: [2 + Math.random() * 8, 150, 16, 1, true, 0, Math.PI * 2] as any,
+      opacityMult: 0.1 + Math.random() * 0.15
     }));
   }, []);
 
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.x = Math.sin(clock.elapsedTime * 0.2) * 0.1;
-      groupRef.current.rotation.z = Math.cos(clock.elapsedTime * 0.15) * 0.1;
+      groupRef.current.rotation.x = Math.sin(clock.elapsedTime * 0.2) * 0.05;
+      groupRef.current.rotation.z = Math.cos(clock.elapsedTime * 0.15) * 0.05;
     }
   });
 
-  const opacity = Math.max(0, 0.25 - (depth / 200));
+  // Start fading immediately, completely gone by 80m
+  const opacity = Math.max(0, 0.5 - (depth / 160));
 
-  if (opacity <= 0) return null;
+  if (opacity <= 0 || depth < 5) return null; // Don't render when on the surface!
 
   return (
     <group ref={groupRef} position={[0, 10, 0]}>
@@ -66,7 +67,7 @@ function GodRays() {
         <mesh key={i} position={ray.position} rotation={ray.rotation}>
           <coneGeometry args={ray.args} />
           <meshBasicMaterial 
-            color="#aae6ff" 
+            color="#99ddff" 
             transparent 
             opacity={opacity * ray.opacityMult} 
             blending={THREE.AdditiveBlending} 
@@ -86,7 +87,6 @@ function Seafloor() {
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const y = pos.getY(i);
-      // Create sand dunes / ripples
       const z = Math.sin(x * 0.1) * 2 + Math.cos(y * 0.05) * 3 + Math.sin((x+y)*0.01)*5;
       pos.setZ(i, z);
     }
@@ -97,21 +97,8 @@ function Seafloor() {
   return (
     <group position={[0, -142, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} receiveShadow>
-        <meshStandardMaterial color="#0b1b24" roughness={0.9} metalness={0.0} flatShading />
+        <meshStandardMaterial color="#050a0f" roughness={1.0} metalness={0.0} flatShading />
       </mesh>
-      
-      {/* Tactical Grid overlaid on seafloor */}
-      <Grid 
-        position={[0, 5, 0]} 
-        args={[1000, 1000]} 
-        cellSize={10} 
-        cellThickness={1.5} 
-        cellColor="#004466" 
-        sectionSize={50} 
-        sectionThickness={2} 
-        sectionColor="#0088aa" 
-        fadeDistance={300}
-      />
     </group>
   );
 }
