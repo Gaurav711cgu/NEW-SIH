@@ -57,7 +57,7 @@ export default function BubbleSystem() {
   if (phase === 'IDLE' || phase === 'STAGE_0_SURFACE') return null;
 
   return (
-    <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
+    <instancedMesh ref={mesh} args={[null as any, null as any, count]}>
       <sphereGeometry args={[0.05, 8, 8]} />
       <meshBasicMaterial color="#ffffff" transparent opacity={0.4} />
     </instancedMesh>

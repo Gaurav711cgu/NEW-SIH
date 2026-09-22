@@ -33,7 +33,7 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     let currentLine = 0;
     const interval = setInterval(() => {
-      setLines((prev) => [...prev, bootSequence[currentLine]]);
+      if (bootSequence[currentLine]) { setLines((prev) => [...prev, bootSequence[currentLine]]); }
       currentLine++;
       if (currentLine >= bootSequence.length) {
         clearInterval(interval);

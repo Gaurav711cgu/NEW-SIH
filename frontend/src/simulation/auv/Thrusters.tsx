@@ -118,7 +118,7 @@ export default function Thrusters() {
         );
       })}
 
-      <instancedMesh ref={particlesRef} args={[undefined, undefined, totalMaxParticles]}>
+      <instancedMesh ref={particlesRef} args={[null as any, null as any, totalMaxParticles]}>
         <sphereGeometry args={[0.005, 8, 8]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.4} />
       </instancedMesh>
