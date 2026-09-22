@@ -41,7 +41,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'acoustic-shadow-physics',
     isDirectlyImplemented: true,
-    implementedLocationBadge: 'ai_pipeline/confidence_calibrator.py ➔ Acoustic Shadow Penalty Calibrator (PS-26057)',
+    implementedLocationBadge: 'ai_pipeline/confidence_calibrator.py ➔ Acoustic Shadow Penalty Calibrator (PS-26065)',
     category: 'CORE_IMPLEMENTED',
     title: 'The Handbook of Sidescan Sonar',
     authors: 'Philippe Blondel',
@@ -60,7 +60,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'sahi-2022',
     isDirectlyImplemented: false,
-    implementedLocationBadge: 'Phase 2 Roadmap: High-Resolution Sonar Slicing (PS-26057)',
+    implementedLocationBadge: 'Phase 2 Roadmap: High-Resolution Sonar Slicing (PS-26065)',
     category: 'CORE_IMPLEMENTED',
     title: 'Slicing Aided Hyper Inference and Fine-Tuning for Small Object Detection',
     authors: 'F. C. Akyon, S. O. Altinuc, A. Temizel',
@@ -79,7 +79,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'unesco-eos80',
     isDirectlyImplemented: true,
-    implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ BGC-Argo Profile Replayer (PS-26057)',
+    implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ BGC-Argo Profile Replayer (PS-26065)',
     category: 'PHYSICS_SENSORS',
     title: 'UNESCO International Equation of State of Seawater 1980 (EOS-80 / TEOS-10)',
     authors: 'N. P. Fofonoff, R. C. Millard Jr. / IOC-SCOR-IAPSO',
@@ -98,7 +98,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'clahe-sonar-1994',
     isDirectlyImplemented: true,
-    implementedLocationBadge: 'ai_pipeline/preprocessor.py ➔ CLAHE Speckle Reduction & Contrast Enhancement (PS-26057)',
+    implementedLocationBadge: 'ai_pipeline/preprocessor.py ➔ CLAHE Speckle Reduction & Contrast Enhancement (PS-26065)',
     category: 'CORE_IMPLEMENTED',
     title: 'Contrast Limited Adaptive Histogram Equalization',
     authors: 'K. Zuiderveld',
@@ -117,7 +117,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'garcia-gordon-oxygen',
     isDirectlyImplemented: true,
-    implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ BGC-Argo In-Situ DOXY Profile Replayer (PS-26057)',
+    implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ BGC-Argo In-Situ DOXY Profile Replayer (PS-26065)',
     category: 'PHYSICS_SENSORS',
     title: 'Oxygen Solubility in Seawater: Better Fitting Equations for Biogeochemical Oceanography',
     authors: 'H. E. Garcia, L. I. Gordon',
@@ -136,7 +136,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'cbam-attention-2018',
     isDirectlyImplemented: true,
-    implementedLocationBadge: 'ai_pipeline/cbam.py ➔ Dual Channel-Spatial Attention Module (PS-26057)',
+    implementedLocationBadge: 'ai_pipeline/cbam.py ➔ Dual Channel-Spatial Attention Module (PS-26065)',
     category: 'CORE_IMPLEMENTED',
     title: 'CBAM: Convolutional Block Attention Module',
     authors: 'S. Woo, J. Park, J.-Y. Lee, I. S. Kweon',
@@ -197,7 +197,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'dom-matsya-6000',
     isDirectlyImplemented: false,
-    implementedLocationBadge: 'National Mission Target: MATSYA 6000 & Deep Ocean Mission Alignment (PS-26057)',
+    implementedLocationBadge: 'National Mission Target: MATSYA 6000 & Deep Ocean Mission Alignment (PS-26065)',
     category: 'GOV_MISSIONS',
     title: 'Deep Ocean Mission (DOM) & MATSYA 6000 National Subsea Exploration Programme',
     authors: 'Ministry of Earth Sciences (MoES), Govt. of India / NIOT Chennai',
@@ -215,7 +215,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'ncpor-antarctic-program',
     isDirectlyImplemented: false,
-    implementedLocationBadge: 'Antarctic Carbon Sink & Water Mass Observation Alignment (PS-26057)',
+    implementedLocationBadge: 'Antarctic Carbon Sink & Water Mass Observation Alignment (PS-26065)',
     category: 'GOV_MISSIONS',
     title: 'Indian Antarctic Programme & Southern Ocean Biogeochemical Dynamics (Bharati & Maitri)',
     authors: 'National Centre for Polar and Ocean Research (NCPOR), Goa',
@@ -233,7 +233,7 @@ const RESEARCH_DOSSIER: ResearchCitation[] = [
   {
     id: 'ccamlr-ghostnet-treaty',
     isDirectlyImplemented: false,
-    implementedLocationBadge: 'Reporting Schema Standard for ALDFG Marine Debris Remediation (PS-26057)',
+    implementedLocationBadge: 'Reporting Schema Standard for ALDFG Marine Debris Remediation (PS-26065)',
     category: 'GOV_MISSIONS',
     title: 'CCAMLR International Treaty Standards on Derelict Fishing Gear & Marine Debris Remediation',
     authors: 'Commission for the Conservation of Antarctic Marine Living Resources',

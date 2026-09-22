@@ -1,6 +1,6 @@
 # =============================================================================
 # DeepScan — Full YOLOv8-seg Training on Colab T4
-# PS-26057 | NIOT | Ministry of Earth Sciences | Team DEBUG THUGS
+# PS-26065 | NIOT | Ministry of Earth Sciences | Team DEBUG THUGS
 #
 # HOW TO USE:
 #   1. Open Google Colab: colab.research.google.com
@@ -99,7 +99,7 @@ print("dataset.yaml written")
 # pip install -r pytorch-CycleGAN-and-pix2pix/requirements.txt -q
 
 # For demo purposes, if you skip CycleGAN, ghost_net detections fall back to
-# the 'anomaly' class — still valid for PS-26057 demonstration.
+# the 'anomaly' class — still valid for PS-26065 demonstration.
 print("CycleGAN synthesis: optional. Skip if time-limited. Ghost nets → anomaly class fallback.")
 """
 

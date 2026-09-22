@@ -220,7 +220,7 @@ To ensure absolute reliability during live evaluation on arbitrary machines (inc
    - Calculates IoU-based precision-recall curves across confidence thresholds [0.1 to 0.9].
 3. **`--mode verify` (Authoritative Benchmark Certification):**
    - Evaluates model weights for parameter count, FLOPs, and inference latency on the host CPU/GPU.
-   - Emits the verified empirical benchmark results certified for SIH PS-26057 evaluation (88.0% vs 35.4%).
+   - Emits the verified empirical benchmark results certified for SIH PS-26065 evaluation (88.0% vs 35.4%).
 
 ### 4.3 CLI Interface Specification
 ```bash

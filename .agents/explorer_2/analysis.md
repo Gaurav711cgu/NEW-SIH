@@ -18,7 +18,7 @@ A comprehensive, line-by-line verification audit of all 24 TypeScript/React file
 | **AI Model Architecture** | YOLOv8s CNN (88.0% mAP@50); RT-DETR failed (35.4% mAP@50) | Hallucinated YOLOv9 & SAHI in `ResearchCitations.tsx` & `AUVTwin.tsx`; claimed RT-DETR running on AUV | **CRITICAL** |
 | **Edge Hardware** | ESP32 Sensor Hub (₹400) + Raspberry Pi 4 (₹4,500); Total BOM ₹6,100 | Claims NVIDIA Jetson Orin NX (₹48k) & RPi 5 while simultaneously claiming ₹6,100 total BOM | **HIGH** |
 | **Economic Scaling** | ₹75,000 – ₹1,00,000 unit cost at scale vs ₹25–30 Lakh commercial Argo float | Disjointed claims: ₹7.8 Lakhs subsea target in `AUVTwin`, ₹18L FOG comparisons | **MEDIUM** |
-| **Policy & Mandate** | SIH Problem Statement PS-26057 (Marine Ghost Net & Seafloor Debris) | Confusion with "PS-1", "PS-2", and PS-26065; wild domain creep into Indian Monsoon forecasting | **HIGH** |
+| **Policy & Mandate** | SIH Problem Statement PS-26065 (Marine Ghost Net & Seafloor Debris) | Confusion with "PS-1", "PS-2", and PS-26065; wild domain creep into Indian Monsoon forecasting | **HIGH** |
 | **Academic Citations** | Real, peer-reviewed literature (Blondel 2009, Urick 1983, Zuiderveld 1994, etc.) | Franken-citations (Urick/Blondel mashup), fake DOIs/titles, claims of unbuilt algorithms | **CRITICAL** |
 | **Legacy Artifacts** | Consistent "Aquila OS" branding | Residual "DeepScan" strings in citations and download CSV names | **LOW** |
 
@@ -100,21 +100,21 @@ The project's authoritative empirical ablation study (`README.md` Section 3, `AI
 
 ---
 
-### 1.4 Policy & Mandate: SIH PS-26057 Ghost Net Mandate
+### 1.4 Policy & Mandate: SIH PS-26065 Ghost Net Mandate
 
 #### Ground Truth:
 - **Hackathon:** Smart India Hackathon (SIH) 2026.
-- **Official Problem Statement:** **PS-26057** (Ministry of Earth Sciences / MoES; National Centre for Polar and Ocean Research / NCPOR; National Institute of Ocean Technology / NIOT).
+- **Official Problem Statement:** **PS-26065** (Ministry of Earth Sciences / MoES; National Centre for Polar and Ocean Research / NCPOR; National Institute of Ocean Technology / NIOT).
 - **Mandate Core:** Automated detection, segmentation, and geotagging of abandoned, lost, or discarded fishing gear (ALDFG / Ghost Nets), underwater debris, and maritime hazards from side-scan sonar (SSS) imagery, coupled with autonomous ocean telemetry.
 
 #### Codebase Violations:
 1. **Arbitrary "PS-1" and "PS-2" Notation:**
    - `src/pages/ResearchCitations.tsx` (Lines 44, 63, 82, 101, 120, 139): Labels citations with `(PS-1)` and `(PS-2)`, e.g., `EOS-80 Salinity Synthesis (PS-1)` and `Acoustic Shadow Ray-Tracer (PS-2)`.
    - `src/pages/OceanState.tsx` (Line 290): `OCEANOGRAPHIC IN-SITU OBSERVATIONS & THERMODYNAMIC SYNTHESIS (PS-1)`.
-   - *Reality:* There are no "PS-1" and "PS-2" in the SIH prompt. The single official problem statement is PS-26057.
+   - *Reality:* There are no "PS-1" and "PS-2" in the SIH prompt. The single official problem statement is PS-26065.
 2. **Contradictory Problem Statement ID (PS-26065):**
    - `src/pages/GovernmentIntel.tsx` (Line 471): Lists `Autonomous Southern Ocean Observation (PS-26065) at 1/100th cost`.
-   - *Reality:* While PS-26065 appeared in early defense notes, the authoritative project prompt confirms PS-26057 as the primary submission.
+   - *Reality:* While PS-26065 appeared in early defense notes, the authoritative project prompt confirms PS-26065 as the primary submission.
 3. **Severe Scientific Domain Creep (Monsoon & Ice Resupply Forecasting):**
    - `src/pages/ResearchCitations.tsx` (Lines 229–231) & `src/pages/Biogeochemistry.tsx` (Lines 312–349, 373–376):
      Claims Aquila OS incorporates a teleconnection model linking Southern Ocean anomalies to the Mascarene High to issue "early advisories for Indian Monsoon onset" (with "Southwest monsoon rainfall probability modeled at 98.4% of LPA") and "real-time pack ice approach windows for RV Bharati resupply".
@@ -211,17 +211,17 @@ The project's authoritative empirical ablation study (`README.md` Section 3, `AI
 
 | Line(s) | Offending Text / Flawed Claim | Issue / Rationale | Verified Grounded Replacement |
 | :--- | :--- | :--- | :--- |
-| 44 | `implementedLocationBadge: 'ai_pipeline/confidence_calibrator.py ➔ Acoustic Shadow Ray-Tracer (PS-2)'` | Arbitrary `PS-2` notation; calibrator performs centroid shadow intersection, not ray tracing | `implementedLocationBadge: 'ai_pipeline/confidence_calibrator.py ➔ Acoustic Shadow Penalty Calibrator (PS-26057)'` |
+| 44 | `implementedLocationBadge: 'ai_pipeline/confidence_calibrator.py ➔ Acoustic Shadow Ray-Tracer (PS-2)'` | Arbitrary `PS-2` notation; calibrator performs centroid shadow intersection, not ray tracing | `implementedLocationBadge: 'ai_pipeline/confidence_calibrator.py ➔ Acoustic Shadow Penalty Calibrator (PS-26065)'` |
 | 46–50 | Title: `Principles of Underwater Sound & Acoustic Shadow Geometric Ray Tracing`<br>Authors: `Robert J. Urick / P. H. Blondel`<br>Pub: `McGraw-Hill / Springer-Praxis Marine Physics Series` (2009) | Franken-citation mashup of Urick (1983) and Blondel (2009) | Title: `The Handbook of Sidescan Sonar`<br>Author: `Philippe Blondel`<br>Pub: `Springer Praxis Books / Praxis Publishing` (2009)<br>DOI: `https://doi.org/10.1007/978-3-540-49886-5` |
 | 56 | `...If no shadow exists (flat seabed ripple), a -30% penalty drops it to the human triage queue.` | Code in `confidence_calibrator.py` uses `SHADOW_PENALTY_FACTOR = 0.50` (50% penalty for detections falling into shadow) | `...When the detector identifies a target, the calibrator checks its centroid against the acoustic shadow mask. Detections falling within shadow zones are penalized by 50% (factor 0.50) to suppress false positives caused by reverberation boundaries.` |
 | 61–77 | Item `sahi-2022`: Claims active implementation in `ai_pipeline/detector.py`, slicing waterfall strips into 640x640 tiles with YOLOv9 | SAHI is not in `detector.py`; model is YOLOv8s; YOLOv9 does not exist in repo | Mark `isDirectlyImplemented: false`, update badge to `Phase 2 Roadmap: High-Resolution Sonar Slicing`, and change description to reflect planned architecture for ultra-wide swath sonar rather than fake active implementation. |
-| 82 | `implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ EOS-80 Salinity Synthesis (PS-1)'` | Artifact `PS-1`; model uses spline interpolation and gradient boosting on real Argo profiles | `implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ BGC-Argo Profile Replayer (PS-26057)'` |
+| 82 | `implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ EOS-80 Salinity Synthesis (PS-1)'` | Artifact `PS-1`; model uses spline interpolation and gradient boosting on real Argo profiles | `implementedLocationBadge: 'virtual_sensors/dl_sensor_replicator.py ➔ BGC-Argo Profile Replayer (PS-26065)'` |
 | 94 | `We trained our Random Forest virtual sensor replicator on UNESCO EOS-80 physics equations... synthesizes laboratory-grade Salinity (PSU)...` | Uses Scikit-Learn `GradientBoostingRegressor` and cubic spline interpolation on real Southern Ocean Argo NetCDF profiles | `We replay real in-situ physical profiles from BGC-Argo float WMO 5904859 in the Southern Ocean (QC flag = 1) using cubic spline depth interpolation, and employ a Gradient Boosting cross-parameter model to estimate missing water column parameters.` |
-| 101 | `...CLAHE Speckle Noise Filter (PS-2)` | Artifact `PS-2` | `...CLAHE Speckle Reduction & Contrast Enhancement (PS-26057)` |
+| 101 | `...CLAHE Speckle Noise Filter (PS-2)` | Artifact `PS-2` | `...CLAHE Speckle Reduction & Contrast Enhancement (PS-26065)` |
 | 105 | Pub: `Graphics Gems IV, Academic Press / IEEE Journal of Oceanic Engineering` | Zuiderveld (1994) published in *Graphics Gems IV* only | Pub: `Graphics Gems IV, Academic Press, pp. 474–485` (1994) |
 | 110 | `[Clip Limit = 2.0, Tile Grid = 8x8]` | Code in `preprocessor.py` uses `clipLimit=3.0` | `[Clip Limit = 3.0, Tile Grid = 8x8]` |
-| 120 | `...Garcia-Gordon DOXY Model (PS-1)` | Artifact `PS-1`; DOXY is replayed from real Argo profiles | `...BGC-Argo In-Situ DOXY Profile Replayer (PS-26057)` |
-| 139 | `...Dual Channel-Spatial Saliency Module (PS-2)` | Artifact `PS-2` | `...Dual Channel-Spatial Attention Module (PS-26057)` |
+| 120 | `...Garcia-Gordon DOXY Model (PS-1)` | Artifact `PS-1`; DOXY is replayed from real Argo profiles | `...BGC-Argo In-Situ DOXY Profile Replayer (PS-26065)` |
+| 139 | `...Dual Channel-Spatial Saliency Module (PS-2)` | Artifact `PS-2` | `...Dual Channel-Spatial Attention Module (PS-26065)` |
 | 141 | Title: `CBAM: Convolutional Block Attention Module for Acoustic Saliency` | Appended "for Acoustic Saliency" to original paper title | Title: `CBAM: Convolutional Block Attention Module` (Woo et al., ECCV 2018) |
 | 175 | `codeImplementation: 'ai_pipeline/train.py & DeepScan_Colab_Training.ipynb'` | Legacy project name `DeepScan` | `codeImplementation: 'ai_pipeline/train.py & ai_pipeline/detector.py'` |
 | 176 | `...achieved 91.2% precision on shipwrecks and 94.2% on ghost nets.` | AI4Shipwrecks dataset contains only shipwrecks, zero ghost nets | `...achieved 89.6% AP50 on shipwrecks (AI4Shipwrecks benchmark), with ghost nets trained via CycleGAN domain transfer achieving 82.1% AP50.` |
@@ -237,7 +237,7 @@ The project's authoritative empirical ablation study (`README.md` Section 3, `AI
 | Line(s) | Offending Text / Flawed Claim | Issue / Rationale | Verified Grounded Replacement |
 | :--- | :--- | :--- | :--- |
 | 372 | `RT-DETR Baseline Confidence 61.2%` | RT-DETR was the inferior baseline in the ablation study; YOLOv8s is the primary model | `YOLOv8s Model Confidence 89.6%` |
-| 462 & 471 | `Edge AI for underwater debris & ghost net detection (PS-26057)` vs `Autonomous Southern Ocean Observation (PS-26065)` | PS-26065 vs authoritative PS-26057 mandate | Unify under `Smart India Hackathon PS-26057: Autonomous Marine Ghost Net Detection & Oceanographic Telemetry Platform` |
+| 462 & 471 | `Edge AI for underwater debris & ghost net detection (PS-26065)` vs `Autonomous Southern Ocean Observation (PS-26065)` | PS-26065 vs authoritative PS-26065 mandate | Unify under `Smart India Hackathon PS-26065: Autonomous Marine Ghost Net Detection & Oceanographic Telemetry Platform` |
 | 566 | `...unlocking the ability to train massive Vision Transformers (RT-DETR).` | RT-DETR failed ablation study due to lack of inductive bias | `...unlocking larger datasets to evaluate advanced hybrid transformer backbones while maintaining YOLOv8s as the primary edge deployment model.` |
 | 578–582 | `3. INFINITE ENERGY INTEGRATION: Transitioning the ESP32 edge-node from standard batteries to localized Ocean Thermal Energy Conversion (OTEC)...` | Hallucinated marketing fluff ("INFINITE ENERGY") | `3. POLAR-RATED ENERGY ARCHITECTURE: Transitioning from standard lab bench power to subsea LiFePO4 cold-rated battery cells (-20°C operating rating, retaining 70-80% capacity) supplemented by solar surface-recharging buoys for multi-month endurance.` |
 
@@ -273,7 +273,7 @@ The project's authoritative empirical ablation study (`README.md` Section 3, `AI
 
 | Line(s) | Offending Text / Flawed Claim | Issue / Rationale | Verified Grounded Replacement |
 | :--- | :--- | :--- | :--- |
-| 290 | `OCEANOGRAPHIC IN-SITU OBSERVATIONS & THERMODYNAMIC SYNTHESIS (PS-1)` | Artifact `PS-1` | `OCEANOGRAPHIC IN-SITU OBSERVATIONS & TELEMETRY SYNTHESIS (PS-26057)` |
+| 290 | `OCEANOGRAPHIC IN-SITU OBSERVATIONS & THERMODYNAMIC SYNTHESIS (PS-1)` | Artifact `PS-1` | `OCEANOGRAPHIC IN-SITU OBSERVATIONS & TELEMETRY SYNTHESIS (PS-26065)` |
 | 362 | `MODEL: UNESCO EOS-80 + RF` | Virtual sensor uses GradientBoosting / spline interpolation on real Argo profiles, not Random Forest | `MODEL: BGC-ARGO IN-SITU REPLAY (WMO 5904859)` |
 | 498 | `ACTIVE LAB COMPUTE: RASPBERRY PI 5 / ONNX (LIVE DEMO)` | BOM specifies Raspberry Pi 4 | `ACTIVE LAB COMPUTE: RASPBERRY PI 4 (4GB) / ONNX` |
 | 508 | `SAHI INFERENCE ENGINE: ACTIVE (640x640 SLICES · 88ms)` | Fabricated SAHI engine | `SSS PREPROCESSING CHAIN: CLAHE (3.0 CLIP) + MEDIAN FILTER (5x5)` |
@@ -308,6 +308,6 @@ The project's authoritative empirical ablation study (`README.md` Section 3, `AI
 | **Model Choice** | `AUVTwin.tsx:1422` claims RT-DETR-L is running on the AUV; `AUVTwin.tsx:256` & `ResearchCitations.tsx:75` claim YOLOv9; `ModelValidation.tsx` proves YOLOv8s is the selected model (88.0% mAP) and RT-DETR failed (35.4% mAP). | `AUVTwin.tsx`, `ResearchCitations.tsx`, `GovernmentIntel.tsx`, `ModelValidation.tsx` | Standardize on **YOLOv8s** (CNN, 11.1M params, 88.0% mAP50). Retain RT-DETR solely in `ModelValidation.tsx` as the failing ablation baseline (35.4% mAP50). |
 | **Edge Hardware** | `AUVTwin.tsx:1458` claims Jetson Orin NX while `AUVTwin.tsx:1461` claims ₹6,100 total BOM; `OceanState.tsx:498` claims Raspberry Pi 5. | `AUVTwin.tsx`, `OceanState.tsx` | Qualification prototype hardware is **ESP32 DevKit v1 (Sensor Hub) + Raspberry Pi 4 4GB (Edge Compute Node)** totaling **₹6,100 INR**. Jetson Orin NX is strictly a post-selection procurement roadmap option. |
 | **Target Scale Cost** | `AUVTwin.tsx:970` reports `₹7.8 LAKHS` subsea target; `GovernmentIntel.tsx:442` reports `₹75,000`. | `AUVTwin.tsx`, `GovernmentIntel.tsx`, `README.md` | Target production unit cost at scale is **₹75,000 to ₹1,00,000 INR** (25x–30x cheaper than commercial ₹25–30 Lakh Argo floats). The single fully-instrumented prototype build is **₹8,13,000 INR**. |
-| **Problem Statement** | Confusion between `PS-26057`, `PS-26065`, `PS-1`, and `PS-2`. | `ResearchCitations.tsx`, `OceanState.tsx`, `GovernmentIntel.tsx` | Official Problem Statement is **PS-26057** (SIH Ocean Technology / MoES). Eliminate `PS-1`, `PS-2`, and `PS-26065`. |
+| **Problem Statement** | Confusion between `PS-26065`, `PS-26065`, `PS-1`, and `PS-2`. | `ResearchCitations.tsx`, `OceanState.tsx`, `GovernmentIntel.tsx` | Official Problem Statement is **PS-26065** (SIH Ocean Technology / MoES). Eliminate `PS-1`, `PS-2`, and `PS-26065`. |
 | **Shadow Penalty** | `ResearchCitations.tsx:56, 818` and `SeafloorIntelligence.tsx:1180` claim `-30% penalty`; `confidence_calibrator.py:4` defines `SHADOW_PENALTY_FACTOR = 0.50` (50% penalty). | `ResearchCitations.tsx`, `SeafloorIntelligence.tsx`, `confidence_calibrator.py` | Standardize frontend text to state **50% confidence penalty** (or 0.50x multiplier) matching python code. |
 | **Virtual Sensors** | Frontend claims Random Forest and manual UNESCO EOS-80 / Garcia-Gordon equations; backend code replays real BGC-Argo NetCDF profiles (WMO 5904859) with Gradient Boosting DOXY fallback. | `ResearchCitations.tsx`, `OceanState.tsx`, `Biogeochemistry.tsx` | State truth: in-situ physical profiles are replayed directly from real BGC-Argo floats (SOCCOM Indian sector, QC flag = 1), with Gradient Boosting regression for missing parameters. |

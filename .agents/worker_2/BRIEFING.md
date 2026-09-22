@@ -1,7 +1,7 @@
 # BRIEFING — 2026-09-03T18:16:00Z
 
 ## Mission
-Execute Milestone 2 of AQUILA OS Frontend Remediation: strict claim & citation verification, hallucination removal, hardware/economic harmonization, and PS-26057 consolidation.
+Execute Milestone 2 of AQUILA OS Frontend Remediation: strict claim & citation verification, hallucination removal, hardware/economic harmonization, and PS-26065 consolidation.
 
 ## 🔒 My Identity
 - Archetype: worker_2
@@ -37,7 +37,7 @@ Execute Milestone 2 of AQUILA OS Frontend Remediation: strict claim & citation v
 - Shifted SAHI to Phase 2 roadmap, isolated RT-DETR-L as baseline failure (35.4% mAP50), and asserted YOLOv8s (88.0% mAP50) as production model.
 - Consolidated hardware to ESP32 + Raspberry Pi 4 (₹6,100 BOM) with Orin NX marked as post-selection upgrade.
 - Emphasized headline production unit cost of ₹75,000 – ₹1,00,000 INR at scale vs ₹25–30 Lakh commercial float.
-- Purged all Indian Monsoon rainfall forecasting and RV Bharati resupply fluff; consolidated all badges to SIH PS-26057.
+- Purged all Indian Monsoon rainfall forecasting and RV Bharati resupply fluff; consolidated all badges to SIH PS-26065.
 
 ## Artifact Index
 - `/Users/gauravkumarnayak/Desktop/new sih/.agents/worker_2/DISPATCH.md` — Assignment & scope
@@ -48,11 +48,11 @@ Execute Milestone 2 of AQUILA OS Frontend Remediation: strict claim & citation v
 
 ## Change Tracker
 - **Files modified**:
-  - `src/pages/ResearchCitations.tsx`: Replaced Franken-citation, corrected CLAHE & CBAM, fixed AI4Shipwrecks stats, replaced DeepScan with AQUILA, removed monsoon claims, consolidated PS-26057.
+  - `src/pages/ResearchCitations.tsx`: Replaced Franken-citation, corrected CLAHE & CBAM, fixed AI4Shipwrecks stats, replaced DeepScan with AQUILA, removed monsoon claims, consolidated PS-26065.
   - `src/pages/AUVTwin.tsx`: Replaced RT-DETR with YOLOv8s edge inference, harmonized hardware to ESP32 + Pi 4 (₹6,100 BOM), unified economics to ₹75k-₹1L at scale.
-  - `src/pages/GovernmentIntel.tsx`: Replaced PS-26065 with PS-26057, replaced OTEC Infinite Energy with polar-rated LiFePO4 battery architecture, fixed RT-DETR baseline to 35.4% mAP50.
+  - `src/pages/GovernmentIntel.tsx`: Replaced PS-26065 with PS-26065, replaced OTEC Infinite Energy with polar-rated LiFePO4 battery architecture, fixed RT-DETR baseline to 35.4% mAP50.
   - `src/pages/ModelValidation.tsx`: Grounded hardware to ESP32 + Pi 4, updated edge ONNX CPU latency to ~180ms (~5.5 FPS).
-  - `src/pages/OceanState.tsx`: Fixed Pi 5 typo to Pi 4, replaced PS-1 with PS-26057, replaced SAHI with CLAHE+Median chain.
+  - `src/pages/OceanState.tsx`: Fixed Pi 5 typo to Pi 4, replaced PS-1 with PS-26065, replaced SAHI with CLAHE+Median chain.
   - `src/pages/Biogeochemistry.tsx`: Purged monsoon LPA predictions, refocused on Southern Ocean Carbon Sink and real BGC-Argo replay, removed unused import.
   - `src/pages/SeafloorIntelligence.tsx`: Renamed CSV export to aquila_detections.csv, updated shadow penalty to 50%.
 - **Build status**: `npx tsc --noEmit` exit 0, `npm run build` exit 0.

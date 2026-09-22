@@ -256,7 +256,7 @@ class EdgeTelemetryAutoencoder:
 
 def run_telemetry_pipeline():
     """Execute complete edge telemetry anomaly detection training and export pipeline."""
-    logging.info("Initializing PS-26057 Underwater Observation Edge ML Pipeline...")
+    logging.info("Initializing PS-26065 Underwater Observation Edge ML Pipeline...")
     torch.manual_seed(42)
     np.random.seed(42)
 

@@ -35,9 +35,9 @@ Direct code examination and audit results across `frontend/src/` established the
    - The headline economic claim of the project is a scale unit cost of ₹75,000 to ₹1,00,000 INR (25x–30x cheaper than commercial ₹25–30 Lakh BGC-Argo floats).
    - Highlighting ₹7.8 Lakhs (cost of a single imported-sensor instrumented prototype) as the primary figure was misleading. The headline banners now showcase the ₹75,000 – ₹1.0 Lakh target at scale.
 4. **Mandate Consolidation & Scope Demarcation:**
-   - The official Smart India Hackathon problem statement is PS-26057 (Ministry of Earth Sciences / NCPOR / NIOT) for autonomous marine debris and ghost net detection.
+   - The official Smart India Hackathon problem statement is PS-26065 (Ministry of Earth Sciences / NCPOR / NIOT) for autonomous marine debris and ghost net detection.
    - Fragmented labels (`PS-1`, `PS-2`, `PS-26065`) and climate modeling claims (monsoon LPA forecasting) represented scope creep and hallucination.
-   - All badges were unified to PS-26057 and domain content was redirected to NCPOR Southern Ocean Indian sector carbon sink, AAIW salinity minima, and OMZ tracking.
+   - All badges were unified to PS-26065 and domain content was redirected to NCPOR Southern Ocean Indian sector carbon sink, AAIW salinity minima, and OMZ tracking.
 5. **Academic Integrity:**
    - Disentangled the Urick-Blondel hybrid citation into Philippe Blondel's *The Handbook of Sidescan Sonar* (2009).
    - Corrected CLAHE and CBAM citations to their authentic publication venues and parameters.
@@ -55,11 +55,11 @@ Direct code examination and audit results across `frontend/src/` established the
 ## 4. Conclusion
 
 All deliverables specified in Milestone 2 and `explorer_2/analysis.md` are 100% complete and verified:
-1. `ResearchCitations.tsx`: Authentic citations, grounded algorithms, 50% shadow penalty, PS-26057 consolidation, and zero DeepScan strings.
+1. `ResearchCitations.tsx`: Authentic citations, grounded algorithms, 50% shadow penalty, PS-26065 consolidation, and zero DeepScan strings.
 2. `AUVTwin.tsx`: YOLOv8s inference, unified economics (₹75k–₹1L vs ₹25–30L), ESP32 + Pi 4 architecture with Orin NX marked as post-selection upgrade.
-3. `GovernmentIntel.tsx`: PS-26057 consolidation, Polar-rated LiFePO4 battery architecture, RT-DETR 35.4% mAP50 baseline.
+3. `GovernmentIntel.tsx`: PS-26065 consolidation, Polar-rated LiFePO4 battery architecture, RT-DETR 35.4% mAP50 baseline.
 4. `ModelValidation.tsx`: Complete parity with authoritative 88.0% mAP50 vs 35.4% ablation study, realistic ~180ms edge CPU latency.
-5. `OceanState.tsx`: Raspberry Pi 4 (4GB), PS-26057 badge, CLAHE+Median preprocessing chain.
+5. `OceanState.tsx`: Raspberry Pi 4 (4GB), PS-26065 badge, CLAHE+Median preprocessing chain.
 6. `Biogeochemistry.tsx`: Complete removal of monsoon forecasting; grounded in Southern Ocean Carbon Sink and BGC-Argo in-situ replay (WMO 5904859).
 7. `SeafloorIntelligence.tsx`: CSV download renamed to `aquila_detections.csv`; 74.2% Cargo Container confidence; 50% shadow penalty.
 8. Full build verification passed (`npm run build` exits with code 0).

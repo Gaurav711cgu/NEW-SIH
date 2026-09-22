@@ -38,7 +38,7 @@ Commands executed directly in `/Users/gauravkumarnayak/Desktop/new sih/frontend`
 - `frontend/src/pages/GovernmentIntel.tsx`:
   - Line 453: `RT-DETR Baseline Confidence 35.4% mAP50`
   - Lines 522–524: `AQUILA OS COST: ₹75,000 VS ₹30 LAKH COMMERCIAL ARGO FLOAT`
-  - Lines 543, 552: Badged with `(PS-26057)`
+  - Lines 543, 552: Badged with `(PS-26065)`
   - Lines 765–768: `Transitioning from standard lab bench power to subsea LiFePO4 cold-rated battery cells (-20°C operating rating...)`
 
 ### 1.3 Academic Citation Verification
@@ -46,7 +46,7 @@ Commands executed directly in `/Users/gauravkumarnayak/Desktop/new sih/frontend`
   - Lines 46–50: *The Handbook of Sidescan Sonar*, Philippe Blondel (2009), Springer Praxis Books, DOI `10.1007/978-3-540-49886-5`. Verbatim no Urick mashup.
   - Lines 103–107: *Contrast Limited Adaptive Histogram Equalization*, K. Zuiderveld (1994), Graphics Gems IV, Academic Press, pp. 474–485.
   - Lines 141–146: *CBAM: Convolutional Block Attention Module*, S. Woo et al. (2018), ECCV.
-  - Lines 61–78: SAHI (2022) explicitly labeled `isDirectlyImplemented: false` and `Phase 2 Roadmap: High-Resolution Sonar Slicing (PS-26057)`.
+  - Lines 61–78: SAHI (2022) explicitly labeled `isDirectlyImplemented: false` and `Phase 2 Roadmap: High-Resolution Sonar Slicing (PS-26065)`.
   - Lines 80–97: UNESCO EOS-80 / TEOS-10 cited to Fofonoff & Millard (1983); implements in-situ BGC-Argo float WMO 5904859 replay with cubic spline depth interpolation and gradient boosting (no Random Forest).
   - Lines 160–177: AI4Shipwrecks (2024, NOAA / Univ. of Michigan) benchmark for shipwrecks (89.6% AP50), with ghost nets trained via CycleGAN transfer (82.1% AP50).
 

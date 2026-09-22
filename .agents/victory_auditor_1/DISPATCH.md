@@ -20,7 +20,7 @@ Conduct a strictly independent, blocking Victory Audit to verify the orchestrato
 2. Strict Claim & Citation Verification (R2):
    - All written text, especially in `ResearchCitations.tsx`, `GovernmentIntel.tsx`, and `ModelValidation.tsx`, reflects genuine project facts.
    - Zero placeholder text, zero hallucinated data.
-   - Grounded facts: YOLOv8 88.0% mAP50 CNN detector, RT-DETR-L 35.4% mAP ablation failure baseline, ESP32 + Raspberry Pi 4 edge hardware (₹6,100 prototype BOM), ₹75,000 unit cost (vs ₹30 Lakh Argo float), PS-26057 Ghost Net mandate.
+   - Grounded facts: YOLOv8 88.0% mAP50 CNN detector, RT-DETR-L 35.4% mAP ablation failure baseline, ESP32 + Raspberry Pi 4 edge hardware (₹6,100 prototype BOM), ₹75,000 unit cost (vs ₹30 Lakh Argo float), PS-26065 Ghost Net mandate.
    - Verify that all claims of YOLOv9, active SAHI, monsoon rainfall predictions, and infinite energy have been eradicated.
 3. Build Verification:
    - Verify `npx tsc --noEmit` and `npm run build` pass cleanly with exit code 0.

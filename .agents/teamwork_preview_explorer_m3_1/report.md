@@ -255,7 +255,7 @@ A regex audit across all source directories (`frontend/src/`, `ai_pipeline/`, `v
 The application conveys immediate technical credibility tailored to the Smart India Hackathon jury:
 1. **MoES & Deep Ocean Mission**: Emphasizes sovereign Indian ocean observation capabilities, referencing actual MoES initiatives and NCPOR polar stations (Maitri, Bharati).
 2. **Economic Justification**: Features rigorous cost comparisons highlighting AQUILA OS at ₹75,000 against imported Argo floats at ₹30+ Lakhs.
-3. **Problem Statement Compliance**: Directly implements maritime hazard monitoring and ghost gear retrieval (PS-26057 mandate).
+3. **Problem Statement Compliance**: Directly implements maritime hazard monitoring and ghost gear retrieval (PS-26065 mandate).
 4. **Atmanirbhar Bharat Branding**: Prominently displays the Indigenous Ocean Tech badge affirming 100% domestic AI architecture and sensor compatibility (ESP32 + Raspberry Pi 4 compute node).
 
 ### 5.2 UI/UX Aesthetics & Design Consistency

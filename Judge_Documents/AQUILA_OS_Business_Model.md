@@ -1,5 +1,5 @@
 # AQUILA OS: Economic Feasibility & Scaling Strategy
-**Smart India Hackathon 2026 | PS-26057 & PS-26065**
+**Smart India Hackathon 2026 | PS-26065 & PS-26065**
 
 ## 1. Executive Summary
 AQUILA OS is an ultra-low-cost, edge-capable marine operating system designed to democratize deep-ocean data collection. By decoupling expensive proprietary hardware from the intelligence layer, AQUILA transforms Commercial Off-The-Shelf (COTS) microcontrollers into military-grade ocean observation platforms. This document outlines the economic scalability of the AQUILA architecture and its direct alignment with the Government of India's strategic deep-ocean initiatives.

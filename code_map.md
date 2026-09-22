@@ -11,7 +11,7 @@ This is the central nervous system. It handles incoming hardware data, saves it,
 *   **`platform_pkg/sync_manager.py`**: The data rescuer. If the drone loses Wi-Fi and goes underwater, it queues data. When Wi-Fi reconnects, this script "burst syncs" all the missed data to the database.
 
 ## 2. The Artificial Intelligence Engine (`ai_pipeline/`)
-This folder handles the processing of the Side-Scan Sonar (SSS) images for Problem Statement PS-26057.
+This folder handles the processing of the Side-Scan Sonar (SSS) images for Problem Statement PS-26065.
 *   **`ai_pipeline/detector.py`**: The core AI inference script. It takes a raw sonar image, loads the `yolov8s.pt` model weights, runs the image through the neural network, and outputs bounding boxes around debris/shipwrecks.
 *   **`ai_pipeline/confidence_calibrator.py`**: The acoustic shadow penalizer (Blondel, 2009). It looks at where the AI drew a bounding box. If the box is drawn inside a dark acoustic shadow, it lowers the confidence score to prevent rocks from being classified as debris.
 *   **`ai_pipeline/geotagger.py`**: Converts the pixel coordinates (X/Y) of a detection into real-world Lat/Lon coordinates on the Earth based on the AUV's current location.

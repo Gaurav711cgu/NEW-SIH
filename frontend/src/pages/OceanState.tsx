@@ -54,7 +54,7 @@ export function OceanState() {
 
   const [connected, setConnected] = useState<boolean>(true);
   const [historySeries, setHistorySeries] = useState<{ time: string; temp: number; psal: number; depth: number }[]>([]);
-  const [hardwareLinked, setHardwareLinked] = useState<boolean>(false);
+  const [hardwareLinked] = useState<boolean>(false);
 
   // Live polling from backend API with seamless fallback
   useEffect(() => {
@@ -227,7 +227,7 @@ export function OceanState() {
             <div className="flex items-center gap-2">
               <h1 className="font-mono font-bold text-sm text-ice-100 tracking-wider">AUV-MATSYA 6000</h1>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-ice-500/20 text-ice-400 border border-ice-500/30 font-semibold">
-                PS-26057 DEPLOYED
+                PS-26065 DEPLOYED
               </span>
             </div>
             <div className="flex items-center gap-3 text-xs font-mono text-steel-400 mt-0.5">
@@ -292,7 +292,7 @@ export function OceanState() {
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-ice-400" />
             <h2 className="text-xs font-mono font-bold tracking-widest uppercase text-steel-300">
-              OCEANOGRAPHIC IN-SITU OBSERVATIONS &amp; TELEMETRY SYNTHESIS (PS-26057)
+              OCEANOGRAPHIC IN-SITU OBSERVATIONS &amp; TELEMETRY SYNTHESIS (PS-26065)
             </h2>
           </div>
           <span className="text-[10px] font-mono text-steel-500">

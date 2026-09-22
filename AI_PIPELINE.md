@@ -1,8 +1,8 @@
-# AI Detection Pipeline — PS-26057
+# AI Detection Pipeline — PS-26065
 
 ## Overview
 
-The AI pipeline ingests side-scan sonar imagery, applies acoustic preprocessing, runs object detection and segmentation, calibrates confidence scores using acoustic shadow analysis, and produces geotagged JSON and CSV anomaly reports. The pipeline is the primary software deliverable for PS-26057.
+The AI pipeline ingests side-scan sonar imagery, applies acoustic preprocessing, runs object detection and segmentation, calibrates confidence scores using acoustic shadow analysis, and produces geotagged JSON and CSV anomaly reports. The pipeline is the primary software deliverable for PS-26065.
 
 ---
 
@@ -215,7 +215,7 @@ names:
 
 ## Ghost Net Synthetic Data Generation
 
-No public SSS dataset contains labeled ghost net (abandoned fishing net) images. Ghost nets are the primary debris class named in PS-26057. Synthetic training data is generated using a CycleGAN domain transfer from optical fishing net images to SSS-style images.
+No public SSS dataset contains labeled ghost net (abandoned fishing net) images. Ghost nets are the primary debris class named in PS-26065. Synthetic training data is generated using a CycleGAN domain transfer from optical fishing net images to SSS-style images.
 
 ```bash
 git clone https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix

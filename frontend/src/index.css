@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-abyss-950 text-steel-100 antialiased overflow-hidden;
+    @apply bg-[#000000] text-white antialiased overflow-hidden; font-family: "Inter", "-apple-system", "BlinkMacSystemFont", "SF Pro Display", "Helvetica Neue", sans-serif;
   }
 }
 
@@ -102,3 +102,19 @@
   }
 }
 
+
+@keyframes scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(128px); }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #38383a;
+  border-radius: 4px;
+}

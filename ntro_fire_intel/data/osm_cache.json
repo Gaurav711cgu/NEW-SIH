@@ -1,0 +1,905 @@
+[
+  {
+    "cluster_id": "IND-GUJ-HAZIRA-01",
+    "name": "Hazira Industrial & Petrochemical Corridor",
+    "state": "Gujarat",
+    "district": "Surat",
+    "center": {
+      "lat": 21.1625,
+      "lon": 72.8312
+    },
+    "bounds": {
+      "min_lat": 21.1,
+      "max_lat": 21.22,
+      "min_lon": 72.75,
+      "max_lon": 72.9
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "power": "plant",
+      "industrial": "petrochemical"
+    },
+    "facilities": [
+      "ONGC Hazira Gas Processing Plant",
+      "Reliance Industries Petrochemical Complex",
+      "Shell Hazira LNG Terminal",
+      "AM/NS India Steel Manufacturing",
+      "KRIBHCO Fertilizer Plant",
+      "NTPC Kawas Combined Cycle Gas Power"
+    ],
+    "primary_hazard": "Hydrocarbon Vapor Cloud Explosion (VCE) / Toxic Ammonia & BLEVE",
+    "jurisdiction": {
+      "agency": "Surat District Disaster Management Authority (DDMA)",
+      "fire_station": "Hazira Emergency Response Center & Adajan Fire Station",
+      "regulatory_body": "Petroleum and Explosives Safety Organization (PESO) Vadodara",
+      "contact": "+91-261-2423400",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-GUJ-JAMNAGAR-02",
+    "name": "Jamnagar Petroleum Refining Hub",
+    "state": "Gujarat",
+    "district": "Jamnagar",
+    "center": {
+      "lat": 22.3582,
+      "lon": 69.8654
+    },
+    "bounds": {
+      "min_lat": 22.3,
+      "max_lat": 22.42,
+      "min_lon": 69.8,
+      "max_lon": 69.95
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "power": "plant",
+      "industrial": "oil_refinery"
+    },
+    "facilities": [
+      "Reliance Industries Domestic Tariff Area (DTA) Refinery",
+      "Reliance Industries SEZ Refinery",
+      "RIL Polypropylene & Paraxylene Units",
+      "Captive Co-generation Power Station"
+    ],
+    "primary_hazard": "Major Crude Oil Tank Fire / High-Pressure Flare Boilover / Hydrocarbon Flash",
+    "jurisdiction": {
+      "agency": "Jamnagar District Emergency Operation Center (DEOC)",
+      "fire_station": "Jamnagar Municipal Fire & RIL Industrial Fire Brigade",
+      "regulatory_body": "PESO Gujarat Circle / Gujarat Pollution Control Board",
+      "contact": "+91-288-2553404",
+      "evacuation_radius_m": 2500
+    }
+  },
+  {
+    "cluster_id": "IND-GUJ-DAHEJ-03",
+    "name": "Dahej Petroleum, Chemicals and Petrochemicals Investment Region (PCPIR)",
+    "state": "Gujarat",
+    "district": "Bharuch",
+    "center": {
+      "lat": 21.705,
+      "lon": 72.585
+    },
+    "bounds": {
+      "min_lat": 21.65,
+      "max_lat": 21.76,
+      "min_lon": 72.52,
+      "max_lon": 72.65
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "industrial": "chemical",
+      "amenity": "fuel"
+    },
+    "facilities": [
+      "OPaL (ONGC Petro additions Ltd) Dual Feed Cracker",
+      "Petronet LNG Regasification Terminal",
+      "Hindalco Birla Copper Smelter & Refinery",
+      "GACL Caustic Soda & Chlorine Complex",
+      "Dahej SEZ Specialty Chemicals"
+    ],
+    "primary_hazard": "Chlorine Gas Leakage / Ethylene Vapor Flash / Cryogenic Liquid Spill",
+    "jurisdiction": {
+      "agency": "Bharuch District Disaster Management Authority (DDMA)",
+      "fire_station": "Dahej Disaster Management Center & GIDC Fire Station",
+      "regulatory_body": "Directorate of Industrial Safety & Health (DISH) Gujarat",
+      "contact": "+91-2642-242200",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-GUJ-ANKLESHWAR-04",
+    "name": "Ankleshwar GIDC Specialty Chemical Belt",
+    "state": "Gujarat",
+    "district": "Bharuch",
+    "center": {
+      "lat": 21.628,
+      "lon": 73.003
+    },
+    "bounds": {
+      "min_lat": 21.58,
+      "max_lat": 21.68,
+      "min_lon": 72.95,
+      "max_lon": 73.06
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "storage_tank",
+      "industrial": "chemical"
+    },
+    "facilities": [
+      "UPL Agrochemical Synthesis Plant",
+      "Aarti Industries Benzene Derivatives Unit",
+      "Zydus Lifesciences Active Pharmaceutical Ingredients",
+      "Enviro Technology Common Effluent & Incineration"
+    ],
+    "primary_hazard": "Thermal Runaway Chemical Reactor / Toxic Fume Cloud / Drum Storage Deflagration",
+    "jurisdiction": {
+      "agency": "Bharuch District Emergency Response System",
+      "fire_station": "Ankleshwar Notified Area Authority Fire Brigade",
+      "regulatory_body": "Gujarat Pollution Control Board (GPCB) Ankleshwar",
+      "contact": "+91-2646-221317",
+      "evacuation_radius_m": 1500
+    }
+  },
+  {
+    "cluster_id": "IND-GUJ-MUNDRA-05",
+    "name": "Mundra Port, Power & Industrial SEZ",
+    "state": "Gujarat",
+    "district": "Kutch",
+    "center": {
+      "lat": 22.839,
+      "lon": 69.704
+    },
+    "bounds": {
+      "min_lat": 22.78,
+      "max_lat": 22.9,
+      "min_lon": 69.64,
+      "max_lon": 69.78
+    },
+    "tags": {
+      "landuse": "industrial",
+      "power": "plant",
+      "man_made": "storage_tank",
+      "industrial": "port"
+    },
+    "facilities": [
+      "Adani Power Mundra Super Thermal Power Station (4620 MW)",
+      "Tata Power Mundra Ultra Mega Power Plant",
+      "Mundra LPG and Chemical Liquid Cargo Terminal",
+      "Adani Solar Photovoltaic Manufacturing Hub"
+    ],
+    "primary_hazard": "Coal Conveyor Belt Dust Explosion / Liquid Chemical Tanker Fire",
+    "jurisdiction": {
+      "agency": "Kutch District Disaster Management Authority (Bhuj)",
+      "fire_station": "Mundra SEZ Industrial Emergency Response Station",
+      "regulatory_body": "PESO Rajkot / Maritime Board Port Safety Officer",
+      "contact": "+91-2832-250020",
+      "evacuation_radius_m": 1800
+    }
+  },
+  {
+    "cluster_id": "IND-MAH-CHEMBUR-06",
+    "name": "Chembur-Trombay Petroleum & Fertilizer Corridor",
+    "state": "Maharashtra",
+    "district": "Mumbai Suburban",
+    "center": {
+      "lat": 19.015,
+      "lon": 72.905
+    },
+    "bounds": {
+      "min_lat": 18.98,
+      "max_lat": 19.05,
+      "min_lon": 72.87,
+      "max_lon": 72.94
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "industrial": "chemical",
+      "power": "plant"
+    },
+    "facilities": [
+      "Bharat Petroleum Corporation Ltd (BPCL) Mumbai Refinery",
+      "Hindustan Petroleum Corporation Ltd (HPCL) Mumbai Refinery",
+      "Rashtriya Chemicals and Fertilizers (RCF) Trombay Plant",
+      "Tata Power Trombay Thermal & Hydro Station"
+    ],
+    "primary_hazard": "Refinery Hydrotreater Fire / Naphtha Storage Tank Rupture / Urban Evacuation Gridlock",
+    "jurisdiction": {
+      "agency": "Brihanmumbai Disaster Management Authority (MCGM)",
+      "fire_station": "Chembur Fire Station & Wadala Regional Fire Control",
+      "regulatory_body": "Petroleum and Explosives Safety Organization (PESO) Mumbai",
+      "contact": "+91-22-22694725",
+      "evacuation_radius_m": 1500
+    }
+  },
+  {
+    "cluster_id": "IND-MAH-URAN-07",
+    "name": "JNPT & Uran Gas Processing Terminal",
+    "state": "Maharashtra",
+    "district": "Raigad",
+    "center": {
+      "lat": 18.882,
+      "lon": 72.955
+    },
+    "bounds": {
+      "min_lat": 18.83,
+      "max_lat": 18.93,
+      "min_lon": 72.9,
+      "max_lon": 73.0
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "power": "plant",
+      "industrial": "gas"
+    },
+    "facilities": [
+      "ONGC Uran LPG and C2-C3 Extraction Plant",
+      "Jawaharlal Nehru Port Trust Container Freight Stations",
+      "MSEB Uran Gas Turbine Power Station",
+      "BPCL Liquid Cargo Jetty"
+    ],
+    "primary_hazard": "LPG Pipeline Decompression Fire / Container HAZMAT Spill / Marine Fuel Blazes",
+    "jurisdiction": {
+      "agency": "Raigad District Collector & Disaster Management Authority (Alibaug)",
+      "fire_station": "ONGC Uran Fire Station & JNPT Emergency Control",
+      "regulatory_body": "PESO Navi Mumbai / Maharashtra Pollution Control Board (MPCB)",
+      "contact": "+91-2141-222001",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-MAH-PATALGANGA-08",
+    "name": "Patalganga MIDC Industrial Chemical Belt",
+    "state": "Maharashtra",
+    "district": "Raigad",
+    "center": {
+      "lat": 18.804,
+      "lon": 73.158
+    },
+    "bounds": {
+      "min_lat": 18.76,
+      "max_lat": 18.85,
+      "min_lon": 73.11,
+      "max_lon": 73.21
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "industrial": "chemical"
+    },
+    "facilities": [
+      "Reliance Industries Polyester Filament & PTA Complex",
+      "Cipla Pharmaceutical API Facility",
+      "Castrol India Lubricants Blending Plant",
+      "Chambal Fertilizers Formulation Unit"
+    ],
+    "primary_hazard": "Organic Solvent Fire / Toxic Chemical Effluent Discharge / Atmospheric Dispersion",
+    "jurisdiction": {
+      "agency": "Raigad District Disaster Management Authority",
+      "fire_station": "Patalganga MIDC Fire Station",
+      "regulatory_body": "Directorate of Industrial Safety & Health (DISH) Maharashtra",
+      "contact": "+91-2192-250040",
+      "evacuation_radius_m": 1500
+    }
+  },
+  {
+    "cluster_id": "IND-MAH-TARAPUR-09",
+    "name": "Tarapur MIDC Chemical & Engineering Zone",
+    "state": "Maharashtra",
+    "district": "Palghar",
+    "center": {
+      "lat": 19.825,
+      "lon": 72.685
+    },
+    "bounds": {
+      "min_lat": 19.78,
+      "max_lat": 19.87,
+      "min_lon": 72.64,
+      "max_lon": 72.74
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "industrial": "chemical"
+    },
+    "facilities": [
+      "Aarti Drugs Bulk Active Pharmaceutical Ingredients",
+      "Lupin Ltd Chemical Manufacturing",
+      "Tata Steel Special Wires Division",
+      "Common Hazardous Waste Treatment Facility (CHWTSDF)"
+    ],
+    "primary_hazard": "Nitration Reactor Explosions / Hydrogen Cyanide Precursor Hazards / Industrial Fire",
+    "jurisdiction": {
+      "agency": "Palghar District Disaster Management Cell",
+      "fire_station": "Tarapur MIDC Fire Station (Boisar)",
+      "regulatory_body": "MPCB Tarapur / Factory Inspectorate Palghar",
+      "contact": "+91-2525-273111",
+      "evacuation_radius_m": 1500
+    }
+  },
+  {
+    "cluster_id": "IND-AP-VIZAG-10",
+    "name": "Visakhapatnam Petroleum & Steel Complex",
+    "state": "Andhra Pradesh",
+    "district": "Visakhapatnam",
+    "center": {
+      "lat": 17.687,
+      "lon": 83.218
+    },
+    "bounds": {
+      "min_lat": 17.63,
+      "max_lat": 17.75,
+      "min_lon": 83.15,
+      "max_lon": 83.28
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "industrial": "steel",
+      "power": "plant"
+    },
+    "facilities": [
+      "Hindustan Petroleum Corporation Ltd (HPCL) Visakh Refinery",
+      "Rashtriya Ispat Nigam Ltd (RINL) Visakhapatnam Steel Plant",
+      "Coromandel International Phosphatic Fertilizers",
+      "NTPC Simhadri Super Thermal Power Station (2000 MW)",
+      "Jawaharlal Nehru Pharma City (Parawada)"
+    ],
+    "primary_hazard": "Styrene Monomer Polymerization / Blast Furnace Molten Metal Breakthrough / Crude Flare",
+    "jurisdiction": {
+      "agency": "Visakhapatnam District Disaster Management Authority",
+      "fire_station": "Gajuwaka Industrial Fire Station & HPCL Mutual Aid Network",
+      "regulatory_body": "PESO Visakhapatnam / AP Pollution Control Board",
+      "contact": "+91-891-2560820",
+      "evacuation_radius_m": 2500
+    }
+  },
+  {
+    "cluster_id": "IND-AP-SRICITY-11",
+    "name": "Sri City Multi-Product SEZ & Industrial Belt",
+    "state": "Andhra Pradesh",
+    "district": "Tirupati",
+    "center": {
+      "lat": 13.535,
+      "lon": 80.025
+    },
+    "bounds": {
+      "min_lat": 13.48,
+      "max_lat": 13.59,
+      "min_lon": 79.98,
+      "max_lon": 80.08
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "industrial": "manufacturing"
+    },
+    "facilities": [
+      "Alstom Transport Rolling Stock Facility",
+      "Isuzu Motors Manufacturing Assembly",
+      "Foxconn Electronics Production Plant",
+      "Mondelez Confectionery Production"
+    ],
+    "primary_hazard": "Lithium Battery Thermal Runaway / Paint Shop Solvent Vapor Combustion",
+    "jurisdiction": {
+      "agency": "Tirupati District Collectorate & Disaster Management",
+      "fire_station": "Sri City Emergency Fire & Rescue Station",
+      "regulatory_body": "AP State Disaster Response and Fire Services",
+      "contact": "+91-8576-304000",
+      "evacuation_radius_m": 1200
+    }
+  },
+  {
+    "cluster_id": "IND-TN-MANALI-12",
+    "name": "Manali Petrochemical Corridor, Chennai",
+    "state": "Tamil Nadu",
+    "district": "Chennai",
+    "center": {
+      "lat": 13.165,
+      "lon": 80.265
+    },
+    "bounds": {
+      "min_lat": 13.12,
+      "max_lat": 13.21,
+      "min_lon": 80.22,
+      "max_lon": 80.31
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "industrial": "petrochemical",
+      "power": "plant"
+    },
+    "facilities": [
+      "Chennai Petroleum Corporation Ltd (CPCL) Manali Refinery",
+      "Manali Petrochemicals Ltd (Propylene Glycol Units)",
+      "Madras Fertilizers Ltd (Urea & Ammonia Complex)",
+      "Tamil Nadu Petroproducts Ltd (Linear Alkyl Benzene)",
+      "Balmer Lawrie Specialty Greases"
+    ],
+    "primary_hazard": "Anhydrous Ammonia Pipeline Rupture / Heavy Fuel Oil Tank Flare / Toxic Plume",
+    "jurisdiction": {
+      "agency": "Greater Chennai Corporation Disaster Management Authority",
+      "fire_station": "Manali Fire Station & CPCL Dedicated Fire Brigade",
+      "regulatory_body": "PESO South Circle (Chennai) / TNPCB",
+      "contact": "+91-44-25941200",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-TN-ENNORE-13",
+    "name": "Ennore Thermal Power & Marine Terminal Complex",
+    "state": "Tamil Nadu",
+    "district": "Tiruvallur",
+    "center": {
+      "lat": 13.245,
+      "lon": 80.325
+    },
+    "bounds": {
+      "min_lat": 13.2,
+      "max_lat": 13.29,
+      "min_lon": 80.28,
+      "max_lon": 80.36
+    },
+    "tags": {
+      "landuse": "industrial",
+      "power": "plant",
+      "man_made": "storage_tank",
+      "industrial": "port"
+    },
+    "facilities": [
+      "North Chennai Thermal Power Station (NCTPS Stage I & II)",
+      "Kamarajar Port Ltd Hazardous Liquid Chemical Berths",
+      "Indian Oil LNG Regasification Terminal",
+      "Ash Dyke & Coal Handling Plant"
+    ],
+    "primary_hazard": "Cryogenic LNG Fire / High-Voltage Transformer Oil Combustion",
+    "jurisdiction": {
+      "agency": "Tiruvallur District Disaster Management Cell",
+      "fire_station": "Ennore Thermal Fire Station & Port Emergency Unit",
+      "regulatory_body": "Tamil Nadu Fire and Rescue Services (TNFRS)",
+      "contact": "+91-44-27991101",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-TN-RANIPET-14",
+    "name": "Ranipet SIPCOT Chemical & Industrial Complex",
+    "state": "Tamil Nadu",
+    "district": "Ranipet",
+    "center": {
+      "lat": 12.928,
+      "lon": 79.332
+    },
+    "bounds": {
+      "min_lat": 12.89,
+      "max_lat": 12.97,
+      "min_lon": 79.29,
+      "max_lon": 79.38
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "industrial": "chemical"
+    },
+    "facilities": [
+      "BHEL Boiler Auxiliaries Plant",
+      "Ranipet Chemical Formulation Cluster",
+      "Tamil Nadu Chromates Industrial Residue Area",
+      "SIDCO Finished Leather & Chemical Auxiliaries"
+    ],
+    "primary_hazard": "Chromium Residue Contamination / Heavy Industrial Welding Fire / Toxic Emissions",
+    "jurisdiction": {
+      "agency": "Ranipet District Disaster Management Authority",
+      "fire_station": "Ranipet SIPCOT Fire Station",
+      "regulatory_body": "TNPCB Vellore Region / DISH Tamil Nadu",
+      "contact": "+91-4172-272001",
+      "evacuation_radius_m": 1200
+    }
+  },
+  {
+    "cluster_id": "IND-ODI-ANGUL-15",
+    "name": "Angul Integrated Steel, Aluminum & Power Corridor",
+    "state": "Odisha",
+    "district": "Angul",
+    "center": {
+      "lat": 20.842,
+      "lon": 85.155
+    },
+    "bounds": {
+      "min_lat": 20.78,
+      "max_lat": 20.9,
+      "min_lon": 85.08,
+      "max_lon": 85.22
+    },
+    "tags": {
+      "landuse": "industrial",
+      "industrial": "steel",
+      "power": "plant",
+      "man_made": "works"
+    },
+    "facilities": [
+      "Jindal Steel & Power Ltd (JSPL) Integrated Steel Plant (6 MTPA)",
+      "National Aluminium Company Ltd (NALCO) Smelter Plant",
+      "NALCO Captive Power Plant (1200 MW)",
+      "NTPC Talcher Super Thermal Power Station (Kaniha 3000 MW)"
+    ],
+    "primary_hazard": "Blast Furnace Gas Leak (CO Poisoning) / Molten Aluminum Steam Explosion / Coal Fire",
+    "jurisdiction": {
+      "agency": "Angul District Disaster Management Authority (DDMA)",
+      "fire_station": "Angul Fire Station & NALCO Emergency Industrial Rescue",
+      "regulatory_body": "Odisha State Disaster Management Authority (OSDMA) / PESO Bhubaneswar",
+      "contact": "+91-6764-230403",
+      "evacuation_radius_m": 2200
+    }
+  },
+  {
+    "cluster_id": "IND-ODI-PARADIP-16",
+    "name": "Paradip Petroleum, Refining & Port Corridor",
+    "state": "Odisha",
+    "district": "Jagatsinghpur",
+    "center": {
+      "lat": 20.295,
+      "lon": 86.668
+    },
+    "bounds": {
+      "min_lat": 20.24,
+      "max_lat": 20.35,
+      "min_lon": 86.6,
+      "max_lon": 86.74
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "power": "plant",
+      "industrial": "petrochemical"
+    },
+    "facilities": [
+      "Indian Oil Corporation Ltd (IOCL) Paradip Mega Refinery (15 MTPA)",
+      "IFFCO Complex Fertilizers Unit",
+      "Paradeep Phosphates Ltd (PPL)",
+      "Paradip Port Trust Marine Oil & Chemical Terminal",
+      "Essar Steel Pellet Plant"
+    ],
+    "primary_hazard": "Hydrogen Fluoride Acid Dispersion / Refinery Delayed Coker Fire / Crude Jetty Fire",
+    "jurisdiction": {
+      "agency": "Jagatsinghpur District Emergency Operation Center",
+      "fire_station": "Paradip Port Fire Station & IOCL Dedicated Fire Team",
+      "regulatory_body": "PESO Odisha Circle / State Pollution Control Board Odisha",
+      "contact": "+91-6722-222300",
+      "evacuation_radius_m": 2500
+    }
+  },
+  {
+    "cluster_id": "IND-ODI-JHARSUGUDA-17",
+    "name": "Jharsuguda Non-Ferrous Smelter & Energy Hub",
+    "state": "Odisha",
+    "district": "Jharsuguda",
+    "center": {
+      "lat": 21.855,
+      "lon": 84.025
+    },
+    "bounds": {
+      "min_lat": 21.8,
+      "max_lat": 21.91,
+      "min_lon": 83.96,
+      "max_lon": 84.09
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "power": "plant",
+      "industrial": "smelter"
+    },
+    "facilities": [
+      "Vedanta Ltd Aluminium Smelter Complex (1.6 MTPA)",
+      "Vedanta 2400 MW Super Thermal Power Plant",
+      "OPGC IB Thermal Power Station (Banharpali)",
+      "Action Ispat and Power Steel Plant"
+    ],
+    "primary_hazard": "Smelter Potline Fire / Coal Silo Spontaneous Combustion / High Voltage Arcing",
+    "jurisdiction": {
+      "agency": "Jharsuguda District Disaster Management Authority",
+      "fire_station": "Jharsuguda Fire Station & Vedanta Industrial Safety Unit",
+      "regulatory_body": "Directorate of Factories and Boilers Odisha",
+      "contact": "+91-6645-272001",
+      "evacuation_radius_m": 1800
+    }
+  },
+  {
+    "cluster_id": "IND-CHH-KORBA-18",
+    "name": "Korba Coal, Power & Aluminum Capital",
+    "state": "Chhattisgarh",
+    "district": "Korba",
+    "center": {
+      "lat": 22.355,
+      "lon": 82.685
+    },
+    "bounds": {
+      "min_lat": 22.3,
+      "max_lat": 22.42,
+      "min_lon": 82.62,
+      "max_lon": 82.75
+    },
+    "tags": {
+      "landuse": "industrial",
+      "power": "plant",
+      "industrial": "mining",
+      "man_made": "works"
+    },
+    "facilities": [
+      "NTPC Korba Super Thermal Power Station (2600 MW)",
+      "Bharat Aluminium Company Ltd (BALCO) Smelter & Captive Power",
+      "SECL Gevra & Kusmunda Open Cast Coal Mines",
+      "CSPGCL Hasdeo Thermal Power Station"
+    ],
+    "primary_hazard": "Coal Seam Fire / Massive Ash Pond Breach / Pulverized Coal Dust Deflagration",
+    "jurisdiction": {
+      "agency": "Korba District Emergency Operations Center (DEOC)",
+      "fire_station": "Korba Central Fire Station & NTPC Fire Wing",
+      "regulatory_body": "Chhattisgarh State Fire Services / Directorate of Industrial Health",
+      "contact": "+91-7759-222401",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-CHH-BHILAI-19",
+    "name": "Bhilai Integrated Steel Plant (SAIL) Complex",
+    "state": "Chhattisgarh",
+    "district": "Durg",
+    "center": {
+      "lat": 21.185,
+      "lon": 81.385
+    },
+    "bounds": {
+      "min_lat": 21.13,
+      "max_lat": 21.24,
+      "min_lon": 81.32,
+      "max_lon": 81.45
+    },
+    "tags": {
+      "landuse": "industrial",
+      "industrial": "steel",
+      "man_made": "works",
+      "power": "plant"
+    },
+    "facilities": [
+      "SAIL Bhilai Steel Plant (BSP)",
+      "NTPC-SAIL Power Company Ltd (NSPCL Bhilai)",
+      "Bhilai Coke Oven and Coal Chemical Department",
+      "Rail & Structural Mill Complex"
+    ],
+    "primary_hazard": "Coke Oven Gas Explosion / Tar Distillation Unit Fire / Heavy Molten Slag Splatter",
+    "jurisdiction": {
+      "agency": "Durg District Disaster Management Authority",
+      "fire_station": "Bhilai Steel Plant Fire Services (Sector 1) & Durg Fire Office",
+      "regulatory_body": "PESO Raipur / Chhattisgarh Environment Conservation Board",
+      "contact": "+91-788-2322001",
+      "evacuation_radius_m": 2200
+    }
+  },
+  {
+    "cluster_id": "IND-MP-SINGRAULI-20",
+    "name": "Singrauli Super Thermal Energy & Coal Basin",
+    "state": "Madhya Pradesh",
+    "district": "Singrauli",
+    "center": {
+      "lat": 24.125,
+      "lon": 82.675
+    },
+    "bounds": {
+      "min_lat": 24.06,
+      "max_lat": 24.18,
+      "min_lon": 82.6,
+      "max_lon": 82.75
+    },
+    "tags": {
+      "landuse": "industrial",
+      "power": "plant",
+      "industrial": "mining",
+      "man_made": "works"
+    },
+    "facilities": [
+      "NTPC Singrauli Super Thermal Power Station (Shaktinagar 2000 MW)",
+      "NTPC Vindhyachal Super Thermal Power Station (4760 MW - India's Largest)",
+      "Northern Coalfields Ltd (NCL) Jayant & Nigahi Opencast Mines",
+      "Hindalco Mahan Aluminium & Power Project"
+    ],
+    "primary_hazard": "Supercritical Boiler Tube Explosions / High-Voltage Substation Fire / Spontaneous Coal Combustion",
+    "jurisdiction": {
+      "agency": "Singrauli District Disaster Management Cell (Waidhan)",
+      "fire_station": "NTPC Shaktinagar Fire Station & Waidhan Fire Brigade",
+      "regulatory_body": "MP Pollution Control Board / Factory Inspectorate MP",
+      "contact": "+91-7805-233001",
+      "evacuation_radius_m": 2500
+    }
+  },
+  {
+    "cluster_id": "IND-WB-HALDIA-21",
+    "name": "Haldia Petrochemicals, Oil Refining & Port Complex",
+    "state": "West Bengal",
+    "district": "Purba Medinipur",
+    "center": {
+      "lat": 22.035,
+      "lon": 88.085
+    },
+    "bounds": {
+      "min_lat": 21.98,
+      "max_lat": 22.09,
+      "min_lon": 88.02,
+      "max_lon": 88.15
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "refinery",
+      "industrial": "petrochemical",
+      "power": "plant"
+    },
+    "facilities": [
+      "Haldia Petrochemicals Ltd (HPL Naphtha Cracker)",
+      "Indian Oil Corporation Ltd (IOCL) Haldia Refinery (8 MTPA)",
+      "Mitsubishi Chemical PTA India",
+      "Tata Steel Processing and Distribution Center",
+      "Haldia Dock Complex Marine Chemical Berths"
+    ],
+    "primary_hazard": "Naphtha Tank Blaze / Butadiene Vapor Ignition / Maritime Chemical Bunker Explosion",
+    "jurisdiction": {
+      "agency": "Purba Medinipur District Disaster Management Section",
+      "fire_station": "Haldia Fire Station & Mutual Aid Disaster Response Group",
+      "regulatory_body": "PESO Kolkata Circle / West Bengal Fire & Emergency Services",
+      "contact": "+91-3224-252101",
+      "evacuation_radius_m": 2200
+    }
+  },
+  {
+    "cluster_id": "IND-WB-DURGAPUR-22",
+    "name": "Durgapur-Asansol Steel & Heavy Industrial Corridor",
+    "state": "West Bengal",
+    "district": "Paschim Bardhaman",
+    "center": {
+      "lat": 23.525,
+      "lon": 87.315
+    },
+    "bounds": {
+      "min_lat": 23.47,
+      "max_lat": 23.58,
+      "min_lon": 87.25,
+      "max_lon": 87.38
+    },
+    "tags": {
+      "landuse": "industrial",
+      "industrial": "steel",
+      "man_made": "works",
+      "power": "plant"
+    },
+    "facilities": [
+      "SAIL Durgapur Steel Plant (DSP)",
+      "SAIL Alloy Steels Plant (ASP)",
+      "Durgapur Projects Ltd (DPL) Coke Oven & Power",
+      "DVC Durgapur Thermal Power Station"
+    ],
+    "primary_hazard": "Producer Gas Leak / Molten Iron Torpedo Car Derailment / Coal Tar Pitch Fire",
+    "jurisdiction": {
+      "agency": "Paschim Bardhaman District Disaster Management Authority (Asansol)",
+      "fire_station": "Durgapur Steel Township Fire Station",
+      "regulatory_body": "West Bengal Pollution Control Board / Directorate of Boilers",
+      "contact": "+91-343-2564201",
+      "evacuation_radius_m": 1800
+    }
+  },
+  {
+    "cluster_id": "IND-JH-BOKARO-23",
+    "name": "Bokaro Steel City Integrated Metallurgical Hub",
+    "state": "Jharkhand",
+    "district": "Bokaro",
+    "center": {
+      "lat": 23.668,
+      "lon": 86.155
+    },
+    "bounds": {
+      "min_lat": 23.61,
+      "max_lat": 23.72,
+      "min_lon": 86.09,
+      "max_lon": 86.22
+    },
+    "tags": {
+      "landuse": "industrial",
+      "industrial": "steel",
+      "power": "plant",
+      "man_made": "works"
+    },
+    "facilities": [
+      "SAIL Bokaro Steel Plant (BSL - 5.8 MTPA)",
+      "Bokaro Power Supply Company Ltd (BPSCL)",
+      "ONGC Coal Bed Methane (CBM) Pilot Facility (Parbatpur)",
+      "Electrosteel Castings Ltd (ESL Siyaljori)"
+    ],
+    "primary_hazard": "Blast Furnace Gas Flare-Back / Oxygen Plant Pipeline Rupture / Toxic Cyanide in Coke Effluent",
+    "jurisdiction": {
+      "agency": "Bokaro District Disaster Management Cell",
+      "fire_station": "Bokaro Steel City Fire Station & BSL Industrial Brigade",
+      "regulatory_body": "Jharkhand State Disaster Management Authority / PESO Ranchi",
+      "contact": "+91-6542-242201",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-JH-JAMSHEDPUR-24",
+    "name": "Jamshedpur Tata Industrial & Manufacturing Corridor",
+    "state": "Jharkhand",
+    "district": "East Singhbhum",
+    "center": {
+      "lat": 22.795,
+      "lon": 86.205
+    },
+    "bounds": {
+      "min_lat": 22.74,
+      "max_lat": 22.85,
+      "min_lon": 86.15,
+      "max_lon": 86.26
+    },
+    "tags": {
+      "landuse": "industrial",
+      "industrial": "steel",
+      "man_made": "works",
+      "power": "plant"
+    },
+    "facilities": [
+      "Tata Steel Jamshedpur Works (10 MTPA)",
+      "Tata Motors Commercial Vehicle Assembly Plant",
+      "Tata Cummins Engine Manufacturing",
+      "Tata Power Jojobera Thermal Power Station",
+      "Tinplate Company of India Ltd (Golmuri)"
+    ],
+    "primary_hazard": "Ladle Crane Cable Failure / Heavy Industrial Gas Ignition / Foundry Fire",
+    "jurisdiction": {
+      "agency": "East Singhbhum District Disaster Management Authority",
+      "fire_station": "Golmuri Fire Station & Tata Steel Emergency Fire Command",
+      "regulatory_body": "Directorate of Factories Jharkhand / JSPCB Jamshedpur",
+      "contact": "+91-657-2431001",
+      "evacuation_radius_m": 2000
+    }
+  },
+  {
+    "cluster_id": "IND-HP-BADDI-25",
+    "name": "Baddi-Barotiwala-Nalagarh (BBN) Pharmaceutical & Chemical Belt",
+    "state": "Himachal Pradesh",
+    "district": "Solan",
+    "center": {
+      "lat": 30.955,
+      "lon": 76.785
+    },
+    "bounds": {
+      "min_lat": 30.9,
+      "max_lat": 31.01,
+      "min_lon": 76.72,
+      "max_lon": 76.85
+    },
+    "tags": {
+      "landuse": "industrial",
+      "man_made": "works",
+      "industrial": "chemical"
+    },
+    "facilities": [
+      "Dr. Reddy's Laboratories Formulation Unit",
+      "Cipla Baddi Unit I & II",
+      "Abbott Healthcare Manufacturing",
+      "Cadila Pharmaceuticals Active Ingredients",
+      "Baddi Common Hazardous Waste Treatment Facility"
+    ],
+    "primary_hazard": "Solvent Storage Flash Fire / Chemical Reaction Thermal Runaway / Valley Inversion Trap",
+    "jurisdiction": {
+      "agency": "Solan District Disaster Management Authority",
+      "fire_station": "Baddi Industrial Fire Station & Nalagarh Emergency Wing",
+      "regulatory_body": "HP State Pollution Control Board / Directorate of Industries HP",
+      "contact": "+91-1795-244101",
+      "evacuation_radius_m": 1200
+    }
+  }
+]

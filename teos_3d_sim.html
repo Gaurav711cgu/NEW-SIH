@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQUILA - 3D Ocean Observation & TEOS-10 Simulator</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #020617; font-family: 'JetBrains Mono', 'Courier New', Courier, monospace; color: #e2e8f0; }
+        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        
+        /* UI OVERLAY */
+        .hud { position: absolute; z-index: 10; pointer-events: none; }
+        
+        .top-left { top: 20px; left: 20px; }
+        .top-left .title { color: #38bdf8; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .top-left .blink { animation: blink 1.5s infinite; color: #ef4444; }
+        .data-row { margin-bottom: 5px; font-size: 0.9rem; }
+        .data-label { color: #94a3b8; display: inline-block; width: 70px; }
+        .data-val { color: #f8fafc; font-weight: bold; }
+        
+        .bottom-right { bottom: 20px; right: 20px; background: rgba(2, 6, 23, 0.85); border: 1px solid #334155; border-radius: 8px; width: 450px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.5); pointer-events: auto; }
+        .terminal-header { color: #10b981; font-size: 0.8rem; border-bottom: 1px solid #334155; padding-bottom: 8px; margin-bottom: 10px; font-weight: bold; }
+        .terminal-body { height: 200px; overflow-y: auto; font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px; }
+        .log-line { word-wrap: break-word; }
+        .log-info { color: #94a3b8; }
+        .log-data { color: #38bdf8; }
+        .log-success { color: #10b981; }
+        .log-error { color: #ef4444; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+    </style>
+    <!-- Import Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <!-- HUD -->
+    <div class="hud top-left">
+        <div class="title"><span class="blink">●</span> AUV-001 TELEMETRY</div>
+        <div class="data-row"><span class="data-label">SYS:</span> <span class="data-val" style="color: #10b981">DIVE SEQUENCE ACTIVE</span></div>
+        <div class="data-row"><span class="data-label">DEPTH:</span> <span class="data-val" id="hud-depth">0.0 m</span></div>
+        <div class="data-row"><span class="data-label">TEMP:</span> <span class="data-val" id="hud-temp">1.50 °C</span></div>
+        <div class="data-row"><span class="data-label">SALIN:</span> <span class="data-val" id="hud-sal">34.00 PSU</span></div>
+        <div class="data-row"><span class="data-label">DOXY:</span> <span class="data-val" id="hud-dox">250.4 µmol/kg</span></div>
+    </div>
+
+    <div class="hud bottom-right">
+        <div class="terminal-header">EDGE_BGC_TEOS10_STDOUT</div>
+        <div class="terminal-body" id="terminal">
+            <div class="log-line log-info">> Initialization complete. TEOS-10 Physics Engine ONLINE.</div>
+            <div class="log-line log-info">> Commencing dive to 500m...</div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Setup Three.js Scene
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x020617, 0.05);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(5, 2, 8);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(10, 20, 10);
+        scene.add(dirLight);
+        
+        // Spot light representing AUV headlamp
+        const spotLight = new THREE.SpotLight(0x38bdf8, 2, 20, 0.5, 0.5, 1);
+        spotLight.position.set(0, 0, 2);
+        scene.add(spotLight);
+
+        // 2. Build the AUV (Replicating the yellow sub)
+        const auvGroup = new THREE.Group();
+
+        // Main Hull
+        const hullGeo = new THREE.CylinderGeometry(0.6, 0.6, 3, 32);
+        const hullMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, metalness: 0.3, roughness: 0.4 });
+        const hull = new THREE.Mesh(hullGeo, hullMat);
+        hull.rotation.z = Math.PI / 2;
+        auvGroup.add(hull);
+
+        // Nose Dome
+        const domeGeo = new THREE.SphereGeometry(0.6, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+        const domeMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.2 });
+        const nose = new THREE.Mesh(domeGeo, domeMat);
+        nose.rotation.z = -Math.PI / 2;
+        nose.position.x = 1.5;
+        auvGroup.add(nose);
+
+        // Tail Cone
+        const tailGeo = new THREE.ConeGeometry(0.6, 1, 32);
+        const tail = new THREE.Mesh(tailGeo, domeMat);
+        tail.rotation.z = Math.PI / 2;
+        tail.position.x = -2.0;
+        auvGroup.add(tail);
+
+        // Propeller
+        const propGeo = new THREE.BoxGeometry(0.1, 1.2, 0.2);
+        const propMat = new THREE.MeshStandardMaterial({ color: 0xef4444 });
+        const prop = new THREE.Mesh(propGeo, propMat);
+        prop.position.x = -2.6;
+        auvGroup.add(prop);
+
+        // Sensor Nodes (Glowing Orbs on hull)
+        function createSensorNode(x, y, z, color) {
+            const geo = new THREE.SphereGeometry(0.15, 16, 16);
+            const mat = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 1 });
+            const node = new THREE.Mesh(geo, mat);
+            node.position.set(x, y, z);
+            return node;
+        }
+        
+        const tempSensor = createSensorNode(1.0, 0.4, 0.4, 0x00e5ff); // Temp
+        const doSensor = createSensorNode(-1.0, -0.4, 0.4, 0xf59e0b); // DO
+        const salSensor = createSensorNode(0, 0.6, 0, 0x10b981); // Salinity
+        
+        auvGroup.add(tempSensor);
+        auvGroup.add(doSensor);
+        auvGroup.add(salSensor);
+
+        scene.add(auvGroup);
+
+        // 3. Marine Snow (Particles to show diving motion)
+        const particlesGeo = new THREE.BufferGeometry();
+        const particlesCount = 1000;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 40;
+        }
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particleMat = new THREE.PointsMaterial({ size: 0.05, color: 0x94a3b8, transparent: true, opacity: 0.6 });
+        const particles = new THREE.Points(particlesGeo, particleMat);
+        scene.add(particles);
+
+        // 4. Animation and Simulation Logic
+        let depth = 0;
+        const terminal = document.getElementById('terminal');
+
+        function addLog(html) {
+            terminal.innerHTML += `<div class="log-line">${html}</div>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Logic loop
+        setInterval(() => {
+            if (depth >= 500) return;
+            
+            depth += 5;
+            
+            // Subsea physics simulation
+            let temp = (1.5 - (depth / 200)).toFixed(2);
+            let sal = (34.00 + (depth / 1000)).toFixed(2);
+            let dox = (250 - (depth / 5)).toFixed(1);
+            
+            // Random hardware failure simulation
+            let isFailure = Math.random() < 0.08; 
+            if (isFailure) {
+                sal = (12.00).toFixed(2); // Impossible salinity
+                tempSensor.material.emissive.setHex(0xff0000);
+            } else {
+                tempSensor.material.emissive.setHex(0x00e5ff);
+            }
+
+            // Update HUD
+            document.getElementById('hud-depth').innerText = depth.toFixed(1) + ' m';
+            document.getElementById('hud-temp').innerText = temp + ' °C';
+            document.getElementById('hud-sal').innerText = sal + ' PSU';
+            document.getElementById('hud-dox').innerText = dox + ' µmol/kg';
+
+            // Terminal Logic
+            addLog(`<span class="log-info">> [I2C] Reading sensors at ${depth}m AGL...</span>`);
+            
+            setTimeout(() => {
+                addLog(`<span class="log-data">> Raw: T=${temp}°C, S=${sal}, P=${depth}dbar</span>`);
+                addLog(`<span class="log-info">> Pushing to TEOS-10 Physics Sandbox...</span>`);
+                
+                setTimeout(() => {
+                    if (isFailure) {
+                        let badDensity = (980.5).toFixed(2);
+                        addLog(`<span class="log-error">> [ERROR] Calculated Density: ${badDensity} kg/m³</span>`);
+                        addLog(`<span class="log-error">> [TEOS-10] THERMODYNAMIC VIOLATION DETECTED.</span>`);
+                        addLog(`<span class="log-error">> FLAG 4: Bad Data. Packet Dropped.</span>`);
+                    } else {
+                        let goodDensity = (1027.0 + (depth/500)).toFixed(2);
+                        addLog(`<span class="log-success">> [OK] Calculated Density: ${goodDensity} kg/m³</span>`);
+                        addLog(`<span class="log-success">> FLAG 1: Nominal. Pushing to Isolation Forest AI...</span>`);
+                    }
+                    addLog(`<span style="color:#334155">-----------------------------------------</span>`);
+                }, 300);
+            }, 300);
+
+        }, 2000);
+
+        // Render Loop
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // AUV Bobbing and Pitching (diving motion)
+            auvGroup.position.y = Math.sin(time * 2) * 0.2;
+            auvGroup.rotation.z = -Math.PI / 8 + Math.sin(time) * 0.05; // Tilted down
+            auvGroup.rotation.x = Math.sin(time * 0.5) * 0.1;
+
+            // Spin propeller
+            prop.rotation.x += 0.5;
+
+            // Move particles UP to simulate AUV diving DOWN
+            const positions = particlesGeo.attributes.position.array;
+            for(let i=1; i<particlesCount*3; i+=3) {
+                positions[i] += 0.1;
+                if (positions[i] > 20) {
+                    positions[i] = -20;
+                }
+            }
+            particlesGeo.attributes.position.needsUpdate = true;
+
+            // Camera subtle sway
+            camera.position.x = 5 + Math.sin(time * 0.5) * 0.5;
+            camera.lookAt(auvGroup.position);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

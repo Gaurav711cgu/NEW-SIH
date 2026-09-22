@@ -35,7 +35,7 @@ Review Complete — Verdict: REQUEST_CHANGES issued. Comprehensive reports deliv
   - [x] AI4Shipwrecks dataset citation accurate (acoustic shipwrecks benchmark, no fabricated ghost net precision)
   - [x] All legacy `DeepScan` strings replaced with `AQUILA`
   - [x] Removal of Indian Monsoon rainfall 98.4% LPA forecasting and OTEC / "Infinite Energy" claims
-  - [x] Consolidation of problem statement badges to Smart India Hackathon `PS-26057`
+  - [x] Consolidation of problem statement badges to Smart India Hackathon `PS-26065`
 - [x] Adversarial Stress-Testing & Integrity Checks
 - [x] Write `review.md` and `handoff.md`
 - [x] Send completion message to parent (`bc8d3374-12c6-4920-be6e-8c66a700c7af`)

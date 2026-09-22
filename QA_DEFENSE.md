@@ -122,7 +122,7 @@ Direct answer: In our fetched BGC-Argo profiles from the Southern Ocean Indian s
 
 **Q: NCPOR already has the ArgoIndia programme. Why do we need your platform?**
 
-Direct answer: NCPOR's ArgoIndia floats are standard Core Argo floats measuring temperature, salinity, and pressure. They do not carry sonar. They do not run AI detection. They do not detect marine debris. Our platform adds the PS-26057 seafloor intelligence capability -- side-scan sonar AI debris detection and geotagging -- which no current Argo float provides. Additionally, Argo floats are imported at 25 to 30 lakh rupees each. Our target is an indigenous float at 75,000 to 1,00,000 rupees, directly supporting the Atmanirbhar Bharat mission for oceanographic instruments.
+Direct answer: NCPOR's ArgoIndia floats are standard Core Argo floats measuring temperature, salinity, and pressure. They do not carry sonar. They do not run AI detection. They do not detect marine debris. Our platform adds the PS-26065 seafloor intelligence capability -- side-scan sonar AI debris detection and geotagging -- which no current Argo float provides. Additionally, Argo floats are imported at 25 to 30 lakh rupees each. Our target is an indigenous float at 75,000 to 1,00,000 rupees, directly supporting the Atmanirbhar Bharat mission for oceanographic instruments.
 
 ---
 

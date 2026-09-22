@@ -53,7 +53,7 @@ Integrity mode: development
 Crawl through the `.tsx` files in `src/pages/` and `src/components/`. Identify any broken buttons, dead links, or interactive elements that fail to trigger state changes. Rewrite the components to make them fully functional.
 
 ### R2. Strict Claim & Citation Verification
-Review all written text, especially in `ResearchCitations.tsx`, `GovernmentIntel.tsx`, and `ModelValidation.tsx`. Ensure all claims match the established project facts (e.g., YOLOv8 88.0% mAP, ESP32 hardware, ₹75,000 cost vs ₹30 Lakh Argo, PS-26057 Ghost Net mandate). Remove anything that sounds like a hallucinated LLM artifact.
+Review all written text, especially in `ResearchCitations.tsx`, `GovernmentIntel.tsx`, and `ModelValidation.tsx`. Ensure all claims match the established project facts (e.g., YOLOv8 88.0% mAP, ESP32 hardware, ₹75,000 cost vs ₹30 Lakh Argo, PS-26065 Ghost Net mandate). Remove anything that sounds like a hallucinated LLM artifact.
 
 ## Acceptance Criteria
 
@@ -96,3 +96,38 @@ Flag any remaining console warnings, dead links, or placeholder "lorem ipsum" te
 - [ ] Accessibility report generated confirming WCAG AA compliance or identifying critical actionable failures.
 - [ ] Agentic / MLOps scripts are verified to execute without breaking the application state.
 - [ ] A final "Audit Sign-off" summary is produced, clearing the project for the SIH Judges' review.
+
+## 2026-09-06T17:09:34Z
+
+# Geospatial Intelligence (GEOINT) Dispatcher for Industrial Fires (SIH PS-26162)
+
+Build an autonomous Geospatial Intelligence (GEOINT) dispatcher for industrial fires (SIH PS-26162). The system ingests NASA FIRMS and ISRO INSAT thermal data, cross-references OpenStreetMap (OSM) infrastructure tags, trains and runs an XGBoost classification model to distinguish industrial fires from wildfires, and uses an LLM Agent to autonomously route SITREP alerts to local authorities.
+
+Working directory: ~/teamwork_projects/ntro_fire_intel (mapped to /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel due to workspace sandbox constraints)
+Integrity mode: development
+
+## Requirements
+
+### R1. Multi-Modal Data Ingestion
+Build a backend pipeline that polls NASA FIRMS (VIIRS/MODIS) APIs for active thermal anomalies over India.
+
+### R2. Contextual Enrichment & Classification
+For each anomaly, query OSM Overpass for nearby industrial infrastructure (2km radius). Use this metadata plus Fire Radiative Power (FRP) and train a real XGBoost classifier model to categorize the anomaly.
+
+### R3. Autonomous Alert Dispatcher
+Implement an LLM-based agent that receives high-risk classifications, determines the local jurisdiction, generates a situational report (SITREP) with Google Maps routing, and dispatches it via a Telegram Bot API.
+
+### R4. 3D WebGIS Dashboard
+Build a React/Next.js dashboard to visualize the thermal anomalies, infrastructure boundaries, and real-time alerts.
+
+### R5. Strict File-Based Planning Protocol (Manus Pattern)
+The implementing agents must strictly follow the `planning-with-files` and `plan-writing` protocols. Before touching any code, initialize `task_plan.md`, `findings.md`, and `progress.md` in the project root. Break the work down into a maximum of 10 independently verifiable tasks. The team must log all errors in the progress files, follow the 3-strike error protocol, and update the markdown files as their persistent memory after every phase. 
+
+## Acceptance Criteria
+
+### Verification & Testing
+- [ ] R1: Running `python ingestion.py` successfully fetches at least 10 active thermal points from the public NASA FIRMS API and saves them to `data/firms_latest.json`.
+- [ ] R2: Running `python train_model.py` queries OSM Overpass, trains an XGBoost classifier on the data, and successfully outputs a serialized `model.pkl` file with >75% accuracy on the validation set.
+- [ ] R3: Running `python dispatcher.py --test` generates a valid JSON SITREP and successfully sends an HTTP POST request to a mocked Telegram Bot API endpoint.
+- [ ] R4: Running `npm run build` in the `webgis_dashboard` directory succeeds without compilation errors.
+- [ ] R5: The project root directory visibly contains up-to-date `task_plan.md`, `findings.md`, and `progress.md` files that accurately reflect the step-by-step development and debugging history of the project.

@@ -41,7 +41,7 @@ Conduct a rigorous audit of the AQUILA OS React frontend codebase: audit and fix
 
 ## Key Decisions Made
 - Milestone 1: Replaced dead buttons and placeholder `alert()` calls with genuine GPX download, native print, and MoES/Satcom state badges. Depth inspector connected to chart reference lines. Wildcard fallback route added.
-- Milestone 2: Purged all YOLOv9 and active RT-DETR execution claims. Grounded prototype BOM at ₹6,100 (ESP32 + Pi 4). Highlighted ₹75k unit cost at scale vs ₹30L Argo float. Purified academic citations (Blondel, Zuiderveld, Woo, real SOCCOM float replay). Consolidated mandate to SIH PS-26057.
+- Milestone 2: Purged all YOLOv9 and active RT-DETR execution claims. Grounded prototype BOM at ₹6,100 (ESP32 + Pi 4). Highlighted ₹75k unit cost at scale vs ₹30L Argo float. Purified academic citations (Blondel, Zuiderveld, Woo, real SOCCOM float replay). Consolidated mandate to SIH PS-26065.
 - Milestone 3: Reviewer 2 identified a numeric sensor discrepancy in AUVTwin.tsx, remediated by Worker 3 and verified with unanimous APPROVE verdicts from Reviewers 1 and 3.
 
 ## Team Roster

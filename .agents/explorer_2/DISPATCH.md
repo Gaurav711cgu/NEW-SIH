@@ -17,7 +17,7 @@ Investigate:
    - AI Model: YOLOv8 88.0% mAP vs 35.4% mAP RT-DETR (ablation validation)
    - Edge Hardware: ESP32 edge microcontroller / acoustic sensor node architecture
    - Economics: ₹75,000 unit cost vs ₹30 Lakh Argo float deployment cost
-   - Policy & Mandate: PS-26057 Ghost Net mandate (Smart India Hackathon problem statement PS-26057 on marine ghost net detection & ocean telemetry)
+   - Policy & Mandate: PS-26065 Ghost Net mandate (Smart India Hackathon problem statement PS-26065 on marine ghost net detection & ocean telemetry)
 2. Detect and catalog any hallucinated LLM artifacts, placeholder text ("Lorem ipsum", "TODO", generic marketing fluff), fake academic citations (hallucinated DOIs, fake authors, non-existent journals).
 3. Provide exact file paths, line numbers, offending text, and verified replacements grounded in the real project context.
 

@@ -16,7 +16,7 @@ Direct code observations, file paths, line numbers, and exact verbatim quotes fr
    - AI Model: `README.md` (Lines 62–69) & `QA_DEFENSE.md` (Lines 83–87): YOLOv8s CNN model achieves **88.0% mAP@50**, while RT-DETR-L (Vision Transformer) failed to converge at **35.4% mAP@50** due to lack of inductive bias on acoustic datasets.
    - Edge Hardware: `HARDWARE.md` (Lines 7–18): Microcontroller sensor hub is ESP32 DevKit v1 (₹400); edge computer is Raspberry Pi 4, 4GB (₹4,500); sensors DS18B20 (₹80), BMP280 (₹120), SEN0161 pH (₹350), MPU6050 (₹150), Gravity TDS (₹200). Total qualification prototype BOM: **₹6,100 INR**.
    - Economics: `README.md` (Lines 11–17) & `QA_DEFENSE.md` (Lines 75–78): Scale production unit cost is **₹75,000 to ₹1,00,000 INR**, compared to **₹25,00,000 to ₹30,00,000 INR** (₹25–30 Lakhs) for commercial BGC-Argo floats (25x to 30x cost reduction).
-   - Problem Statement: `README.md` (Lines 3–5): Smart India Hackathon **Problem Statement PS-26057**, Ocean Technology & Disaster Management (Ministry of Earth Sciences).
+   - Problem Statement: `README.md` (Lines 3–5): Smart India Hackathon **Problem Statement PS-26065**, Ocean Technology & Disaster Management (Ministry of Earth Sciences).
 
 2. **AI Model Falsifications in Frontend:**
    - `src/pages/ResearchCitations.tsx` (Line 75): *"We wrapped our YOLOv9 model with a custom SAHI sliding window that slices 2048x512 raw side-scan sonar waterfall logs into 640x640 overlapping tiles..."*
@@ -72,7 +72,7 @@ Direct code observations, file paths, line numbers, and exact verbatim quotes fr
 4. **Scientific Credibility of Academic Citations & Problem Mandate:**
    - Observation 5 reveals Franken-citations (Urick/Blondel mashup), fabricated algorithm implementations (SAHI, Random Forest UNESCO EOS-80, Garcia-Gordon in Python), hallucinated ghost nets in AI4Shipwrecks, marketing hyperbole ("Infinite Energy Integration"), and domain creep into Indian Monsoon forecasting.
    - *Inference:* Technical judges from MoES/NIOT will immediately verify DOIs and citations. Citing fake co-authors, claiming to implement algorithms not present in the code, or claiming a debris detection float forecasts national rainfall will cause instant loss of credibility.
-   - *Action Required:* Clean all citations to genuine publications (Blondel 2009 for sidescan sonar, Urick 1983 for underwater sound, Zuiderveld 1994 for CLAHE, Woo 2018 for CBAM); accurately state that virtual profiles are replayed from real BGC-Argo float profiles (SOCCOM WMO 5904859, QC flag = 1); eliminate "PS-1"/"PS-2" and standardize on PS-26057; strip out monsoon forecasting and "Infinite Energy" claims.
+   - *Action Required:* Clean all citations to genuine publications (Blondel 2009 for sidescan sonar, Urick 1983 for underwater sound, Zuiderveld 1994 for CLAHE, Woo 2018 for CBAM); accurately state that virtual profiles are replayed from real BGC-Argo float profiles (SOCCOM WMO 5904859, QC flag = 1); eliminate "PS-1"/"PS-2" and standardize on PS-26065; strip out monsoon forecasting and "Infinite Energy" claims.
 
 ---
 
@@ -94,7 +94,7 @@ The React frontend contains several high-risk claim contradictions and LLM-gener
 2. **Hardware Alignment:** Ground the current hardware stack in `ESP32 (Sensor Hub) + Raspberry Pi 4 (Edge Compute Node)` (Total BOM ₹6,100). Clarify that Jetson Orin NX is a post-selection procurement roadmap option.
 3. **Economic Grounding:** Highlight the `₹75,000` unit cost at scale vs `₹30 Lakh` commercial Argo float across all pages.
 4. **Citation Purification:** Disentangle the Urick-Blondel hybrid book, correct the CLAHE and CBAM citations, eliminate the non-existent SAHI and Random Forest EOS-80 claims, and clarify that biogeochemical data is replayed from real BGC-Argo profiles (SOCCOM WMO 5904859, QC flag = 1).
-5. **Mandate Consolidation:** Standardize all badges and headers on `Smart India Hackathon Problem Statement PS-26057`, eliminating `(PS-1)`, `(PS-2)`, and `PS-26065`, and removing the monsoon forecasting fluff.
+5. **Mandate Consolidation:** Standardize all badges and headers on `Smart India Hackathon Problem Statement PS-26065`, eliminating `(PS-1)`, `(PS-2)`, and `PS-26065`, and removing the monsoon forecasting fluff.
 
 Detailed replacement tables with exact line numbers and replacement snippets are fully cataloged in `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_2/analysis.md`.
 

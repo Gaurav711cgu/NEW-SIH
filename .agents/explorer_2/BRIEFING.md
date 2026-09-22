@@ -37,7 +37,7 @@ Conduct a strict claim, citation, and data verification audit across all .tsx fi
   - Critical AI model contradiction: `AUVTwin.tsx:1422` claims RT-DETR-L runs on the subsea vehicle; `AUVTwin.tsx:256` & `ResearchCitations.tsx:75` claim YOLOv9 with a SAHI window slicing engine. Both contradict the authoritative ablation study which selected YOLOv8s (88.0% mAP) and proved RT-DETR failed (35.4% mAP).
   - Hardware contradiction: `AUVTwin.tsx:1458` claims Jetson Orin NX is running edge AI while line 1461 claims ₹6,100 total BOM (which is actually ESP32 + Raspberry Pi 4).
   - Economic muddle: Target unit cost of ₹75,000 at scale vs ₹30 Lakh commercial float is obscured in `AUVTwin.tsx` by ₹7.8 Lakhs subsea build target.
-  - Problem Statement fragmentation: Artifacts like "PS-1", "PS-2", and PS-26065 appear instead of unified SIH Problem Statement PS-26057.
+  - Problem Statement fragmentation: Artifacts like "PS-1", "PS-2", and PS-26065 appear instead of unified SIH Problem Statement PS-26065.
   - Franken-citations & fake claims: Robert J. Urick + Philippe Blondel hybrid book citation; fabricated SAHI implementation in `detector.py`; fake Random Forest EOS-80; claims of ghost nets in AI4Shipwrecks; hallucinated national monsoon forecasting and "Infinite Energy Integration".
 - **Unexplored areas**: None. All `.tsx` and `.ts` files in `frontend/src` have been audited.
 

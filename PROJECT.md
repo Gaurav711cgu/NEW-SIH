@@ -21,7 +21,7 @@
 | 7 | F7. Ground Hardware Specs | Align hardware across all pages to ESP32 DevKit v1 + Raspberry Pi 4 4GB (₹6,100 BOM); fix Pi 5 typo in `OceanState.tsx:498`; mark Jetson Orin NX as post-selection upgrade | M2 | Survey (Explorer 2, 3) |
 | 8 | F8. Unify Unit Economics | Highlight scale unit cost of ₹75,000 – ₹1,00,000 vs ₹25–30 Lakh commercial Argo float; clean up inflated component comparisons in `AUVTwin.tsx` | M2 | Survey (Explorer 2) |
 | 9 | F9. Purge Fake Citations & Hallucinations | Disentangle Urick/Blondel citations in `ResearchCitations.tsx`; clean CLAHE/CBAM citations; remove fake SAHI/EOS-80 Random Forest/ghost net in AI4Shipwrecks; replace residual `DeepScan` with `AQUILA` | M2 | Survey (Explorer 2, 3) |
-| 10 | F10. Consolidate Problem Mandate | Consolidate `PS-1`, `PS-2`, `PS-26065` to official Smart India Hackathon `Problem Statement PS-26057`; strip Indian Monsoon forecasting and "Infinite Energy" claims | M2 | Survey (Explorer 2) |
+| 10 | F10. Consolidate Problem Mandate | Consolidate `PS-1`, `PS-2`, `PS-26065` to official Smart India Hackathon `Problem Statement PS-26065`; strip Indian Monsoon forecasting and "Infinite Energy" claims | M2 | Survey (Explorer 2) |
 | 11 | F11. Clean Compilation Verification | Verify `npm run build` and `npx tsc --noEmit` exit code 0 | M3 | Survey (Explorer 3) |
 | 12 | F12. Full Gate Review & Sentinel Report | Independent verification of all interactive elements and factual claims, then report completion to sentinel | M3 | Project Brief |
 

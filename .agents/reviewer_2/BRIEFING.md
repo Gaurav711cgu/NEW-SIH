@@ -36,7 +36,7 @@ Perform an objective, adversarial forensic review of all claims, numbers, citati
   - AI model: YOLOv8s (88.0% mAP50) sole active model, RT-DETR-L (35.4% mAP50) ablation baseline, 0 YOLOv9 references
   - Hardware: ESP32 DevKit v1 (₹400) + Raspberry Pi 4 4GB (₹4,500) = ₹6,100 INR qualification prototype BOM; Jetson Orin NX explicitly marked as post-selection upgrade; Raspberry Pi 4 (not Pi 5)
   - Economics: Unit cost at scale ₹75,000 – ₹1,00,000 INR vs ₹25–30 Lakh commercial BGC-Argo float; authentic sensor comparisons (SBE 3plus is ~₹1.5 Lakhs)
-  - Academic & Citations: Philippe Blondel (2009) (no Urick mashup), Zuiderveld (1994) CLAHE, Woo (2018) CBAM; no fake UNESCO EOS-80 RF or SAHI; AI4Shipwrecks acoustic benchmark without fabricated ghost net precision; zero legacy DeepScan / deepscan; no Indian Monsoon 98.4% LPA or OTEC / Infinite Energy; PS-26057 consolidated
+  - Academic & Citations: Philippe Blondel (2009) (no Urick mashup), Zuiderveld (1994) CLAHE, Woo (2018) CBAM; no fake UNESCO EOS-80 RF or SAHI; AI4Shipwrecks acoustic benchmark without fabricated ghost net precision; zero legacy DeepScan / deepscan; no Indian Monsoon 98.4% LPA or OTEC / Infinite Energy; PS-26065 consolidated
   - Automated audits: grep for YOLOv9, DeepScan, deepscan, PS-26065, monsoon return 0 results; npm run build exits with 0
 - **Review criteria**: integrity, correctness, precision, consistency across all components
 
@@ -51,14 +51,14 @@ Perform an objective, adversarial forensic review of all claims, numbers, citati
 - [x] 1. AI Model Integrity (YOLOv8s 88.0% sole active, RT-DETR-L 35.4% ablation baseline, zero YOLOv9)
 - [x] 2. Hardware BOM Integrity (ESP32 ₹400 + RPi 4 4GB ₹4500 = ₹6100; Orin NX post-selection; RPi 4 in OceanState)
 - [ ] 3. Economic Integrity (₹75k-₹100k scale vs ₹25-30L commercial Argo: PASS; SBE 3plus ~₹1.5L: FAILED due to AUVTwin.tsx:65 data mismatch)
-- [x] 4. Academic Purity (Blondel 2009, Zuiderveld 1994, Woo 2018; no EOS-80 RF / fake SAHI; AI4Shipwrecks acoustic benchmark; 0 DeepScan; 0 monsoon 98.4% / Infinite Energy; PS-26057 consolidated)
+- [x] 4. Academic Purity (Blondel 2009, Zuiderveld 1994, Woo 2018; no EOS-80 RF / fake SAHI; AI4Shipwrecks acoustic benchmark; 0 DeepScan; 0 monsoon 98.4% / Infinite Energy; PS-26065 consolidated)
 - [x] 5. Automated grep & build audits (YOLOv9, DeepScan, deepscan, PS-26065, monsoon = 0 results; npm run build = 0)
 
 ## Attack Surface
 - **Hypotheses tested**:
   - UI metric card data binding vs descriptive text in `AUVTwin.tsx`: Found disparity between `importedCostINR` numbers and `indigenousAdvantage` prose strings.
   - Climate modeling / OTEC claims in `Biogeochemistry.tsx` and `GovernmentIntel.tsx`: Verified complete purge and grounded replacement.
-  - Problem statement fragmentation: Verified zero instances of `PS-1`, `PS-2`, `PS-26065`; all unified on `PS-26057`.
+  - Problem statement fragmentation: Verified zero instances of `PS-1`, `PS-2`, `PS-26065`; all unified on `PS-26065`.
 - **Vulnerabilities found**:
   - Major: Inconsistent SBE 3plus imported cost in `AUVTwin.tsx:65` (`450000` vs `₹1.5 Lakhs`).
   - Major: Inconsistent IMU AHRS imported cost in `AUVTwin.tsx:105` (`1800000` vs `₹45,000`).

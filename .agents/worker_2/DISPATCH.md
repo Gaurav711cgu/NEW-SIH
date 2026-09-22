@@ -21,14 +21,14 @@ Follow the exhaustive, line-by-line replacement specifications in `/Users/gaurav
    - Fix AI4Shipwrecks claim (line 176): correctly state it is an acoustic shipwreck benchmark without hallucinated ghost net precision.
    - Replace all residual "DeepScan" strings with "AQUILA".
    - Remove Indian Monsoon rainfall LPA prediction (98.4%) and RV Bharati resupply claims.
-   - Consolidate all problem statement badges to Smart India Hackathon Problem Statement `PS-26057`.
+   - Consolidate all problem statement badges to Smart India Hackathon Problem Statement `PS-26065`.
 2. `src/pages/AUVTwin.tsx`:
    - Replace RT-DETR-L subsea inference claim (lines 1422–1424) with YOLOv8s edge CNN inference (88.0% mAP50).
    - Replace YOLOv9 mentions (lines 256, 278) with YOLOv8s.
    - Harmonize hardware architecture (lines 243, 1458) to `ESP32 Sensor Hub + Raspberry Pi 4 Edge Compute Node` for the current prototype (BOM ₹6,100), explicitly noting Jetson Orin NX as the post-selection production SOM upgrade target.
    - Unify economics (lines 970, 983): Highlight headline production unit cost of ₹75,000 – ₹1,00,000 INR at scale vs ₹25–30 Lakh commercial BGC-Argo float. Correct component comparisons (SBE 3 is ₹1.5L, not ₹4.5L).
 3. `src/pages/GovernmentIntel.tsx`:
-   - Consolidate mandate badge to Smart India Hackathon Problem Statement PS-26057 (replace `PS-26065`).
+   - Consolidate mandate badge to Smart India Hackathon Problem Statement PS-26065 (replace `PS-26065`).
    - Remove "Infinite Energy Integration" / OTEC claim (lines 578–582) and replace with polar-rated LiFePO4 battery management system specifications.
    - In line 372: RT-DETR baseline 35.4% mAP50 (not 61.2%).
 4. `src/pages/ModelValidation.tsx`:
@@ -36,7 +36,7 @@ Follow the exhaustive, line-by-line replacement specifications in `/Users/gaurav
    - Fix edge inference speed claim (line 48) to realistic edge CPU latency (~180ms on Pi 4 CPU, ~5.5 FPS).
 5. `src/pages/OceanState.tsx`:
    - Fix "Raspberry Pi 5" typo to "Raspberry Pi 4" (line 498).
-   - Consolidate PS badges to PS-26057.
+   - Consolidate PS badges to PS-26065.
 6. `src/pages/Biogeochemistry.tsx`:
    - Remove monsoon LPA prediction claims, focus on real BGC-Argo ocean chemistry (dissolved oxygen, chlorophyll-a, pH, salinity, temperature).
 7. `src/pages/SeafloorIntelligence.tsx`:

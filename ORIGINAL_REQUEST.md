@@ -53,7 +53,7 @@ Integrity mode: development
 Crawl through the `.tsx` files in `src/pages/` and `src/components/`. Identify any broken buttons, dead links, or interactive elements that fail to trigger state changes. Rewrite the components to make them fully functional.
 
 ### R2. Strict Claim & Citation Verification
-Review all written text, especially in `ResearchCitations.tsx`, `GovernmentIntel.tsx`, and `ModelValidation.tsx`. Ensure all claims match the established project facts (e.g., YOLOv8 88.0% mAP, ESP32 hardware, ₹75,000 cost vs ₹30 Lakh Argo, PS-26057 Ghost Net mandate). Remove anything that sounds like a hallucinated LLM artifact.
+Review all written text, especially in `ResearchCitations.tsx`, `GovernmentIntel.tsx`, and `ModelValidation.tsx`. Ensure all claims match the established project facts (e.g., YOLOv8 88.0% mAP, ESP32 hardware, ₹75,000 cost vs ₹30 Lakh Argo, PS-26065 Ghost Net mandate). Remove anything that sounds like a hallucinated LLM artifact.
 
 ## Acceptance Criteria
 

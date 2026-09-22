@@ -1,0 +1,43 @@
+
+import DepthGauge from './DepthGauge';
+import Compass from './Compass';
+import TelemetryPanel from './TelemetryPanel';
+import { useSimulationStore } from '../store/simulationStore';
+
+export default function HUD() {
+  const missionPhase = useSimulationStore((state) => state.missionPhase);
+  const missionTimer = useSimulationStore((state) => state.missionTimer);
+
+  const formatTime = (time: number) => {
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="flex flex-col gap-6 text-[#ffffff] font-mono">
+      {/* Mission Info */}
+      <div className="flex flex-col gap-1 border-b border-[#38383a] pb-4">
+        <div className="text-xs text-[#ebebf599]">MISSION PHASE</div>
+        <div className="text-lg font-bold text-[#ffffff]">{missionPhase}</div>
+        <div className="text-xs text-[#ebebf599] mt-2">ELAPSED TIME</div>
+        <div className="text-xl text-[#ffffff]">{formatTime(missionTimer)}</div>
+      </div>
+
+      {/* Depth Gauge */}
+      <div className="flex justify-center border-b border-[#38383a] pb-4">
+        <DepthGauge />
+      </div>
+
+      {/* Compass */}
+      <div className="flex justify-center border-b border-[#38383a] pb-4">
+        <Compass />
+      </div>
+
+      {/* Telemetry */}
+      <div className="flex justify-center">
+        <TelemetryPanel />
+      </div>
+    </div>
+  );
+}

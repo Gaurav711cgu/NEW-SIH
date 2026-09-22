@@ -58,7 +58,7 @@ Specifically verify:
    - Verify AI4Shipwrecks dataset citation is accurate (acoustic shipwrecks benchmark, no fabricated ghost net precision).
    - Verify all legacy `DeepScan` strings have been replaced with `AQUILA`.
    - Verify removal of Indian Monsoon rainfall 98.4% LPA forecasting and OTEC / "Infinite Energy" claims.
-   - Verify consolidation of problem statement badges to Smart India Hackathon `PS-26057`.
+   - Verify consolidation of problem statement badges to Smart India Hackathon `PS-26065`.
 5. Run automated audits in `/Users/gauravkumarnayak/Desktop/new sih/frontend`:
    - `grep -rn "YOLOv9" src/`
    - `grep -rn "DeepScan" src/`

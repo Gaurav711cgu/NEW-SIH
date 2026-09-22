@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "sitrep_id": "SITREP-IND_20260906_001",
+  "timestamp": "2026-09-06T18:18:58.331065+00:00",
+  "incident_type": "MAJOR_INDUSTRIAL_FIRE",
+  "confidence_score": 0.9977,
+  "confidence": 0.9977,
+  "coordinates": {
+    "latitude": 21.1625,
+    "longitude": 72.8312
+  },
+  "thermal_anomaly": {
+    "latitude": 21.1625,
+    "longitude": 72.8312,
+    "frp_mw": 84.5,
+    "brightness_k": 365.4,
+    "satellite_source": "Suomi-NPP",
+    "confidence_raw": "high"
+  },
+  "classification": {
+    "category": "INDUSTRIAL_FIRE",
+    "confidence": 0.9977,
+    "model_version": "XGBoost-GEOINT-v1.0",
+    "is_industrial": true,
+    "threat_level": "CRITICAL"
+  },
+  "fire_radiative_power_mw": 84.5,
+  "frp": 84.5,
+  "threat_level": "CRITICAL",
+  "spatial_enrichment": {
+    "nearest_facility": "Hazira Industrial & Petrochemical Corridor (ONGC Hazira Gas Processing Plant)",
+    "distance_to_facility_m": 180.0,
+    "industrial_zone": true,
+    "infrastructure_tags": {
+      "industrial": "petrochemical",
+      "state": "Gujarat",
+      "district": "Surat"
+    }
+  },
+  "affected_facility": {
+    "name": "Hazira Industrial & Petrochemical Corridor (ONGC Hazira Gas Processing Plant)",
+    "osm_tag": "industrial=chemical/petrochemical",
+    "distance_km": 0.18
+  },
+  "jurisdiction": {
+    "state": "Gujarat",
+    "district": "Surat",
+    "subdivision_taluk": "Hazira Industrial & Petrochemical Corridor",
+    "primary_responder": "Hazira Emergency Response Center & Adajan Fire Station",
+    "primary_agency": "Surat District Disaster Management Authority (DDMA)",
+    "fire_station": "Hazira Emergency Response Center & Adajan Fire Station",
+    "emergency_phone": "+91-261-2423400",
+    "contact": "+91-261-2423400",
+    "nodal_authority": "Surat District Disaster Management Authority (DDMA)",
+    "regulatory_body": "Petroleum and Explosives Safety Organization (PESO) Vadodara"
+  },
+  "navigation": {
+    "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=21.162500,72.831200",
+    "coordinates_dms": "21\u00b009'45.0\"N, 72\u00b049'52.3\"E",
+    "destination_query": "21.162500,72.831200"
+  },
+  "google_maps_url": "https://www.google.com/maps/dir/?api=1&destination=21.162500,72.831200",
+  "tactical_assessment": {
+    "threat_level": "CRITICAL",
+    "evacuation_radius_m": 2000,
+    "evacuation_radius_meters": 2000,
+    "hazmat_classification": "Level 4: Critical Petrochemical / Hazardous Material Explosion Threat (BLEVE Risk)",
+    "chemical_hazard_warning": "CRITICAL HAZMAT ADVISORY: High-intensity thermal event within petrochemical/refinery corridor. Severe risk of Boiling Liquid Expanding Vapor Explosion (BLEVE) and toxic hydrocarbon gas propagation. Deploy Class B AFFF foam crash tenders immediately. Enforce strict 2.0 km exclusion perimeter.",
+    "hazmat_alert": "CRITICAL HAZMAT ADVISORY: High-intensity thermal event within petrochemical/refinery corridor. Severe risk of Boiling Liquid Expanding Vapor Explosion (BLEVE) and toxic hydrocarbon gas propagation. Deploy Class B AFFF foam crash tenders immediately. Enforce strict 2.0 km exclusion perimeter.",
+    "containment_actions": [
+      "Evacuate all non-essential personnel within 2,000m perimeter immediately.",
+      "Deploy heavy industrial foam tenders (AFFF) with deluge monitors for tank cooling.",
+      "Isolate pipeline feeder manifolds and emergency shutoff valves (ESDV).",
+      "Establish continuous ambient hydrocarbon vapor (LEL) and toxic gas monitoring.",
+      "Alert District Emergency Operations Centre (DEOC) and NDRF 5th Battalion."
+    ]
+  },
+  "evacuation_radius_meters": 2000,
+  "evacuation_radius": 2000,
+  "chemical_hazard_warning": "CRITICAL HAZMAT ADVISORY: High-intensity thermal event within petrochemical/refinery corridor. Severe risk of Boiling Liquid Expanding Vapor Explosion (BLEVE) and toxic hydrocarbon gas propagation. Deploy Class B AFFF foam crash tenders immediately. Enforce strict 2.0 km exclusion perimeter.",
+  "hazmat_alert": "CRITICAL HAZMAT ADVISORY: High-intensity thermal event within petrochemical/refinery corridor. Severe risk of Boiling Liquid Expanding Vapor Explosion (BLEVE) and toxic hydrocarbon gas propagation. Deploy Class B AFFF foam crash tenders immediately. Enforce strict 2.0 km exclusion perimeter.",
+  "dispatch_metadata": {
+    "channel": "+91-261-2423400",
+    "dispatch_time": "2026-09-06T18:18:58.332867+00:00",
+    "status": "DISPATCHED_MOCK",
+    "http_status_code": 200,
+    "telegram_message_id": 101
+  },
+  "formatted_message": "\ud83d\udea8\ud83d\udd25 [CRITICAL ALARM] *GEOINT SITUATION REPORT*\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udccb *SITREP ID:* `SITREP-IND_20260906_001`\n\ud83d\udd52 *Detected Time:* `2026-09-06T18:18:58.331065+00:00`\n\ud83c\udfaf *Incident:* *MAJOR_INDUSTRIAL_FIRE*\n\ud83c\udff7\ufe0f *Threat Level:* *CRITICAL* (Conf: 99.8%)\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udccd *Location:* `21.1625\u00b0N, 72.8312\u00b0E`\n\ud83e\udded *DMS:* `21\u00b009'45.0\"N, 72\u00b049'52.3\"E`\n\ud83c\udfed *Target Facility:* Hazira Industrial & Petrochemical Corridor (ONGC Hazira Gas Processing Plant) (180m)\n\ud83d\udd25 *Fire Radiative Power (FRP):* *84.5 MW*\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83c\udfdb\ufe0f *Jurisdiction:* Surat, Gujarat\n\ud83d\ude92 *First Responder:* Hazira Emergency Response Center & Adajan Fire Station\n\ud83d\udcde *Control Room Contact:* `+91-261-2423400`\n\ud83d\udee1\ufe0f *Nodal Authority:* Surat District Disaster Management Authority (DDMA)\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\u26a0\ufe0f *HAZMAT Warning:*\n_CRITICAL HAZMAT ADVISORY: High-intensity thermal event within petrochemical/refinery corridor. Severe risk of Boiling Liquid Expanding Vapor Explosion (BLEVE) and toxic hydrocarbon gas propagation. Deploy Class B AFFF foam crash tenders immediately. Enforce strict 2.0 km exclusion perimeter._\n\n\ud83d\udccf *Evacuation Perimeter:* *2000 meters*\n\n\ud83d\uddfa\ufe0f *Emergency Routing Navigation:*\n[Direct Turn-by-Turn Route in Google Maps](https://www.google.com/maps/dir/?api=1&destination=21.162500,72.831200)\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n_Dispatched autonomously by NTRO GEOINT Fire Intel (PS-26162)_"
+}

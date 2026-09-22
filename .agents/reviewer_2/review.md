@@ -13,7 +13,7 @@
 **Risk Level:** MEDIUM (Localized numerical inconsistency in sensor dataset)
 
 ### Executive Assessment
-The frontend codebase has undergone significant and high-quality remediation across 7 core pages. The purge of legacy strings (`DeepScan`, `YOLOv9`, `monsoon`, `PS-26065`) is 100% complete with zero residual matches. The build compiles cleanly (`npm run build` and `npx tsc --noEmit` exit code 0). Problem statement badges are cleanly consolidated to `PS-26057`.
+The frontend codebase has undergone significant and high-quality remediation across 7 core pages. The purge of legacy strings (`DeepScan`, `YOLOv9`, `monsoon`, `PS-26065`) is 100% complete with zero residual matches. The build compiles cleanly (`npm run build` and `npx tsc --noEmit` exit code 0). Problem statement badges are cleanly consolidated to `PS-26065`.
 
 However, during forensic examination of `src/pages/AUVTwin.tsx`, an adversarial inspection revealed a direct data discrepancy and partial fix:
 While the prose descriptions in `indigenousAdvantage` were updated to state authentic sensor comparisons (`Imported ₹1.5 Lakhs SBE 3plus` and `Imported ₹45,000 commercial subsea AHRS module`), the numerical properties in `SENSOR_SPECS` (`importedCostINR: 450000` and `importedCostINR: 1800000`) were **left untouched**. 
@@ -78,7 +78,7 @@ Because Requirement 3 explicitly mandates *"Verify sensor comparisons are authen
 | AI4Shipwrecks Accuracy | Acoustic shipwreck benchmark; no fabricated ghost net precision | `ResearchCitations.tsx:164-177` clarifies shipwrecks benchmark (89.6% AP50) vs CycleGAN ghost net transfer (82.1% AP50) | **PASS** |
 | DeepScan Purge | All legacy "DeepScan" strings replaced with "AQUILA" | `grep -rn "DeepScan" src/` and `grep -rn "deepscan" src/` both returned 0 results | **PASS** |
 | Monsoon & Energy Purge | No Indian Monsoon 98.4% LPA forecasting; no OTEC "Infinite Energy" | `grep -rni "monsoon" src/` returned 0 results; OTEC / Infinite Energy claims replaced by LiFePO4 polar battery architecture | **PASS** |
-| Problem Statement Badge | Consolidated to official SIH `PS-26057` | Every `PS-` badge across `OceanState.tsx`, `GovernmentIntel.tsx`, `ResearchCitations.tsx` is strictly `PS-26057` | **PASS** |
+| Problem Statement Badge | Consolidated to official SIH `PS-26065` | Every `PS-` badge across `OceanState.tsx`, `GovernmentIntel.tsx`, `ResearchCitations.tsx` is strictly `PS-26065` | **PASS** |
 
 ### 3.5 Automated Tool Audits
 | Command | Target Output | Actual Output | Status |

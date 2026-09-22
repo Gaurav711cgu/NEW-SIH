@@ -4,7 +4,7 @@ AQUILA OS — MLOps Backtesting & Validation Framework
 =====================================================
 File: ai_pipeline/validate_ablation.py
 Author: DeepScan / AQUILA MLOps Engineering Team
-Target: Smart India Hackathon (Ministry of Earth Sciences - PS-26057)
+Target: Smart India Hackathon (Ministry of Earth Sciences - PS-26065)
 
 Programmatic MLOps backtesting and architectural ablation evaluation engine.
 Evaluates Side-Scan Sonar (SSS) detection models comparing:

@@ -26,7 +26,7 @@ Perform an independent, forensic audit of all written text, claims, citations, n
 - **Key findings**:
   1. Forbidden terms (`YOLOv9`, `monsoon`, `rainfall`, `infinite energy`, `free energy`, `perpetual`, `DeepScan`/`deepscan`, `PS-26065`, `TODO`, `TBD`, `Lorem`, `dummy`, `mock`) are completely eradicated (0 matches across all `src/`).
   2. `SAHI` appears once in `ResearchCitations.tsx`, correctly marked as `isDirectlyImplemented: false` and Roadmap item, with zero claims of active runtime inference.
-  3. All grounded facts are accurately and consistently represented: YOLOv8s 88.0% mAP50 CNN detector; RT-DETR-L 35.4% mAP ablation failure baseline; ESP32 + RPi4 ₹6,100 BOM; ₹75,000–₹1,00,000 scale unit cost vs ₹25–30 Lakh commercial float; PS-26057 Ghost Net mandate.
+  3. All grounded facts are accurately and consistently represented: YOLOv8s 88.0% mAP50 CNN detector; RT-DETR-L 35.4% mAP ablation failure baseline; ESP32 + RPi4 ₹6,100 BOM; ₹75,000–₹1,00,000 scale unit cost vs ₹25–30 Lakh commercial float; PS-26065 Ghost Net mandate.
   4. All academic citations in `ResearchCitations.tsx` and across pages are verified authentic, peer-reviewed standards/papers (Blondel 2009, UNESCO EOS-80, Zuiderveld 1994, Garcia-Gordon 1992, CBAM 2018, AI4Shipwrecks 2024, Morel 2001, DOM 2021, NCPOR 2023, CCAMLR 2022, Urick 1983).
   5. The codebase builds cleanly with `npm run build` exiting code 0.
 - **Unexplored areas**: None. Audit is comprehensive and complete.

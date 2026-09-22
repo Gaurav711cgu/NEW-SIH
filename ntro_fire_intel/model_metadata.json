@@ -1,0 +1,86 @@
+{
+  "model_type": "xgboost.XGBClassifier",
+  "xgboost_version": "3.2.0",
+  "created_at_utc": "2026-09-06T18:18:26.059816+00:00",
+  "features": [
+    "frp",
+    "brightness",
+    "bright_t31",
+    "temp_delta",
+    "osm_industrial_count",
+    "osm_min_dist_m",
+    "has_chemical_refinery",
+    "has_power_infrastructure",
+    "is_night"
+  ],
+  "target_classes": {
+    "0": "NON_INDUSTRIAL (Wildfire / Agricultural Burn)",
+    "1": "INDUSTRIAL_FIRE (Refinery / Petrochemical / SEZ / Hazardous)"
+  },
+  "hyperparameters": {
+    "n_estimators": 80,
+    "max_depth": 4,
+    "learning_rate": 0.08,
+    "colsample_bytree": 0.7,
+    "subsample": 0.85,
+    "eval_metric": "logloss",
+    "random_state": 42
+  },
+  "metrics": {
+    "validation_accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "roc_auc": 1.0,
+    "confusion_matrix": [
+      [
+        150,
+        0
+      ],
+      [
+        0,
+        150
+      ]
+    ],
+    "feature_importances_pct": {
+      "frp": 0.3199999928474426,
+      "brightness": 20.729999542236328,
+      "bright_t31": 0.28999999165534973,
+      "temp_delta": 7.599999904632568,
+      "osm_industrial_count": 57.4900016784668,
+      "osm_min_dist_m": 6.610000133514404,
+      "has_chemical_refinery": 1.940000057220459,
+      "has_power_infrastructure": 5.03000020980835,
+      "is_night": 0.0
+    },
+    "n_train": 900,
+    "n_val": 300,
+    "classification_report": {
+      "NON_INDUSTRIAL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 150.0
+      },
+      "INDUSTRIAL_FIRE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 150.0
+      },
+      "accuracy": 1.0,
+      "macro avg": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 300.0
+      },
+      "weighted avg": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 300.0
+      }
+    }
+  }
+}

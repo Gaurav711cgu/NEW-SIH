@@ -26,14 +26,14 @@ Audit Scope:
    - `monsoon` / `rainfall` (Must be eradicated)
    - `infinite energy` / `free energy` / `perpetual` (Must be eradicated)
    - `DeepScan` / `deepscan` (Must be eradicated if used as hallucinated branding)
-   - `PS-26065` (Must be corrected to PS-26057)
+   - `PS-26065` (Must be corrected to PS-26065)
    - Placeholder tokens: `TODO`, `TBD`, `Lorem`, `dummy`, `mock`
 3. Verify Grounded Facts & Data Integrity:
    - YOLOv8 88.0% mAP50 CNN detector
    - RT-DETR-L 35.4% mAP ablation failure baseline (must be accurately framed as ablation failure, not working baseline)
    - Edge hardware: ESP32 DevKit v1 + Raspberry Pi 4 4GB (₹6,100 prototype BOM)
    - Unit cost: ₹75,000 – ₹1,00,000 at scale (vs ₹25–30 Lakh commercial Argo float)
-   - Problem Statement: PS-26057 Ghost Net mandate
+   - Problem Statement: PS-26065 Ghost Net mandate
    - Academic citations: Inspect all papers/citations in `ResearchCitations.tsx` and across pages. Are they real papers (e.g. Blondel & Murton 1997, Urick 1983, etc.) or fabricated Franken-citations?
 4. Document all verified facts, all cleaned text, and identify any lingering hallucinations or false claims.
 

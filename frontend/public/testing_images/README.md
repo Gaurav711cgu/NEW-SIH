@@ -1,5 +1,5 @@
 # 🌊 AQUILA — Side-Scan Sonar (SSS) Testing Images Suite
-**Curated Benchmark Images for PS-26057 Evaluation & Live Demonstrations**
+**Curated Benchmark Images for PS-26065 Evaluation & Live Demonstrations**
 
 This directory contains **25 diverse and difficult Side-Scan Sonar (SSS) images** designed to test edge AI detection, speckle noise reduction, SAHI window slicing, and acoustic shadow physics calibration.
 

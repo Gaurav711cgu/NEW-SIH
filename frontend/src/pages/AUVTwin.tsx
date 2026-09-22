@@ -11,7 +11,7 @@ import {
   IndianRupee,
   Sparkles,
   ShieldCheck,
-  CheckCircle2
+  CheckCircle2, Activity
 } from 'lucide-react';
 import { ResponsiveContainer, LineChart, Line, YAxis } from 'recharts';
 import MissionTerminal from '../components/MissionTerminal';
@@ -71,7 +71,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     max: 125.0,
     samplingRate: '2 Hz Live Hardware',
     operatingRange: '-1.8°C to +4.0°C (Antarctic Polar Validated)',
-    desc: 'Low-cost commercial stainless steel temperature probe deployed directly on the outer intake shroud. Operates reliably at polar sea ice temperatures without foreign import dependency.',
+    desc: 'Low-cost stainless steel probe. Raw ±0.5°C error is corrected to ±0.05°C via onboard ML Kalman filtering against historical Argo baselines deployed directly on the outer intake shroud. Operates reliably at polar sea ice temperatures without foreign import dependency.',
     indigenousAdvantage: 'Cost: ₹80 vs Imported ₹1.5 Lakhs SBE 3plus (1,875x savings). 100% locally serviceable.',
     status: 'ONLINE'
   },
@@ -79,7 +79,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     id: 'pressure',
     name: 'Hydrostatic Depth & Pressure Transducer',
     tier: 'INDIGENOUS_PHYSICAL',
-    hardwareBOM: 'BMP280 Barometric / Hydrostatic Sensor Module',
+    hardwareBOM: 'MS5837-30BA High-Res Subsea Pressure Sensor',
     componentCostINR: 120,
     importedEquivalent: 'Keller Subsea High-Precision Pressure',
     importedCostINR: 280000,
@@ -92,7 +92,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '10 Hz Continuous',
     operatingRange: '0 - 6,000 dbar pressure equivalent',
     desc: 'High-precision piezoresistive pressure transducer calibrated for subsea hydrostatic depth calculation via ocean water column density models.',
-    indigenousAdvantage: 'Cost: ₹120 vs Imported ₹2.8 Lakhs. Direct I2C interface to ESP32 sensor bus.',
+    indigenousAdvantage: 'Cost: ₹3,200 vs Imported ₹2.8 Lakhs. 30-Bar rating handles 300m depth.. Direct I2C interface to ESP32 sensor bus.',
     status: 'ONLINE'
   },
   {
@@ -119,8 +119,8 @@ const SENSOR_SPECS: SensorSpec[] = [
     id: 'salinity_ai',
     name: 'In-Situ Practical Salinity (UNESCO EOS-80 / TEOS-10)',
     tier: 'DL_VIRTUAL_REPLICATED',
-    hardwareBOM: 'TDS In-Situ Sensor (₹200) + UNESCO EOS-80 Seawater Formulation',
-    componentCostINR: 200,
+    hardwareBOM: 'Pure Software TEOS-10 Model (Derives from OpenCTD + Temp Input)',
+    componentCostINR: 0,
     importedEquivalent: 'Sea-Bird SBE 49 FastCAT CTD Sensor',
     importedCostINR: 1800000,
     position3D: [-0.6, 0.5, 0.35],
@@ -199,7 +199,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     id: 'tds_cond',
     name: 'Analog TDS / Conductivity Proxy Cell',
     tier: 'INDIGENOUS_PHYSICAL',
-    hardwareBOM: 'Gravity Analog TDS / Electrical Conductivity Probe',
+    hardwareBOM: 'OpenCTD-Architecture Graphite Conductivity Cell',
     componentCostINR: 200,
     importedEquivalent: 'Aanderaa 4319 Subsea Conductivity Cell',
     importedCostINR: 620000,
@@ -211,8 +211,8 @@ const SENSOR_SPECS: SensorSpec[] = [
     max: 1000,
     samplingRate: '5 Hz Continuous',
     operatingRange: '0 - 1000 ppm (Conductivity Proxy)',
-    desc: 'Analog electrical conductivity probe providing the base ionic density proxy feed used by the UNESCO EOS-80 Salinity model.',
-    indigenousAdvantage: 'Cost: ₹200 vs Imported ₹6.2 Lakhs. Feeds the deep learning virtual sensor model.',
+    desc: 'Epoxy-potted graphite electrode cell based on OpenCTD open-source oceanography designs providing the base ionic density proxy feed used by the UNESCO EOS-80 Salinity model.',
+    indigenousAdvantage: 'Cost: ₹250 (Graphite+Epoxy) vs ₹6.2 Lakhs. Solves commercial TDS ocean-saturation limits.',
     status: 'ONLINE'
   },
   {
@@ -310,8 +310,9 @@ export default function AUVTwin() {
   const [beamVisible, setBeamVisible] = useState<boolean>(true);
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const autoRotateRef = useRef(true);
-  const [viewPreset, setViewPreset] = useState<'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV'>('ISO');
+  const [viewPreset, setViewPreset] = useState<'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV' | 'OBSERVATION'>('ISO');
   const viewPresetRef = useRef(viewPreset);
+  const depthRef = useRef(0);
   const sonarPingsRef = useRef<THREE.Mesh[]>([]);
   const [detectionEvent, setDetectionEvent] = useState<any>(null);
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
@@ -319,6 +320,91 @@ export default function AUVTwin() {
     '[SONAR] 900kHz Transducer Active',
     '[AI] YOLOv8 TensorRT Engine Loaded'
   ]);
+
+  // --- OBSERVATION MODE STATE ---
+  const [obsDepth, setObsDepth] = useState(0);
+  const [obsTemp, setObsTemp] = useState(1.5);
+  const [obsSal, setObsSal] = useState(34.0);
+  const [obsDO, setObsDO] = useState(250.0);
+  const [obsSilicate, setObsSilicate] = useState(60.0);
+  const [obsDMS, setObsDMS] = useState(2.1);
+  const [obsDensity, setObsDensity] = useState(1027.0);
+  const [obsFlag, setObsFlag] = useState(1);
+  const [obsLogs, setObsLogs] = useState<string[]>(['> Ocean Observation Sequence Initiated...']);
+
+  useEffect(() => {
+    if (viewPreset !== 'OBSERVATION') return;
+    
+    let currentDepth = 0;
+    const interval = setInterval(() => {
+      currentDepth += 2;
+      if (currentDepth > 500) currentDepth = 0;
+      
+      const temp = 1.5 - (currentDepth / 200);
+      let sal = 34.00 + (currentDepth / 1000);
+      const dox = 250 - (currentDepth / 5);
+      const silicate = 60.0 + (currentDepth / 10);
+      const dms = 2.1 - (currentDepth / 500); 
+      
+      // 3 possible states: Normal, Hardware Fail, Meltwater Anomaly
+      const rand = Math.random();
+      let isFailure = false;
+      let isAnomaly = false;
+      let flag = 1;
+      let density = 1027.0 + (currentDepth / 500);
+
+      if (rand < 0.02) {
+         isFailure = true;
+         sal = 5.0; // Impossible ocean salinity -> broken sensor
+         flag = 4;
+         density = 980.0;
+      } else if (rand > 0.97) {
+         isAnomaly = true;
+         sal = 28.5; // Huge drop, but physically possible (Meltwater!)
+         density = 1018.5; // Lighter density
+      }
+
+      setObsDepth(currentDepth);
+      depthRef.current = currentDepth;
+      setObsTemp(temp);
+      setObsSal(sal);
+      setObsDO(dox);
+      setObsSilicate(silicate);
+      setObsDMS(dms);
+      setObsDensity(density);
+      setObsFlag(flag);
+
+      setObsLogs(prev => {
+        const newLogs = [...prev];
+        newLogs.push(`> [I2C] Scanning at ${currentDepth}m... T:${temp.toFixed(1)}°C | S:${sal.toFixed(1)} PSU`);
+        newLogs.push(`> [TEOS-10] Verifying Absolute Salinity & Conservative Temp...`);
+        
+        if (isFailure) {
+          newLogs.push(`[FATAL] Hardware Sensor Error! Salinity ${sal.toFixed(1)} is thermodynamically impossible here.`);
+          newLogs.push(`[REJECTED] QC FLAG 4 (Bad Data) Applied.`);
+        } else if (isAnomaly) {
+          newLogs.push(`[AI ALERT] Sudden -5 PSU Density Gradient Detected!`);
+          newLogs.push(`[WARNING] Isolation Forest flags Subglacial Meltwater Flux anomaly.`);
+          newLogs.push(`[SAVED] QC FLAG 1 - Geotagging anomaly location...`);
+        } else {
+          newLogs.push(`[VALID] Density ${density.toFixed(2)} kg/m³ verified. QC FLAG 1.`);
+        }
+        newLogs.push(`----------------------------------------`);
+        
+        if (newLogs.length > 10) return newLogs.slice(newLogs.length - 10);
+        return newLogs;
+      });
+      
+      // Move camera slightly to simulate sinking/diving
+      if (cameraRef.current) {
+          cameraRef.current.position.y = 1.0 + Math.sin(Date.now()*0.001)*0.2;
+      }
+
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [viewPreset]);
+
 
   useEffect(() => {
     const handleSetHud = (e: any) => {
@@ -652,6 +738,25 @@ export default function AUVTwin() {
 
     scene.add(auvGroup);
 
+    
+    // ── MARINE SNOW (PARTICLES) ──
+    const particleCount = 1500;
+    const particles = new THREE.BufferGeometry();
+    const pPos = new Float32Array(particleCount * 3);
+    for(let i=0; i<particleCount*3; i++) {
+        pPos[i] = (Math.random() - 0.5) * 40;
+    }
+    particles.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.05,
+        transparent: true,
+        opacity: 0.4
+    });
+    const particleSystem = new THREE.Points(particles, pMat);
+    scene.add(particleSystem);
+    const particlesRef = { current: particleSystem };
+
     // ── POV ENVIRONMENT SCENE ──
     const envGroup = new THREE.Group();
     envGroupRef.current = envGroup;
@@ -801,6 +906,45 @@ export default function AUVTwin() {
         mesh.scale.set(scale, scale, scale);
       });
       
+      
+      // --- OBSERVATION DIVE ANIMATION ---
+      if (viewPresetRef.current === 'OBSERVATION') {
+          // Pitch AUV down
+          if (auvGroupRef.current) {
+              auvGroupRef.current.rotation.z = THREE.MathUtils.lerp(auvGroupRef.current.rotation.z, -0.4, 0.05); // Tilt nose down
+              
+          }
+          
+          // Move particles UP to simulate diving
+          if (particlesRef.current) {
+              const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
+              for(let i=1; i<particleCount*3; i+=3) {
+                  positions[i] += 0.15; // Move Y up
+                  if (positions[i] > 20) positions[i] = -20;
+              }
+              particlesRef.current.geometry.attributes.position.needsUpdate = true;
+          }
+
+          // Darken the water based on depth (0m = light blue, 500m = pitch black)
+          const depthRatio = Math.min(depthRef.current / 500.0, 1.0);
+          const surfaceColor = new THREE.Color(0x0077be); // Ocean blue
+          const abyssColor = new THREE.Color(0x020617);   // Abyss black
+          const currentColor = surfaceColor.clone().lerp(abyssColor, depthRatio);
+          scene.background = currentColor;
+          if (scene.fog) scene.fog.color = currentColor;
+          
+
+      } else {
+          // Reset AUV rotation if leaving observation
+          if (auvGroupRef.current && viewPresetRef.current !== 'POV') {
+              auvGroupRef.current.rotation.z = THREE.MathUtils.lerp(auvGroupRef.current.rotation.z, 0, 0.05);
+              auvGroupRef.current.position.y = THREE.MathUtils.lerp(auvGroupRef.current.position.y, 0, 0.05);
+          }
+          // Reset background
+          scene.background = new THREE.Color(0x020617);
+          if (scene.fog) scene.fog.color = new THREE.Color(0x020617);
+      }
+
       if (viewPresetRef.current === 'POV') {
           if (envGroupRef.current) envGroupRef.current.position.x = 0;
           if (gridRef.current) {
@@ -927,7 +1071,7 @@ export default function AUVTwin() {
     beamGroupRef.current.visible = beamVisible;
   }, [xrayMode, wireframeMode, beamVisible]);
 
-  const handleSetPreset = (preset: 'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV') => {
+  const handleSetPreset = (preset: 'ISO' | 'BOW' | 'BELLY' | 'STERN' | 'TOP' | 'POV' | 'OBSERVATION') => {
     setViewPreset(preset);
     viewPresetRef.current = preset;
     if (!cameraRef.current || !cameraPivotRef.current) return;
@@ -943,6 +1087,7 @@ export default function AUVTwin() {
       case 'STERN': cameraRef.current.position.set(-6.5, 1.2, 0.0); break;
       case 'TOP': cameraRef.current.position.set(0.0, 7.5, 0.0); break;
       case 'POV': cameraRef.current.position.set(3.0, 0.0, 0.0); break;
+      case 'OBSERVATION': cameraRef.current.position.set(20.0, 0.0, 20.0); cameraRef.current.lookAt(0,0,0); break;
     }
     if (preset === 'POV') {
       cameraRef.current.lookAt(15, -4, 0); // True First-Person looking down at the sonar swath
@@ -1061,10 +1206,83 @@ export default function AUVTwin() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
         
         {/* Left (8 Cols): Interactive Three.js 3D Viewport */}
-        <div className="lg:col-span-8 bg-abyss-950/90 border border-steel-800/80 rounded-lg overflow-hidden shadow-md relative flex flex-col justify-between min-h-[500px]">
+        <div className="lg:col-span-8 bg-abyss-950/90 border border-steel-800/80 rounded-lg overflow-hidden shadow-md relative flex flex-col justify-between min-h-[700px] h-[75vh]">
           
           {/* === NEW PiP UI SYSTEM === */}
           
+          
+          {/* === OBSERVATION MODE HUD === */}
+          {viewPreset === 'OBSERVATION' && (
+            <div className="absolute inset-0 z-20 pointer-events-none border-[8px] border-ice-500/20" style={{ background: 'radial-gradient(circle, transparent 50%, rgba(2,6,23,0.7) 100%)' }}>
+              
+              {/* Top Left Telemetry */}
+              <div className="absolute top-16 left-6 flex flex-col gap-2 text-zinc-300 font-mono text-[10px]">
+                <div className="flex items-center gap-2 font-bold text-ice-400 text-sm mb-2">
+                  <Activity className="w-4 h-4 animate-pulse" /> BGC OBSERVATION MISSION
+                </div>
+                
+                <div className="grid grid-cols-2 gap-x-8 gap-y-1 bg-abyss-950/80 p-3 border border-steel-700/50 rounded">
+                  <div className="col-span-2 text-emerald-400 font-bold border-b border-steel-800 pb-1 mb-1">STANDARD VARIABLES</div>
+                  <span className="text-steel-400">DEPTH:</span> <span className="text-white font-bold">{obsDepth.toFixed(1)} m</span>
+                  <span className="text-steel-400">TEMP:</span> <span className="text-white font-bold">{obsTemp.toFixed(2)} °C</span>
+                  <span className="text-steel-400">SALIN:</span> <span className={`${obsFlag === 4 ? 'text-red-500' : 'text-white'} font-bold`}>{obsSal.toFixed(2)} PSU</span>
+                  <span className="text-steel-400">DENSITY:</span> <span className="text-white font-bold">{obsDensity.toFixed(1)} kg/m³</span>
+                  <span className="text-steel-400">DOXY:</span> <span className="text-white font-bold">{obsDO.toFixed(1)} µmol/kg</span>
+                  <span className="text-steel-400">pH:</span> <span className="text-white font-bold">8.1</span>
+                  <span className="text-steel-400">CHL-A:</span> <span className="text-white font-bold">0.4 mg/m³</span>
+                  
+                  <div className="col-span-2 text-purple-400 font-bold border-b border-steel-800 pb-1 mt-2 mb-1 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> UNDERRATED CLIMATE VARIABLES
+                  </div>
+                  <span className="text-steel-400" title="Subglacial Meltwater Indicator">SILICATE:</span> <span className="text-purple-300 font-bold">{obsSilicate.toFixed(1)} µmol/kg</span>
+                  <span className="text-steel-400" title="Cloud Condensation Nuclei">DMS (Gas):</span> <span className="text-purple-300 font-bold">{obsDMS.toFixed(2)} nM</span>
+                </div>
+              </div>
+
+                            {/* Vertical Depth Gauge */}
+              <div className="absolute top-16 right-6 h-64 w-14 bg-black/80 border border-steel-700/50 rounded flex flex-col items-center py-3 pointer-events-none shadow-lg">
+                <div className="text-[9px] text-ice-400 font-mono font-bold mb-2 text-center">SURF<br/>0m</div>
+                <div className="flex-1 w-1.5 bg-steel-900 rounded-full relative overflow-visible shadow-inner">
+                  {/* Indicator Track */}
+                  <div 
+                    className="absolute top-0 left-0 w-full bg-ice-500/30 rounded-full transition-all duration-[2500ms] ease-linear"
+                    style={{ height: `${(obsDepth / 500) * 100}%` }}
+                  />
+                  {/* Submarine Blip */}
+                  <div 
+                    className="absolute left-1/2 -translate-x-1/2 w-5 h-5 bg-black border-2 border-ice-400 rounded-full shadow-[0_0_12px_#00e5ff] flex items-center justify-center transition-all duration-[2500ms] ease-linear z-10"
+                    style={{ top: `calc(${(obsDepth / 500) * 100}% - 10px)` }}
+                  >
+                    <div className="w-1.5 h-1.5 bg-ice-400 rounded-full animate-pulse" />
+                    {/* Depth label sticking out to the left */}
+                    <div className="absolute right-7 bg-abyss-950/90 text-ice-300 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-steel-700/50 whitespace-nowrap">
+                      {obsDepth.toFixed(0)} m
+                    </div>
+                  </div>
+                </div>
+                <div className="text-[9px] text-ice-400 font-mono font-bold mt-2 text-center">ABYSS<br/>500m</div>
+              </div>
+
+              {/* Bottom Right Terminal Overlay */}
+              <div className="absolute bottom-10 left-6 w-[22rem] h-44 bg-black/90 border border-steel-700/50 rounded flex flex-col pointer-events-auto">
+                <div className="bg-steel-900/80 px-2 py-1 flex items-center gap-2 text-[10px] font-mono text-ice-400 border-b border-steel-800">
+                  <ShieldCheck className="w-3 h-3" /> TEOS-10 PHYSICS CAGE
+                </div>
+                <div className="flex-1 p-2 font-mono text-[8px] flex flex-col justify-end gap-1 overflow-hidden">
+                  <div className={`font-bold p-1 rounded text-center mb-1 ${obsFlag === 1 ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-red-400'}`}>
+                    QC FLAG: {obsFlag}
+                  </div>
+                  {obsLogs.map((log, i) => (
+                    <div key={i} className={`${log.includes('CRITICAL') || log.includes('REJECTED') ? 'text-red-400 font-bold' : log.includes('VALID') ? 'text-emerald-400' : 'text-zinc-300'}`}>
+                      {log}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )}
+
           {viewPreset === 'POV' && (
             <>
               {/* TRUE FIRST-PERSON IMMERSIVE HUD */}
@@ -1086,7 +1304,7 @@ export default function AUVTwin() {
 
                 {/* Center Crosshair */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 flex items-center justify-center">
-                  <div className="w-32 h-32 border border-white/10 rounded-full flex items-center justify-center">
+                  <div className="w-32 h-48 border border-white/10 rounded-full flex items-center justify-center">
                     <div className="w-4 h-4 border-2 border-zinc-800 rounded-md"></div>
                   </div>
                   <div className="absolute w-48 h-[1px] bg-zinc-900/50"></div>
@@ -1168,7 +1386,7 @@ export default function AUVTwin() {
             
             {/* View Presets */}
             <div className="flex items-center gap-1 bg-abyss-900/90 p-1 rounded-lg border border-steel-800 pointer-events-auto backdrop-blur-md">
-              {(['ISO', 'BOW', 'BELLY', 'STERN', 'TOP', 'POV'] as const).map(p => (
+              {(['ISO', 'BOW', 'BELLY', 'STERN', 'TOP', 'POV', 'OBSERVATION'] as const).map(p => (
                 <button
                   key={p}
                   onClick={() => handleSetPreset(p)}

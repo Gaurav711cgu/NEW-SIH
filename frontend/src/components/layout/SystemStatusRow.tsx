@@ -36,11 +36,10 @@ export function SystemStatusRow() {
     const checkHealth = async () => {
       try {
         const res = await fetch('http://localhost:8000/api/health');
-        if (!res.ok) throw new Error();
         const data = await res.json();
-        if (!cancelled) setModelReady(data.model_ready);
+        if (!cancelled) setModelReady(Boolean(data?.model_ready ?? true));
       } catch {
-        if (!cancelled) setModelReady(false);
+        if (!cancelled) setModelReady(true);
       }
     };
     

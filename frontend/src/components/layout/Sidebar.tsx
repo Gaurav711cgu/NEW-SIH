@@ -9,6 +9,7 @@ const navItems = [
   { path: '/seafloor', label: 'Seafloor Intel', icon: Target },
   { path: '/mission', label: 'Mission Control', icon: Anchor },
   { path: '/auv-twin', label: 'AUV Digital Twin', icon: Cpu },
+  { path: '/digital-twin', label: 'Digital Twin', icon: Activity },
   { path: '/validation', label: 'Model Validation', icon: BarChart4 },
   { path: '/research', label: 'Research & Citations', icon: BookOpen },
 ];

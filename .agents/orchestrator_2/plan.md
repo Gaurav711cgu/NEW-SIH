@@ -20,7 +20,7 @@ Audit and rewrite the AQUILA OS React frontend (`/Users/gauravkumarnayak/Desktop
     - YOLOv8 88.0% mAP vs 35.4% mAP RT-DETR
     - ESP32 hardware
     - ₹75,000 cost vs ₹30 Lakh Argo float
-    - PS-26057 Ghost Net mandate
+    - PS-26065 Ghost Net mandate
     - Zero placeholders or fabricated sources.
 
 ### Phase 3: Verification & Review

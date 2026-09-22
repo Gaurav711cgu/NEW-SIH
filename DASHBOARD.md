@@ -157,7 +157,7 @@ Showing these failure modes and recovery in the demo demonstrates that the platf
 
 ## Page 3: Seafloor Intelligence
 
-Shows the PS-26057 subsystem output. This is the AI detection pipeline visualised for a domain expert audience.
+Shows the PS-26065 subsystem output. This is the AI detection pipeline visualised for a domain expert audience.
 
 ### Content
 
@@ -193,7 +193,7 @@ Bottom bar: Report download
 5. Show the detection table. Sort by confidence.
 6. Download the JSON report. Open it. Show the lat, lon, object_class, confidence fields.
 
-This sequence covers all four mandatory PS-26057 deliverables in under 90 seconds.
+This sequence covers all four mandatory PS-26065 deliverables in under 90 seconds.
 
 ---
 

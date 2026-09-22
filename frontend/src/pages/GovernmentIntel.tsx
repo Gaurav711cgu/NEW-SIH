@@ -550,7 +550,7 @@ ${wptXml}
             <span className="text-slate-400 text-[10px] block mb-1 font-bold">PILLAR 3 (ADDRESSED)</span>
             <span className="text-sm font-bold text-slate-300">Technological Innovations</span>
             <p className="text-[10px] text-slate-300/70 mt-1 font-sans">
-              Edge AI for underwater debris & ghost net detection (PS-26057).
+              Edge AI for underwater debris & ghost net detection (PS-26065).
             </p>
           </div>
 
@@ -559,7 +559,7 @@ ${wptXml}
             <span className="text-slate-400 text-[10px] block mb-1 font-bold">PILLAR 4 (ADDRESSED)</span>
             <span className="text-sm font-bold text-slate-300">Deep Ocean Survey</span>
             <p className="text-[10px] text-slate-300/70 mt-1 font-sans">
-              Autonomous Southern Ocean Observation (PS-26057) at 1/100th cost.
+              Autonomous Southern Ocean Observation (PS-26065) at 1/100th cost.
             </p>
           </div>
 

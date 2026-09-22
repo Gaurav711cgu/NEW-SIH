@@ -352,7 +352,7 @@ A compact horizontal strip for global telemetry health, always visible at the to
 ● MQTT BROKER     ONLINE       14:32:07 UTC
 ● CTD ARRAY       NOMINAL      487m
 ⚠ FLUOROMETER     DEGRADED     —
-● SONAR (PS-26057) NOMINAL      Active Sweep
+● SONAR (PS-26065) NOMINAL      Active Sweep
 ```
 
 ### 7.4 DepthProfileChart
@@ -509,7 +509,7 @@ When the MQTT broker connection is lost:
 - **Critical UX requirement:** This page must clearly communicate that DOXY, CHLA, and Nitrate values are modelled outputs, not direct measurements. The `VIRTUAL` badge must be the most visually prominent element on each card.
 
 ### 11.3 Page 3 — Seafloor Intelligence
-- **Purpose:** AI-assisted Side Scan Sonar (PS-26057) interpretation.
+- **Purpose:** AI-assisted Side Scan Sonar (PS-26065) interpretation.
 - **Data sources:** `DATASET` (sonar imagery), `VIRTUAL` (AI classifier output).
 - **Primary user task:** Review AI-detected seafloor features; adjust for acoustic shadow zone penalties.
 - **Layout:** Sonar Tile Viewer (left 60%) with bounding box overlays; Detection Panel (right 40%) with confidence scores.
