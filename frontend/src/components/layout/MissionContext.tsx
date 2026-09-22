@@ -23,7 +23,7 @@ export const MissionProvider = ({ children }: { children: ReactNode }) => {
     
     const fetchTelemetry = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/telemetry', { signal: AbortSignal.timeout(2000) });
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/telemetry`, { signal: AbortSignal.timeout(2000) });
         if (res.ok) {
           const json = await res.json();
           

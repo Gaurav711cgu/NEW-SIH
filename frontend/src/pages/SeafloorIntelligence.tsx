@@ -13,7 +13,7 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import SonarProfiler from '../components/SonarProfiler';
 
 // ── API client (centralised, no inline fetch) ─────────────────────────────
-const API_BASE = 'http://localhost:8000';
+const API_BASE = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}`;
 
 class ApiError extends Error {
   status: number;
