@@ -64,7 +64,7 @@ function OceanEnvironment() {
 
 export default function AntarcticScene() {
   return (
-    <div className="w-full h-full bg-[#000000]">
+    <div className="w-full h-full bg-[#020617]">
       <Canvas shadows>
         <OceanEnvironment />
         <BubbleSystem />

@@ -44,14 +44,14 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <div className="absolute inset-0 z-50 bg-[#000000] text-[#34c759] font-mono text-xs sm:text-sm p-4 sm:p-8 flex flex-col items-start justify-end overflow-hidden">
+    <div className="absolute inset-0 z-50 bg-[#020617] text-ice-400 font-mono text-xs sm:text-sm p-4 sm:p-8 flex flex-col items-start justify-end overflow-hidden">
       <div className="w-full max-w-3xl space-y-1">
         {lines.map((line, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className={line.startsWith('> ═') ? 'text-[#ebebf599]' : ''}
+            className={line.startsWith('> ═') ? 'text-steel-400' : ''}
           >
             {line}
           </motion.div>
@@ -59,7 +59,7 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
         <motion.div
           animate={{ opacity: [1, 0] }}
           transition={{ repeat: Infinity, duration: 0.8 }}
-          className="w-3 h-4 bg-[#34c759] mt-2 block"
+          className="w-3 h-4 bg-ice-500 mt-2 block"
         />
       </div>
     </div>
@@ -72,14 +72,14 @@ function PhaseBanner() {
   if (phase === 'IDLE') return null;
 
   return (
-    <div className="bg-[#1c1c1e]/90 backdrop-blur-md border border-[#38383a] shadow-xl p-4 rounded-xl flex items-center justify-between mt-auto mb-4 pointer-events-auto">
+    <div className="bg-abyss-900/90 backdrop-blur-md border border-steel-800/80 shadow-xl p-4 rounded-xl flex items-center justify-between mt-auto mb-4 pointer-events-auto">
       <div>
-        <div className="text-[10px] text-[#ebebf599] font-bold tracking-widest mb-1">CURRENT PHASE</div>
-        <div className="text-[#34c759] font-mono text-sm font-bold animate-pulse">
+        <div className="text-[10px] text-steel-400 font-bold tracking-widest mb-1">CURRENT PHASE</div>
+        <div className="text-ice-400 font-mono text-sm font-bold animate-pulse">
           {phase.replace(/_/g, ' ')}
         </div>
       </div>
-      <Activity className="w-5 h-5 text-[#ebebf599]" />
+      <Activity className="w-5 h-5 text-steel-400" />
     </div>
   );
 }
@@ -93,7 +93,7 @@ function AlertFeed() {
 
   return (
     <div className="flex flex-col gap-2 pointer-events-auto">
-      <h3 className="text-[10px] font-bold text-[#ebebf599] uppercase tracking-wider mb-1 flex items-center gap-1">
+      <h3 className="text-[10px] font-bold text-steel-400 uppercase tracking-wider mb-1 flex items-center gap-1">
         <ShieldAlert className="w-3 h-3" /> SYSTEM ALERTS
       </h3>
       <AnimatePresence>
@@ -104,7 +104,7 @@ function AlertFeed() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3 }}
-            className="font-mono text-[10px] text-[#ff9f0a] bg-[#2c2c2e]/80 border border-[#ff9f0a]/30 rounded-lg px-3 py-2 shadow-lg backdrop-blur-sm"
+            className="font-mono text-[10px] text-yellow-400 bg-abyss-800/80 border border-yellow-400/30 rounded-lg px-3 py-2 shadow-lg backdrop-blur-sm"
           >
             {alert}
           </motion.div>
@@ -123,7 +123,7 @@ export default function AntarcticSimulation() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden bg-[#000000] text-[#ffffff] font-sans relative flex-1">
+    <div className="flex flex-col w-full h-full overflow-hidden bg-[#020617] text-steel-100 font-sans relative flex-1">
       {/* Boot Sequence */}
       <AnimatePresence>
         {!booted && <BootScreen onComplete={handleBootComplete} />}
@@ -138,39 +138,39 @@ export default function AntarcticSimulation() {
 
           {/* TOP NAVBAR OVERLAY */}
           <div className="absolute top-0 left-0 w-full h-14 bg-gradient-to-b from-[#000000]/80 to-transparent flex items-start justify-between px-6 pt-4 z-50 pointer-events-none">
-            <div className="flex items-center gap-2 pointer-events-auto bg-[#1c1c1e]/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#38383a]">
-              <Anchor className="w-4 h-4 text-[#ffffff]" />
-              <span className="font-bold tracking-widest text-[11px] text-[#ffffff]">SOUTHERN OCEAN SIMULATION</span>
+            <div className="flex items-center gap-2 pointer-events-auto bg-abyss-900/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-steel-800/80">
+              <Anchor className="w-4 h-4 text-steel-100" />
+              <span className="font-bold tracking-widest text-[11px] text-steel-100">SOUTHERN OCEAN SIMULATION</span>
             </div>
             <div className="flex gap-2">
-              <button className="p-1.5 bg-[#1c1c1e]/60 backdrop-blur-md border border-[#38383a] rounded-full hover:bg-[#2c2c2e] transition-colors pointer-events-auto">
-                <Maximize2 className="w-4 h-4 text-[#ebebf599]" />
+              <button className="p-1.5 bg-abyss-900/60 backdrop-blur-md border border-steel-800/80 rounded-full hover:bg-abyss-800 transition-colors pointer-events-auto">
+                <Maximize2 className="w-4 h-4 text-steel-400" />
               </button>
             </div>
           </div>
 
           {/* FLOATING LEFT CARDS */}
           <div className="absolute top-16 left-6 bottom-6 w-[280px] z-10 flex flex-col gap-4 overflow-y-auto custom-scrollbar pointer-events-none">
-            <div className="bg-[#1c1c1e]/80 backdrop-blur-xl border border-[#38383a] rounded-2xl p-5 shadow-2xl pointer-events-auto shrink-0">
-              <h3 className="text-[10px] font-bold text-[#ebebf599] tracking-wider mb-4">VEHICLE TELEMETRY</h3>
-              <div className="bg-[#000000] rounded-xl p-3 font-mono text-sm border border-[#38383a]">
+            <div className="bg-abyss-900/80 backdrop-blur-xl border border-steel-800/80 rounded-2xl p-5 shadow-2xl pointer-events-auto shrink-0">
+              <h3 className="text-[10px] font-bold text-steel-400 tracking-wider mb-4">VEHICLE TELEMETRY</h3>
+              <div className="bg-[#020617] rounded-xl p-3 font-mono text-sm border border-steel-800/80">
                 <HUD /> 
               </div>
             </div>
 
-            <div className="bg-[#1c1c1e]/80 backdrop-blur-xl border border-[#38383a] rounded-2xl p-5 shadow-2xl pointer-events-auto shrink-0">
-              <h3 className="text-[10px] font-bold text-[#ebebf599] tracking-wider mb-3">MISSION CONTROL</h3>
+            <div className="bg-abyss-900/80 backdrop-blur-xl border border-steel-800/80 rounded-2xl p-5 shadow-2xl pointer-events-auto shrink-0">
+              <h3 className="text-[10px] font-bold text-steel-400 tracking-wider mb-3">MISSION CONTROL</h3>
               {phase === 'IDLE' ? (
                 <button 
                   onClick={() => useSimulationStore.getState().initiateDive()}
-                  className="w-full py-3 bg-[#ffffff] hover:bg-[#ebebeb] text-[#000000] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-ice-500 hover:bg-ice-400 text-abyss-950 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   <Activity className="w-4 h-4" />
                   INITIATE DIVE SEQUENCE
                 </button>
               ) : (
-                <div className="p-3 bg-[#000000] border border-[#38383a] rounded-xl text-center">
-                  <span className="text-[#34c759] font-mono text-xs font-bold animate-pulse">MISSION IN PROGRESS</span>
+                <div className="p-3 bg-[#020617] border border-steel-800/80 rounded-xl text-center">
+                  <span className="text-ice-400 font-mono text-xs font-bold animate-pulse">MISSION IN PROGRESS</span>
                 </div>
               )}
             </div>
@@ -181,25 +181,25 @@ export default function AntarcticSimulation() {
           {/* FLOATING RIGHT CARDS */}
           <div className="absolute top-16 right-6 bottom-6 w-[300px] z-10 flex flex-col gap-4 overflow-y-auto custom-scrollbar pointer-events-none">
             
-            <div className="bg-[#1c1c1e]/80 backdrop-blur-xl border border-[#38383a] rounded-2xl p-5 shadow-2xl pointer-events-auto shrink-0">
-              <h3 className="text-[10px] font-bold text-[#ebebf599] tracking-wider mb-4">SYSTEMS STATUS</h3>
+            <div className="bg-abyss-900/80 backdrop-blur-xl border border-steel-800/80 rounded-2xl p-5 shadow-2xl pointer-events-auto shrink-0">
+              <h3 className="text-[10px] font-bold text-steel-400 tracking-wider mb-4">SYSTEMS STATUS</h3>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-[10px] mb-1.5 font-bold">
-                    <span className="text-[#ebebf599]">BATTERY</span>
-                    <span className="text-[#34c759]">100%</span>
+                    <span className="text-steel-400">BATTERY</span>
+                    <span className="text-ice-400">100%</span>
                   </div>
-                  <div className="h-1.5 bg-[#2c2c2e] rounded-full overflow-hidden">
-                    <div className="h-full w-full bg-[#34c759] rounded-full" />
+                  <div className="h-1.5 bg-abyss-800 rounded-full overflow-hidden">
+                    <div className="h-full w-full bg-ice-500 rounded-full" />
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between text-[10px] mb-1.5 font-bold">
-                    <span className="text-[#ebebf599]">CPU LOAD</span>
-                    <span className="text-[#ff9f0a]">42%</span>
+                    <span className="text-steel-400">CPU LOAD</span>
+                    <span className="text-yellow-400">42%</span>
                   </div>
-                  <div className="h-1.5 bg-[#2c2c2e] rounded-full overflow-hidden">
-                    <div className="h-full w-[42%] bg-[#ff9f0a] rounded-full" />
+                  <div className="h-1.5 bg-abyss-800 rounded-full overflow-hidden">
+                    <div className="h-full w-[42%] bg-yellow-400 rounded-full" />
                   </div>
                 </div>
               </div>

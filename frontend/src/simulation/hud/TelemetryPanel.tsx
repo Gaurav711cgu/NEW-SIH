@@ -15,8 +15,8 @@ export default function TelemetryPanel() {
   const roll = (auvRotation[2] * 180) / Math.PI;
 
   const TelemetryBox = ({ label, value, unit }: { label: string, value: string, unit: string }) => (
-    <div className="flex flex-col items-start bg-[#2c2c2e]/50 px-3 py-2 rounded-md border border-[#38383a] hover:bg-[#38383a] transition-colors cursor-default">
-      <span className="text-[10px] text-[#ebebf599] font-semibold">{label}</span>
+    <div className="flex flex-col items-start bg-abyss-800/50 px-3 py-2 rounded-md border border-steel-800/80 hover:bg-[#38383a] transition-colors cursor-default">
+      <span className="text-[10px] text-steel-400 font-semibold">{label}</span>
       <div className="flex items-baseline gap-1">
         <span className="text-lg font-bold text-white">{value}</span>
         <span className="text-xs text-[#ebebf57a]">{unit}</span>

@@ -15,22 +15,22 @@ export default function HUD() {
   };
 
   return (
-    <div className="flex flex-col gap-6 text-[#ffffff] font-mono">
+    <div className="flex flex-col gap-6 text-steel-100 font-mono">
       {/* Mission Info */}
-      <div className="flex flex-col gap-1 border-b border-[#38383a] pb-4">
-        <div className="text-xs text-[#ebebf599]">MISSION PHASE</div>
-        <div className="text-lg font-bold text-[#ffffff]">{missionPhase}</div>
-        <div className="text-xs text-[#ebebf599] mt-2">ELAPSED TIME</div>
-        <div className="text-xl text-[#ffffff]">{formatTime(missionTimer)}</div>
+      <div className="flex flex-col gap-1 border-b border-steel-800/80 pb-4">
+        <div className="text-xs text-steel-400">MISSION PHASE</div>
+        <div className="text-lg font-bold text-steel-100">{missionPhase}</div>
+        <div className="text-xs text-steel-400 mt-2">ELAPSED TIME</div>
+        <div className="text-xl text-steel-100">{formatTime(missionTimer)}</div>
       </div>
 
       {/* Depth Gauge */}
-      <div className="flex justify-center border-b border-[#38383a] pb-4">
+      <div className="flex justify-center border-b border-steel-800/80 pb-4">
         <DepthGauge />
       </div>
 
       {/* Compass */}
-      <div className="flex justify-center border-b border-[#38383a] pb-4">
+      <div className="flex justify-center border-b border-steel-800/80 pb-4">
         <Compass />
       </div>
 
