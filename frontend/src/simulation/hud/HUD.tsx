@@ -1,4 +1,3 @@
-
 import DepthGauge from './DepthGauge';
 import Compass from './Compass';
 import TelemetryPanel from './TelemetryPanel';
@@ -15,22 +14,22 @@ export default function HUD() {
   };
 
   return (
-    <div className="flex flex-col gap-6 text-steel-100 font-mono">
+    <div className="flex flex-col gap-3 text-steel-100 font-mono">
       {/* Mission Info */}
-      <div className="flex flex-col gap-1 border-b border-steel-800/80 pb-4">
-        <div className="text-xs text-steel-400">MISSION PHASE</div>
-        <div className="text-lg font-bold text-steel-100">{missionPhase}</div>
-        <div className="text-xs text-steel-400 mt-2">ELAPSED TIME</div>
-        <div className="text-xl text-steel-100">{formatTime(missionTimer)}</div>
+      <div className="flex justify-between items-end border-b border-steel-800/80 pb-2">
+        <div className="flex flex-col">
+          <div className="text-[10px] text-steel-500 uppercase tracking-wider">Mission Phase</div>
+          <div className="text-xs font-bold text-ice-100">{missionPhase.replace('STAGE_', '').replace(/_/g, ' ')}</div>
+        </div>
+        <div className="flex flex-col text-right">
+          <div className="text-[10px] text-steel-500 uppercase tracking-wider">T+</div>
+          <div className="text-sm font-bold text-ice-400">{formatTime(missionTimer)}</div>
+        </div>
       </div>
 
-      {/* Depth Gauge */}
-      <div className="flex justify-center border-b border-steel-800/80 pb-4">
+      {/* Instruments (Depth & Compass side by side) */}
+      <div className="flex justify-between items-center border-b border-steel-800/80 pb-3 px-1 pt-1">
         <DepthGauge />
-      </div>
-
-      {/* Compass */}
-      <div className="flex justify-center border-b border-steel-800/80 pb-4">
         <Compass />
       </div>
 
