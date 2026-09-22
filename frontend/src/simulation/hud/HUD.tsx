@@ -35,7 +35,7 @@ export default function HUD() {
       </div>
 
       {/* Telemetry */}
-      <div className="flex justify-center">
+      <div className="w-full">
         <TelemetryPanel />
       </div>
     </div>

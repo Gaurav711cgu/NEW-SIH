@@ -1,4 +1,3 @@
-
 import { useSimulationStore } from '../store/simulationStore';
 
 export default function TelemetryPanel() {
@@ -14,34 +13,37 @@ export default function TelemetryPanel() {
   const yaw = (auvRotation[1] * 180) / Math.PI;
   const roll = (auvRotation[2] * 180) / Math.PI;
 
-  const TelemetryBox = ({ label, value, unit }: { label: string, value: string, unit: string }) => (
-    <div className="flex flex-col items-start bg-abyss-800/50 px-3 py-2 rounded-md border border-steel-800/80 hover:bg-[#38383a] transition-colors cursor-default">
-      <span className="text-[10px] text-steel-400 font-semibold">{label}</span>
-      <div className="flex items-baseline gap-1">
-        <span className="text-lg font-bold text-white">{value}</span>
-        <span className="text-xs text-[#ebebf57a]">{unit}</span>
+  const TelemetryRow = ({ label, value, unit }: { label: string, value: string | number, unit: string }) => (
+    <div className="flex justify-between items-center py-0.5">
+      <span className="text-[11px] text-steel-400 uppercase tracking-wider">{label}:</span>
+      <div className="flex items-baseline gap-2">
+        <span className="text-xs font-bold text-ice-100 font-mono text-right min-w-[40px]">{value}</span>
+        <span className="text-[10px] text-steel-500 w-8">{unit}</span>
       </div>
     </div>
   );
 
   return (
-    <div className="grid grid-cols-2 gap-2 mt-2">
-      <TelemetryBox label="SPD" value={speed.toFixed(1)} unit="m/s" />
-      
-      {/* Attitude */}
-      <TelemetryBox 
-        label="PITCH" 
-        value={`${Math.abs(pitch).toFixed(1)}`} 
-        unit={pitch >= 0 ? '▲' : '▼'} 
-      />
-      <TelemetryBox label="ROLL" value={roll.toFixed(1)} unit="°" />
-      <TelemetryBox label="YAW" value={yaw.toFixed(1)} unit="°" />
-      
-      {/* Environment */}
-      <TelemetryBox label="TEMP" value={temp.toFixed(2)} unit="°C" />
-      <TelemetryBox label="SAL" value={sal.toFixed(1)} unit="ppt" />
-      <TelemetryBox label="DO" value={do2.toFixed(1)} unit="mg/L" />
-      <TelemetryBox label="PRESS" value={press.toFixed(2)} unit="atm" />
+    <div className="w-full flex flex-col gap-4 mt-2">
+      <div>
+        <h4 className="text-[10px] font-bold text-ice-500 tracking-wider mb-2 uppercase">Vehicle Dynamics</h4>
+        <div className="flex flex-col">
+          <TelemetryRow label="SPD" value={speed.toFixed(1)} unit="m/s" />
+          <TelemetryRow label="PITCH" value={Math.abs(pitch).toFixed(1)} unit={pitch >= 0 ? '▲' : '▼'} />
+          <TelemetryRow label="ROLL" value={roll.toFixed(1)} unit="°" />
+          <TelemetryRow label="YAW" value={yaw.toFixed(1)} unit="°" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-[10px] font-bold text-ice-500 tracking-wider mb-2 uppercase mt-1">Ocean State</h4>
+        <div className="flex flex-col">
+          <TelemetryRow label="TEMP" value={temp.toFixed(2)} unit="°C" />
+          <TelemetryRow label="SALIN" value={sal.toFixed(1)} unit="PSU" />
+          <TelemetryRow label="DOXY" value={do2.toFixed(1)} unit="mg/L" />
+          <TelemetryRow label="PRESS" value={press.toFixed(2)} unit="atm" />
+        </div>
+      </div>
     </div>
   );
 }
