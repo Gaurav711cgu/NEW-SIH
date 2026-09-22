@@ -1,4 +1,4 @@
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Grid, Sparkles, SoftShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import { useSimulationStore } from './store/simulationStore';
@@ -75,15 +75,25 @@ function OceanEnvironment() {
   const surfaceColor = new THREE.Color('#1a2530');
   const deepColor = new THREE.Color('#00050a');
   const fogColor = surfaceColor.clone().lerp(deepColor, Math.min(depth / 80, 1));
-  const fogDensity = THREE.MathUtils.lerp(0.015, 0.04, Math.min(depth / 150, 1));
+  const fogDensity = THREE.MathUtils.lerp(0.002, 0.04, Math.min(depth / 150, 1));
   const ambientIntensity = Math.max(0.01, 0.8 - (depth / 40));
   const sunIntensity = Math.max(0, 2.0 - (depth / 20));
 
+  const scene = useThree((state) => state.scene);
+  
+  useFrame(() => {
+    // Dynamically update background and fog
+    scene.background = fogColor;
+    if (scene.fog instanceof THREE.FogExp2) {
+      scene.fog.color = fogColor;
+      scene.fog.density = fogDensity;
+    } else {
+      scene.fog = new THREE.FogExp2(fogColor, fogDensity);
+    }
+  });
+
   return (
     <>
-      <color attach="background" args={[fogColor.getHex()]} />
-      <fogExp2 attach="fog" args={[0, 0]} color={fogColor} density={fogDensity} />
-      
       <ambientLight intensity={ambientIntensity} color="#90d0ff" />
       <directionalLight 
         position={[20, 50, -20]} 
