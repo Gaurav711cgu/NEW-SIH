@@ -64,6 +64,28 @@ export default function SurfaceEnvironment() {
         />
       </mesh>
       
+            {/* 3. Distant Antarctic Glacier Ring */}
+      <group position={[0, -20, 0]}>
+        {[...Array(12)].map((_, i) => {
+          const angle = (i / 12) * Math.PI * 2;
+          const radius = 600 + Math.random() * 100;
+          const x = Math.cos(angle) * radius;
+          const z = Math.sin(angle) * radius;
+          
+          return (
+            <mesh key={i} position={[x, 0, z]} rotation={[0, -angle + Math.PI/2, 0]}>
+              <coneGeometry args={[200 + Math.random()*100, 300 + Math.random()*200, 7, 1, false, 0, Math.PI]} />
+              <meshStandardMaterial 
+                color="#e0f2fe" 
+                roughness={0.8}
+                metalness={0.1}
+                flatShading={true}
+              />
+            </mesh>
+          );
+        })}
+      </group>
+
       {/* 2. Stormy Antarctic Sky Dome (Only visible from above/near surface) */}
       <mesh ref={skyRef} position={[0, -10, 0]}>
         <sphereGeometry args={[900, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
