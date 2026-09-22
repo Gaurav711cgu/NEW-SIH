@@ -9,7 +9,6 @@ import AUVTwin from './pages/AUVTwin';
 import { GovernmentIntel } from './pages/GovernmentIntel';
 import ResearchCitations from './pages/ResearchCitations';
 import { ModelValidation } from './pages/ModelValidation';
-import AntarcticSimulation from './pages/AntarcticSimulation';
 import DigitalTwin from './pages/DigitalTwin';
 
 import new_bg1 from './assets/new_bg1.jpg';
@@ -23,16 +22,19 @@ import bg4 from './assets/bg4.jpg';
 const BackgroundWrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   
+  // AUVTwin now runs full-screen with its own 3D scene, no background image overlay needed
+  if (location.pathname.includes('/auv-twin') || location.pathname.includes('/simulation')) {
+    return <>{children}</>;
+  }
+
   let bgImage = new_bg1;
   if (location.pathname.includes('/seafloor')) bgImage = new_bg2;
   else if (location.pathname.includes('/biogeo')) bgImage = bg2;
   else if (location.pathname.includes('/intel')) bgImage = new_bg3;
   else if (location.pathname.includes('/mission')) bgImage = bg4;
-  else if (location.pathname.includes('/auv-twin')) bgImage = bg3;
   else if (location.pathname.includes('/digital-twin')) bgImage = bg3;
   else if (location.pathname.includes('/validation')) bgImage = bg1;
   else if (location.pathname.includes('/research')) bgImage = new_bg2;
-  else if (location.pathname.includes('/simulation')) return <>{children}</>; // No background for 3D simulation
 
   return (
     <>
@@ -67,11 +69,14 @@ function App() {
                 <Route path="/biogeo" element={<Biogeochemistry />} />
                 <Route path="/seafloor" element={<SeafloorIntelligence />} />
                 <Route path="/mission" element={<MissionControl />} />
+                
+                {/* Redirect /simulation to /auv-twin since user wants to use AUVTwin directly */}
+                <Route path="/simulation" element={<Navigate to="/auv-twin" replace />} />
+                
                 <Route path="/auv-twin" element={<AUVTwin />} />
                 <Route path="/digital-twin" element={<DigitalTwin />} />
                 <Route path="/validation" element={<ModelValidation />} />
                 <Route path="/research" element={<ResearchCitations />} />
-                <Route path="/simulation" element={<AntarcticSimulation />} />
                 <Route path="*" element={<Navigate to="/ocean-state" replace />} />
               </Routes>
             </main>
