@@ -2,7 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useSimulationStore } from '../store/simulationStore';
-import { Cloud, Sparkles } from '@react-three/drei';
+import { Sparkles } from '@react-three/drei';
 
 export default function SurfaceEnvironment() {
   const depth = useSimulationStore((s) => s.depth);
@@ -40,10 +40,6 @@ export default function SurfaceEnvironment() {
         <meshBasicMaterial color="#0a1118" side={THREE.BackSide} />
       </mesh>
 
-      {/* Atmospheric Fog over the water */}
-      <Cloud position={[0, 5, -50]} speed={0.2} opacity={0.5} color="#c0d0e0" />
-      <Cloud position={[50, 5, -50]} speed={0.2} opacity={0.5} color="#c0d0e0" />
-      
       {/* Light snow/particles in the air */}
       <Sparkles count={500} scale={200} size={2} speed={0.4} opacity={0.5} color="#ffffff" position={[0, 20, 0]} />
 
