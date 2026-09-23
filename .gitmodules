@@ -1,0 +1,3 @@
+[submodule "opti-acoustic-preprocessing-tools"]
+	path = opti-acoustic-preprocessing-tools
+	url = https://github.com/CIRS-Girona/opti-acoustic-preprocessing-tools
