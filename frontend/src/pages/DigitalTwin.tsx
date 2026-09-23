@@ -1,16 +1,23 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
-import { Activity, AlertTriangle, CheckCircle, ShieldAlert, Wrench, Anchor } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts';
+import { Activity, Wrench,  Radio, Terminal, Cpu, MapPin } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-// --- IN-SITU CALIBRATION DATA ---
+// --- BHARATI STATION (LARSEMANN HILLS) COORDINATES ---
+const BHARATI_LAT = -69.4000;
+const BHARATI_LNG = 76.1950;
+
+// --- FLEET DATA WITH REALISTIC SWARM COORDINATES ---
 const FLEET_DATA = [
-  { id: 'AQUILA-01', name: 'AQUILA-01', status: 'NOMINAL', health: 98, lat: 20, lng: 30, color: '#00ff88' },
-  { id: 'AQUILA-02', name: 'AQUILA-02', status: 'WARNING', health: 65, lat: 45, lng: 70, color: '#ffd700' },
-  { id: 'AQUILA-03', name: 'AQUILA-03', status: 'NOMINAL', health: 95, lat: 60, lng: 40, color: '#00ff88' },
-  { id: 'AQUILA-04', name: 'AQUILA-04', status: 'CRITICAL', health: 25, lat: 35, lng: 80, color: '#ff4444' },
-  { id: 'AQUILA-05', name: 'AQUILA-05', status: 'NOMINAL', health: 91, lat: 70, lng: 60, color: '#00ff88' },
-  { id: 'AQUILA-06', name: 'AQUILA-06', status: 'NOMINAL', health: 88, lat: 30, lng: 50, color: '#00ff88' },
+  { id: 'AQUILA-01', status: 'NOMINAL', health: 98, lat: BHARATI_LAT - 0.015, lng: BHARATI_LNG - 0.02, heading: 45, depth: 145 },
+  { id: 'AQUILA-02', status: 'WARNING', health: 65, lat: BHARATI_LAT - 0.005, lng: BHARATI_LNG + 0.015, heading: 120, depth: 400 },
+  { id: 'AQUILA-03', status: 'NOMINAL', health: 95, lat: BHARATI_LAT + 0.010, lng: BHARATI_LNG - 0.025, heading: 270, depth: 320 },
+  { id: 'AQUILA-04', status: 'CRITICAL', health: 25, lat: BHARATI_LAT - 0.025, lng: BHARATI_LNG + 0.030, heading: 0, depth: 50 },
+  { id: 'AQUILA-05', status: 'NOMINAL', health: 91, lat: BHARATI_LAT + 0.020, lng: BHARATI_LNG + 0.005, heading: 180, depth: 210 },
+  { id: 'AQUILA-06', status: 'NOMINAL', health: 88, lat: BHARATI_LAT - 0.010, lng: BHARATI_LNG - 0.005, heading: 90, depth: 100 },
 ];
 
 const HEALTH_TIMELINE = Array.from({ length: 30 }, (_, i) => ({
@@ -19,18 +26,12 @@ const HEALTH_TIMELINE = Array.from({ length: 30 }, (_, i) => ({
 })).reverse();
 
 const COMPONENT_HEALTH = [
-  { name: 'Hull', health: 98 },
-  { name: 'CTD', health: 65 },
-  { name: 'IMU', health: 95 },
-  { name: 'Sonar', health: 92 },
-  { name: 'Camera', health: 88 },
-  { name: 'Battery', health: 25 },
-  { name: 'Thrusters', health: 90 },
-  { name: 'MCU', health: 99 },
-  { name: 'Comms', health: 94 },
-  { name: 'GPS', health: 100 },
-  { name: 'Ballast', health: 85 },
-  { name: 'Lights', health: 91 },
+  { name: 'CTD (SBE-37)', health: 65 },
+  { name: 'Sonar (EdgeTech)', health: 92 },
+  { name: 'Battery (Li-Po)', health: 25 },
+  { name: 'MCU (Jetson Orin)', health: 99 },
+  { name: 'GPS (U-Blox)', health: 100 },
+  { name: 'Lights (LED)', health: 91 },
 ];
 
 const MAINTENANCE_RECS = [
@@ -39,228 +40,279 @@ const MAINTENANCE_RECS = [
   { component: 'Thruster Props', action: 'Biofouling cleaning', urgency: 'ROUTINE', days: 30 },
 ];
 
-const ALERTS = [
-  { time: '14:32', unit: 'AQUILA-04', msg: 'Battery SoH dropped below 30%', type: 'CRITICAL' },
-  { time: '14:28', unit: 'AQUILA-02', msg: 'Sensor drift detected on CTD (0.03°C)', type: 'WARNING' },
-  { time: '14:15', unit: 'AQUILA-01', msg: 'All systems nominal', type: 'NOMINAL' },
-  { time: '13:50', unit: 'AQUILA-06', msg: 'Completed survey sector 7G', type: 'NOMINAL' },
-  { time: '12:10', unit: 'AQUILA-04', msg: 'Power draw anomalous during descent', type: 'WARNING' },
-];
+// Realistic ROS2 / Acoustic Modem Log Generator
+const generateLog = () => {
+  const events = [
+    { type: 'INFO', msg: 'ROS2_DDS_SYNC: Topology match detected across swarm.' },
+    { type: 'INFO', msg: 'ACST_MODEM: NMEA $PAMKX transmission success.' },
+    { type: 'WARN', msg: 'NAV_EKF: High variance in DVL bottom-track. Switching to inertial.' },
+    { type: 'CRITICAL', msg: 'BATT_BMS: Cell 3 voltage drop detected (3.2V). Triggering return protocol.' },
+    { type: 'SWARM', msg: 'AQUILA-02 rerouting to relay acoustic packets for AQUILA-04.' },
+    { type: 'SWARM', msg: 'Consensus reached: Sector 7G survey complete. Reallocating.' },
+    { type: 'INFO', msg: 'CTD_PROFILER: Sampling rate adjusted to 24Hz.' },
+    { type: 'WARN', msg: 'THRUSTER_0: Overcurrent detected (4.2A). Applying soft limit.' }
+  ];
+  const ev = events[Math.floor(Math.random() * events.length)];
+  const timestamp = new Date().toISOString().substring(11, 23);
+  return { id: Math.random().toString(), time: timestamp, ...ev };
+};
 
 export default function DigitalTwin() {
-  const [selectedBuoy, setSelectedBuoy] = useState(FLEET_DATA[0]);
+  const [selectedAUV, setSelectedAUV] = useState(FLEET_DATA[0]);
+  const [logs, setLogs] = useState<any[]>([]);
 
-  const activeCount = FLEET_DATA.filter(b => b.status !== 'OFFLINE').length;
-  const criticalCount = FLEET_DATA.filter(b => b.status === 'CRITICAL').length;
-  const avgHealth = Math.round(FLEET_DATA.reduce((acc, b) => acc + b.health, 0) / FLEET_DATA.length);
+  useEffect(() => {
+    // Initial logs
+    const initialLogs = Array.from({ length: 8 }, generateLog);
+    setLogs(initialLogs);
 
-  const getHealthColor = (score: number) => {
-    if (score >= 70) return '#00ff88';
-    if (score >= 40) return '#ffd700';
-    return '#ff4444';
+    // Stream logs
+    const interval = setInterval(() => {
+      setLogs(prev => [generateLog(), ...prev].slice(0, 50));
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const createIcon = (color: string, heading: number) => {
+    return L.divIcon({
+      className: 'custom-auv-marker',
+      html: `<div style="transform: rotate(${heading}deg);" class="flex items-center justify-center w-6 h-6 rounded-full bg-${color}-500/20 border-2 border-${color}-400 shadow-[0_0_10px_${color}]">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                 <path d="M12 2L2 22l10-4 10 4L12 2z"/>
+               </svg>
+             </div>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
+    });
+  };
+
+  const getStatusColor = (status: string) => {
+    if (status === 'NOMINAL') return 'emerald';
+    if (status === 'WARNING') return 'amber';
+    return 'red';
+  };
+  
+  const getStatusHex = (status: string) => {
+    if (status === 'NOMINAL') return '#34d399';
+    if (status === 'WARNING') return '#fbbf24';
+    return '#f87171';
   };
 
   return (
-    <div className="min-h-screen bg-[#1c1c1e] text-white p-6 font-mono overflow-y-auto">
+    <div className="h-full p-4 md:p-6 overflow-y-auto flex flex-col gap-4 text-steel-100 bg-abyss-950">
+      
       {/* HEADER */}
-      <header className="mb-6 flex items-center justify-between border-b border-[#38383a] pb-4">
-        <div>
-          <h1 className="text-2xl font-bold text-[#ffffff] tracking-wider flex items-center gap-3">
-            <Activity className="w-6 h-6" />
-            AQUILA DIGITAL TWIN — PREDICTIVE MAINTENANCE
-          </h1>
-          <p className="text-sm text-[#ebebf599] mt-1">Global Fleet Diagnostics & Prognostics</p>
+      <div className="flex items-center justify-between pb-4 border-b border-steel-800/50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-ice-500/10 border border-ice-500/30 flex items-center justify-center text-ice-400">
+            <Radio className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="font-mono font-bold text-lg text-ice-100 tracking-wider">AQUILA DIGITAL TWIN - SWARM INTELLIGENCE</h1>
+            <p className="text-xs font-mono text-steel-400">MoES Predictive Maintenance & Autonomous Swarm Fault Detection</p>
+          </div>
         </div>
-        <div className="flex gap-6 bg-black/40 px-6 py-3 rounded-lg border border-[#38383a] backdrop-blur-md">
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-[#ebebf5]">ACTIVE FLEET</span>
-            <span className="text-xl font-bold">{activeCount}</span>
+        
+        <div className="flex gap-4">
+          <div className="bg-abyss-900 border border-steel-800 rounded px-4 py-2 text-center">
+            <div className="text-[10px] text-steel-500 font-mono">ACTIVE FLEET</div>
+            <div className="text-xl font-bold text-ice-300">6</div>
           </div>
-          <div className="w-px bg-cyan-500/20" />
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-[#ff453a]/80">CRITICAL</span>
-            <span className="text-xl font-bold text-[#ff453a]">{criticalCount}</span>
+          <div className="bg-abyss-900 border border-steel-800 rounded px-4 py-2 text-center">
+            <div className="text-[10px] text-steel-500 font-mono">CRITICAL NODES</div>
+            <div className="text-xl font-bold text-red-400">1</div>
           </div>
-          <div className="w-px bg-cyan-500/20" />
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-[#34c759]/80">AVG HEALTH</span>
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-[#34c759]">{avgHealth}%</span>
+          <div className="bg-abyss-900 border border-steel-800 rounded px-4 py-2 text-center">
+            <div className="text-[10px] text-steel-500 font-mono">SWARM COHESION</div>
+            <div className="text-xl font-bold text-emerald-400">92%</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
+        
+        {/* LEFT COLUMN - MAP & SWARM ROUTING */}
+        <div className="lg:col-span-5 flex flex-col gap-4 h-[600px] lg:h-auto">
+          <div className="bg-abyss-900/50 border border-steel-800/50 rounded-lg flex flex-col flex-1 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 p-3 z-[1000] flex justify-between pointer-events-none">
+              <div className="flex items-center gap-2 bg-abyss-950/80 backdrop-blur border border-steel-800 px-3 py-1.5 rounded pointer-events-auto">
+                <MapPin className="w-3 h-3 text-ice-400" />
+                <span className="text-[10px] font-mono text-steel-200">BHARATI STATION, LARSEMANN HILLS</span>
+              </div>
+              <div className="flex items-center gap-2 bg-abyss-950/80 backdrop-blur border border-steel-800 px-3 py-1.5 rounded pointer-events-auto">
+                <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
+                <span className="text-[10px] font-mono text-emerald-400">ACOUSTIC LINK ACTIVE</span>
+              </div>
             </div>
+            
+            <MapContainer 
+              center={[BHARATI_LAT, BHARATI_LNG]} 
+              zoom={11} 
+              className="w-full h-full bg-[#0a192f]"
+              zoomControl={false}
+              attributionControl={false}
+            >
+              <TileLayer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                opacity={0.6}
+              />
+              
+              {/* Swarm Communication Relays (Lines) */}
+              <Polyline 
+                positions={[[FLEET_DATA[1].lat, FLEET_DATA[1].lng], [FLEET_DATA[3].lat, FLEET_DATA[3].lng]]}
+                pathOptions={{ color: '#fbbf24', weight: 1, dashArray: '4 8' }} 
+              />
+              <Polyline 
+                positions={[[FLEET_DATA[0].lat, FLEET_DATA[0].lng], [FLEET_DATA[1].lat, FLEET_DATA[1].lng]]}
+                pathOptions={{ color: '#34d399', weight: 1, dashArray: '4 8' }} 
+              />
+              
+              {FLEET_DATA.map(auv => (
+                <Marker 
+                  key={auv.id} 
+                  position={[auv.lat, auv.lng]}
+                  icon={createIcon(getStatusColor(auv.status), auv.heading)}
+                  eventHandlers={{ click: () => setSelectedAUV(auv) }}
+                >
+                  <Popup className="custom-popup">
+                    <div className="font-mono text-xs bg-abyss-950 p-2 text-steel-300">
+                      <div className="font-bold text-ice-300 mb-1">{auv.id}</div>
+                      <div>Depth: {auv.depth}m</div>
+                      <div className={`text-${getStatusColor(auv.status)}-400 mt-1 font-bold`}>{auv.status}</div>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
           </div>
         </div>
-      </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        {/* MAP SECTION */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="lg:col-span-1 bg-[#1c1c1e] border border-[#38383a] rounded-xl p-4 flex flex-col h-[600px]"
-        >
-          <h2 className="text-lg font-bold text-[#ffffff] mb-4 flex items-center gap-2">
-            <Anchor className="w-5 h-5" />
-            ANTARCTIC DEPLOYMENT
-          </h2>
+        {/* RIGHT COLUMN - PREDICTIVE MAINT & DIAGNOSTICS */}
+        <div className="lg:col-span-7 flex flex-col gap-4 overflow-y-auto custom-scrollbar">
           
-          <div className="flex-1 relative border border-[#38383a] rounded-lg bg-[#1c1c1e] overflow-hidden group">
-            {/* Emulated Antarctic Shape */}
-            <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-20 pointer-events-none text-[#ffffff] fill-current">
-              <path d="M 50 10 C 70 10, 90 30, 85 60 C 80 80, 50 90, 30 85 C 10 75, 5 45, 15 25 C 25 15, 40 10, 50 10 Z" />
-            </svg>
-            
-            {/* Grid lines */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#38383a_1px,transparent_1px),linear-gradient(to_bottom,#38383a_1px,transparent_1px)] bg-[size:20px_20px]" />
-
-            {/* Buoy Markers */}
-            {FLEET_DATA.map((buoy) => (
-              <button
-                key={buoy.id}
-                onClick={() => setSelectedBuoy(buoy)}
-                className={`absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 transition-transform ${selectedBuoy.id === buoy.id ? 'scale-150 z-10' : 'hover:scale-125 z-0'}`}
-                style={{
-                  left: `${buoy.lng}%`,
-                  top: `${buoy.lat}%`,
-                  backgroundColor: buoy.color,
-                  borderColor: selectedBuoy.id === buoy.id ? '#fff' : 'transparent',
-                  boxShadow: `0 0 10px ${buoy.color}`
-                }}
-              >
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-[#2c2c2e] px-2 py-1 rounded text-[10px] whitespace-nowrap border border-[#38383a] opacity-0 group-hover:opacity-100 transition-opacity">
-                  {buoy.name}
-                </div>
-              </button>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* DETAILS SECTION */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            key={selectedBuoy.id}
-            className="bg-[#1c1c1e] border border-[#38383a] rounded-xl p-6"
-          >
-            <div className="flex justify-between items-start mb-6">
+          <div className="bg-abyss-900/50 border border-steel-800/50 rounded-lg p-5">
+            <div className="flex justify-between items-end mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-white tracking-widest">{selectedBuoy.name}</h2>
-                <div className="flex items-center gap-3 mt-2">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold border" style={{ color: selectedBuoy.color, borderColor: selectedBuoy.color }}>
-                    {selectedBuoy.status}
+                <h2 className="text-xl font-mono font-bold text-ice-100 flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-ice-400" />
+                  {selectedAUV.id}
+                </h2>
+                <div className="flex items-center gap-2 mt-2 font-mono text-[10px]">
+                  <span className={`px-2 py-0.5 rounded border border-${getStatusColor(selectedAUV.status)}-500/50 bg-${getStatusColor(selectedAUV.status)}-500/10 text-${getStatusColor(selectedAUV.status)}-400 font-bold`}>
+                    {selectedAUV.status}
                   </span>
-                  <span className="text-sm text-[#ebebf599]">Lat: {selectedBuoy.lat.toFixed(2)}°S | Lng: {selectedBuoy.lng.toFixed(2)}°E</span>
+                  <span className="text-steel-500">|</span>
+                  <span className="text-steel-400">LAT: {selectedAUV.lat.toFixed(4)}°S</span>
+                  <span className="text-steel-400">LNG: {selectedAUV.lng.toFixed(4)}°E</span>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-4xl font-bold" style={{ color: selectedBuoy.color }}>
-                  {selectedBuoy.health}%
+                <div className={`text-4xl font-mono font-bold text-${getStatusColor(selectedAUV.status)}-400 leading-none`}>
+                  {selectedAUV.health}%
                 </div>
-                <div className="text-xs text-[#ebebf599] mt-1">OVERALL HEALTH</div>
+                <div className="text-[9px] font-mono text-steel-500 mt-1 uppercase">Overall Health</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* HEALTH TIMELINE */}
-              <div className="bg-[#1c1c1e] rounded-lg p-4 border border-[#38383a]">
-                <h3 className="text-sm text-[#ebebf599] mb-4 font-bold">30-DAY HEALTH TREND</h3>
-                <div className="h-48">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-abyss-950 border border-steel-800/50 rounded p-4">
+                <div className="text-[10px] font-mono text-steel-500 mb-3 flex items-center gap-2">
+                  <Activity className="w-3 h-3" /> 30-DAY HEALTH DEGRADATION TREND
+                </div>
+                <div className="h-24">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={HEALTH_TIMELINE}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#38383a" />
-                      <XAxis dataKey="day" hide />
-                      <YAxis domain={[0, 100]} stroke="#38383a" fontSize={10} />
-                      <RechartsTooltip 
-                        contentStyle={{ backgroundColor: '#1c1c1e', borderColor: '#38383a', color: '#fff' }}
-                        itemStyle={{ color: '#ffffff' }}
-                      />
-                      <Line type="monotone" dataKey="score" stroke={selectedBuoy.color} strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="score" stroke={getStatusHex(selectedAUV.status)} strokeWidth={2} dot={false} />
+                      <YAxis domain={[0, 100]} hide />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              {/* MAINTENANCE PREDICTIONS */}
-              <div className="bg-[#1c1c1e] rounded-lg p-4 border border-[#38383a]">
-                <h3 className="text-sm text-[#ebebf599] mb-4 font-bold flex items-center gap-2">
-                  <Wrench className="w-4 h-4" />
-                  PREDICTED FAILURES
-                </h3>
-                <div className="space-y-4">
-                  {MAINTENANCE_RECS.map((rec, i) => (
-                    <div key={i} className="flex justify-between items-center bg-[#2c2c2e] p-2 rounded border border-[#38383a]">
-                      <div>
-                        <div className="text-sm text-white">{rec.component}</div>
-                        <div className="text-xs text-[#ebebf599]">{rec.action}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className={`text-sm font-bold ${rec.urgency === 'CRITICAL' ? 'text-[#ff453a]' : rec.urgency === 'WARNING' ? 'text-[#ff9f0a]' : 'text-[#34c759]'}`}>
-                          {rec.days} Days
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+              <div className="bg-abyss-950 border border-steel-800/50 rounded p-4 flex flex-col gap-2">
+                <div className="text-[10px] font-mono text-steel-500 mb-1 flex items-center gap-2">
+                  <Wrench className="w-3 h-3" /> PROGNOSTICS (PREDICTED FAILURES)
                 </div>
+                {MAINTENANCE_RECS.map((rec, i) => (
+                  <div key={i} className="flex justify-between items-center bg-abyss-900/50 px-3 py-2 rounded border border-steel-800">
+                    <div>
+                      <div className="text-[11px] font-bold text-steel-300">{rec.component}</div>
+                      <div className="text-[9px] text-steel-500">{rec.action}</div>
+                    </div>
+                    <div className={`text-[10px] font-mono font-bold ${rec.urgency === 'CRITICAL' ? 'text-red-400' : rec.urgency === 'WARNING' ? 'text-amber-400' : 'text-emerald-400'}`}>
+                      {rec.days} Days
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* COMPONENT MATRIX */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-[#1c1c1e] border border-[#38383a] rounded-xl p-6"
-          >
-            <h3 className="text-sm text-[#ebebf599] mb-4 font-bold">SUBSYSTEM HEALTH MATRIX</h3>
-            <div className="h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={COMPONENT_HEALTH} layout="vertical" margin={{ top: 0, right: 20, left: 20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#38383a" horizontal={false} />
-                  <XAxis type="number" domain={[0, 100]} hide />
-                  <YAxis type="category" dataKey="name" stroke="#ebebf599" fontSize={10} width={80} />
-                  <RechartsTooltip 
-                    cursor={{ fill: '#38383a' }}
-                    contentStyle={{ backgroundColor: '#1c1c1e', borderColor: '#38383a', color: '#fff' }}
-                  />
-                  <Bar dataKey="health" radius={[0, 4, 4, 0]}>
-                    {COMPONENT_HEALTH.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={getHealthColor(entry.health)} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+          <div className="bg-abyss-900/50 border border-steel-800/50 rounded-lg p-5">
+            <div className="text-[10px] font-mono text-steel-500 mb-4 flex items-center gap-2 uppercase tracking-wider">
+              <Cpu className="w-3 h-3" /> Subsystem Health Matrix
             </div>
-          </motion.div>
+            <div className="space-y-3">
+              {COMPONENT_HEALTH.map((comp) => {
+                let colorClass = 'bg-emerald-400';
+                if (comp.health < 40) colorClass = 'bg-red-500';
+                else if (comp.health < 75) colorClass = 'bg-amber-400';
+
+                return (
+                  <div key={comp.name} className="flex items-center gap-3">
+                    <span className="w-24 text-[10px] font-mono text-steel-400 text-right truncate">
+                      {comp.name}
+                    </span>
+                    <div className="flex-1 h-2 bg-abyss-950 rounded overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${comp.health}%` }}
+                        transition={{ duration: 1, delay: 0.2 }}
+                        className={`h-full ${colorClass}`}
+                      />
+                    </div>
+                    <span className="w-8 text-[10px] font-mono text-steel-500">
+                      {comp.health}%
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ALERT LOG */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-[#1c1c1e] border border-[#38383a] rounded-xl p-6"
-      >
-        <h3 className="text-sm text-[#ebebf599] mb-4 font-bold flex items-center gap-2">
-          <ShieldAlert className="w-4 h-4" />
-          FLEET ALERT LOG
-        </h3>
-        <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
-          {ALERTS.map((alert, i) => (
-            <div key={i} className="flex gap-4 items-center p-3 rounded bg-[#1c1c1e] border border-[#38383a]">
-              <span className="text-xs text-[#ebebf599] w-12">{alert.time}</span>
-              {alert.type === 'CRITICAL' && <AlertTriangle className="w-4 h-4 text-[#ff453a] flex-shrink-0" />}
-              {alert.type === 'WARNING' && <Activity className="w-4 h-4 text-[#ff9f0a] flex-shrink-0" />}
-              {alert.type === 'NOMINAL' && <CheckCircle className="w-4 h-4 text-[#34c759] flex-shrink-0" />}
-              <span className="text-sm font-bold text-[#ffffff] w-24">{alert.unit}</span>
-              <span className={`text-sm ${alert.type === 'CRITICAL' ? 'text-[#ff453a]' : alert.type === 'WARNING' ? 'text-[#ff9f0a]' : 'text-[#ebebf599]'}`}>
-                {alert.msg}
-              </span>
-            </div>
-          ))}
+      {/* TERMINAL LOGS (ROS2 / ACOUSTIC) */}
+      <div className="bg-[#0c0c0c] border border-steel-800/50 rounded-lg p-4 h-48 flex flex-col relative overflow-hidden">
+        <div className="text-[10px] font-mono text-steel-500 mb-2 flex items-center gap-2 uppercase tracking-wider sticky top-0 bg-[#0c0c0c] pb-2 z-10">
+          <Terminal className="w-3 h-3 text-ice-500" /> ACOUSTIC SWARM TELEMETRY & ROS2 LOGS
         </div>
-      </motion.div>
+        <div className="flex-1 overflow-y-auto custom-scrollbar font-mono text-[11px] space-y-1">
+          <AnimatePresence>
+            {logs.map((log) => {
+              let color = 'text-steel-400';
+              if (log.type === 'WARN') color = 'text-amber-400';
+              if (log.type === 'CRITICAL') color = 'text-red-400 font-bold bg-red-950/30';
+              if (log.type === 'SWARM') color = 'text-purple-400';
+              if (log.type === 'INFO') color = 'text-emerald-400';
+
+              return (
+                <motion.div 
+                  key={log.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className={`flex gap-3 px-2 py-0.5 rounded ${color}`}
+                >
+                  <span className="text-steel-600">[{log.time}]</span>
+                  <span className="w-16 flex-shrink-0">[{log.type}]</span>
+                  <span className="truncate">{log.msg}</span>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+      </div>
+
     </div>
   );
 }
