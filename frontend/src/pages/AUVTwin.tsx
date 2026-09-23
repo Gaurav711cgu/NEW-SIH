@@ -779,7 +779,7 @@ export default function AUVTwin() {
             typeStr = 'GHOST_NET_TIRE'; matColor = 0x1f2937; matMetal = 0.1; matRough = 0.9;
         } else if (rand > 0.2) {
             geo = new THREE.CylinderGeometry(0.3, 0.3, 1.5, 16, 4);
-            typeStr = 'UXO_PIPE'; matColor = 0x94a3b8; matMetal = 0.8; matRough = 0.4;
+            typeStr = 'GHOST_NET_BUNDLE'; matColor = 0x38bdf8; matMetal = 0.2; matRough = 0.8;
         } else {
             geo = new THREE.TetrahedronGeometry(0.6);
             typeStr = 'UNKNOWN_ANOMALY'; matColor = 0x5c5c5c; matMetal = 0.3; matRough = 0.7;
@@ -1639,7 +1639,7 @@ export default function AUVTwin() {
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
               Return echoes (backscatter) create 2D intensity maps. The AI does not just look at the object; it looks at the <strong>Acoustic Shadow</strong> behind it. 
-              Natural rocks cast irregular, tapered shadows. Man-made UXOs and pipes cast sharp, geometric, symmetrical shadows.
+              Natural rocks cast irregular, tapered shadows. Synthetic ghost nets and submerged gear cast intricate, high-contrast filament shadows.
             </p>
           </div>
 
@@ -1660,7 +1660,7 @@ export default function AUVTwin() {
               <h3 className="text-xs font-mono font-bold text-emerald-400">Priority Flagging & Geotagging</h3>
             </div>
             <p className="text-[11px] text-steel-400 font-sans leading-relaxed">
-              If a UXO (Unexploded Ordnance) is detected, it is immediately flagged with <code className="text-[#ff453a] bg-red-900/30 px-1 rounded">PRIORITY=CRITICAL</code>. 
+              If a Ghost Net entanglement hazard is detected, it is immediately flagged with <code className="text-[#ff453a] bg-red-900/30 px-1 rounded">PRIORITY=CRITICAL</code>. 
               The system merges the detection with the Dead Reckoning/IMU localization module to calculate the exact Latitude/Longitude of the debris.
             </p>
           </div>

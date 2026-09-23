@@ -52,7 +52,7 @@ export default function SonarSweep() {
       </group>
 
       {/* Target Lock Marker (RT-DETR Acoustic Sonar Target Fix) */}
-      <group position={[30, -145.5, 10]}>
+      <group position={[30, -145.5, 20]}>
         <mesh>
           <boxGeometry args={[3, 3, 3]} />
           <meshBasicMaterial color="#ff0000" wireframe transparent opacity={0.5} />
@@ -60,7 +60,7 @@ export default function SonarSweep() {
         <Html position={[0, 3, 0]} center>
           <div className="bg-red-950/80 border border-red-500 p-2 rounded text-red-400 font-mono text-[10px] whitespace-nowrap">
             <div className="font-bold text-red-300">TARGET LOCKED</div>
-            <div>CLASS: METALLIC_DEBRIS</div>
+            <div>CLASS: GHOST_NET</div>
             <div>CONF: 94.2%</div>
           </div>
         </Html>

@@ -50,7 +50,7 @@ export type ProcessingStage =
 export const CLASS_COLORS: Record<string, string> = {
   shipwreck:      '#00e5ff', // Cyan
   ghost_net:      '#ff80c8', // Pink
-  uxo_mine:       '#ef4444', // Red Alert
+  ghost_gear:     '#ef4444', // Red Alert
   pipeline_cable: '#ffd700', // Gold
   lost_container: '#f97316', // Orange
   toxic_drum:     '#a855f7', // Purple
@@ -63,7 +63,7 @@ export const CLASS_COLORS: Record<string, string> = {
 export const CLASS_LABELS: Record<string, string> = {
   shipwreck:      'Shipwreck / Hull',
   ghost_net:      'Derelict Ghost Net',
-  uxo_mine:       'Subsea UXO / Mine',
+  ghost_gear:     'Derelict Ghost Net / Gear',
   pipeline_cable: 'Subsea Cable / Pipeline',
   lost_container: 'Sunken Cargo Container',
   toxic_drum:     'Hazardous Chemical Drum',

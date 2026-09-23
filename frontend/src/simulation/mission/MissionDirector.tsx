@@ -65,10 +65,10 @@ export default function MissionDirector() {
         transitionTo('STAGE_6_ANOMALY', 8000);
         break;
       case 'STAGE_6_ANOMALY':
-        addAlert('ANOMALY DETECTED: UXO / MINE');
+        addAlert('ANOMALY DETECTED: GHOST NET');
         addAILog('[DECISION MATRIX] Target identified. Breaking search pattern to circle target.');
         addAILog('[PS2 PIPELINE OUTPUT]');
-        addAILog('  "object_class": "mine"');
+        addAILog('  "object_class": "ghost_net"');
         addAILog('  "confidence_cal": 0.88');
         addAILog('  "lat": -54.199991, "lon": 60.800015');
         addAILog('  "depth_m": 142.0, "heading_deg": 90.0');

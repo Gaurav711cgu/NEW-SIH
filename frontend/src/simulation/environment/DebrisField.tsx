@@ -70,19 +70,48 @@ export default function DebrisField() {
     const chimneys: ClutterTransform[] = [];
     const ghostNets: ClutterTransform[] = [];
 
+    // 1. Hydrothermal Chimneys: 40 instances
+    // Enforce port/starboard lateral placement strictly outside the nadir gap
+    // Z in [-60, -18] and [18, 60], X in [-60, 60]
     for (let i = 0; i < 40; i++) {
-      const x = (prng() - 0.5) * 400;
-      const z = (prng() - 0.5) * 400;
+      const side = (i % 2 === 0) ? 1 : -1;
+      const deltaZ = 18.0 + prng() * (60.0 - 18.0); // 18m to 60m
+      const z = side * deltaZ;
+      const x = (prng() - 0.5) * 120.0; // -60m to +60m
       const y = getSeabedElevation(x, z, seabedPosAttr);
-      chimneys.push({ x, y: y + 5, z, rx: 0, ry: prng() * Math.PI, rz: 0, scaleX: 1, scaleY: 1 + prng(), scaleZ: 1 });
+      chimneys.push({ 
+        x, 
+        y: y + 5.0, 
+        z, 
+        rx: 0, 
+        ry: prng() * Math.PI, 
+        rz: 0, 
+        scaleX: 1, 
+        scaleY: 1 + prng(), 
+        scaleZ: 1 
+      });
     }
 
-    // Cluster ghost nets around specific zones
+    // 2. Ghost Nets: 30 instances
+    // Enforce port/starboard lateral placement strictly outside the nadir gap
+    // Z in [-46, -14] and [14, 46], X in [-45, 45]
     for (let i = 0; i < 30; i++) {
-      const x = (prng() - 0.5) * 200;
-      const z = (prng() - 0.5) * 200;
+      const side = (i % 2 === 0) ? -1 : 1;
+      const deltaZ = 14.0 + prng() * (46.0 - 14.0); // 14m to 46m
+      const z = side * deltaZ;
+      const x = (prng() - 0.5) * 90.0; // -45m to +45m
       const y = getSeabedElevation(x, z, seabedPosAttr);
-      ghostNets.push({ x, y: y + 4 + prng() * 3, z, rx: prng() * 0.4, ry: prng() * Math.PI, rz: prng() * 0.4, scaleX: 1, scaleY: 1, scaleZ: 1 });
+      ghostNets.push({ 
+        x, 
+        y: y + 3.5 + prng() * 2.0, 
+        z, 
+        rx: prng() * 0.4, 
+        ry: prng() * Math.PI, 
+        rz: prng() * 0.4, 
+        scaleX: 1, 
+        scaleY: 1, 
+        scaleZ: 1 
+      });
     }
 
     return { chimneys, ghostNets };
@@ -90,7 +119,7 @@ export default function DebrisField() {
 
   useLayoutEffect(() => {
     const dummy = new THREE.Object3D();
-    const apply = (mesh: THREE.InstancedMesh | null, data: ClutterTransform[]) => {
+    const apply = (mesh: THREE.InstancedMesh | null, data: ClutterTransform[], initColor: THREE.Color) => {
       if (!mesh || data.length === 0) return;
       data.forEach((inst, i) => {
         dummy.position.set(inst.x, inst.y, inst.z);
@@ -98,63 +127,83 @@ export default function DebrisField() {
         dummy.scale.set(inst.scaleX, inst.scaleY, inst.scaleZ);
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
-        mesh.setColorAt(i, new THREE.Color(0x00e5ff)); // Base cyan color
+        mesh.setColorAt(i, initColor);
       });
       mesh.instanceMatrix.needsUpdate = true;
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
       mesh.computeBoundingSphere();
     };
 
-    apply(chimneyRef.current, clutterData.chimneys);
-    apply(ghostNetRef.current, clutterData.ghostNets);
+    apply(chimneyRef.current, clutterData.chimneys, new THREE.Color(0x334155));
+    apply(ghostNetRef.current, clutterData.ghostNets, new THREE.Color(0x00e5ff));
   }, [clutterData]);
 
-  // --- SONAR INTERSECTION LOGIC ---
-  const defaultColor = new THREE.Color(0x00e5ff); // Cyan
-  const highlightColor = new THREE.Color(0xff0000); // Red
-  const tempMatrix = new THREE.Matrix4();
-  const dummyObj = new THREE.Object3D();
+  // --- SONAR WAVEFRONT INTERSECTION & SPECULAR STRIKE HIGHLIGHTING ---
+  const defaultColor = useMemo(() => new THREE.Color(0x00e5ff), []); // Base cyan
+  const alertColor = useMemo(() => new THREE.Color(0xff3366), []); // Red alert for acquired contacts
+  const specularReturnColor = useMemo(() => new THREE.Color(0xffff55), []); // Bright acoustic specular highlight (amber/yellow-cyan)
+  const tempColor = useMemo(() => new THREE.Color(), []);
+  const tempMatrix = useMemo(() => new THREE.Matrix4(), []);
+  const dummyObj = useMemo(() => new THREE.Object3D(), []);
   const detectedIndices = useRef<Set<number>>(new Set());
+  const strikeTimestamps = useRef<Record<number, number>>({});
   const [detectedItems, setDetectedItems] = useState<{id: number, pos: [number, number, number]}[]>([]);
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
     const auvPos = useSimulationStore.getState().auvPosition;
     const addAILog = useSimulationStore.getState().addAILog;
-    
-    // Check ghost nets and anomalies
+    const missionPhase = useSimulationStore.getState().missionPhase;
+    const depth = useSimulationStore.getState().depth;
+
+    const time = clock.getElapsedTime();
+    // Expanding ping pulse synchronized with SonarBeam.tsx (0 to 50m over 1.5s)
+    const duration = 1.5;
+    const pingRadius = ((time % duration) / duration) * 50.0;
+    const isSonarActive = missionPhase === 'STAGE_5_SONAR' || missionPhase === 'STAGE_6_ANOMALY' || depth > 80;
+
     if (ghostNetRef.current) {
-      let newlyDetected = 0;
       for (let i = 0; i < clutterData.ghostNets.length; i++) {
         ghostNetRef.current.getMatrixAt(i, tempMatrix);
         dummyObj.position.setFromMatrixPosition(tempMatrix);
-        
-        // Side-Scan Sonar covers lateral swaths (left and right of the vehicle)
-        // Assuming AUV moves mostly along X-axis:
-        const dx = Math.abs(dummyObj.position.x - auvPos[0]);
-        const dz = Math.abs(dummyObj.position.z - auvPos[2]);
-        const isLateral = dx < 12; // Object is longitudinally aligned with AUV
-        const inSwathRange = dz > 8 && dz < 45; // Object is in the lateral acoustic beam range
-        
-        if (isLateral && inSwathRange && dummyObj.position.y < auvPos[1]) {
-          ghostNetRef.current.setColorAt(i, highlightColor);
-          if (!detectedIndices.current.has(i)) {
-            detectedIndices.current.add(i);
-            newlyDetected++;
-            
-            // Render 3D UI Popup
-            setDetectedItems(prev => [...prev, { id: i, pos: [dummyObj.position.x, dummyObj.position.y + 4, dummyObj.position.z] }]);
-            
-            // Simulate processing and saving to DB
-            addAILog(`[AI VISION] Contact acquired! Sonar signature matching Ghost Net at Z:${dummyObj.position.z.toFixed(0)}m.`);
-            addAILog(`[DB] Identifying object class via YOLOv8 and saving telemetry to platform.db...`);
-          }
-        } else {
-          // If not permanently detected, keep cyan (or could leave them red once found)
-          if (!detectedIndices.current.has(i)) {
-             ghostNetRef.current.setColorAt(i, defaultColor);
+
+        const dx = dummyObj.position.x - auvPos[0];
+        const dy = dummyObj.position.y - auvPos[1];
+        const dz = dummyObj.position.z - auvPos[2];
+        const slantRange = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        // Acoustic wavefront strike detection when sonar is active
+        if (isSonarActive) {
+          // Acoustic strike within wavefront packet thickness (2.5m) and along-track beam aperture (|dx| < 25m)
+          const isAcousticStrike = Math.abs(slantRange - pingRadius) < 2.5 && Math.abs(dx) < 25.0;
+
+          if (isAcousticStrike) {
+            strikeTimestamps.current[i] = time;
+            if (!detectedIndices.current.has(i)) {
+              detectedIndices.current.add(i);
+              setDetectedItems(prev => [
+                ...prev, 
+                { id: i, pos: [dummyObj.position.x, dummyObj.position.y + 4, dummyObj.position.z] }
+              ]);
+              addAILog(`[AI VISION] Contact acquired! Sonar signature matching Ghost Net at Z:${dummyObj.position.z.toFixed(0)}m.`);
+              addAILog(`[DB] Identifying object class via YOLOv8 and saving telemetry to platform.db...`);
+            }
           }
         }
+
+        // Render specular acoustic strike decay animation (~0.7s flash)
+        const lastStrike = strikeTimestamps.current[i];
+        const timeSinceStrike = lastStrike !== undefined ? time - lastStrike : 999;
+
+        if (timeSinceStrike >= 0 && timeSinceStrike < 0.7) {
+          const strikeIntensity = 1.0 - (timeSinceStrike / 0.7);
+          const baseColor = detectedIndices.current.has(i) ? alertColor : defaultColor;
+          tempColor.copy(baseColor).lerp(specularReturnColor, strikeIntensity);
+          ghostNetRef.current.setColorAt(i, tempColor);
+        } else {
+          ghostNetRef.current.setColorAt(i, detectedIndices.current.has(i) ? alertColor : defaultColor);
+        }
       }
+
       if (ghostNetRef.current.instanceColor) {
         ghostNetRef.current.instanceColor.needsUpdate = true;
       }

@@ -48,9 +48,9 @@ interface Scenario {
 
 const COMPARISON_SCENARIOS: Scenario[] = [
   {
-    id: 'mine-vs-rock',
-    title: 'Subsea Mine / UXO vs Seabed Boulder',
-    category: 'NAVAL HARBOR DEFENSE & EXPLOSIVES',
+    id: 'ghost-net-vs-rock',
+    title: 'Derelict Ghost Net vs Seabed Boulder',
+    category: 'ACOUSTIC ENTANGLEMENT & GHOST GEAR DEFENSE',
     natural: {
       name: 'Natural Seabed Boulder Formation',
       image: '/testing_images/19_rock_formation_natural_shadow.jpg',
@@ -66,14 +66,14 @@ const COMPARISON_SCENARIOS: Scenario[] = [
       ]
     },
     manMade: {
-      name: 'Cylindrical Moored Subsea Mine / UXO',
-      image: '/testing_images/03_cylinder_mine_specular_highlight.jpg',
-      highlightDesc: 'Intense specular metallic return with phase-coherent axial symmetry.',
-      shadowDesc: 'Razor-sharp cylindrical shadow envelope with immediate drop to 0 dB backscatter.',
+      name: 'Derelict Entangled Ghost Net / Trawl',
+      image: '/testing_images/25_entangled_synthetic_fad_trawl_mesh.jpg',
+      highlightDesc: 'High-contrast synthetic acoustic backscatter with entangled filament matrix return.',
+      shadowDesc: 'Multi-strand acoustic shadow boundary with sharp trailing occlusion drop.',
       classification: 'MAN_MADE_DEBRIS (PRIORITY 1 THREAT · 94.8%)',
       backscatterPeak: '+18.4 dB (Specular)',
       shadowGradient: '-19.6 dB/meter (Instant cutoff)',
-      impedance: '46.5 × 10⁶ Pa·s/m (Hardened Steel)',
+      impedance: '46.5 × 10⁶ Pa·s/m (Hardened Steel / Synthetic Wire)',
       waveform: [
         { x: 0, v: 10 }, { x: 1, v: 12 }, { x: 2, v: 22 }, { x: 3, v: 98 }, { x: 4, v: 96 },
         { x: 5, v: 1 }, { x: 6, v: 0 }, { x: 7, v: 1 }, { x: 8, v: 8 }, { x: 9, v: 11 }
@@ -182,7 +182,7 @@ const COMPARISON_SCENARIOS: Scenario[] = [
 ];
 
 export default function SonarProfiler({ className = '' }: { className?: string }) {
-  const [selectedScenarioId, setSelectedScenarioId] = useState<string>('mine-vs-rock');
+  const [selectedScenarioId, setSelectedScenarioId] = useState<string>('ghost-net-vs-rock');
 
   const currentScenario = COMPARISON_SCENARIOS.find(s => s.id === selectedScenarioId) || COMPARISON_SCENARIOS[0];
 
@@ -514,7 +514,7 @@ export default function SonarProfiler({ className = '' }: { className?: string }
         <Info className="w-4 h-4 text-zinc-300 flex-shrink-0 mt-0.5" />
         <div>
           <span className="text-zinc-300 font-bold">Why This Acoustic Physics Architecture is Unrivaled in SIH: </span>
-          Traditional vision models confuse rocky seafloor ridges with sunken containers or mines because both appear as bright pixels. By coupling YOLO with the <strong>Urick Acoustic Shadow Occlusion Law</strong>, AQUILA physically measures the shadow cliff behind each target. If the shadow is gradual or missing, the system penalizes the score and routes it to the human verification queue.
+          Traditional vision models confuse rocky seafloor ridges with sunken containers or ghost nets because both appear as bright pixels. By coupling YOLO with the <strong>Urick Acoustic Shadow Occlusion Law</strong>, AQUILA physically measures the shadow cliff behind each target. If the shadow is gradual or missing, the system penalizes the score and routes it to the human verification queue.
         </div>
       </div>
 

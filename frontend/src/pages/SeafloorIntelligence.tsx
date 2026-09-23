@@ -301,7 +301,7 @@ export function SeafloorIntelligence() {
   }, [detections]);
 
   // ── 1-Click Benchmark Demo Preset Handler ───────────────────────────────
-  const handleLoadDemoPreset = useCallback((preset: 'GHOST_NET' | 'UXO_MINE' | 'LOST_CONTAINER' | 'PIPELINE_CABLE' | 'AMBIGUOUS') => {
+  const handleLoadDemoPreset = useCallback((preset: 'GHOST_NET' | 'DERELICT_TRAWL' | 'LOST_CONTAINER' | 'PIPELINE_CABLE' | 'AMBIGUOUS') => {
     // Generate synthetic sonar waterfall image canvas
     const canvas = document.createElement('canvas');
     canvas.width = 640;
@@ -341,7 +341,7 @@ export function SeafloorIntelligence() {
         ping_number: 8442,
         timestamp: new Date().toISOString()
       }];
-    } else if (preset === 'UXO_MINE') {
+    } else if (preset === 'DERELICT_TRAWL') {
       ctx.fillStyle = '#f87171';
       ctx.beginPath();
       ctx.arc(280, 220, 35, 0, Math.PI * 2);
@@ -349,7 +349,7 @@ export function SeafloorIntelligence() {
       ctx.fillStyle = '#020617';
       ctx.fillRect(315, 185, 75, 70);
       presetDetections = [{
-        object_class: 'uxo_mine',
+        object_class: 'ghost_net',
         confidence_cal: 0.914,
         confidence_raw: 0.938,
         shadow_penalty: false,
@@ -512,12 +512,12 @@ export function SeafloorIntelligence() {
             1. GHOST NET (94.2%)
           </button>
           <button
-            onClick={() => handleLoadDemoPreset('UXO_MINE')}
+            onClick={() => handleLoadDemoPreset('DERELICT_TRAWL')}
             className="px-2.5 py-1.5 bg-red-950/40 hover:bg-red-900/60 border border-white/10 text-red-300 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-[1.02]"
-            title="Harbor Security & Naval Defense (Indian Navy / Coast Guard)"
+            title="Marine Protection & Ghost Gear Retrieval (MoES / Coast Guard)"
           >
             <Target size={12} className="text-[#ff453a]" />
-            2. SUBSEA UXO / MINE (91.4%)
+            2. DERELICT GHOST NET (91.4%)
           </button>
           <button
             onClick={() => handleLoadDemoPreset('LOST_CONTAINER')}
@@ -1092,11 +1092,11 @@ export function SeafloorIntelligence() {
                 </td>
               </tr>
 
-              {/* Row 2: Subsea UXO / Mine */}
+              {/* Row 2: Derelict Ghost Net */}
               <tr className="hover:bg-ocean-800/40 transition-colors">
                 <td className="py-3 px-3 font-bold text-red-300 whitespace-nowrap flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-sm bg-red-500 flex-shrink-0" />
-                  Subsea UXO / Mine
+                  Derelict Ghost Net / Trawl
                 </td>
                 <td className="py-3 px-3 text-center">
                   <span className="px-2 py-0.5 rounded bg-red-950/60 text-red-300 border border-white/10 font-bold">
@@ -1104,16 +1104,16 @@ export function SeafloorIntelligence() {
                   </span>
                 </td>
                 <td className="py-3 px-3 text-steel-200">
-                  <div className="font-bold text-ice-300">Specular Metallic Return + Cylindrical Shadow</div>
+                  <div className="font-bold text-ice-300">High Acoustic Backscatter + Filament Shadow Matrix</div>
                   <div className="text-[10px] text-steel-400 font-sans mt-0.5">
-                    Highlight return &gt; +14 dB, geometric symmetry ratio L/D ≈ 3:1, razor-sharp shadow boundary.
+                    Highlight return &gt; +12 dB, multi-strand acoustic shadow boundary, filament lattice profile.
                   </div>
                 </td>
                 <td className="py-3 px-3 text-steel-300 font-sans text-[11px] leading-relaxed">
-                  Distinguishes cylindrical munitions from natural boulders. Rocks produce uneven, tapered shadows; manufactured munitions cast distinct geometric right-angled shadow envelopes.
+                  Distinguishes synthetic mesh gear from natural boulders. Rocks produce uneven, tapered shadows; manufactured synthetic trawl nets cast distinct tangled multi-strand shadow envelopes.
                 </td>
                 <td className="py-3 px-3 text-steel-400 text-[11px]">
-                  IEEE Oceanic Engineering / US Naval Research Lab (NRL) MCM
+                  IEEE Oceanic Engineering / NOAA Marine Debris Program (MDP)
                 </td>
                 <td className="py-3 px-3 text-center">
                   <span className="px-2 py-0.5 rounded bg-red-950/60 text-red-300 border border-white/10 text-[10px] font-bold block whitespace-nowrap">

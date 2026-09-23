@@ -46,7 +46,11 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <div className="absolute inset-0 z-50 bg-[#020617] text-ice-400 font-mono text-xs sm:text-sm p-4 sm:p-8 flex flex-col items-start justify-end overflow-hidden">
+    <div 
+      onClick={onComplete}
+      className="absolute inset-0 z-50 bg-[#020617] text-ice-400 font-mono text-xs sm:text-sm p-4 sm:p-8 flex flex-col items-start justify-end overflow-hidden cursor-pointer"
+      title="Click to skip boot sequence"
+    >
       <div className="w-full max-w-3xl space-y-1">
         {lines.map((line, i) => {
           if (!line) return null;

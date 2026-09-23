@@ -888,11 +888,11 @@ export default function ResearchCitations() {
                 </td>
               </tr>
 
-              {/* Row 2: Subsea UXO / Mine */}
+              {/* Row 2: Derelict Ghost Net */}
               <tr className="hover:bg-slate-800/40 transition-colors">
                 <td className="py-3 px-3 font-bold text-red-300 whitespace-nowrap flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-sm bg-red-500 flex-shrink-0" />
-                  Subsea UXO / Mine
+                  Derelict Ghost Net
                 </td>
                 <td className="py-3 px-3 text-center">
                   <span className="px-2 py-0.5 rounded bg-red-950/60 text-red-300 border border-red-500/40 font-bold">
@@ -900,9 +900,9 @@ export default function ResearchCitations() {
                   </span>
                 </td>
                 <td className="py-3 px-3 text-steel-200">
-                  <div className="font-bold text-cyan-200">Specular Metallic Return + Cylindrical Shadow</div>
+                  <div className="font-bold text-cyan-200">High Acoustic Backscatter + Filament Shadow Matrix</div>
                   <div className="text-[10px] text-steel-400 font-sans mt-0.5">
-                    Highlight return &gt; +14 dB, geometric symmetry ratio L/D ≈ 3:1, razor-sharp shadow boundary.
+                    Highlight return &gt; +12 dB, multi-strand acoustic shadow boundary, filament lattice profile.
                   </div>
                 </td>
                 <td className="py-3 px-3 text-steel-300 font-sans text-[11px] space-y-1.5">
@@ -911,7 +911,7 @@ export default function ResearchCitations() {
                       PHYSICS
                     </span>
                     <span className="leading-snug">
-                      Cylindrical casing produces high specular highlight (&gt;+14 dB) paired with an orthogonal right-angled shadow envelope.
+                      Synthetic rope bundles produce high backscatter (&gt;+12 dB) paired with an intricate tangled multi-strand shadow envelope.
                     </span>
                   </div>
                   <div className="flex items-start gap-1.5">
@@ -919,12 +919,12 @@ export default function ResearchCitations() {
                       TRIAGE
                     </span>
                     <span className="leading-snug">
-                      Geometry ratio (L/D ≈ 3:1) and sharp shadow cutoffs reject natural boulder false alarms, triggering Priority 1 alerts.
+                      Spectral entropy analysis and trailing shadow filament boundaries reject natural boulder false alarms, triggering Priority 1 alerts.
                     </span>
                   </div>
                 </td>
                 <td className="py-3 px-3 text-steel-400 text-[11px]">
-                  IEEE Oceanic Engineering / US Naval Research Lab (NRL) MCM
+                  IEEE Oceanic Engineering / NOAA Marine Debris Program (MDP)
                 </td>
                 <td className="py-3 px-3 text-center">
                   <span className="px-2 py-0.5 rounded bg-red-950/80 text-red-300 border border-red-500/50 text-[10px] font-bold block whitespace-nowrap">

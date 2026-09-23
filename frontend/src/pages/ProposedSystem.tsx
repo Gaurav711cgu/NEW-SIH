@@ -100,7 +100,7 @@ const hardwareComponents: HardwareComponent[] = [
       accuracy: '1.2 cm Along-Track @ 3 kts | 0.5° × 50° Beam | 300m Swath'
     },
     industryContext: [
-      'Mine countermeasures (MCM), deep oceanic salvage, and black box search operations.',
+      'Marine debris recovery, benthic habitat protection, and deep oceanic salvage.',
       'Subsea pipeline hazard inspection and archaeological shipwreck acoustic identification.'
     ],
     moesInnovation: [
@@ -315,7 +315,7 @@ const pipelineStages = [
     output: 'Slicing Aided Hyper Inference (SAHI) with 20% overlap preserving boundary net contacts',
     keyPoints: [
       'In-situ neural inference executes locally under 28ms per swath slice.',
-      'Classifies ghost nets, subsea mines/UXO, shipwrecks, cables, and toxic drums.',
+      'Classifies ghost nets, derelict fishing gear, shipwrecks, cables, and toxic drums.',
       'SAHI slicing prevents edge truncation of small debris on slice margins.'
     ]
   },

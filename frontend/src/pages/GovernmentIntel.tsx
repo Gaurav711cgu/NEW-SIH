@@ -45,7 +45,7 @@ export function GovernmentIntel() {
   const handleDownloadGPX = () => {
     const waypoints = [
       { lat: -69.3820, lon: 76.1240, ele: -428, name: 'WP-01 GHOST NET CLUSTER', desc: 'Target: Derelict Fishing Gear | Conf: 94.2% | Verified Acoustic Shadow (Prydz Bay Sector)', type: 'Debris Target' },
-      { lat: -69.4150, lon: 76.0520, ele: -395, name: 'WP-02 SUBSEA UXO MINE', desc: 'Target: Subsea Ordnance / Mine Site | Conf: 91.4% | Metallic Cylinder (Larsemann Hills)', type: 'Hazmat Threat' },
+      { lat: -69.4150, lon: 76.0520, ele: -395, name: 'WP-02 GHOST NET MATRIX', desc: 'Target: Submerged Ghost Net Matrix | Conf: 91.4% | Synthetic Polymer Mesh (Larsemann Hills)', type: 'Ecology Hazard' },
       { lat: -69.3510, lon: 76.2890, ele: -442, name: 'WP-03 SHIPWRECK HULL', desc: 'Target: Historic Research Vessel Hull (65m) | Conf: 92.8% | Amery Basin Rim', type: 'Archaeological' },
       { lat: -69.4020, lon: 76.1850, ele: -215, name: 'WP-04 SUBSEA CABLE LINK', desc: 'Target: Bharati-Maitri Subsea Shore Link | Conf: 93.2% | Continuous Linear Return', type: 'Infrastructure' },
       { lat: -69.4410, lon: 76.2100, ele: -360, name: 'WP-05 HAZARDOUS DEBRIS FIELD', desc: 'Target: Quilty Bay Outflow Debris | Conf: 86.5% | Cylindrical Container Field', type: 'Hazmat Threat' },
@@ -241,15 +241,15 @@ ${wptXml}
               <text x="22" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 94.2% (VERIFIED SHADOW)</text>
             </g>
 
-            {/* Target 2: SUBSEA UXO / MINE (Red Alert) */}
+            {/* Target 2: GHOST NET MATRIX (Ecology Alert) */}
             <g transform="translate(490, 145)">
               <circle r="32" fill="rgba(148, 163, 184, 0.15)" stroke="#94a3b8" strokeWidth="1.5"  style={{ animationDuration: '2.5s' }} />
               <circle r="6" fill="#94a3b8" />
               {/* Info Label Box */}
               <rect x="14" y="-34" width="180" height="42" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#94a3b8" strokeWidth="0.8" />
-              <text x="22" y="-20" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">SUBSEA UXO / MINE SITE</text>
+              <text x="22" y="-20" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">GHOST NET ANOMALY SITE</text>
               <text x="22" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 69.41°S, 76.05°E | 395m (SHELF)</text>
-              <text x="22" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 91.4% (METALLIC CYLINDER)</text>
+              <text x="22" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 91.4% (SYNTHETIC MESH)</text>
             </g>
 
             {/* Target 3: MERCHANT SHIPWRECK HULL (Cyan) */}
@@ -310,7 +310,7 @@ ${wptXml}
         {/* Legend */}
         <div className="absolute bottom-3 right-3 z-20 bg-slate-900/60 backdrop-blur-sm p-3 rounded-lg border border-slate-700 backdrop-blur-md text-[11px] font-mono space-y-1.5 shadow-md">
           <div className="text-[9px] text-steel-400 font-bold uppercase tracking-wider mb-1 border-b border-steel-800 pb-1">THREAT STRATIFICATION</div>
-          <div className="flex items-center gap-2 text-slate-400"><div className="w-2.5 h-2.5 rounded-full bg-slate-800/60" /> Priority 1 Alert (UXO / Munitions)</div>
+          <div className="flex items-center gap-2 text-slate-400"><div className="w-2.5 h-2.5 rounded-full bg-slate-800/60" /> Priority 1 Alert (Ghost Net Hazard)</div>
           <div className="flex items-center gap-2 text-zinc-300"><div className="w-2.5 h-2.5 rounded-md bg-slate-800/60" /> Ecology Hazard (Ghost Nets / FADs)</div>
           <div className="flex items-center gap-2 text-zinc-300"><div className="w-2.5 h-2.5 rounded-md bg-cyan-400" /> Navigation Hazard (Wrecks / Containers)</div>
           <div className="flex items-center gap-2 text-zinc-400"><div className="w-2.5 h-2.5 rounded-md bg-slate-800/60" /> Strategic Infrastructure (Cables / Pipes)</div>

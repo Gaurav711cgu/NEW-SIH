@@ -283,3 +283,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     sonarSweepAngle: 0,
   }),
 }));
+
+if (typeof window !== 'undefined') {
+  (window as any).__store = useSimulationStore;
+}
