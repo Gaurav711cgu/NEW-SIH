@@ -141,6 +141,8 @@ export default function MissionDirector() {
 
     // Smoothly interpolate position and rotation
     logicalY.current = THREE.MathUtils.lerp(logicalY.current, targetY, delta * 0.5);
+    // Altitude floor clamp: ensure vehicle cruising depth never drops below -142.0m (maintaining >4.5m clearance above seabed)
+    logicalY.current = Math.max(-142.0, logicalY.current);
     logicalPitch.current = THREE.MathUtils.lerp(logicalPitch.current, targetPitch, delta * 2);
     
     // Add visual bobbing ONLY for rendering via auvPosition, but we shouldn't feed it back into lerp

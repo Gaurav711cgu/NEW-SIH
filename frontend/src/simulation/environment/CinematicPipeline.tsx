@@ -6,6 +6,7 @@ import {
   DepthOfField,
   Bloom,
   Vignette,
+  Outline,
 } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { DepthOfFieldEffect } from 'postprocessing';
@@ -19,6 +20,7 @@ import { useSimulationStore } from '../store/simulationStore';
  * - N8AO: Rapid screen-space ambient occlusion generating deep crevice contact shadows
  * - DepthOfField: Dynamic focal tracking on the AUV position with cinematic bokeh falloff
  * - Bloom: Physically based glowing headlights, tactical LEDs, beacons, and thrusters
+ * - Outline: Interactive tactical highlight pass for selected/hovered AUV subsystems
  * - Vignette: Submersible optical viewport framing
  */
 export default function CinematicPipeline() {
@@ -40,7 +42,17 @@ export default function CinematicPipeline() {
   });
 
   return (
-    <EffectComposer multisampling={8} enableNormalPass={false}>
+    <EffectComposer multisampling={8} enableNormalPass={false} autoClear={false}>
+      {/* ── INTERACTIVE SELECTION OUTLINE ── */}
+      <Outline
+        blur
+        edgeStrength={3.5}
+        pulseSpeed={0.0}
+        visibleEdgeColor={0x00f0ff}
+        hiddenEdgeColor={0x005577}
+        width={1024}
+      />
+
       {/* ── AMBIENT OCCLUSION (N8AO) ── */}
       <N8AO
         aoRadius={3.5}

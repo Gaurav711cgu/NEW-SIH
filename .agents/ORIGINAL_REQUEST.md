@@ -309,3 +309,41 @@ Ensure the "Proposed System" layout (physical architecture and 5-stage Edge AI p
 ### Visual Quality (Agent-as-Judge)
 - [ ] Visual verification confirms that all interactive hardware components feature premium data cards on hover/click.
 - [ ] Visual verification confirms the layout looks like a professional, operational government dashboard (glassmorphism, glowing borders) rather than an amateur mockup.
+
+## 2026-09-23T06:25:24Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Ready for launch — awaiting user approval
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full multi-agent team
+
+Refactor the React Three Fiber 3D model (`AUVModel.tsx`) and the environment scene to fix missing textures, correct physics clipping, and implement premium interactive outlines.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih
+Integrity mode: benchmark
+
+## Requirements
+
+### R1. Premium Interactive Outlines
+Install `@react-three/postprocessing` and implement a global `Selection` and `Outline` pass. When the user hovers over specific AUV meshes (Main Hull, Optical Glass, Conning Tower, Propulsion Shroud), they must visually highlight with a distinct glowing outline, and the cursor must change to a pointer.
+
+### R2. Click-to-Toggle Popups
+The diagnostic `<Html>` cards should only appear when a user explicitly clicks on the corresponding 3D component. Clicking the component again, or clicking another component, should toggle the popup visibility. The initial state should have no popups open.
+
+### R3. Physics & Clipping Fix
+The 3D AUV currently clips underneath the seafloor terrain geometry. Fix the spatial positioning, depth calculation, or terrain height so that the submarine glides above the seafloor without clipping through the rocks/ground.
+
+### R4. Missing Materials (Pink Balls)
+There are magenta/pink untextured domes (likely jellyfish or similar environment geometry) rendering in the scene, which indicates a missing texture or broken material. Identify the source of these pink meshes in the environment files and apply proper, realistic materials.
+
+## Acceptance Criteria
+
+### Interaction & Visual Verification
+- [ ] `npm install @react-three/postprocessing` is successfully executed.
+- [ ] The `Outline` effect is explicitly implemented on hover for the 4 interactive components.
+- [ ] Hovering over the components changes the mouse cursor to a pointer.
+- [ ] No popups are visible when the component initially loads.
+- [ ] The AUV stays strictly above the terrain and does not clip through the ground.
+- [ ] The pink/magenta spheres are replaced with their intended materials (no missing textures in the scene).
+- [ ] `npm run build` executes with zero TypeScript errors.

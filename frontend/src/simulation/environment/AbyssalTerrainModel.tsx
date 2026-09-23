@@ -18,13 +18,13 @@ function createPRNG(seed: number) {
   };
 }
 
-// Bilinear interpolation across the 180x180 regular seabed grid (450m x 450m, origin at Y = -145m)
+// Bilinear interpolation across the 180x180 regular seabed grid (450m x 450m, origin at Y = -150m)
 function getSeabedElevation(
   x: number,
   z: number,
   posAttr: THREE.BufferAttribute | THREE.InterleavedBufferAttribute | null
 ): number {
-  if (!posAttr) return -142.0; // Fallback to mean seabed plane
+  if (!posAttr) return -147.0; // Fallback to mean seabed plane
   const u = Math.max(0, Math.min(178.999, ((x + 225) / 450) * 179));
   const v = Math.max(0, Math.min(178.999, ((z + 225) / 450) * 179));
   const c0 = Math.floor(u);
@@ -40,7 +40,7 @@ function getSeabedElevation(
   const y11 = posAttr.getY(r1 * 180 + c1);
 
   const localY = (1 - s) * (1 - t) * y00 + s * (1 - t) * y10 + (1 - s) * t * y01 + s * t * y11;
-  return -145 + localY;
+  return -150 + localY;
 }
 
 interface RockInstance {
@@ -118,19 +118,32 @@ function InstancedAbyssalRocks() {
     const result: RockInstance[] = [];
 
     const addRock = (x: number, z: number, baseScale: number) => {
+      // Clear the central flight corridor: if |x| < 4.5 and |z| < 20, push laterally outside |x| >= 4.5
+      let adjustedX = x;
+      if (Math.abs(adjustedX) < 4.5 && Math.abs(z) < 20) {
+        adjustedX = (adjustedX >= 0 ? 1 : -1) * (4.5 + prng() * 3.0);
+      }
+
       const scaleX = baseScale * (0.85 + prng() * 0.3);
-      const scaleY = baseScale * (0.75 + prng() * 0.35);
+      let scaleY = baseScale * (0.75 + prng() * 0.35);
       const scaleZ = baseScale * (0.85 + prng() * 0.3);
 
-      const groundY = getSeabedElevation(x, z, seabedPosAttr);
+      const groundY = getSeabedElevation(adjustedX, z, seabedPosAttr);
       // Raw mesh origin is at base (Ymin ≈ 0). Embed base slightly into silt:
       const y = groundY - scaleY * 0.075 * 0.15;
+
+      // Clamp rock top height near the vehicle corridor so it never exceeds -146.0m
+      const unscaledHeight = 0.0725;
+      const rockTop = y + scaleY * unscaledHeight;
+      if (Math.abs(adjustedX) < 8.0 && Math.abs(z) < 25 && rockTop > -146.0) {
+        scaleY = Math.max(2.0, (-146.0 - y) / unscaledHeight);
+      }
 
       const rx = (prng() - 0.5) * 0.35;
       const ry = prng() * Math.PI * 2;
       const rz = (prng() - 0.5) * 0.35;
 
-      result.push({ x, y, z, rx, ry, rz, scaleX, scaleY, scaleZ });
+      result.push({ x: adjustedX, y, z, rx, ry, rz, scaleX, scaleY, scaleZ });
     };
 
     // Cluster 1: Foreground & starboard seabed ridge (under starboard headlight)
@@ -155,15 +168,15 @@ function InstancedAbyssalRocks() {
       addRock(x, z, scale);
     }
 
-    // Cluster 3: Immediate camera foreground & flank formations (visible alongside AUV hull)
-    // 24 rocks within 4m to 18m of vehicle origin
+    // Cluster 3: Immediate camera foreground & flank formations (clearing immediate flight envelope)
+    // 24 rocks outside vehicle corridor
     for (let i = 0; i < 24; i++) {
       const angle = (prng() - 0.5) * Math.PI * 2;
-      const dist = 5 + prng() * 15;
+      const dist = 7.5 + prng() * 12.5;
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
       const isMassive = i < 3;
-      const scale = isMassive ? 30 + prng() * 18 : 12 + prng() * 12;
+      const scale = isMassive ? 24 + prng() * 12 : 10 + prng() * 8;
       addRock(x, z, scale);
     }
 

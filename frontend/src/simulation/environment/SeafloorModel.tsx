@@ -104,7 +104,7 @@ function applyCausticsShader(
       // Modulate by AUV searchlight / floodlight proximity
       float distToAUV = length(vSeafloorWorldPos - uHeadlightPos);
       float headlightProximity = smoothstep(70.0, 14.0, distToAUV);
-      float depthFactor = clamp((vSeafloorWorldPos.y + 160.0) / 20.0, 0.35, 1.0);
+      float depthFactor = clamp((vSeafloorWorldPos.y + 165.0) / 20.0, 0.35, 1.0);
 
       // Deep-sea refractive oceanic cyan-white caustic light
       vec3 causticColor = vec3(0.38, 0.78, 1.0) * causticPattern * (0.28 + 0.95 * headlightProximity) * uCausticIntensity * depthFactor;
@@ -141,7 +141,7 @@ function ProceduralSeafloorFallback() {
   });
 
   return (
-    <group position={[0, -145, 0]}>
+    <group position={[0, -150, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} material={mat} receiveShadow />
     </group>
   );
@@ -176,7 +176,7 @@ function GLBSeafloor() {
   });
 
   return (
-    <group position={[0, -145, 0]}>
+    <group position={[0, -150, 0]}>
       <primitive object={scene} receiveShadow />
     </group>
   );

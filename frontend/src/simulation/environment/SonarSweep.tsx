@@ -52,7 +52,7 @@ export default function SonarSweep() {
       </group>
 
       {/* Target Lock Marker (RT-DETR Acoustic Sonar Target Fix) */}
-      <group position={[30, -141, 10]}>
+      <group position={[30, -145.5, 10]}>
         <mesh>
           <boxGeometry args={[3, 3, 3]} />
           <meshBasicMaterial color="#ff0000" wireframe transparent opacity={0.5} />

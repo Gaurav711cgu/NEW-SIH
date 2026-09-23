@@ -201,7 +201,7 @@ export default function Lighting() {
     // Abyssal directional fill light: positioned above seafloor, points DOWN towards seabed
     if (abyssalDirLightRef.current) {
       abyssalDirLightRef.current.position.set(auvPos.x + 30, -110, auvPos.z - 30);
-      seafloorTarget.position.set(auvPos.x, -145, auvPos.z);
+      seafloorTarget.position.set(auvPos.x, -150, auvPos.z);
       seafloorTarget.updateMatrixWorld();
     }
 
@@ -235,7 +235,7 @@ export default function Lighting() {
         shadow-mapSize={[2048, 2048]}
       />
 
-      {/* Deep Seafloor Benthic Fill (aimed DOWNWARDS onto the seabed at Y = -145m) */}
+      {/* Deep Seafloor Benthic Fill (aimed DOWNWARDS onto the seabed at Y = -150m) */}
       <primitive object={seafloorTarget} />
       {depth > 60 && (
         <directionalLight

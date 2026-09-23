@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber';
+import { Selection } from '@react-three/postprocessing';
 import AUVModel from './auv/AUVModel';
 import BubbleSystem from "./environment/BubbleSystem";
 import IceShelfModel from "./environment/IceShelfModel";
@@ -7,6 +8,7 @@ import DeepEnvironment from "./environment/DeepEnvironment";
 import AbyssalTerrainModel from "./environment/AbyssalTerrainModel";
 import DebrisField from "./environment/DebrisField";
 import SonarSweep from "./environment/SonarSweep";
+import SonarBeam from "./auv/SonarBeam";
 import SeafloorModel from "./environment/SeafloorModel";
 import Lighting from "./environment/Lighting";
 import GodRays from "./environment/GodRays";
@@ -44,14 +46,17 @@ export default function AntarcticScene() {
         camera={{ position: [10, 5, 10], fov: 60, near: 0.1, far: 1000 }}
         gl={{ preserveDrawingBuffer: true, antialias: false, powerPreference: 'high-performance' }}
       >
-        <OceanEnvironment />
-        <BubbleSystem />
-        <MissionDirector />
-        <CameraManager />
-        <group>
-          <AUVModel />
-        </group>
-        <CinematicPipeline />
+        <Selection>
+          <OceanEnvironment />
+          <BubbleSystem />
+          <MissionDirector />
+          <CameraManager />
+          <group>
+            <AUVModel />
+            <SonarBeam />
+          </group>
+          <CinematicPipeline />
+        </Selection>
       </Canvas>
     </div>
   );
