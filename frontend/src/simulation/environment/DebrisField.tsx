@@ -1,5 +1,5 @@
-import { useMemo, useRef, useLayoutEffect } from 'react';
-import { useGLTF } from '@react-three/drei';
+import { useMemo, useRef, useLayoutEffect, useState } from 'react';
+import { useGLTF, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { useSimulationStore } from '../store/simulationStore';
@@ -115,6 +115,7 @@ export default function DebrisField() {
   const tempMatrix = new THREE.Matrix4();
   const dummyObj = new THREE.Object3D();
   const detectedIndices = useRef<Set<number>>(new Set());
+  const [detectedItems, setDetectedItems] = useState<{id: number, pos: [number, number, number]}[]>([]);
 
   useFrame(() => {
     const auvPos = useSimulationStore.getState().auvPosition;
@@ -139,6 +140,10 @@ export default function DebrisField() {
           if (!detectedIndices.current.has(i)) {
             detectedIndices.current.add(i);
             newlyDetected++;
+            
+            // Render 3D UI Popup
+            setDetectedItems(prev => [...prev, { id: i, pos: [dummyObj.position.x, dummyObj.position.y + 4, dummyObj.position.z] }]);
+            
             // Simulate processing and saving to DB
             addAILog(`[AI VISION] Contact acquired! Sonar signature matching Ghost Net at Z:${dummyObj.position.z.toFixed(0)}m.`);
             addAILog(`[DB] Identifying object class via YOLOv8 and saving telemetry to platform.db...`);
@@ -170,6 +175,21 @@ export default function DebrisField() {
         castShadow
         receiveShadow
       />
+
+      {/* Render 3D HUD Popups for detected anomalies */}
+      {detectedItems.map((item) => (
+        <Html key={`detection-${item.id}`} position={item.pos} center distanceFactor={25} zIndexRange={[100, 0]}>
+          <div className="bg-[#020617]/90 border border-steel-800 rounded p-2 text-xs font-mono pointer-events-none w-56 shadow-lg shadow-black/80 backdrop-blur-md">
+            <div className="text-[10px] font-bold text-steel-400 border-b border-steel-800 pb-1 mb-1 tracking-wider">
+              EDGE_AI_INFERENCE_STDOUT
+            </div>
+            <div className="text-ice-400 text-[10px]">&gt; [AI] Confidence Score: 92%</div>
+            <div className="text-[#ff453a] text-[10px]">&gt; [DB] CRITICAL: Saved to local SQLite</div>
+            <div className="text-steel-400 text-[10px]">&gt; Sonar shadow extracted at Z={(item.pos[2]).toFixed(1)}m</div>
+            <div className="text-steel-500 text-[10px]">&gt; [AI] Applying CLAHE enhancement...</div>
+          </div>
+        </Html>
+      ))}
     </group>
   );
 }
