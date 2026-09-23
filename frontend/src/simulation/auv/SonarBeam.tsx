@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { useSimulationStore } from '../store/simulationStore';
 
 export default function SonarBeam() {
-  const portRef = useRef<THREE.Mesh>(null);
-  const stbdRef = useRef<THREE.Mesh>(null);
+  const portRef = useRef<THREE.Group>(null);
+  const stbdRef = useRef<THREE.Group>(null);
   
   useFrame(({ clock }) => {
     const auvPosition = useSimulationStore.getState().auvPosition;
@@ -34,32 +34,39 @@ export default function SonarBeam() {
     }
   });
 
-  const sonarMaterial = (
-    <meshStandardMaterial 
-      color="#00ffcc" 
-      transparent={true} 
-      opacity={0.15} 
-      emissive="#00ffcc"
-      emissiveIntensity={0.8}
-      side={THREE.DoubleSide}
-      depthWrite={false}
-      blending={THREE.AdditiveBlending}
-    />
-  );
-
   return (
     <group>
       {/* Port (Left) Side-Scan Sonar Fan */}
-      <mesh ref={portRef} scale={[1, 0.05, 1]}>
-        <coneGeometry args={[25, 50, 32, 1, true, 0, Math.PI]} />
-        {sonarMaterial}
-      </mesh>
+      <group ref={portRef}>
+        <mesh position={[0, -25, 0]} scale={[1, 0.05, 1]}>
+          <coneGeometry args={[30, 50, 32, 1, true, 0, Math.PI]} />
+          <meshBasicMaterial 
+            color="#00ffcc" 
+            transparent={true} 
+            opacity={0.15} 
+            side={THREE.DoubleSide}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+            wireframe={true}
+          />
+        </mesh>
+      </group>
       
       {/* Starboard (Right) Side-Scan Sonar Fan */}
-      <mesh ref={stbdRef} scale={[1, 0.05, 1]}>
-        <coneGeometry args={[25, 50, 32, 1, true, 0, Math.PI]} />
-        {sonarMaterial}
-      </mesh>
+      <group ref={stbdRef}>
+        <mesh position={[0, -25, 0]} scale={[1, 0.05, 1]}>
+          <coneGeometry args={[30, 50, 32, 1, true, 0, Math.PI]} />
+          <meshBasicMaterial 
+            color="#00ffcc" 
+            transparent={true} 
+            opacity={0.15} 
+            side={THREE.DoubleSide}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+            wireframe={true}
+          />
+        </mesh>
+      </group>
     </group>
   );
 }
