@@ -1,3 +1,4 @@
+import { Environment } from "@react-three/drei";
 import { useRef, useMemo, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -221,6 +222,9 @@ export default function Lighting() {
 
   return (
     <group>
+      {/* Provide an HDRI Environment map so physical materials (transmission, metalness) can reflect/refract properly */}
+      <Environment preset="night" />
+
       {/* ── AMBIENT & DIRECTIONAL SUNLIGHT ── */}
       <ambientLight intensity={ambientIntensity} color="#60a5fa" />
       <directionalLight
