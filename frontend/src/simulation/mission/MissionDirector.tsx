@@ -45,7 +45,7 @@ export default function MissionDirector() {
         break;
       case 'STAGE_3_MIDWATER':
         addAlert('REACHED MIDWATER (100m)');
-        addAILog('[PS1 VIRTUAL SENSORS ENGAGED] Deep Learning predicting Salinity/Turbidity.');
+        addAILog('[PS1 EDGE INFERENCE SENSORS ENGAGED] Deep Learning predicting Salinity/Turbidity.');
         addAILog('[OBSTACLE AVOIDANCE] Forward-looking sonar pinging for ice keels.');
         addAILog('[PHYS] Trimming buoyancy for neutral hover.');
         transitionTo('STAGE_4_SEAFLOOR', 6000);

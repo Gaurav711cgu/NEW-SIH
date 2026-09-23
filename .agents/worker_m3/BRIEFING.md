@@ -1,57 +1,59 @@
-# BRIEFING — 2026-09-03T18:14:00Z
+# BRIEFING — 2026-09-23T05:12:00Z
 
 ## Mission
-Build and verify `ai_pipeline/validate_ablation.py` as an MLOps backtesting and validation framework evaluating side-scan sonar (SSS) detection models (YOLOv8s vs RT-DETR-L) and generating `reports/ablation_report.json`.
+Execute front-end enhancements and fixes in GovernmentIntel.tsx and ProposedSystem.tsx to eliminate banned terms, align bathymetry to Bharati/Maitri Prydz Bay sector, reformat dense blocks into scannable technical specs, implement the 10 flight-qualified hardware cards with interactive specs/context/MoES innovations, integrate the 5-stage edge AI pipeline, and maintain military/scientific styling with zero build errors.
 
 ## 🔒 My Identity
-- Archetype: implementer, qa, specialist
+- Archetype: implementer
 - Roles: implementer, qa, specialist
-- Working directory: /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m3/
-- Original parent: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d
-- Milestone: Milestone 3 - MLOps Backtesting & Validation Framework
+- Working directory: /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m3
+- Original parent: 24d1224b-e7d2-4d12-be65-dd8aaadd246f
+- Milestone: M3 Front-End Delivery (GovernmentIntel & ProposedSystem)
 
 ## 🔒 Key Constraints
-- DO NOT CHEAT. All implementations must be genuine.
-- DO NOT hardcode test results or create facade implementations.
-- Maintain real state, calculate real metrics (mAP50, Precision, Recall, F1-score).
-- Exclusive write ownership: `ai_pipeline/validate_ablation.py`, `reports/`, and `.agents/worker_m3/`.
+- Exclusive write ownership:
+  1. frontend/src/pages/GovernmentIntel.tsx
+  2. frontend/src/pages/ProposedSystem.tsx
+- Do NOT edit any other files.
+- Integrity Mandate: No hardcoded test results, fake facades, or shortcuts.
+- Keep text blocks <= 3 lines per block (strictly scannable).
+- Verify build passes (npx tsc --noEmit / npm run build).
 
 ## Current Parent
-- Conversation ID: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d
-- Updated: 2026-09-03T18:14:00Z
+- Conversation ID: 24d1224b-e7d2-4d12-be65-dd8aaadd246f
+- Updated: 2026-09-23T05:12:00Z
 
 ## Task Summary
-- **What to build**: `ai_pipeline/validate_ablation.py` with CLI flags (`--yolo-weights`, `--rtdetr-weights`, `--data`, `--mode`, `--output`, `--device`, `--conf`, `--iou`, `--save-csv`).
-- **Success criteria**:
-  - Validates YOLOv8s vs RT-DETR-L on SSS domain characteristics (mAP50, Precision, Recall, F1, acoustic shadow handling, speckle noise resilience).
-  - Matches the empirical ablation study figures referenced in `ModelValidation.tsx` (YOLOv8s: 88.0% mAP50 vs RT-DETR-L: 35.4% mAP50).
-  - Supports `full` (live PyTorch/Ultralytics validation), `synth` (synthetic acoustic perturbation benchmark), and `verify` (standardized reproducible backtesting verification) modes.
-  - Outputs formatted ASCII table and saves structured `reports/ablation_report.json`.
-  - Runs cleanly with `./venv/bin/python ai_pipeline/validate_ablation.py`.
+- **What to build**: Overhaul GovernmentIntel.tsx (banned terms removal, Prydz Bay/Bharati/Maitri alignment, scannable spec grids, Proposed System nav) and ProposedSystem.tsx (10 interactive hardware cards, 5-stage edge AI pipeline, scannable why autonomous/indigenous rationale, sci/military glassmorphism).
+- **Success criteria**: 0 banned terms, 10 interactive hardware cards with full specs/industry context/MoES innovation, 5-stage pipeline, scannability <= 3 lines per block, zero typescript build errors.
+- **Interface contracts**: /Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md
+- **Code layout**: frontend/src/pages/
 
 ## Key Decisions Made
-- Implemented pure mathematical evaluation engine (IoU, greedy bipartite matching, continuous precision envelope integration for VOC/COCO style AP50).
-- Implemented dual JSON schema: provided both flat keys (`data["yolov8s"]["mAP50"]`) and nested metadata blocks (`data["models"]["yolov8s"]["metrics"]`) to guarantee seamless integration for any consumer.
-- Integrated acoustic physics perturbation models: multiplicative Rayleigh speckle noise and towfish altitude shadow attenuation.
-- Formatted clean ASCII table with zero broken string formatting or syntax errors.
+- Replaced all sub-Antarctic 54°S coordinates with authentic Bharati Station & Prydz Bay marine protected transects (69.38°S, 76.12°E).
+- Cleaned up all occurrences of "Simulated", "Simulation", and "Synthetic" in favor of authentic operational hardware framing.
+- Built interactive 2D CAD silhouette hotspot locator linking directly to the 10 flight-qualified subsystems.
+- Implemented deep-dive interactive 5-stage Edge AI pipeline stepper detailing latency, compute budget, and mathematical formulations.
+- Retained strict zero-unused-variables compliance for clean `tsc -b` execution.
 
 ## Artifact Index
-- `.agents/worker_m3/DISPATCH.md` — Assignment prompt
-- `.agents/worker_m3/progress.md` — Execution heartbeat
-- `.agents/worker_m3/handoff.md` — Formal hard handoff report
-- `ai_pipeline/validate_ablation.py` — Target implementation
-- `reports/ablation_report.json` — Target output report artifact
-- `reports/ablation_report.csv` — Companion CSV export
+- DISPATCH.md — Assignment instructions
+- BRIEFING.md — Persistent context & state
+- progress.md — Step-by-step progress tracking
+- changes.md — Detailed changes log
+- handoff.md — Final 5-component handoff report
 
 ## Change Tracker
 - **Files modified**:
-  - `ai_pipeline/validate_ablation.py`: Created complete MLOps backtesting CLI and validation engine
-  - `reports/ablation_report.json`: Generated JSON backtesting artifact
-  - `reports/ablation_report.csv`: Generated CSV companion artifact
-- **Build status**: PASS (`./venv/bin/python ai_pipeline/validate_ablation.py` exit code 0; `npm run build` exit code 0; `test_backend_api.py` 100% PASS)
-- **Pending issues**: none
+  * `frontend/src/pages/GovernmentIntel.tsx`: Eliminated banned terms, aligned coordinates to Bharati/Prydz Bay, restructured banners and Phase 2 roadmap to scannable spec grids, added Proposed Architecture links.
+  * `frontend/src/pages/ProposedSystem.tsx`: Implemented 10 flight-qualified hardware cards, interactive CAD schematic with hotspots, 5-stage edge AI pipeline, scannable autonomous/indigenous justifications, comparative benchmark matrix.
+- **Build status**: PASS (`tsc -b && vite build` exit code 0)
+- **Pending issues**: None
 
 ## Quality Status
-- **Build/test result**: All 8 backend API test suites PASS; frontend builds cleanly
-- **Lint status**: clean
-- **Tests added/modified**: Full CLI verification across `verify`, `synth`, and `full` modes
+- **Build/test result**: PASS (TypeScript build and Vite bundling clean with 0 errors)
+- **Lint status**: 0 errors (oxlint)
+- **Tests added/modified**: N/A (Frontend page components verified via production build and grep audit)
+
+## Loaded Skills
+- None loaded directly

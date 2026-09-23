@@ -1,38 +1,35 @@
-# BRIEFING — 2026-09-03T18:05:00Z
+# BRIEFING — 2026-09-22T23:23:12Z
 
 ## Mission
-Investigate the MLOps Backtesting & Validation Framework and Frontend Claims (88.0% YOLOv8 vs 35.4% RT-DETR, telemetry charting, SSS test sets, validate_ablation.py requirements).
+Investigate frontend UI labels for "Virtual"/"Mock"/"Simulation"/"Fake", mountings and routes of OceanState and GovernmentIntel, screenshot verification infrastructure, and frontend package dependencies.
 
 ## 🔒 My Identity
-- Archetype: explorer
-- Roles: investigation, synthesis
-- Working directory: /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/
-- Original parent: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d
-- Milestone: MLOps Backtesting & Frontend Survey
+- Archetype: Teamwork explorer
+- Roles: Frontend & Verification Infrastructure Explorer
+- Working directory: /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3
+- Original parent: 25f019df-1b32-471c-aa59-3fd948b862d9
+- Milestone: Explorer Survey
 
 ## 🔒 Key Constraints
 - Read-only investigation — do NOT implement
-- Work within /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/
-- .agents/ holds only agent metadata, never source code or data
+- Scope limited to frontend/src/, screenshot scripts, and frontend package configurations
+- Produce structured handoff report in .agents/explorer_survey_3/handoff.md
+- Communicate completion to parent via send_message
 
 ## Current Parent
-- Conversation ID: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d
-- Updated: 2026-09-03T18:05:00Z
+- Conversation ID: 25f019df-1b32-471c-aa59-3fd948b862d9
+- Updated: 2026-09-22T23:23:12Z
 
 ## Investigation State
-- **Explored paths**: `frontend/src/pages/ModelValidation.tsx`, `OceanState.tsx`, `MissionControl.tsx`, `ResearchCitations.tsx`, `GovernmentIntel.tsx`, `ai_pipeline/`, `virtual_sensors/`, `dataset/`, `models/`, `data/platform.db`, `data/argo_southern_ocean.nc`.
-- **Key findings**:
-  1. Frontend claims 88.0% mAP (YOLOv8s) vs 35.4% mAP (RT-DETR-L) based on acoustic domain data scarcity and ViT inductive bias failure. Currently static JSX in `ModelValidation.tsx`.
-  2. `validate_ablation.py` is missing; requirements, CLI specification, and JSON output schema designed in `survey_mlops.md`.
-  3. `testing_images/` has 25 hard test cases but lacks bounding-box ground truth labels; `dataset/yolo_format` has train (285) and val (72) with SCTD labels (`ship`, `aircraft`, `human`).
-  4. Telemetry flatlining caused by: (a) virtual sensors only publishing to MQTT and omitting TEMP/PSAL, (b) DB query mismatch with inactive daemon, (c) frontend fallback repeating static floats, (d) previous simulator generating ~8.0°C which clipped against Recharts' `[1.0, 3.0]` domain.
-- **Unexplored areas**: None within assigned scope; all 4 core mission questions comprehensively answered.
+- **Explored paths**: [TBD]
+- **Key findings**: [TBD]
+- **Unexplored areas**: All 4 investigation items
 
 ## Key Decisions Made
-- Authored comprehensive survey report: `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/survey_mlops.md`.
-- Authored 5-component handoff report: `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/handoff.md`.
-- Outlined 4 actionable work packets for downstream ML, MLOps, and Backend engineers.
+- Initializing structured survey plan across items 1-4.
 
 ## Artifact Index
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/survey_mlops.md — Comprehensive findings and architecture recommendation
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/handoff.md — 5-component handoff report
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/DISPATCH.md — incoming dispatch instructions
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/BRIEFING.md — persistent working memory
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/progress.md — liveness heartbeat
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/handoff.md — final handoff report

@@ -1,12 +1,14 @@
-# Progress — Milestone 1: Dynamic Backend Telemetry
+# Progress — Milestone 1: 3D Asset Acquisition & GLB Integration
 
-Last visited: 2026-09-03T18:07:30Z
+Last visited: 2026-09-22T21:42:00Z
 
 ## Status
-- [x] 1. Read mandatory input documents (ORIGINAL_REQUEST.md, PROJECT.md, survey_backend.md, handoff.md)
-- [x] 2. Inspect target files (`create_dummy_nc.py`, `telemetry_simulator.py`, `digital_twin_engine.py`, `test_backend_api.py`, `virtual_sensors/virtual_publisher.py`, `api/main.py`)
-- [x] 3. Recalibrate `create_dummy_nc.py` to Southern Ocean values (1.5-2.5°C, 34.2-34.8 PSU) & regenerate `data/argo_southern_ocean.nc`
-- [x] 4. Fix imports `from platform.database` -> `from platform_pkg.database` in all designated files (`telemetry_simulator.py`, `digital_twin_engine.py`, `test_backend_api.py`, `virtual_sensors/virtual_publisher.py`)
-- [x] 5. Implement `continuous_telemetry_worker` and updated `/api/telemetry` with non-flatlining sensor fluctuation + fix `self.weights_path` in `api/main.py`
-- [x] 6. Run `./venv/bin/python test_backend_api.py` and comprehensive verification script (ALL PASS)
-- [x] 7. Write handoff report in `handoff.md` and notify orchestrator
+- [x] 1. Asset Pipeline: Create and run `scripts/prepare_3d_models.py` to acquire `iceberg.glb`, `abyssal_rock.glb`, and generate `seabed.glb` in `frontend/public/models/`. Validate GLB validity and file sizes.
+- [x] 2. Create `frontend/src/simulation/common/SceneErrorBoundary.tsx` with proper React 19 typings.
+- [x] 3. Create `frontend/src/simulation/environment/SeafloorModel.tsx` with `useGLTF('/models/seabed.glb')`, `preload`, `Suspense`, and `SceneErrorBoundary`.
+- [x] 4. Create `frontend/src/simulation/environment/IceShelfModel.tsx` with `useGLTF('/models/iceberg.glb')`, Drei `<Clone>`, realistic ice material, and perimeter clustering.
+- [x] 5. Create `frontend/src/simulation/environment/AbyssalTerrainModel.tsx` with `useGLTF('/models/abyssal_rock.glb')`, Drei `<Clone>` at Y = -145m.
+- [x] 6. Integrate new components into `frontend/src/simulation/AntarcticScene.tsx`, removing procedural `Seafloor` and unused `Grid` import.
+- [x] 7. Fix unused untyped `ErrorBoundary` in `frontend/src/pages/AntarcticSimulation.tsx` to resolve the 8 TypeScript errors.
+- [x] 8. Run `npm run build` in `frontend/` to confirm `tsc -b && vite build` succeeds with 0 errors.
+- [x] 9. Write handoff report in `.agents/worker_m1/handoff.md` and send completion message to orchestrator.

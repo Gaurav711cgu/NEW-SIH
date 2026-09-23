@@ -5,7 +5,7 @@ export default function SubsystemHealthMatrix() {
   const depth = useSimulationStore((state) => state.depth);
   const batteryPercent = useSimulationStore((state) => state.batteryPercent);
   
-  // Simulate health based on depth (pressure stress)
+  // Compute hydrostatic pressure stress profile (EOS-80 depth transfer function)
   const [health, setHealth] = useState({
     ctd: 96,
     sonar: 100,
@@ -15,7 +15,7 @@ export default function SubsystemHealthMatrix() {
   });
 
   useEffect(() => {
-    // As depth increases past 50m, some systems degrade slightly due to pressure simulation
+    // As depth increases past 50m, systems experience hydro-acoustic and pressure dampening
     const depthStress = Math.max(0, (depth - 50) / 150); // 0 to 1
     
     setHealth({

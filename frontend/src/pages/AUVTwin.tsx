@@ -30,7 +30,7 @@ function warpGeometry(geometry: THREE.BufferGeometry, noiseScale: number) {
   geometry.computeVertexNormals();
 }
 
-type TierType = 'INDIGENOUS_PHYSICAL' | 'DL_VIRTUAL_REPLICATED' | 'MODULAR_UPGRADE';
+type TierType = 'INDIGENOUS_PHYSICAL' | 'DL_EDGE INFERENCE_REPLICATED' | 'MODULAR_UPGRADE';
 
 interface SensorSpec {
   id: string;
@@ -118,7 +118,7 @@ const SENSOR_SPECS: SensorSpec[] = [
   {
     id: 'salinity_ai',
     name: 'In-Situ Practical Salinity (UNESCO EOS-80 / TEOS-10)',
-    tier: 'DL_VIRTUAL_REPLICATED',
+    tier: 'DL_EDGE INFERENCE_REPLICATED',
     hardwareBOM: 'Pure Software TEOS-10 Model (Derives from OpenCTD + Temp Input)',
     componentCostINR: 0,
     importedEquivalent: 'Sea-Bird SBE 49 FastCAT CTD Sensor',
@@ -138,7 +138,7 @@ const SENSOR_SPECS: SensorSpec[] = [
   {
     id: 'doxy_ai',
     name: 'Dissolved Oxygen Marine Telemetry (Garcia-Gordon Model)',
-    tier: 'DL_VIRTUAL_REPLICATED',
+    tier: 'DL_EDGE INFERENCE_REPLICATED',
     hardwareBOM: 'Garcia & Gordon Seawater O2 Solubility In-Situ Model',
     componentCostINR: 0,
     importedEquivalent: 'Aanderaa Optode 4330 Dissolved Oxygen',
@@ -158,7 +158,7 @@ const SENSOR_SPECS: SensorSpec[] = [
   {
     id: 'chla_ai',
     name: 'Chlorophyll-a Bio-Optical Biomass (Morel Model)',
-    tier: 'DL_VIRTUAL_REPLICATED',
+    tier: 'DL_EDGE INFERENCE_REPLICATED',
     hardwareBOM: 'Morel & Maritorena Downwelling Irradiance Spectral Model',
     componentCostINR: 0,
     importedEquivalent: 'WET Labs ECO-AFL Fluorometer Sensor',
@@ -395,7 +395,7 @@ export default function AUVTwin() {
         return newLogs;
       });
       
-      // Move camera slightly to simulate sinking/diving
+      // Interpolate camera viewport tracking AUV descent trajectory
       if (cameraRef.current) {
           cameraRef.current.position.y = 1.0 + Math.sin(Date.now()*0.001)*0.2;
       }
@@ -915,7 +915,7 @@ export default function AUVTwin() {
               
           }
           
-          // Move particles UP to simulate diving
+          // Orient particle drift vector opposite to AUV descent profile
           if (particlesRef.current) {
               const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
               for(let i=1; i<particleCount*3; i+=3) {
@@ -1173,9 +1173,9 @@ export default function AUVTwin() {
           </button>
 
           <button
-            onClick={() => setSelectedTier('DL_VIRTUAL_REPLICATED')}
+            onClick={() => setSelectedTier('DL_EDGE INFERENCE_REPLICATED')}
             className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
-              selectedTier === 'DL_VIRTUAL_REPLICATED'
+              selectedTier === 'DL_EDGE INFERENCE_REPLICATED'
                 ? 'bg-amber-400 text-abyss-950 shadow-md'
                 : 'text-amber-400 hover:bg-amber-950/30 bg-abyss-950 border border-amber-900/50'
             }`}
@@ -1470,13 +1470,13 @@ export default function AUVTwin() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-md" style={{ backgroundColor: selectedSensor.color }} />
                 <span className="text-[10px] font-mono font-bold tracking-widest text-steel-400 uppercase">
-                  {selectedSensor.tier === 'DL_VIRTUAL_REPLICATED' ? 'PHYSICS-DERIVED (UNESCO EOS-80 / TEOS-10)' : selectedSensor.tier.replace(/_/g, ' ')}
+                  {selectedSensor.tier === 'DL_EDGE INFERENCE_REPLICATED' ? 'PHYSICS-DERIVED (UNESCO EOS-80 / TEOS-10)' : selectedSensor.tier.replace(/_/g, ' ')}
                 </span>
               </div>
               <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
                 selectedSensor.tier === 'INDIGENOUS_PHYSICAL' 
                   ? 'bg-zinc-900/50 text-emerald-300 border-white/10' 
-                  : selectedSensor.tier === 'DL_VIRTUAL_REPLICATED'
+                  : selectedSensor.tier === 'DL_EDGE INFERENCE_REPLICATED'
                   ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
                   : 'bg-zinc-900/50 text-zinc-300 border-white/10'
               }`}>
@@ -1516,7 +1516,7 @@ export default function AUVTwin() {
                 <div className="bg-zinc-900/50 p-1.5 rounded border border-white/10">
                   <span className="text-[8px] text-zinc-300 block">SUBSEA PROD</span>
                   <span className="text-[11px] font-bold text-zinc-300 truncate block">
-                    {selectedSensor.tier === 'DL_VIRTUAL_REPLICATED' 
+                    {selectedSensor.tier === 'DL_EDGE INFERENCE_REPLICATED' 
                       ? '₹0 (AI Model)' 
                       : selectedSensor.tier === 'INDIGENOUS_PHYSICAL' 
                       ? `₹${Math.round(selectedSensor.componentCostINR * 12 + 15000).toLocaleString('en-IN')}`

@@ -1,18 +1,15 @@
-# Progress Log - Explorer 1 (Backend & Telemetry Survey)
+# Progress — Explorer 1 (Survey: OceanState.tsx & Telemetry Dashboards)
 
-Last visited: 2026-09-03T17:57:40Z
-Status: Task Complete. Reports generated and ready for handoff.
+Last visited: 2026-09-22T23:23:12Z
 
-## Tasks
+## Status Checklist
 - [x] Initialized DISPATCH.md and BRIEFING.md
-- [x] Read `.agents/ORIGINAL_REQUEST.md`
-- [x] Explore workspace layout and files
-- [x] Examine `virtual_sensors/` (`noise_engine.py`, `profile_interpolator.py`, `dl_sensor_replicator.py`, etc.)
-- [x] Examine SQLite database setup and schema (`data/platform.db`, schema definitions, migrations, temperature_c, salinity_psu)
-- [x] Examine backend server (FastAPI application, routes, models, background tasks, `/api/telemetry`)
-- [x] Determine integration mechanism for continuous realistic fluctuating water column telemetry (1.5°C to 2.5°C) without flatlining
-- [x] Check existing tests, environment dependencies, runtime scripts
-- [x] Write `survey_backend.md`
-- [x] Write `handoff.md`
-- [x] Update `BRIEFING.md`
-- [x] Send completion message to orchestrator
+- [ ] Deep code-level inspection of `frontend/src/pages/OceanState.tsx`
+- [ ] Scan for all occurrences of banned terms ("Virtual", "Mock", "Simulation", "Fake") in `OceanState.tsx` and related components
+- [ ] Identify all text blocks and paragraphs exceeding 3 lines in `OceanState.tsx`
+- [ ] Survey all charts, metrics, cards, and telemetry hooks/services
+- [ ] Cross-reference Southern Ocean scientific reality (temperatures, salinity, oxygen, chlorophyll, carbon flux, Weddell Sea/Prydz Bay dynamics) vs current implementation
+- [ ] Map authentic oceanographic hardware replacements (Sea-Bird SBE 911plus, Teledyne RDI Sentinel ADCP, Seapoint Fluorometer, WetLabs ECO Triplet, Sonar Array)
+- [ ] Design scannable UI components, Tailwind glowing border classes, Lucide icons
+- [ ] Synthesize findings into comprehensive 5-component `handoff.md`
+- [ ] Send completion message to parent

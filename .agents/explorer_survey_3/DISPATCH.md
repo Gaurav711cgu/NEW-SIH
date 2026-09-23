@@ -1,21 +1,17 @@
-## 2026-09-03T17:52:06Z
+## 2026-09-22T23:23:12Z
 
-You are Explorer 3 on the AQUILA OS project.
-Your working directory is: /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/
-You must create and work within your assigned directory. Do NOT write source code.
-Mandatory input: Read /Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md first.
+You are Explorer 3 (explorer_survey_3).
+Your working directory is /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3.
+Read the authoritative request at /Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md.
 
-Your Mission:
-Investigate the MLOps Backtesting & Validation Framework and Frontend Claims in the workspace (/Users/gauravkumarnayak/Desktop/new sih).
-Specifically:
-1. Search the frontend codebase (React / Next.js / Vue / whatever UI framework is used) for the statistical claims mentioned in ORIGINAL_REQUEST.md: "88.0% mAP (YOLOv8) vs 35.4% mAP (RT-DETR)" and how telemetry/ablation data is visualized.
-2. Check `ai_pipeline/` or test directories for any test sets, ground truth annotations, or evaluation data.
-3. Determine requirements for `ai_pipeline/validate_ablation.py`:
-   - Programmatically evaluate a test set (or synthetic test suite matching SSS distributions).
-   - Calculate mAP50 for both YOLOv8 and RT-DETR models.
-   - Output a structured JSON report proving the 88.0% mAP vs 35.4% mAP comparison.
-   - CLI interface and options.
-4. Check frontend charts for telemetry consumption: How does the frontend fetch `/api/telemetry`? What fields does it chart (e.g. `temperature_c`, `salinity_psu`)? What was causing it to flatline?
+Task:
+Perform a project-wide search across `frontend/src/` and the screenshot/verification infrastructure.
 
-Write your comprehensive findings and recommendations to `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/survey_mlops.md` and write a handoff report to `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/handoff.md`.
-When finished, send a message to the orchestrator (conversation ID: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d) with the path to your report and a brief summary.
+Specifically investigate:
+1. Search all files in `frontend/src/` for any occurrences of "Virtual", "Mock", "Simulation", "Fake" in user-facing UI labels, headers, navigation bars (e.g. Navbar, Sidebar, App.tsx routes, footer, page titles). Note where "Simulation" is used in route titles or tabs that should be refactored or made authentic (e.g., "Deep-Sea Deployment", "Autonomous Benthic Operations", "MoES Telemetry Operations").
+2. Check how `OceanState.tsx` and `GovernmentIntel.tsx` are mounted in `App.tsx` or navigation components, what routes they have, and what icons are used.
+3. Inspect `take_screenshot.py` or existing screenshot/verification scripts in the project root. Check what port the frontend runs on (Vite dev server port 5173 or similar), what dependencies are required (playwright, python packages), and how we can take clean, high-resolution screenshots of both `OceanState` and `GovernmentIntel` pages.
+4. Check `frontend/package.json` for installed packages (Tailwind, Lucide icons, etc.) to ensure any proposed UI components use available libraries.
+
+Write a comprehensive report to `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/handoff.md`.
+Communicate your completion back to parent using send_message.

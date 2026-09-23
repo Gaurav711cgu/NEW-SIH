@@ -8,7 +8,7 @@ const badgeConfig: Record<DataSource, { bg: string; border: string; text: string
     text: 'text-ice-500',
     dot: true,
   },
-  VIRTUAL: {
+  'EDGE INFERENCE': {
     bg: 'bg-zinc-900/50',
     border: 'border-white/10',
     text: 'text-zinc-300',

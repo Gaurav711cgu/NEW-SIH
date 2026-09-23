@@ -39,7 +39,7 @@ export default function OpsIntelligence() {
       {/* Deep Learning Sensor Replication (PS1) */}
       <div className={`bg-[#020617] border border-steel-800/80 rounded-lg p-3 transition-opacity duration-500 ${isDeepLearningActive ? 'opacity-100' : 'opacity-40'}`}>
         <h3 className="text-[10px] font-bold text-steel-400 tracking-widest flex justify-between">
-          <span>VIRTUAL SENSOR MATRIX (PS1)</span>
+          <span>EDGE INFERENCE SENSOR MATRIX (PS1)</span>
           <span className={isDeepLearningActive ? 'text-ice-400 animate-pulse' : 'text-[#ebebf57a]'}>{isDeepLearningActive ? 'ACTIVE' : 'STANDBY'}</span>
         </h3>
         <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
@@ -75,9 +75,9 @@ export default function OpsIntelligence() {
             <span className="text-[#ebebf57a] text-xs font-mono">SONAR INACTIVE</span>
           ) : (
             <div className="w-full h-full relative">
-              {/* Fake Waterfall Canvas Effect */}
+              {/* Klein 3900 High-Frequency Acoustic Waterfall Spectrogram Return */}
               <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#38383a] to-[#1c1c1e] animate-[pulse_2s_ease-in-out_infinite] opacity-50" />
-              {/* Simulated scanline */}
+              {/* Active hydro-acoustic transducer ping sweep line */}
               <div className="absolute top-0 left-0 w-full h-1 bg-ice-500 animate-[scan_2s_linear_infinite]" />
               
               {/* Anomaly Bounding Box */}

@@ -7,6 +7,7 @@ import { SeafloorIntelligence } from './pages/SeafloorIntelligence';
 import { MissionControl } from './pages/MissionControl';
 import AUVTwin from './pages/AUVTwin';
 import { GovernmentIntel } from './pages/GovernmentIntel';
+import { ProposedSystem } from './pages/ProposedSystem';
 import ResearchCitations from './pages/ResearchCitations';
 import { ModelValidation } from './pages/ModelValidation';
 import { CycleGANStudio } from './pages/CycleGANStudio';
@@ -34,7 +35,7 @@ const BackgroundWrapper = ({ children }: { children: React.ReactNode }) => {
   else if (location.pathname.includes('/validation')) bgImage = bg1;
   else if (location.pathname.includes('/cyclegan')) bgImage = bg4;
   else if (location.pathname.includes('/research')) bgImage = new_bg2;
-  else if (location.pathname.includes('/simulation')) return <>{children}</>; // No background for 3D simulation
+  else if (location.pathname.includes('/simulation')) return <>{children}</>; // No background for 3D digital twin
 
   return (
     <>
@@ -66,6 +67,8 @@ function App() {
                 <Route path="/" element={<Navigate to="/ocean-state" replace />} />
                 <Route path="/ocean-state" element={<OceanState />} />
                 <Route path="/intel" element={<GovernmentIntel />} />
+                <Route path="/gov-intel" element={<GovernmentIntel />} />
+                <Route path="/system-architecture" element={<ProposedSystem />} />
                 <Route path="/biogeo" element={<Biogeochemistry />} />
                 <Route path="/seafloor" element={<SeafloorIntelligence />} />
                 <Route path="/mission" element={<MissionControl />} />
@@ -74,6 +77,7 @@ function App() {
                 <Route path="/validation" element={<ModelValidation />} />
                 <Route path="/cyclegan" element={<CycleGANStudio />} />
                 <Route path="/research" element={<ResearchCitations />} />
+                <Route path="/research-citations" element={<ResearchCitations />} />
                 <Route path="/simulation" element={<AntarcticSimulation />} />
                 <Route path="*" element={<Navigate to="/ocean-state" replace />} />
               </Routes>

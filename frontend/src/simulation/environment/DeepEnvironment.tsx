@@ -2,33 +2,8 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useSimulationStore } from '../store/simulationStore';
-import { Sparkles, Float } from '@react-three/drei';
+import { Sparkles } from '@react-three/drei';
 
-function RockArch({ position, rotation, scale }: any) {
-  return (
-    <group position={position} rotation={rotation} scale={scale}>
-      {/* Left Pillar */}
-      <mesh position={[-4, 4, 0]}>
-        <cylinderGeometry args={[2, 3, 10, 8]} />
-        <meshStandardMaterial color="#051520" roughness={1} metalness={0.1} flatShading />
-      </mesh>
-      {/* Right Pillar */}
-      <mesh position={[4, 4, 0]}>
-        <cylinderGeometry args={[2, 3, 10, 8]} />
-        <meshStandardMaterial color="#051520" roughness={1} metalness={0.1} flatShading />
-      </mesh>
-      {/* Top Arch Bridge */}
-      <mesh position={[0, 9, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2.5, 2.5, 10, 8]} />
-        <meshStandardMaterial color="#051520" roughness={1} metalness={0.1} flatShading />
-      </mesh>
-      {/* Central glowing flora on the arch */}
-      <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-        <Sparkles position={[0, 7, 0]} count={20} scale={4} size={3} color="#00ffff" speed={0.2} opacity={0.8} />
-      </Float>
-    </group>
-  );
-}
 
 function BioluminescentJelly() {
   const meshRef = useRef<THREE.Group>(null);
@@ -80,11 +55,6 @@ export default function DeepEnvironment() {
       {/* Ambient Bioluminescence */}
       <Sparkles count={500} scale={[200, 100, 200]} position={[0, -100, 0]} size={1.5} color="#00ffff" opacity={visibility * 0.3} speed={0.1} />
       <Sparkles count={500} scale={[200, 100, 200]} position={[0, -100, 0]} size={1.5} color="#ff00ff" opacity={visibility * 0.2} speed={0.1} />
-
-      {/* Seafloor Arches */}
-      <RockArch position={[-30, -142, -50]} rotation={[0, Math.PI/4, 0]} scale={[2, 2, 2]} />
-      <RockArch position={[40, -142, -20]} rotation={[0, -Math.PI/6, 0]} scale={[3, 3, 3]} />
-      <RockArch position={[-10, -142, 60]} rotation={[0, Math.PI/2, 0]} scale={[1.5, 1.5, 1.5]} />
 
       {/* Bioluminescent Jellyfish Swarm */}
       <group position={[20, -90, -30]}>

@@ -1,0 +1,103 @@
+[DEBUG] [vite] connecting...
+[DEBUG] [vite] connected.
+[INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED
+[WARNING] THREE.WebGLShadowMap: PCFSoftShadowMap has been deprecated. Using PCFShadowMap instead.

@@ -1,0 +1,1388 @@
+[
+  {
+    "index": 1,
+    "file": "frontend/src/App.tsx",
+    "line": 14,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import AntarcticSimulation from './pages/AntarcticSimulation';"
+  },
+  {
+    "index": 2,
+    "file": "frontend/src/App.tsx",
+    "line": 38,
+    "terms": [
+      "simulat"
+    ],
+    "content": "else if (location.pathname.includes('/simulation')) return <>{children}</>; // No background for 3D simulation"
+  },
+  {
+    "index": 3,
+    "file": "frontend/src/App.tsx",
+    "line": 79,
+    "terms": [
+      "simulat"
+    ],
+    "content": "<Route path=\"/simulation\" element={<AntarcticSimulation />} />"
+  },
+  {
+    "index": 4,
+    "file": "frontend/src/simulation/cameras/CameraManager.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 5,
+    "file": "frontend/src/simulation/cameras/CameraManager.tsx",
+    "line": 20,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const mode = useSimulationStore.getState().cameraMode;"
+  },
+  {
+    "index": 6,
+    "file": "frontend/src/simulation/cameras/CameraManager.tsx",
+    "line": 21,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore.getState().auvPosition;"
+  },
+  {
+    "index": 7,
+    "file": "frontend/src/simulation/cameras/CameraManager.tsx",
+    "line": 22,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvRotation = useSimulationStore.getState().auvRotation;"
+  },
+  {
+    "index": 8,
+    "file": "frontend/src/simulation/mission/AutoDiagnosis.tsx",
+    "line": 3,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 9,
+    "file": "frontend/src/simulation/mission/AutoDiagnosis.tsx",
+    "line": 14,
+    "terms": [
+      "simulat"
+    ],
+    "content": "} = useSimulationStore();"
+  },
+  {
+    "index": 10,
+    "file": "frontend/src/simulation/mission/AutoDiagnosis.tsx",
+    "line": 20,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// 1. Degrade battery over time (0.1% per second of simulation time)"
+  },
+  {
+    "index": 11,
+    "file": "frontend/src/simulation/mission/AutoDiagnosis.tsx",
+    "line": 34,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const store = useSimulationStore.getState();"
+  },
+  {
+    "index": 12,
+    "file": "frontend/src/simulation/mission/AutoDiagnosis.tsx",
+    "line": 76,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const store = useSimulationStore.getState();"
+  },
+  {
+    "index": 13,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 3,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from \"../store/simulationStore\";"
+  },
+  {
+    "index": 14,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import type { MissionPhase } from '../store/simulationStore';"
+  },
+  {
+    "index": 15,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const phase = useSimulationStore((s) => s.missionPhase);"
+  },
+  {
+    "index": 16,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 9,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setMissionPhase = useSimulationStore((s) => s.setMissionPhase);"
+  },
+  {
+    "index": 17,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 10,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const addAlert = useSimulationStore((s) => s.addAlert);"
+  },
+  {
+    "index": 18,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 11,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const addAILog = useSimulationStore((s) => s.addAILog);"
+  },
+  {
+    "index": 19,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 12,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setCameraMode = useSimulationStore((s) => s.setCameraMode);"
+  },
+  {
+    "index": 20,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 42,
+    "terms": [
+      "simulat"
+    ],
+    "content": "useSimulationStore.getState().updateTelemetry({ powerMode: 'ECO_GLIDE', currentAssist: 1.2 });"
+  },
+  {
+    "index": 21,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 57,
+    "terms": [
+      "simulat"
+    ],
+    "content": "useSimulationStore.getState().updateTelemetry({ powerMode: 'ACTIVE_THRUST', currentAssist: 0.1 });"
+  },
+  {
+    "index": 22,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 102,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const currentPhase = useSimulationStore.getState().missionPhase;"
+  },
+  {
+    "index": 23,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 160,
+    "terms": [
+      "simulat"
+    ],
+    "content": "useSimulationStore.getState().updateTelemetry({"
+  },
+  {
+    "index": 24,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 166,
+    "terms": [
+      "simulat"
+    ],
+    "content": "useSimulationStore.getState().setAUVPosition([0, logicalY.current, 0]);"
+  },
+  {
+    "index": 25,
+    "file": "frontend/src/simulation/mission/MissionDirector.tsx",
+    "line": 167,
+    "terms": [
+      "simulat"
+    ],
+    "content": "useSimulationStore.getState().setAUVRotation([logicalPitch.current, sway * 2, sway]);"
+  },
+  {
+    "index": 26,
+    "file": "frontend/src/simulation/environment/BubbleSystem.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 27,
+    "file": "frontend/src/simulation/environment/BubbleSystem.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const phase = useSimulationStore((s) => s.missionPhase);"
+  },
+  {
+    "index": 28,
+    "file": "frontend/src/simulation/environment/BubbleSystem.tsx",
+    "line": 32,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPos = useSimulationStore.getState().auvPosition;"
+  },
+  {
+    "index": 29,
+    "file": "frontend/src/simulation/environment/CinematicPipeline.tsx",
+    "line": 12,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 30,
+    "file": "frontend/src/simulation/environment/CinematicPipeline.tsx",
+    "line": 17,
+    "terms": [
+      "simulat"
+    ],
+    "content": "* High-fidelity post-processing pipeline for Antarctic deep-sea simulation:"
+  },
+  {
+    "index": 31,
+    "file": "frontend/src/simulation/environment/CinematicPipeline.tsx",
+    "line": 34,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore.getState().auvPosition;"
+  },
+  {
+    "index": 32,
+    "file": "frontend/src/simulation/environment/DeepEnvironment.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 33,
+    "file": "frontend/src/simulation/environment/DeepEnvironment.tsx",
+    "line": 45,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((s) => s.depth);"
+  },
+  {
+    "index": 34,
+    "file": "frontend/src/simulation/environment/GodRays.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 35,
+    "file": "frontend/src/simulation/environment/GodRays.tsx",
+    "line": 81,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((s) => s.depth);"
+  },
+  {
+    "index": 36,
+    "file": "frontend/src/simulation/environment/IceShelf.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 37,
+    "file": "frontend/src/simulation/environment/IceShelf.tsx",
+    "line": 72,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore(s => s.depth);"
+  },
+  {
+    "index": 38,
+    "file": "frontend/src/simulation/environment/IceShelfModel.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 39,
+    "file": "frontend/src/simulation/environment/IceShelfModel.tsx",
+    "line": 14,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((s) => s.depth);"
+  },
+  {
+    "index": 40,
+    "file": "frontend/src/simulation/environment/Lighting.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 41,
+    "file": "frontend/src/simulation/environment/Lighting.tsx",
+    "line": 49,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((s) => s.depth);"
+  },
+  {
+    "index": 42,
+    "file": "frontend/src/simulation/environment/Lighting.tsx",
+    "line": 50,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore((s) => s.auvPosition);"
+  },
+  {
+    "index": 43,
+    "file": "frontend/src/simulation/environment/Lighting.tsx",
+    "line": 51,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvRotation = useSimulationStore((s) => s.auvRotation);"
+  },
+  {
+    "index": 44,
+    "file": "frontend/src/simulation/environment/MarineSnow.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 45,
+    "file": "frontend/src/simulation/environment/MarineSnow.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const currentAssist = useSimulationStore((s) => s.currentAssist);"
+  },
+  {
+    "index": 46,
+    "file": "frontend/src/simulation/environment/MarineSnow.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore((s) => s.auvPosition);"
+  },
+  {
+    "index": 47,
+    "file": "frontend/src/simulation/environment/SeafloorModel.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 48,
+    "file": "frontend/src/simulation/environment/SeafloorModel.tsx",
+    "line": 136,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore((s) => s.auvPosition);"
+  },
+  {
+    "index": 49,
+    "file": "frontend/src/simulation/environment/SeafloorModel.tsx",
+    "line": 152,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore((s) => s.auvPosition);"
+  },
+  {
+    "index": 50,
+    "file": "frontend/src/simulation/environment/SonarSweep.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 51,
+    "file": "frontend/src/simulation/environment/SonarSweep.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const missionPhase = useSimulationStore(s => s.missionPhase);"
+  },
+  {
+    "index": 52,
+    "file": "frontend/src/simulation/environment/SonarSweep.tsx",
+    "line": 9,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore(s => s.auvPosition);"
+  },
+  {
+    "index": 53,
+    "file": "frontend/src/simulation/environment/SonarSweep.tsx",
+    "line": 10,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvRotation = useSimulationStore(s => s.auvRotation);"
+  },
+  {
+    "index": 54,
+    "file": "frontend/src/simulation/environment/SonarSweep.tsx",
+    "line": 54,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{/* Target Lock Marker (simulated detection) */}"
+  },
+  {
+    "index": 55,
+    "file": "frontend/src/simulation/environment/SurfaceEnvironment.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 56,
+    "file": "frontend/src/simulation/environment/SurfaceEnvironment.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((s) => s.depth);"
+  },
+  {
+    "index": 57,
+    "file": "frontend/src/simulation/auv/AUVModel.tsx",
+    "line": 3,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 58,
+    "file": "frontend/src/simulation/auv/AUVModel.tsx",
+    "line": 16,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvPosition = useSimulationStore.getState().auvPosition;"
+  },
+  {
+    "index": 59,
+    "file": "frontend/src/simulation/auv/AUVModel.tsx",
+    "line": 17,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvRotation = useSimulationStore.getState().auvRotation;"
+  },
+  {
+    "index": 60,
+    "file": "frontend/src/simulation/auv/AUVModel.tsx",
+    "line": 20,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// Smooth vertical bobbing to simulate ocean waves"
+  },
+  {
+    "index": 61,
+    "file": "frontend/src/simulation/auv/BallastSystem.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 62,
+    "file": "frontend/src/simulation/auv/BallastSystem.tsx",
+    "line": 13,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const ballastLevel = useSimulationStore((s) => s.ballastLevel);"
+  },
+  {
+    "index": 63,
+    "file": "frontend/src/simulation/auv/BallastSystem.tsx",
+    "line": 14,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setSelectedComponent = useSimulationStore(s => s.setSelectedComponent);"
+  },
+  {
+    "index": 64,
+    "file": "frontend/src/simulation/auv/ComponentInspector.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 65,
+    "file": "frontend/src/simulation/auv/ComponentInspector.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const selectedComponentId = useSimulationStore((s) => s.selectedComponent);"
+  },
+  {
+    "index": 66,
+    "file": "frontend/src/simulation/auv/ComponentInspector.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const components = useSimulationStore((s) => s.components);"
+  },
+  {
+    "index": 67,
+    "file": "frontend/src/simulation/auv/ComponentInspector.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setSelectedComponent = useSimulationStore((s) => s.setSelectedComponent);"
+  },
+  {
+    "index": 68,
+    "file": "frontend/src/simulation/auv/SonarCone.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 69,
+    "file": "frontend/src/simulation/auv/SonarCone.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const sonarActive = useSimulationStore((s) => s.sonarActive);"
+  },
+  {
+    "index": 70,
+    "file": "frontend/src/simulation/auv/SonarCone.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const sonarRange = useSimulationStore((s) => s.sonarRange);"
+  },
+  {
+    "index": 71,
+    "file": "frontend/src/simulation/auv/SonarCone.tsx",
+    "line": 9,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setSonarSweep = useSimulationStore((s) => s.setSonarSweep);"
+  },
+  {
+    "index": 72,
+    "file": "frontend/src/simulation/auv/Thrusters.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 73,
+    "file": "frontend/src/simulation/auv/Thrusters.tsx",
+    "line": 13,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const thrusters = useSimulationStore((s) => s.thrusters);"
+  },
+  {
+    "index": 74,
+    "file": "frontend/src/simulation/auv/Thrusters.tsx",
+    "line": 14,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setSelectedComponent = useSimulationStore(s => s.setSelectedComponent);"
+  },
+  {
+    "index": 75,
+    "file": "frontend/src/simulation/store/simulationStore.ts",
+    "line": 50,
+    "terms": [
+      "simulat"
+    ],
+    "content": "export interface SimulationState {"
+  },
+  {
+    "index": 76,
+    "file": "frontend/src/simulation/store/simulationStore.ts",
+    "line": 120,
+    "terms": [
+      "simulat"
+    ],
+    "content": "updateTelemetry: (data: Partial<SimulationState>) => void;"
+  },
+  {
+    "index": 77,
+    "file": "frontend/src/simulation/store/simulationStore.ts",
+    "line": 153,
+    "terms": [
+      "simulat"
+    ],
+    "content": "export const useSimulationStore = create<SimulationState>((set, get) => ({"
+  },
+  {
+    "index": 78,
+    "file": "frontend/src/simulation/store/simulationStore.ts",
+    "line": 232,
+    "terms": [
+      "simulat"
+    ],
+    "content": "updateTelemetry: (data) => set(data as Partial<SimulationState>),"
+  },
+  {
+    "index": 79,
+    "file": "frontend/src/simulation/hud/Compass.tsx",
+    "line": 1,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 80,
+    "file": "frontend/src/simulation/hud/Compass.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const heading = useSimulationStore((state) => state.heading);"
+  },
+  {
+    "index": 81,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 82,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 3,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import type { CameraMode } from '../store/simulationStore';"
+  },
+  {
+    "index": 83,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 11,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const missionPhase = useSimulationStore((state) => state.missionPhase);"
+  },
+  {
+    "index": 84,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 12,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const cameraMode = useSimulationStore((state) => state.cameraMode);"
+  },
+  {
+    "index": 85,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 13,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const initiateDive = useSimulationStore((state) => state.initiateDive);"
+  },
+  {
+    "index": 86,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 14,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const setCameraMode = useSimulationStore((state) => state.setCameraMode);"
+  },
+  {
+    "index": 87,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 15,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const triggerFailure = useSimulationStore((state) => state.triggerFailure);"
+  },
+  {
+    "index": 88,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 16,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const emergencyAscent = useSimulationStore((state) => state.emergencyAscent);"
+  },
+  {
+    "index": 89,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 17,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const reset = useSimulationStore((state) => state.reset);"
+  },
+  {
+    "index": 90,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 88,
+    "terms": [
+      "simulat"
+    ],
+    "content": "<span>SIMULATE FAILURES</span>"
+  },
+  {
+    "index": 91,
+    "file": "frontend/src/simulation/hud/ControlPanel.tsx",
+    "line": 116,
+    "terms": [
+      "simulat"
+    ],
+    "content": "RESET SIMULATION"
+  },
+  {
+    "index": 92,
+    "file": "frontend/src/simulation/hud/DepthGauge.tsx",
+    "line": 1,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 93,
+    "file": "frontend/src/simulation/hud/DepthGauge.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((state) => state.depth);"
+  },
+  {
+    "index": 94,
+    "file": "frontend/src/simulation/hud/DepthGauge.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const targetDepth = useSimulationStore((state) => state.targetDepth);"
+  },
+  {
+    "index": 95,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 96,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const bat = useSimulationStore((state) => state.batteryPercent);"
+  },
+  {
+    "index": 97,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const thrusters = useSimulationStore((state) => state.thrusters);"
+  },
+  {
+    "index": 98,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const components = useSimulationStore((state) => state.components);"
+  },
+  {
+    "index": 99,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 9,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const iridiumLink = useSimulationStore((state) => state.iridiumLink);"
+  },
+  {
+    "index": 100,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 10,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const endurance = useSimulationStore((state) => state.estimatedEndurance);"
+  },
+  {
+    "index": 101,
+    "file": "frontend/src/simulation/hud/DiagnosticsPanel.tsx",
+    "line": 11,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const power = useSimulationStore((state) => state.powerDraw);"
+  },
+  {
+    "index": 102,
+    "file": "frontend/src/simulation/hud/HUD.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 103,
+    "file": "frontend/src/simulation/hud/HUD.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const missionPhase = useSimulationStore((state) => state.missionPhase);"
+  },
+  {
+    "index": 104,
+    "file": "frontend/src/simulation/hud/HUD.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const missionTimer = useSimulationStore((state) => state.missionTimer);"
+  },
+  {
+    "index": 105,
+    "file": "frontend/src/simulation/hud/MiniMap.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 106,
+    "file": "frontend/src/simulation/hud/MiniMap.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const lat = useSimulationStore((state) => state.gpsLat);"
+  },
+  {
+    "index": 107,
+    "file": "frontend/src/simulation/hud/MiniMap.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const lng = useSimulationStore((state) => state.gpsLng);"
+  },
+  {
+    "index": 108,
+    "file": "frontend/src/simulation/hud/OpsIntelligence.tsx",
+    "line": 2,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 109,
+    "file": "frontend/src/simulation/hud/OpsIntelligence.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const phase = useSimulationStore((s) => s.missionPhase);"
+  },
+  {
+    "index": 110,
+    "file": "frontend/src/simulation/hud/OpsIntelligence.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const aiLogs = useSimulationStore((s) => s.aiLogs);"
+  },
+  {
+    "index": 111,
+    "file": "frontend/src/simulation/hud/OpsIntelligence.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((s) => s.depth);"
+  },
+  {
+    "index": 112,
+    "file": "frontend/src/simulation/hud/OpsIntelligence.tsx",
+    "line": 78,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{/* Simulated Waterfall Canvas Effect */}"
+  },
+  {
+    "index": 113,
+    "file": "frontend/src/simulation/hud/OpsIntelligence.tsx",
+    "line": 80,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{/* Simulated scanline */}"
+  },
+  {
+    "index": 114,
+    "file": "frontend/src/simulation/hud/SubsystemHealthMatrix.tsx",
+    "line": 1,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 115,
+    "file": "frontend/src/simulation/hud/SubsystemHealthMatrix.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const depth = useSimulationStore((state) => state.depth);"
+  },
+  {
+    "index": 116,
+    "file": "frontend/src/simulation/hud/SubsystemHealthMatrix.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const batteryPercent = useSimulationStore((state) => state.batteryPercent);"
+  },
+  {
+    "index": 117,
+    "file": "frontend/src/simulation/hud/SubsystemHealthMatrix.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// Simulate health based on depth (pressure stress)"
+  },
+  {
+    "index": 118,
+    "file": "frontend/src/simulation/hud/SubsystemHealthMatrix.tsx",
+    "line": 18,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// As depth increases past 50m, some systems degrade slightly due to pressure simulation"
+  },
+  {
+    "index": 119,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 1,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../store/simulationStore';"
+  },
+  {
+    "index": 120,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const speed = useSimulationStore((state) => state.speed);"
+  },
+  {
+    "index": 121,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const auvRotation = useSimulationStore((state) => state.auvRotation);"
+  },
+  {
+    "index": 122,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const temp = useSimulationStore((state) => state.temperature);"
+  },
+  {
+    "index": 123,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const sal = useSimulationStore((state) => state.salinity);"
+  },
+  {
+    "index": 124,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const do2 = useSimulationStore((state) => state.dissolvedOxygen);"
+  },
+  {
+    "index": 125,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 9,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const press = useSimulationStore((state) => state.pressure);"
+  },
+  {
+    "index": 126,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 10,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const powerMode = useSimulationStore((state) => state.powerMode);"
+  },
+  {
+    "index": 127,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 11,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const currentAssist = useSimulationStore((state) => state.currentAssist);"
+  },
+  {
+    "index": 128,
+    "file": "frontend/src/simulation/hud/TelemetryPanel.tsx",
+    "line": 12,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const powerDraw = useSimulationStore((state) => state.powerDraw);"
+  },
+  {
+    "index": 129,
+    "file": "frontend/src/components/ui/SonarCanvas.tsx",
+    "line": 40,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// Simulate scan line intensity variation"
+  },
+  {
+    "index": 130,
+    "file": "frontend/src/components/layout/Sidebar.tsx",
+    "line": 12,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{ path: '/simulation', label: 'Live 3D Simulation', icon: Compass },"
+  },
+  {
+    "index": 131,
+    "file": "frontend/src/pages/AUVTwin.tsx",
+    "line": 398,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// Move camera slightly to simulate sinking/diving"
+  },
+  {
+    "index": 132,
+    "file": "frontend/src/pages/AUVTwin.tsx",
+    "line": 918,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// Move particles UP to simulate diving"
+  },
+  {
+    "index": 133,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 4,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import AntarcticScene from '../simulation/AntarcticScene';"
+  },
+  {
+    "index": 134,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 5,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import SceneErrorBoundary from '../simulation/common/SceneErrorBoundary';"
+  },
+  {
+    "index": 135,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 6,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import OpsIntelligence from \"../simulation/hud/OpsIntelligence\";"
+  },
+  {
+    "index": 136,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 7,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import SubsystemHealthMatrix from \"../simulation/hud/SubsystemHealthMatrix\";"
+  },
+  {
+    "index": 137,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 8,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import HUD from '../simulation/hud/HUD';"
+  },
+  {
+    "index": 138,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 9,
+    "terms": [
+      "simulat"
+    ],
+    "content": "import { useSimulationStore } from '../simulation/store/simulationStore';"
+  },
+  {
+    "index": 139,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 29,
+    "terms": [
+      "simulat"
+    ],
+    "content": "'> SIMULATION ENVIRONMENT: SOUTHERN OCEAN',"
+  },
+  {
+    "index": 140,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 76,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const phase = useSimulationStore((s) => s.missionPhase);"
+  },
+  {
+    "index": 141,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 94,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const alerts = useSimulationStore((s) => s.alerts);"
+  },
+  {
+    "index": 142,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 123,
+    "terms": [
+      "simulat"
+    ],
+    "content": "export default function AntarcticSimulation() {"
+  },
+  {
+    "index": 143,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 131,
+    "terms": [
+      "simulat"
+    ],
+    "content": "const phase = useSimulationStore((s) => s.missionPhase);"
+  },
+  {
+    "index": 144,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 158,
+    "terms": [
+      "simulat"
+    ],
+    "content": "<span className=\"font-bold tracking-widest text-[11px] text-steel-100\">SOUTHERN OCEAN SIMULATION</span>"
+  },
+  {
+    "index": 145,
+    "file": "frontend/src/pages/AntarcticSimulation.tsx",
+    "line": 180,
+    "terms": [
+      "simulat"
+    ],
+    "content": "onClick={() => useSimulationStore.getState().initiateDive()}"
+  },
+  {
+    "index": 146,
+    "file": "frontend/src/pages/CycleGANStudio.tsx",
+    "line": 11,
+    "terms": [
+      "simulat"
+    ],
+    "content": "// Simulate training progression"
+  },
+  {
+    "index": 147,
+    "file": "frontend/src/pages/CycleGANStudio.tsx",
+    "line": 69,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{/* Simulated geometry */}"
+  },
+  {
+    "index": 148,
+    "file": "frontend/src/pages/CycleGANStudio.tsx",
+    "line": 97,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{/* Simulated sonar return */}"
+  },
+  {
+    "index": 149,
+    "file": "frontend/src/pages/DigitalTwin.tsx",
+    "line": 6,
+    "terms": [
+      "mock"
+    ],
+    "content": "// --- MOCK DATA ---"
+  },
+  {
+    "index": 150,
+    "file": "frontend/src/pages/GovernmentIntel.tsx",
+    "line": 125,
+    "terms": [
+      "simulat"
+    ],
+    "content": "<span className=\"px-2.5 py-1 bg-slate-800/60 text-zinc-300 border border-slate-700/50 rounded text-xs font-mono font-bold tracking-wider\">SIMULATED 14-DAY MISSION REPLAY</span>"
+  },
+  {
+    "index": 151,
+    "file": "frontend/src/pages/GovernmentIntel.tsx",
+    "line": 730,
+    "terms": [
+      "simulat"
+    ],
+    "content": "{/* Satcom Uplink Simulation Banner */}"
+  },
+  {
+    "index": 152,
+    "file": "frontend/src/pages/GovernmentIntel.tsx",
+    "line": 748,
+    "terms": [
+      "simulat"
+    ],
+    "content": "SATCOM BURST UPLINK SIMULATION \u2014 TRANSMISSION COMPLETE"
+  },
+  {
+    "index": 153,
+    "file": "frontend/src/pages/ResearchCitations.tsx",
+    "line": 77,
+    "terms": [
+      "simulat"
+    ],
+    "content": "verificationProof: 'Benchmark simulation demonstrated consistent tile boundary handling across multi-swath acoustic waterfalls.'"
+  },
+  {
+    "index": 154,
+    "file": "frontend/src/pages/ResearchCitations.tsx",
+    "line": 134,
+    "terms": [
+      "simulat"
+    ],
+    "content": "verificationProof: 'Simulated Antarctic Polar Front water at -1.8\u00b0C: outputs 318.4 \u00b5mol/kg (matching CTD optode ground truth within 1.8%).'"
+  }
+]

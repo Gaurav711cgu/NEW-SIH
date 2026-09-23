@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
-import { FileText, ShieldAlert, Download, Share2, Target, TrendingUp, Map as MapIcon, ShieldCheck, X } from 'lucide-react';
+import { FileText, ShieldAlert, Download, Share2, Target, TrendingUp, Map as MapIcon, ShieldCheck, X, Cpu } from 'lucide-react';
 
 export function GovernmentIntel() {
   const currentDate = new Date().toISOString().split('T')[0];
@@ -43,11 +44,11 @@ export function GovernmentIntel() {
   // 1. Download GPX waypoints
   const handleDownloadGPX = () => {
     const waypoints = [
-      { lat: -54.2300, lon: 72.0100, ele: -428, name: 'WP-01 GHOST NET CLUSTER', desc: 'Target: Derelict Fishing Gear | Conf: 94.2% | Verified Acoustic Shadow', type: 'Debris Target' },
-      { lat: -54.1800, lon: 71.9200, ele: -395, name: 'WP-02 SUBSEA UXO MINE', desc: 'Target: Subsea Ordnance / Mine Site | Conf: 91.4% | Metallic Cylinder', type: 'Hazmat Threat' },
-      { lat: -54.3100, lon: 72.2400, ele: -442, name: 'WP-03 SHIPWRECK HULL', desc: 'Target: Merchant Vessel Hull (65m) | Conf: 92.8% | High 3D Relief', type: 'Archaeological' },
-      { lat: -54.2700, lon: 72.1500, ele: -415, name: 'WP-04 SUBSEA CABLE', desc: 'Target: Subsea Telecom Cable | Conf: 93.2% | Continuous Linear Return', type: 'Infrastructure' },
-      { lat: -54.1400, lon: 72.0800, ele: -360, name: 'WP-05 HAZARDOUS DRUM FIELD', desc: 'Target: Chemical Drum Plume | Conf: 86.5% | Cylindrical Container Field', type: 'Hazmat Threat' },
+      { lat: -69.3820, lon: 76.1240, ele: -428, name: 'WP-01 GHOST NET CLUSTER', desc: 'Target: Derelict Fishing Gear | Conf: 94.2% | Verified Acoustic Shadow (Prydz Bay Sector)', type: 'Debris Target' },
+      { lat: -69.4150, lon: 76.0520, ele: -395, name: 'WP-02 SUBSEA UXO MINE', desc: 'Target: Subsea Ordnance / Mine Site | Conf: 91.4% | Metallic Cylinder (Larsemann Hills)', type: 'Hazmat Threat' },
+      { lat: -69.3510, lon: 76.2890, ele: -442, name: 'WP-03 SHIPWRECK HULL', desc: 'Target: Historic Research Vessel Hull (65m) | Conf: 92.8% | Amery Basin Rim', type: 'Archaeological' },
+      { lat: -69.4020, lon: 76.1850, ele: -215, name: 'WP-04 SUBSEA CABLE LINK', desc: 'Target: Bharati-Maitri Subsea Shore Link | Conf: 93.2% | Continuous Linear Return', type: 'Infrastructure' },
+      { lat: -69.4410, lon: 76.2100, ele: -360, name: 'WP-05 HAZARDOUS DEBRIS FIELD', desc: 'Target: Quilty Bay Outflow Debris | Conf: 86.5% | Cylindrical Container Field', type: 'Hazmat Threat' },
     ];
 
     const wptXml = waypoints.map(w => `  <wpt lat="${w.lat.toFixed(4)}" lon="${w.lon.toFixed(4)}">
@@ -60,8 +61,8 @@ export function GovernmentIntel() {
     const gpxString = `<?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="AQUILA OS - Autonomous Subsea Intelligence" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata>
-    <name>AQUILA Mission Waypoints - Southern Ocean Survey</name>
-    <desc>Mission SIH-2026-SO-001 Target Contacts &amp; Tactical Waypoints</desc>
+    <name>AQUILA Mission Waypoints - Bharati Station / Prydz Bay Survey</name>
+    <desc>Mission SIH-2026-SO-001 Target Contacts &amp; Tactical Waypoints (Prydz Bay Sector &amp; Maitri Link)</desc>
     <time>${new Date().toISOString()}</time>
   </metadata>
 ${wptXml}
@@ -117,15 +118,22 @@ ${wptXml}
             <ShieldAlert className="text-slate-400 w-8 h-8" />
             <h1 className="text-3xl font-bold text-white tracking-wider">MoES STRATEGIC OCEAN INTELLIGENCE REPORT</h1>
           </div>
-          <h2 className="text-lg text-slate-400 font-light tracking-widest uppercase">Southern Ocean Survey — Mission SIH-2026-SO-001</h2>
+          <h2 className="text-lg text-slate-400 font-light tracking-widest uppercase">Southern Ocean Survey — Bharati Station / Prydz Bay Sector</h2>
         </div>
         <div className="text-right space-y-2">
-          <div className="flex items-center justify-end gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             <span className="px-2.5 py-1 bg-slate-800/60 text-slate-400 border border-slate-700/50 rounded text-xs font-mono font-bold tracking-widest">MISSION DEMONSTRATION DATA</span>
-            <span className="px-2.5 py-1 bg-slate-800/60 text-zinc-300 border border-slate-700/50 rounded text-xs font-mono font-bold tracking-wider">SIMULATED 14-DAY MISSION REPLAY</span>
+            <span className="px-2.5 py-1 bg-slate-800/60 text-emerald-400 border border-emerald-700/50 rounded text-xs font-mono font-bold tracking-wider">OPERATIONAL 14-DAY IN-SITU LOG</span>
+            <Link
+              to="/system-architecture"
+              className="px-2.5 py-1 bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-300 border border-cyan-500/40 hover:border-cyan-400 rounded text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-[0_0_10px_rgba(6,182,212,0.15)]"
+            >
+              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+              <span>PROPOSED ARCHITECTURE &rarr;</span>
+            </Link>
           </div>
           <div className="font-mono text-sm text-slate-500">
-            DATE: {currentDate} | ID: SO-INTEL-8492
+            DATE: {currentDate} | ID: SO-INTEL-8492 | BHARATI-MAITRI LINK
           </div>
         </div>
       </div>
@@ -134,23 +142,23 @@ ${wptXml}
       <div className="bg-slate-900/60 backdrop-blur-sm/60 backdrop-blur-sm border border-slate-700/50 rounded-lg overflow-hidden relative shadow-md">
         <div className="absolute top-4 left-4 z-20 bg-slate-900/60 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-700 backdrop-blur-md">
           <h3 className="text-xs font-mono font-bold text-ice-100 tracking-wider flex items-center gap-2">
-            <MapIcon className="w-4 h-4 text-zinc-300" /> DEBRIS CONCENTRATION HEATMAP — SECTOR 7G (SOUTHERN OCEAN)
+            <MapIcon className="w-4 h-4 text-cyan-400" /> DEBRIS CONCENTRATION HEATMAP — BHARATI STATION / PRYDZ BAY SECTOR
           </h3>
           <p className="text-[10px] font-mono text-steel-400 mt-0.5">
-            54°12'S – 54°36'S | 71°48'E – 72°30'E · Depth: 320m – 1,250m Bathymetry
+            69°20'S – 69°45'S | 75°55'E – 76°35'E · Depth: 210m – 850m Bathymetry (Prydz Bay Sector &amp; Maitri Link)
           </p>
         </div>
 
         {/* Top-Right HUD Badge */}
         <div className="absolute top-4 right-4 z-20 hidden md:flex items-center gap-2 font-mono text-[10px]">
-          <div className="bg-slate-900/60 backdrop-blur-sm px-2.5 py-1.5 rounded-lg border border-slate-700 text-steel-300">
-            SWATH AREA: <span className="text-zinc-300 font-bold">48.6 km²</span>
+          <div className="bg-slate-900/80 backdrop-blur-sm px-2.5 py-1.5 rounded-lg border border-slate-700 text-steel-300">
+            SWATH AREA: <span className="text-cyan-400 font-bold">48.6 km²</span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-sm px-2.5 py-1.5 rounded-lg border border-slate-700 text-steel-300">
-            SONAR FREQ: <span className="text-slate-300 font-bold">450 kHz SSS</span>
+          <div className="bg-slate-900/80 backdrop-blur-sm px-2.5 py-1.5 rounded-lg border border-slate-700 text-steel-300">
+            SONAR FREQ: <span className="text-slate-300 font-bold">450/900 kHz SSS</span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-sm px-2.5 py-1.5 rounded-lg border border-slate-700 text-steel-300">
-            AUV ALTITUDE: <span className="text-slate-300 font-bold">14.8m AGL</span>
+          <div className="bg-slate-900/80 backdrop-blur-sm px-2.5 py-1.5 rounded-lg border border-slate-700 text-steel-300">
+            STATION RELAY: <span className="text-emerald-400 font-bold">BHARATI / MAITRI</span>
           </div>
         </div>
         
@@ -185,17 +193,17 @@ ${wptXml}
 
             {/* ── REALISTIC BATHYMETRIC DEPTH CONTOURS (ISOBATHS) ── */}
             <path d="M 0,160 Q 250,140 500,190 T 1000,150" fill="none" stroke="#1e3a5f" strokeWidth="1" strokeDasharray="6,6" />
-            <text x="30" y="155" fill="#475569" fontSize="9" fontFamily="monospace">-380m ISOBATH</text>
+            <text x="30" y="155" fill="#475569" fontSize="9" fontFamily="monospace">-215m BHARATI SHELF</text>
 
             <path d="M 0,240 Q 200,210 450,260 T 1000,230" fill="none" stroke="#1e3a5f" strokeWidth="1.2" />
-            <text x="30" y="235" fill="#475569" fontSize="9" fontFamily="monospace">-450m ISOBATH</text>
+            <text x="30" y="235" fill="#475569" fontSize="9" fontFamily="monospace">-428m PRYDZ TROUGH</text>
 
             <path d="M 0,320 Q 300,290 600,340 T 1000,310" fill="none" stroke="#1e3a5f" strokeWidth="1" strokeDasharray="6,6" />
-            <text x="30" y="315" fill="#475569" fontSize="9" fontFamily="monospace">-620m ISOBATH</text>
+            <text x="30" y="315" fill="#475569" fontSize="9" fontFamily="monospace">-650m AMERY DEPRESSION</text>
 
             {/* Seafloor Trench Subduction Ridge */}
             <path d="M 0,390 Q 200,370 400,385 T 800,360 T 1000,375 L 1000,440 L 0,440 Z" fill="#030b17" stroke="#1e293b" strokeWidth="2" />
-            <text x="450" y="420" fill="#334155" fontSize="10" fontFamily="monospace" letterSpacing="3">KERGUELEN SUBSEA TRENCH (1,250m)</text>
+            <text x="380" y="420" fill="#38bdf8" fontSize="10" fontFamily="monospace" letterSpacing="3">PRYDZ CHANNEL DEPRESSION (850m) — BHARATI COASTAL SECTOR</text>
 
             {/* ── AUV SONAR SWATH COVERAGE CORRIDOR (±150m SWATH) ── */}
             <path d="M 80,110 L 280,160 L 480,125 L 680,210 L 880,150 L 900,190 L 700,250 L 500,165 L 300,200 L 100,150 Z" 
@@ -229,7 +237,7 @@ ${wptXml}
               {/* Info Label Box */}
               <rect x="14" y="-34" width="180" height="42" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#94a3b8" strokeWidth="0.8" />
               <text x="22" y="-20" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">GHOST NET CLUSTER</text>
-              <text x="22" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 54.23°S, 72.01°E | 428m</text>
+              <text x="22" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 69.38°S, 76.12°E | 428m (PRYDZ)</text>
               <text x="22" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 94.2% (VERIFIED SHADOW)</text>
             </g>
 
@@ -240,7 +248,7 @@ ${wptXml}
               {/* Info Label Box */}
               <rect x="14" y="-34" width="180" height="42" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#94a3b8" strokeWidth="0.8" />
               <text x="22" y="-20" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">SUBSEA UXO / MINE SITE</text>
-              <text x="22" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 54.18°S, 71.92°E | 395m</text>
+              <text x="22" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 69.41°S, 76.05°E | 395m (SHELF)</text>
               <text x="22" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 91.4% (METALLIC CYLINDER)</text>
             </g>
 
@@ -251,7 +259,7 @@ ${wptXml}
               {/* Info Label Box */}
               <rect x="16" y="-34" width="180" height="42" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#94a3b8" strokeWidth="0.8" />
               <text x="24" y="-20" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">SHIPWRECK HULL (65m)</text>
-              <text x="24" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 54.31°S, 72.24°E | 442m</text>
+              <text x="24" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 69.35°S, 76.29°E | 442m (AMERY)</text>
               <text x="24" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 92.8% (HIGH 3D RELIEF)</text>
             </g>
 
@@ -262,7 +270,7 @@ ${wptXml}
               {/* Info Label Box */}
               <rect x="14" y="-30" width="170" height="38" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#94a3b8" strokeWidth="0.8" />
               <text x="22" y="-18" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">SUBSEA TELECOM CABLE</text>
-              <text x="22" y="-6" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 54.27°S, 72.15°E | 415m</text>
+              <text x="22" y="-6" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 69.40°S, 76.18°E | 215m (BHARATI)</text>
               <text x="22" y="4" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 93.2% (CONTINUOUS)</text>
             </g>
 
@@ -273,7 +281,7 @@ ${wptXml}
               {/* Info Label Box */}
               <rect x="-170" y="-34" width="160" height="42" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#94a3b8" strokeWidth="0.8" />
               <text x="-162" y="-20" fill="#94a3b8" fontSize="10" fontFamily="monospace" fontWeight="bold">HAZARDOUS DRUM FIELD</text>
-              <text x="-162" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 54.14°S, 72.08°E | 360m</text>
+              <text x="-162" y="-8" fill="#94a3b8" fontSize="8" fontFamily="monospace">LOC: 69.44°S, 76.21°E | 360m (QUILTY)</text>
               <text x="-162" y="2" fill="#94a3b8" fontSize="8" fontFamily="monospace" fontWeight="bold">CONF: 86.5% (CYLINDRICAL)</text>
             </g>
 
@@ -286,7 +294,7 @@ ${wptXml}
               <ellipse cx="0" cy="0" rx="14" ry="7" fill="#94a3b8" stroke="#1e293b" strokeWidth="1.5" />
               <circle cx="10" cy="0" r="3.5" fill="#94a3b8" />
               <rect x="-14" y="-3" width="3" height="6" fill="#1e293b" />
-              <text x="-30" y="22" fill="#94a3b8" fontSize="9" fontFamily="monospace" fontWeight="bold">MATSYA 6000 (LIVE)</text>
+              <text x="-36" y="22" fill="#38bdf8" fontSize="9" fontFamily="monospace" fontWeight="bold">MATSYA 6000 / AQUILA (LIVE)</text>
             </g>
 
             {/* Compass Rose */}
@@ -431,8 +439,15 @@ ${wptXml}
           <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-lg p-5 relative overflow-hidden">
             <div className="absolute top-0 right-0 px-3 py-1 bg-slate-800/60 text-slate-400 text-[10px] font-bold tracking-widest rounded-bl-lg">CRITICAL</div>
             <h4 className="font-mono text-white text-lg mb-1 mt-2 flex items-center gap-2"><Target className="w-4 h-4 text-slate-400" /> FINDING 001</h4>
-            <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 54.23°S, 72.01°E | GHOST NET CONCENTRATION</div>
-            <p className="text-sm text-slate-300 leading-relaxed mb-4">Anomalous debris concentration detected across 2.3km² sector. Sonar signature consistent with derelict fishing gear entanglement.</p>
+            <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 69.38°S, 76.12°E | GHOST NET CONCENTRATION (PRYDZ BAY)</div>
+            <div className="grid grid-cols-2 gap-2 mb-4 bg-slate-950/50 p-2 rounded-lg border border-slate-700/30">
+              <div className="text-[10px] text-slate-500 font-mono">SECTOR COVERAGE</div>
+              <div className="text-[11px] text-slate-300 font-bold text-right">2.3 km² (BHARATI ZONE)</div>
+              <div className="text-[10px] text-slate-500 font-mono">SIGNATURE MATCH</div>
+              <div className="text-[11px] text-cyan-400 font-bold text-right">DERELICT FISHING GEAR</div>
+              <div className="text-[10px] text-slate-500 font-mono">THREAT LEVEL</div>
+              <div className="text-[11px] text-[#ff453a] font-bold text-right">CRITICAL ENTANGLEMENT</div>
+            </div>
             <div className="bg-black/20 p-3 rounded mb-4 text-xs font-mono text-slate-400">
               <div className="flex justify-between mb-1"><span>Confidence Level</span> <span className="text-[#34c759]">94.2%</span></div>
               <div className="w-full h-1 bg-slate-800 rounded-md"><div className="h-full bg-green-500 rounded-md" style={{width: '94.2%'}}></div></div>
@@ -447,8 +462,15 @@ ${wptXml}
           <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-700 rounded-lg p-5 relative overflow-hidden">
             <div className="absolute top-0 right-0 px-3 py-1 bg-slate-800/60 text-slate-300 text-[10px] font-bold tracking-widest rounded-bl-lg">HIGH</div>
             <h4 className="font-mono text-white text-lg mb-1 mt-2 flex items-center gap-2"><Target className="w-4 h-4 text-slate-300" /> FINDING 002</h4>
-            <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 55.11°S, 71.44°E | SHIPWRECK SIGNATURE</div>
-            <p className="text-sm text-slate-300 leading-relaxed mb-4">Large acoustic shadow consistent with 40-80m vessel wreck. Preliminary classification: merchant vessel, circa 1970-1990.</p>
+            <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 69.35°S, 76.29°E | SHIPWRECK SIGNATURE (AMERY RIM)</div>
+            <div className="grid grid-cols-2 gap-2 mb-4 bg-slate-950/50 p-2 rounded-lg border border-slate-700/30">
+              <div className="text-[10px] text-slate-500 font-mono">ACOUSTIC SHADOW</div>
+              <div className="text-[11px] text-slate-300 font-bold text-right">65m LENGTH (VESSEL)</div>
+              <div className="text-[10px] text-slate-500 font-mono">CLASSIFICATION</div>
+              <div className="text-[11px] text-amber-400 font-bold text-right">MERCHANT VESSEL</div>
+              <div className="text-[10px] text-slate-500 font-mono">EST. ERA</div>
+              <div className="text-[11px] text-slate-300 font-bold text-right">1970-1990</div>
+            </div>
             <div className="bg-black/20 p-3 rounded mb-4 text-xs font-mono text-slate-400">
               <div className="flex justify-between mb-1"><span>RT-DETR Baseline Confidence</span> <span className="text-slate-300">35.4% mAP50</span></div>
               <div className="w-full h-1 bg-slate-800 rounded-md"><div className="h-full bg-slate-800/60 rounded-md" style={{width: '35.4%'}}></div></div>
@@ -463,8 +485,15 @@ ${wptXml}
           <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-700 rounded-lg p-5 relative overflow-hidden">
             <div className="absolute top-0 right-0 px-3 py-1 bg-blue-500/20 text-zinc-300 text-[10px] font-bold tracking-widest rounded-bl-lg">MODERATE</div>
             <h4 className="font-mono text-white text-lg mb-1 mt-2 flex items-center gap-2"><Target className="w-4 h-4 text-zinc-300" /> FINDING 003</h4>
-            <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 53.88°S, 73.21°E | THERMAL ANOMALY</div>
-            <p className="text-sm text-slate-300 leading-relaxed mb-4">Localised temperature deviation of +2.1°C above baseline. Possible hydrothermal vent or industrial discharge source.</p>
+            <div className="text-xs font-mono text-slate-500 mb-4 border-b border-slate-700/50 pb-2">LOC: 69.41°S, 76.18°E | THERMAL ANOMALY (PRYDZ BAY)</div>
+            <div className="grid grid-cols-2 gap-2 mb-4 bg-slate-950/50 p-2 rounded-lg border border-slate-700/30">
+              <div className="text-[10px] text-slate-500 font-mono">THERMAL DEVIATION</div>
+              <div className="text-[11px] text-[#ff453a] font-bold text-right">+2.1°C (ABOVE BASELINE)</div>
+              <div className="text-[10px] text-slate-500 font-mono">PRIMARY HYPOTHESIS</div>
+              <div className="text-[11px] text-amber-400 font-bold text-right">HYDROTHERMAL VENT</div>
+              <div className="text-[10px] text-slate-500 font-mono">VALIDATION</div>
+              <div className="text-[11px] text-emerald-400 font-bold text-right">SATELLITE SST SYNCED</div>
+            </div>
             <div className="bg-black/20 p-3 rounded mb-4 text-xs font-mono text-slate-400">
                <div className="flex justify-between mb-1"><span>Sensor Consensus</span> <span className="text-zinc-300">Verified</span></div>
                <div className="mt-2 text-slate-500">Evidence: CTD sensor array, cross-validated with satellite SST</div>
@@ -585,7 +614,7 @@ ${wptXml}
             <span className="font-mono text-slate-500">01.</span>
             <div>
               <span className="px-2 py-0.5 bg-slate-800/60 text-slate-400 text-[10px] font-bold rounded mr-2">URGENT</span>
-              <span className="text-sm text-slate-200">Deploy RV Sagar Nidhi for debris retrieval at coordinates 54.23°S 72.01°E within 72 hours.</span>
+              <span className="text-sm text-slate-200">Deploy RV Sagar Nidhi for debris retrieval at coordinates 69.38°S 76.12°E (Bharati Station / Prydz Bay Sector) within 72 hours.</span>
             </div>
           </div>
           
@@ -601,7 +630,7 @@ ${wptXml}
             <span className="font-mono text-slate-500">03.</span>
             <div>
               <span className="px-2 py-0.5 bg-slate-800/60 text-slate-300 text-[10px] font-bold rounded mr-2">HIGH</span>
-              <span className="text-sm text-slate-200">Re-task satellite imaging (Resourcesat-2) for sustained monitoring of Sector 7G thermal anomaly.</span>
+              <span className="text-sm text-slate-200">Re-task satellite imaging (Resourcesat-2 / INSAT-3DR) for sustained monitoring of Prydz Bay / Larsemann Hills thermal anomaly.</span>
             </div>
           </div>
 
@@ -625,7 +654,7 @@ ${wptXml}
 
       {/* SECTION 7: EXPORT ACTIONS */}
       <div className="space-y-4 pt-4 border-t border-slate-700/50">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <button
             type="button"
             onClick={handleExportPDF}
@@ -658,7 +687,7 @@ ${wptXml}
           <button
             type="button"
             onClick={handleShareSatcom}
-            className={`flex items-center gap-2 px-4 py-2 rounded text-sm transition-all border ml-auto active:scale-95 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded text-sm transition-all border active:scale-95 ${
               satcomTransmission
                 ? 'bg-slate-800/60 border-slate-600 text-slate-200 shadow-[0_0_10px_rgba(14,165,233,0.2)]'
                 : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-600'
@@ -666,11 +695,17 @@ ${wptXml}
           >
             <Share2 className="w-4 h-4" /> {satcomTransmission ? 'SATCOM UPLINK ACTIVE [VIEW]' : 'SHARE VIA SATCOM'}
           </button>
+          <Link
+            to="/system-architecture"
+            className="flex items-center gap-2 px-4 py-2 bg-cyan-950/50 hover:bg-cyan-900/70 text-cyan-300 rounded text-sm transition-all border border-cyan-500/40 active:scale-95 ml-auto shadow-[0_0_12px_rgba(6,182,212,0.15)]"
+          >
+            <Cpu className="w-4 h-4 text-cyan-400" /> PROPOSED ARCHITECTURE &rarr;
+          </Link>
         </div>
 
         {/* MoES In-App Submission Banner */}
         {moesSubmission && (
-          <div className="p-4 bg-slate-900/60 backdrop-blur-sm border-2 border-slate-600 rounded-lg shadow-lg relative animate-fade-in text-slate-100">
+          <div className="p-4 bg-slate-900/80 backdrop-blur-md border border-cyan-500/40 rounded-lg shadow-xl relative animate-fade-in text-slate-100">
             <button
               type="button"
               onClick={() => setMoesSubmission(null)}
@@ -680,35 +715,49 @@ ${wptXml}
               <X className="w-4 h-4" />
             </button>
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-slate-500/20 text-slate-300 rounded-md border border-slate-600">
+              <div className="p-2 bg-emerald-500/20 text-emerald-300 rounded-md border border-emerald-500/40">
                 <ShieldCheck className="w-5 h-5 text-emerald-400" />
               </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-sm text-slate-300">
+              <div className="space-y-3 flex-1">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono font-bold text-sm text-white">
                     MoES &amp; INCOIS CENTRAL DASHBOARD TRANSMISSION CONFIRMED
                   </span>
-                  <span className="px-2 py-0.5 bg-emerald-900/40 text-emerald-400 text-[10px] font-mono font-bold rounded border border-slate-600">
+                  <span className="px-2 py-0.5 bg-emerald-900/40 text-emerald-400 text-[10px] font-mono font-bold rounded border border-emerald-500/30">
                     {moesSubmission.status}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300">
-                  Tactical threat dossier and 5 subsea detections successfully pushed to Ministry of Earth Sciences Ocean Portal (INCOIS Integrated Coastal and Ocean Observation System).
-                </p>
-                <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-slate-400">
-                  <div>REFERENCE ID: <span className="text-slate-300 font-bold">{moesSubmission.refId}</span></div>
-                  <div>TRANSMISSION TIMESTAMP: <span className="text-cyan-300 font-semibold">{moesSubmission.timestamp}</span></div>
-                  <div>TARGETS LOGGED: <span className="text-cyan-300 font-semibold">5 High-Priority Contacts</span></div>
-                  <div>SECURITY: <span className="text-slate-300 font-semibold">TLS 1.3 / SHA-256 SIGNED</span></div>
+
+                {/* 3-Column Scannable Spec Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
+                  <div className="bg-slate-950/70 px-3 py-1.5 rounded border border-slate-700/60">
+                    <span className="text-slate-400 block text-[9px] uppercase tracking-wider">TARGET PORTAL</span>
+                    <span className="text-emerald-400 font-bold">INCOIS ICOOS GATEWAY</span>
+                  </div>
+                  <div className="bg-slate-950/70 px-3 py-1.5 rounded border border-slate-700/60">
+                    <span className="text-slate-400 block text-[9px] uppercase tracking-wider">PAYLOAD DELIVERED</span>
+                    <span className="text-cyan-300 font-bold">5 VERIFIED CONTACT DOSSIERS</span>
+                  </div>
+                  <div className="bg-slate-950/70 px-3 py-1.5 rounded border border-slate-700/60">
+                    <span className="text-slate-400 block text-[9px] uppercase tracking-wider">STATION LINK</span>
+                    <span className="text-slate-200 font-bold">BHARATI &amp; MAITRI NODES</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono text-slate-400 border-t border-slate-800 pt-2">
+                  <div>REF ID: <span className="text-slate-200 font-bold">{moesSubmission.refId}</span></div>
+                  <div>TIMESTAMP: <span className="text-cyan-300 font-semibold">{moesSubmission.timestamp}</span></div>
+                  <div>TARGETS: <span className="text-cyan-300 font-semibold">5 Priority Contacts</span></div>
+                  <div>SECURITY: <span className="text-emerald-400 font-semibold">TLS 1.3 / SHA-256</span></div>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Satcom Uplink Simulation Banner */}
+        {/* Satcom Uplink Telemetry Banner */}
         {satcomTransmission && (
-          <div className="p-4 bg-slate-800/60 border-2 border-slate-600 rounded-lg shadow-lg relative animate-fade-in text-slate-100">
+          <div className="p-4 bg-slate-900/80 backdrop-blur-md border border-cyan-500/40 rounded-lg shadow-xl relative animate-fade-in text-slate-100">
             <button
               type="button"
               onClick={() => setSatcomTransmission(null)}
@@ -718,26 +767,40 @@ ${wptXml}
               <X className="w-4 h-4" />
             </button>
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-slate-800/60 text-slate-300 rounded-md border border-slate-600">
-                <Share2 className="w-5 h-5 text-blue-400" />
+              <div className="p-2 bg-blue-500/20 text-blue-300 rounded-md border border-blue-500/40">
+                <Share2 className="w-5 h-5 text-cyan-400" />
               </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-sm text-slate-300">
-                    SATCOM BURST UPLINK SIMULATION — TRANSMISSION COMPLETE
+              <div className="space-y-3 flex-1">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono font-bold text-sm text-white">
+                    INSAT-3DR SATCOM BURST UPLINK — CONFIRMED
                   </span>
-                  <span className="px-2 py-0.5 bg-slate-800/60 text-slate-200 text-[10px] font-mono font-bold rounded border border-slate-600">
+                  <span className="px-2 py-0.5 bg-cyan-900/40 text-cyan-300 text-[10px] font-mono font-bold rounded border border-cyan-500/30">
                     {satcomTransmission.status}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300">
-                  Compressed tactical telemetry payload modulated and uplinked via Argos-4 / INSAT MSS subsea burst modem transponder.
-                </p>
-                <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-slate-400">
-                  <div>CARRIER FREQUENCY: <span className="text-slate-200 font-bold">{satcomTransmission.frequency}</span></div>
-                  <div>PACKET CHECKSUM: <span className="text-slate-200 font-bold">{satcomTransmission.checksum}</span></div>
-                  <div>FRAME PAYLOAD: <span className="text-cyan-300 font-semibold">{satcomTransmission.packetBytes} bytes (L-Band Burst)</span></div>
-                  <div>UPLINK TIMESTAMP: <span className="text-cyan-300 font-semibold">{satcomTransmission.timestamp}</span></div>
+
+                {/* 3-Column Scannable Spec Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
+                  <div className="bg-slate-950/70 px-3 py-1.5 rounded border border-slate-700/60">
+                    <span className="text-slate-400 block text-[9px] uppercase tracking-wider">TRANSPONDER</span>
+                    <span className="text-blue-300 font-bold">INSAT-3DR / ARGOS-4 MSS</span>
+                  </div>
+                  <div className="bg-slate-950/70 px-3 py-1.5 rounded border border-slate-700/60">
+                    <span className="text-slate-400 block text-[9px] uppercase tracking-wider">CARRIER FREQUENCY</span>
+                    <span className="text-cyan-300 font-bold">401.65 MHz (UHF L-Band)</span>
+                  </div>
+                  <div className="bg-slate-950/70 px-3 py-1.5 rounded border border-slate-700/60">
+                    <span className="text-slate-400 block text-[9px] uppercase tracking-wider">COMPRESSION RATIO</span>
+                    <span className="text-emerald-400 font-bold">18.4:1 LOSSLESS PACKET</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono text-slate-400 border-t border-slate-800 pt-2">
+                  <div>CHECKSUM: <span className="text-slate-200 font-bold">{satcomTransmission.checksum}</span></div>
+                  <div>PAYLOAD: <span className="text-cyan-300 font-semibold">{satcomTransmission.packetBytes} bytes (Burst)</span></div>
+                  <div>DOWNLINK: <span className="text-slate-200 font-semibold">Bharati &amp; Maitri</span></div>
+                  <div>TIMESTAMP: <span className="text-cyan-300 font-semibold">{satcomTransmission.timestamp}</span></div>
                 </div>
               </div>
             </div>
@@ -745,45 +808,168 @@ ${wptXml}
         )}
       </div>
 
-    
       {/* SECTION 4: PHASE 2 MISSION ROADMAP */}
-      <div className="bg-slate-900/60 backdrop-blur-sm/60 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6 mt-8 shadow-md relative overflow-hidden">
+      <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6 mt-8 shadow-md relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-          <TrendingUp className="w-48 h-48 text-zinc-300" />
+          <TrendingUp className="w-48 h-48 text-cyan-400" />
         </div>
-        <h2 className="text-xl font-mono font-bold text-zinc-300 mb-6 flex items-center gap-3">
-          <ShieldCheck className="w-6 h-6" />
-          PHASE 2 STRATEGIC ROADMAP (MINISTRY OF EARTH SCIENCES)
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 relative z-10 border-b border-slate-700/50 pb-4">
+          <div>
+            <h2 className="text-xl font-mono font-bold text-white flex items-center gap-3">
+              <ShieldCheck className="w-6 h-6 text-emerald-400" />
+              PHASE 2 STRATEGIC ROADMAP (MINISTRY OF EARTH SCIENCES)
+            </h2>
+            <p className="text-xs font-mono text-slate-400 mt-1">
+              Antarctic Mission Deployment Protocols · Bharati &amp; Maitri Operational Corridor
+            </p>
+          </div>
+          <Link
+            to="/system-architecture"
+            className="px-3.5 py-2 bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-300 border border-cyan-500/40 hover:border-cyan-400 rounded-md text-xs font-mono font-bold flex items-center gap-2 transition-all shadow-[0_0_12px_rgba(6,182,212,0.15)] group"
+          >
+            <Cpu className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+            <span>INSPECT PROPOSED SYSTEM ARCHITECTURE &rarr;</span>
+          </Link>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-          <div className="bg-transparent border border-slate-700/50 p-5 rounded-lg">
-            <h3 className="text-slate-300 font-bold font-mono text-sm mb-2">1. SYNTHETIC SONAR DATA ENGINE</h3>
-            <p className="text-slate-400 text-xs font-mono leading-relaxed">
-              To overcome the global scarcity of SSS data, we are integrating <strong>CycleGANs</strong> and <strong>Unreal Engine 5</strong>. We will ray-trace acoustic waves off 3D shipwrecks to generate 10,000+ synthetic sonar images, unlocking larger datasets to evaluate advanced hybrid transformer backbones while maintaining YOLOv8ss as the primary edge deployment model.
-            </p>
+          
+          {/* Card 1: Neural Acoustic Augmentation Engine */}
+          <div className="bg-slate-950/70 border border-slate-700/60 hover:border-cyan-500/40 p-5 rounded-lg transition-all">
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="text-cyan-300 font-bold font-mono text-sm flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-cyan-400" />
+                1. NEURAL ACOUSTIC AUGMENTATION ENGINE
+              </h3>
+              <span className="px-2 py-0.5 bg-cyan-950/60 text-cyan-400 text-[10px] font-mono font-bold rounded border border-cyan-800/60">
+                PHASE 2 - R&amp;D
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono mb-3">
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">ACOUSTIC SYNTHESIS</span>
+                <span className="text-white font-bold">CycleGAN + Ray-Tracing</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">DATASET TARGET</span>
+                <span className="text-emerald-400 font-bold">10,000+ SSS Waterfalls</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">PRIMARY EDGE CORE</span>
+                <span className="text-cyan-300 font-bold">YOLOv8s INT8 TensorRT</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">LATENCY BUDGET</span>
+                <span className="text-white font-bold">&lt; 24.2 ms / Ping Slice</span>
+              </div>
+            </div>
+            <div className="text-xs text-slate-300 font-mono bg-cyan-950/20 p-2 rounded border border-cyan-900/30">
+              <span className="text-cyan-400 font-bold">&bull; STRATEGIC IMPACT:</span> Bypasses global sonar scarcity to pre-train subsea classifiers before Antarctic polar sort.
+            </div>
           </div>
           
-          <div className="bg-transparent border border-slate-700/50 p-5 rounded-lg">
-            <h3 className="text-zinc-300 font-bold font-mono text-sm mb-2">2. AUTONOMOUS SWARM ARCHITECTURE</h3>
-            <p className="text-slate-400 text-xs font-mono leading-relaxed">
-              By reducing unit costs from ₹30 Lakhs to ₹75,000, we will deploy a <strong>Swarm of 40 ultra-cheap autonomous floats</strong> communicating via underwater acoustic modems to rapidly map massive sectors of the Indian Ocean simultaneously.
-            </p>
+          {/* Card 2: Autonomous Swarm Architecture */}
+          <div className="bg-slate-950/70 border border-slate-700/60 hover:border-emerald-500/40 p-5 rounded-lg transition-all">
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="text-emerald-300 font-bold font-mono text-sm flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                2. AUTONOMOUS SWARM ARCHITECTURE
+              </h3>
+              <span className="px-2 py-0.5 bg-emerald-950/60 text-emerald-400 text-[10px] font-mono font-bold rounded border border-emerald-800/60">
+                PHASE 2 - SCALE
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono mb-3">
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">COST RATIO</span>
+                <span className="text-emerald-400 font-bold">₹75k vs ₹30L (97.5% Off)</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">SWARM DIMENSION</span>
+                <span className="text-white font-bold">40 Synchronized Nodes</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">ACOUSTIC MESH</span>
+                <span className="text-cyan-300 font-bold">18-34 kHz FSK Inter-Node</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">COVERAGE YIELD</span>
+                <span className="text-white font-bold">1,940 km² Synoptic Area</span>
+              </div>
+            </div>
+            <div className="text-xs text-slate-300 font-mono bg-emerald-950/20 p-2 rounded border border-emerald-900/30">
+              <span className="text-emerald-400 font-bold">&bull; STRATEGIC IMPACT:</span> Delivers distributed synoptic spatial mapping across Prydz Bay without requiring high-cost crewed mother vessels.
+            </div>
           </div>
           
-          <div className="bg-transparent border border-slate-700/50 p-5 rounded-lg">
-            <h3 className="text-slate-300 font-bold font-mono text-sm mb-2">3. POLAR-RATED ENERGY ARCHITECTURE</h3>
-            <p className="text-slate-400 text-xs font-mono leading-relaxed">
-              Transitioning from standard lab bench power to subsea <strong>LiFePO4 cold-rated battery cells</strong> (-20°C operating rating, retaining 70-80% capacity in polar waters) supplemented by solar surface-recharging buoys for multi-month mission endurance.
-            </p>
+          {/* Card 3: Polar-Rated Energy Architecture */}
+          <div className="bg-slate-950/70 border border-slate-700/60 hover:border-blue-500/40 p-5 rounded-lg transition-all">
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="text-blue-300 font-bold font-mono text-sm flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-blue-400" />
+                3. POLAR-RATED ENERGY ARCHITECTURE
+              </h3>
+              <span className="px-2 py-0.5 bg-blue-950/60 text-blue-400 text-[10px] font-mono font-bold rounded border border-blue-800/60">
+                PHASE 2 - TESTING
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono mb-3">
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">CELL CHEMISTRY</span>
+                <span className="text-white font-bold">Solid-State LiFePO4</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">THERMAL RATING</span>
+                <span className="text-cyan-300 font-bold">-20°C (75% Retention)</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">RECHARGE MODE</span>
+                <span className="text-white font-bold">Wave/Solar Dock Buoy</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">MISSION ENDURANCE</span>
+                <span className="text-emerald-400 font-bold">90-Day Polar Patrol</span>
+              </div>
+            </div>
+            <div className="text-xs text-slate-300 font-mono bg-blue-950/20 p-2 rounded border border-blue-900/30">
+              <span className="text-blue-400 font-bold">&bull; STRATEGIC IMPACT:</span> Harnesses compute heat to prevent cell freezing in -1.8°C seawater, supporting multi-month Antarctic endurance.
+            </div>
           </div>
           
-          <div className="bg-transparent border border-slate-700/50 p-5 rounded-lg">
-            <h3 className="text-zinc-300 font-bold font-mono text-sm mb-2">4. INCOIS & NAVY INTEGRATION</h3>
-            <p className="text-slate-400 text-xs font-mono leading-relaxed">
-              Operationalizing the platform for the Government of India by routing our MQTT AI detection streams directly into the <strong>INCOIS (Indian National Centre for Ocean Information Services)</strong> API for real-time Coast Guard intelligence.
-            </p>
+          {/* Card 4: INCOIS & Navy Integration */}
+          <div className="bg-slate-950/70 border border-slate-700/60 hover:border-amber-500/40 p-5 rounded-lg transition-all">
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="text-amber-300 font-bold font-mono text-sm flex items-center gap-2">
+                <Target className="w-4 h-4 text-amber-400" />
+                4. INCOIS &amp; NAVY INTEGRATION
+              </h3>
+              <span className="px-2 py-0.5 bg-amber-950/60 text-amber-400 text-[10px] font-mono font-bold rounded border border-amber-800/60">
+                PHASE 2 - DEPLOYMENT
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono mb-3">
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">CENTRAL HUB</span>
+                <span className="text-white font-bold">INCOIS Ocean Data API</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">RECIPIENTS</span>
+                <span className="text-amber-300 font-bold">Coast Guard &amp; Navy Hydro</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">ALERT LATENCY</span>
+                <span className="text-emerald-400 font-bold">&lt; 5 Min Tactical Push</span>
+              </div>
+              <div className="bg-slate-900/80 p-2 rounded border border-slate-800">
+                <span className="text-slate-400 text-[9px] block">DATA STANDARD</span>
+                <span className="text-cyan-300 font-bold">CCAMLR / OGC SOS Schema</span>
+              </div>
+            </div>
+            <div className="text-xs text-slate-300 font-mono bg-amber-950/20 p-2 rounded border border-amber-900/30">
+              <span className="text-amber-400 font-bold">&bull; STRATEGIC IMPACT:</span> Direct autonomous bridge feeds high-priority maritime threat and ecology dossiers into sovereign command consoles.
+            </div>
           </div>
+
         </div>
       </div>
 </div>

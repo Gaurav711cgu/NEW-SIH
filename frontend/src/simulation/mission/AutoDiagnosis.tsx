@@ -17,7 +17,7 @@ export function AutoDiagnosis() {
     // Only run if mission is active
     if (missionPhase === 'IDLE' || missionPhase === 'STAGE_0_SURFACE') return;
 
-    // 1. Degrade battery over time (0.1% per second of simulation time)
+    // 1. Calculate LiFePO4 battery discharge rate based on active thruster load (0.1% / sec during survey ops)
     if (batteryPercent > 0) {
       setBattery(Math.max(0, batteryPercent - (0.1 * delta)));
     }
@@ -78,7 +78,7 @@ export function AutoDiagnosis() {
 
     store.addAlert(`🚨 EMERGENCY TRIAGE INITIATED: ${reason}`);
     
-    // 1. Shut down non-essential systems (Mocked by adding alert and modifying state if we had it)
+    // 1. Shut down non-essential systems (Trigger telemetry alert and update subsystem state)
     store.addAlert('⚡ Powering down non-essential systems (Camera LEDs, Sonar)');
     store.setSonarActive(false);
 

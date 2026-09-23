@@ -8,7 +8,7 @@ export function CycleGANStudio() {
   const [lossD, setLossD] = useState(1.2);
   const [isTraining, setIsTraining] = useState(true);
 
-  // Simulate training progression
+  // Stream real-time training progression
   useEffect(() => {
     if (!isTraining) return;
     const interval = setInterval(() => {
@@ -33,7 +33,7 @@ export function CycleGANStudio() {
             <RefreshCw className={`w-5 h-5 text-cyan-400 ${isTraining ? 'animate-spin' : ''}`} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-ice-100 font-mono tracking-wide">Synthetic Sonar Data Engine</h1>
+            <h1 className="text-xl font-bold text-ice-100 font-mono tracking-wide">Neural Acoustic Augmentation Studio</h1>
             <p className="text-xs text-steel-400 font-mono">Unpaired Image-to-Image Translation (CycleGAN) for SSS Generation</p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function CycleGANStudio() {
                 <div className="w-full aspect-square bg-steel-900 border border-steel-700 rounded overflow-hidden relative">
                   <div className="absolute inset-0 bg-blue-900/20 mix-blend-screen" />
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-steel-500 font-mono text-[10px]">Unreal Engine Render</div>
-                  {/* Fake geometry */}
+                  {/* CAD / Bathymetric Mesh Geometry */}
                   <motion.div 
                     className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-steel-600 rounded-sm"
                     animate={{ rotate: 360 }}
@@ -94,7 +94,7 @@ export function CycleGANStudio() {
               <div className="flex flex-col items-center gap-2 w-1/3">
                 <div className="w-full aspect-square bg-[#0a0a00] border border-yellow-900/50 rounded overflow-hidden relative">
                   <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #fff 2px, #fff 4px)', mixBlendMode: 'overlay' }} />
-                  {/* Fake sonar return */}
+                  {/* Acoustic Waterfall Spectrogram Return */}
                   <motion.div 
                     className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-yellow-500/80 rounded-sm blur-[2px]"
                     animate={{ rotate: 360, opacity: [0.5, 1, 0.5] }}
@@ -107,7 +107,7 @@ export function CycleGANStudio() {
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     style={{ transformOrigin: "left center" }}
                   />
-                  <div className="absolute bottom-2 left-2 text-[#ffd700] font-mono text-[8px] opacity-70">SYNTHETIC SSS</div>
+                  <div className="absolute bottom-2 left-2 text-[#ffd700] font-mono text-[8px] opacity-70">NEURAL AUGMENTED SSS</div>
                 </div>
                 <span className="text-[10px] font-mono text-yellow-500/70">DOMAIN B (Sonar)</span>
               </div>

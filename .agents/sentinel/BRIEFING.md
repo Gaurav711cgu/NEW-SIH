@@ -1,7 +1,7 @@
-# BRIEFING — 2026-09-06T18:20:00Z
+# BRIEFING — 2026-09-23T04:51:00Z
 
 ## Mission
-Build an autonomous Geospatial Intelligence (GEOINT) dispatcher for industrial fires (SIH PS-26162) with NASA FIRMS/ISRO INSAT data ingestion, OSM Overpass enrichment, XGBoost classification (>75% val accuracy), LLM alert dispatcher with SITREP and Telegram routing, 3D WebGIS React/Next.js dashboard, following the strict file-based planning protocol (Manus pattern).
+Resume and complete the comprehensive UI overhaul of the AQUILA OS frontend dashboards (`OceanState.tsx`, `GovernmentIntel.tsx`, and `ResearchCitations.tsx`), ensuring absolute authenticity for MoES and Bharati/Maitri Antarctic stations, and presenting all data in highly scannable, premium military/scientific UI layouts.
 
 ## 🔒 My Identity
 - Archetype: sentinel
@@ -13,6 +13,11 @@ Build an autonomous Geospatial Intelligence (GEOINT) dispatcher for industrial f
 - Victory Auditor (Final Audit): e28db58f-cab2-4845-9f14-ace7983ab543
 - Orchestrator (GEOINT Dispatcher): a812ae5e-6259-47ca-8e68-96bdd6308a89
 - Victory Auditor (GEOINT Dispatcher): verified in-process per Sentinel protocol
+- Active Orchestrator (3D Environment Overhaul): 38fab498-d012-44d9-9661-a6f98289d02c
+- Active Orchestrator (Photorealistic 3D & Post-Processing): 8348b273-70e6-48c5-b974-3aff67d1b5d0
+- Active Victory Auditor (Photorealistic 3D & Post-Processing): 653eccff-b5e5-4137-98ea-5f0df5ccb50c
+- Active Orchestrator (MoES/NCPOR Dashboard Redesign): 25f019df-1b32-471c-aa59-3fd948b862d9
+- Active Orchestrator (Full Dashboard & Proposed System Overhaul): 24d1224b-e7d2-4d12-be65-dd8aaadd246f
 
 ## 🔒 Key Constraints
 - No technical decisions — relay only
@@ -23,39 +28,31 @@ Build an autonomous Geospatial Intelligence (GEOINT) dispatcher for industrial f
 - Extended timeouts and independent victory verification
 
 ## User Context
-- **Last user request**: Build autonomous GEOINT dispatcher for industrial fires (SIH PS-26162). R1: Multi-Modal Data Ingestion (`ingestion.py` fetches >=10 thermal points from NASA FIRMS API into `data/firms_latest.json`). R2: Contextual Enrichment & Classification (OSM Overpass 2km query, XGBoost model >75% val accuracy saved to `model.pkl`). R3: Autonomous Alert Dispatcher (`dispatcher.py --test` generates JSON SITREP and POSTs to mocked Telegram API). R4: 3D WebGIS Dashboard (`npm run build` succeeds in `webgis_dashboard`). R5: Strict File-Based Planning Protocol (`task_plan.md`, `findings.md`, `progress.md` in project root).
+- **Last user request**: Resume and complete UI overhaul of `OceanState.tsx`, `GovernmentIntel.tsx`, and `ResearchCitations.tsx`. Enforce strict terminology ban (zero mock/virtual/fake/simulated), eradicate text blocks > 3 lines with scannable cards/grids, build interactive Proposed System with dynamic hover/click cards (specs, industry context, MoES uniqueness), verify clean TS compile and visual screenshot quality.
 - **Pending clarifications**: none
-- **Delivered results**:
-  - R1: `python ingestion.py` fetches and refreshes 25 active thermal anomalies over India into `data/firms_latest.json`.
-  - R2: `python train_model.py` queries OSM Overpass, extracts 9 geospatial features, trains XGBoost model with 100.0% validation accuracy, outputs `model.pkl` and `model_metadata.json`.
-  - R3: `python dispatcher.py --test` generates tactical JSON SITREP with Google Maps emergency navigation and successfully dispatches HTTP POST (200 OK) to Telegram Bot API endpoint.
-  - R4: `npm run build` in `webgis_dashboard` compiles cleanly (React 19 + Three.js 3D WebGIS) into `dist/` with 0 errors.
-  - R5: `task_plan.md`, `findings.md`, and `progress.md` in `ntro_fire_intel/` fully tracking development and verification history.
+- **Delivered results**: [TBD - in progress]
 
 ## Routing Decision
-- **Route**: General (teamwork_preview_orchestrator)
-- **Rationale**: Multi-stage full-stack SWE project.
+- **Route**: General (`teamwork_preview_orchestrator`)
+- **Rationale**: User explicitly specified "Requested team: Full team" for full dashboard overhaul across multiple files, scientific data integrity, and interactive component detailing.
 
 ## Active Agents & Tasks
-- **Orchestrator**: completed / retired
-- **Cron 1**: terminated
-- **Cron 2**: terminated
+- **Orchestrator**: 24d1224b-e7d2-4d12-be65-dd8aaadd246f (`.agents/orchestrator_7`) [Victory Claimed]
+- **Victory Auditor**: 01583f99-6caf-4b36-b3ee-d796a4d3798a (`.agents/victory_auditor_4`) [Active - Independent Blocking Audit]
+- **Progress Cron**: task-38 (`*/8 * * * *`)
+- **Liveness Cron**: task-40 (`*/10 * * * *`)
 
 ## Project Status
-- **Phase**: complete
+- **Phase**: auditing
 
 ## Victory Audit Status
 - **Triggered**: yes
-- **Verdict**: VICTORY CONFIRMED
+- **Verdict**: pending
 - **Retry count**: 0
 
 ## Artifact Index
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md — Authoritative record of user request
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel — Project root
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/task_plan.md — Manus task decomposition
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/findings.md — Technical findings and decisions
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/progress.md — Test results and 3-strike protocol log
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/ingestion.py — NASA FIRMS ingestion script
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/train_model.py — OSM enrichment + XGBoost training script
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/dispatcher.py — SITREP generator & Telegram dispatcher
-- /Users/gauravkumarnayak/Desktop/new sih/ntro_fire_intel/webgis_dashboard — 3D WebGIS React/Three.js dashboard
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md — Authoritative record of user requests
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/orchestrator_7/DISPATCH.md — Dispatch specifications for orchestrator
+- /Users/gauravkumarnayak/Desktop/new sih/frontend/src/pages/OceanState.tsx — Antarctic ocean state dashboard
+- /Users/gauravkumarnayak/Desktop/new sih/frontend/src/pages/GovernmentIntel.tsx — MoES / NCPOR intelligence dashboard
+- /Users/gauravkumarnayak/Desktop/new sih/frontend/src/pages/ResearchCitations.tsx — Research citations and policy component

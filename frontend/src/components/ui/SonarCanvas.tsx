@@ -37,7 +37,7 @@ export const SonarCanvas = ({ detections, pingCount, processed, showShadows }: P
     const centerLine = width / 2;
 
     for (let y = 0; y < height; y++) {
-      // Simulate scan line intensity variation
+      // Modulate acoustic backscatter return amplitude across transducer scan line
       const scanlineBase = processed ? 120 : (90 + Math.random() * 40);
       
       for (let x = 0; x < width; x++) {

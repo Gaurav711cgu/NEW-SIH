@@ -5,14 +5,15 @@ import { SystemStatusRow } from './SystemStatusRow';
 const navItems = [
   { path: '/ocean-state', label: 'Ocean State', icon: Waves },
   { path: '/intel', label: 'MoES Intel Report', icon: FileText },
+  { path: '/system-architecture', label: 'Proposed System', icon: Cpu },
   { path: '/biogeo', label: 'Biogeochemistry', icon: Activity },
   { path: '/seafloor', label: 'Seafloor Intel', icon: Target },
   { path: '/mission', label: 'Mission Control', icon: Anchor },
-  { path: '/simulation', label: 'Live 3D Simulation', icon: Compass },
+  { path: '/simulation', label: '3D Tactical Digital Twin', icon: Compass },
   { path: '/auv-twin', label: 'AUV Digital Twin', icon: Cpu },
   { path: '/digital-twin', label: 'Digital Twin', icon: Activity },
   { path: '/validation', label: 'Model Validation', icon: BarChart4 },
-  { path: '/cyclegan', label: 'Synthetic Data', icon: Layers },
+  { path: '/cyclegan', label: 'Neural Acoustic Augmentation', icon: Layers },
   { path: '/research', label: 'Research & Citations', icon: BookOpen },
 ];
 

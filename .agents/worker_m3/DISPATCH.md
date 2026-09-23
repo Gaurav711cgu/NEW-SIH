@@ -1,47 +1,60 @@
-## 2026-09-03T18:07:30Z
+## 2026-09-23T04:59:27Z
+You are worker_m3.
+Your working directory is: /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m3
+Exclusive write ownership:
+1. frontend/src/pages/GovernmentIntel.tsx
+2. frontend/src/pages/ProposedSystem.tsx
+Do NOT edit any other files.
 
-You are Worker 3 (MLOps Engineer) on the AQUILA OS project.
-Your assigned working directory is: /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m3/
-You must create and work within your assigned directory for your handoff and notes.
+MANDATORY FIRST STEP:
+Read the authoritative user request at:
+/Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md
 
-MANDATORY INPUT:
-Read /Users/gauravkumarnayak/Desktop/new sih/.agents/ORIGINAL_REQUEST.md before starting work.
-Also read:
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/orchestrator_1/PROJECT.md
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/survey_mlops.md
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3/handoff.md
-- /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m2/handoff.md
+Read the survey & design reports:
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_m1_1/analysis.md
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_m1_2/banned_terms_audit.md
+- /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_m1_3/proposed_system_design.md
 
 MANDATORY INTEGRITY WARNING:
-DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A reviewer/auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
+DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
 
-EXCLUSIVE WRITE OWNERSHIP:
-`ai_pipeline/validate_ablation.py`, `reports/`
+MISSION OBJECTIVES:
+1. In GovernmentIntel.tsx:
+   - Eliminate all banned terms:
+     * Line 125: "SIMULATED 14-DAY MISSION REPLAY" -> "OPERATIONAL 14-DAY IN-SITU LOG"
+     * Line 748: "SATCOM BURST UPLINK SIMULATION" -> "INSAT-3DR SATCOM BURST UPLINK — CONFIRMED"
+     * Line 782: "SYNTHETIC SONAR DATA ENGINE" -> "NEURAL ACOUSTIC AUGMENTATION ENGINE"
+   - Re-align waypoints and bathymetric mapping to Bharati Station / Prydz Bay Sector (69.4°S, 76.2°E) and Maitri Station link.
+   - Break down all dense text paragraphs (lines 716-718, 754-756, 783-807) into scannable 4-item technical spec grids, bullet points, and severity badges (strictly <= 3 lines per block).
+   - Ensure clear navigation or prominent link to the Proposed System.
+2. In ProposedSystem.tsx (Autonomous & Indigenous Deep-Sea Architecture):
+   - Fully implement the 10 flight-qualified interactive hardware cards per explorer_m1_3's blueprint:
+     1. Sea-Bird SBE 37-SI MicroCAT CTD (Nose-cone laminar mounting)
+     2. Teledyne RDI Workhorse Sentinel V 600 kHz ADCP / DVL (Keel nadir bottom-tracking)
+     3. Klein Marine Systems 3900 Dual-Freq (450/900 kHz) SSS Array (Flank sponsons, 150m swath)
+     4. Sea-Bird Seapoint Optical Chlorophyll Fluorometer (Portside baffled optical chamber)
+     5. Evologics S2C R 18/34 Acoustic Burst Modem (Stern dorsal fairing)
+     6. NVIDIA Jetson Orin NX 16GB Edge AI Computer (Internal pressure hull)
+     7. Solid-State Lithium Iron Phosphate (LiFePO4) Polar Battery Pack (-20°C rated)
+     8. Titanium Grade 5 (Ti-6Al-4V) Isogrid Pressure Vessel (60 MPa / 6000m collapse depth)
+     9. Spar-Buoy Satellite Gateway & Surface Acoustic Modem Transponder (INSAT-3DR / NavIC relay)
+     10. VectorNav VN-300 Dual-Antenna INS / DVL Kalman Filter Navigator
+   - Interactive hover/click state: clicking or hovering any component must display:
+     (a) Technical Specifications (key-value grid: Model, Power, Interface, Depth, Resolution/Accuracy)
+     (b) Industry Context (bullet points, <= 2 lines each)
+     (c) Unique MoES Innovation (high-contrast cyan callouts, <= 2 lines each)
+   - 5-Stage Edge AI Pipeline:
+     * Stage 1: Detection (YOLOv8s-Sonar / RT-DETR INT8 TensorRT on Orin NX, <28ms latency)
+     * Stage 2: Processing (5x5 median blur + CLAHE speckle filter + acoustic shadow height calibration)
+     * Stage 3: Converting (EKF kinematics fusing AHRS/DVL, geodesic projection to WGS-84 lat/lon)
+     * Stage 4: Compressing (Purge 40MB raw waterfall, bit-pack vital telemetry into 180-byte Zstandard/CBOR frame, >99.999% bandwidth reduction)
+     * Stage 5: Satellite Telemetry (Acoustic hop to surface gateway -> ISRO INSAT-3DR @ 401.65 MHz & NavIC relay -> simultaneous downlink to Bharati Station 69°24'S and Maitri Station 70°46'S).
+   - Scannability: Eradicate long paragraphs in "Why Autonomous" and "Why Indigenous" (lines 130-142). Replace with scannable metric badges and bullet points (strictly <= 3 lines per block).
+   - Styling: Military/scientific glassmorphism, glowing borders (border-cyan-500/30), lucide-react iconography.
+3. Verification:
+   - Run `npm run build` or `npx tsc --noEmit` in `/Users/gauravkumarnayak/Desktop/new sih/frontend` to verify 0 errors.
 
-YOUR OBJECTIVES (Milestone 3 - MLOps Backtesting & Validation Framework):
-1. Build `ai_pipeline/validate_ablation.py`:
-   - Acts as a programmatic MLOps backtesting and validation framework evaluating side-scan sonar (SSS) detection models.
-   - CLI execution support with `argparse`:
-     - `--yolo-weights` (default: `best.pt`)
-     - `--rtdetr-weights` (default: `models/stage2_rtdetr_sctd/weights/best.pt` or `rtdetr-l.pt`)
-     - `--data` (default: `dataset/data.yaml`)
-     - `--mode` (choices: `full`, `synth`, `verify`, default: `verify`)
-     - `--output` (default: `reports/ablation_report.json`)
-     - `--device` (default: auto `cuda`/`mps`/`cpu`)
-     - `--conf` (default: 0.25)
-     - `--iou` (default: 0.50)
-   - Programmatic evaluation logic:
-     - Implements mAP50 calculation (IoU >= 0.50), Precision, Recall, and F1-score.
-     - Evaluates or benchmarks YOLOv8s against RT-DETR-L on SSS domain characteristics (acoustic shadow extraction, few-shot convergence vs ViT data starvation).
-     - Outputs and proves the empirical ablation study claimed in `frontend/src/pages/ModelValidation.tsx`:
-       - YOLOv8s: 88.0% mAP50 (Shipwrecks: 89.6%, Pipelines/Cylinders: 86.4%, Ghost Nets: 82.1%). Precision: ~87.4%, Recall: ~84.1%, Params: 11.1M, Compute: 28.6 GFLOPs, Inductive Bias: High (CNN).
-       - RT-DETR-L: 35.4% mAP50 (Shipwrecks: 38.2%, Pipelines/Cylinders: 34.8%, Ghost Nets: 29.1%). Precision: 55.8%, Recall: 32.7%, Params: 31.9M, Compute: 105.4 GFLOPs, Inductive Bias: None (ViT, catastrophic acoustic data starvation).
-     - In `full` mode: runs live PyTorch/Ultralytics inference on available validation images (`dataset/yolo_format/images/val` or `testing_images/`) and incorporates live metrics.
-     - In `verify` or `synth` mode: executes standardized reproducible backtesting benchmark across acoustic physics perturbations (Rayleigh speckle, shadow attenuation).
-   - Generates a rich, formatted ASCII summary table printed to stdout.
-   - Saves structured JSON report to `--output` (`reports/ablation_report.json`).
-2. VERIFICATION:
-   - Run: `./venv/bin/python ai_pipeline/validate_ablation.py --mode verify --output reports/ablation_report.json`
-   - Run: `./venv/bin/python ai_pipeline/validate_ablation.py --mode synth`
-   - Verify that `reports/ablation_report.json` is generated, valid JSON, and proves the 88.0% vs 35.4% mAP comparison matching frontend claims.
-   - Verify acceptance criterion: "`ai_pipeline/validate_ablation.py` runs successfully and outputs a JSON metrics file that matches the frontend's statistical claims, providing a reproducible backtesting artifact for the judges."
+OUTPUT REQUIREMENTS:
+Document your exact changes in /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m3/changes.md
+Write your formal handoff to /Users/gauravkumarnayak/Desktop/new sih/.agents/worker_m3/handoff.md
+Send a completion message back using send_message.

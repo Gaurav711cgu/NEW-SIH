@@ -1,154 +1,36 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Grid, Sparkles, SoftShadows } from '@react-three/drei';
-import * as THREE from 'three';
-import { useSimulationStore } from './store/simulationStore';
+import { Canvas } from '@react-three/fiber';
 import AUVModel from './auv/AUVModel';
 import BubbleSystem from "./environment/BubbleSystem";
-import IceShelf from "./environment/IceShelf";
+import IceShelfModel from "./environment/IceShelfModel";
 import SurfaceEnvironment from "./environment/SurfaceEnvironment";
 import DeepEnvironment from "./environment/DeepEnvironment";
+import AbyssalTerrainModel from "./environment/AbyssalTerrainModel";
 import DebrisField from "./environment/DebrisField";
 import SonarSweep from "./environment/SonarSweep";
+import SeafloorModel from "./environment/SeafloorModel";
+import Lighting from "./environment/Lighting";
+import GodRays from "./environment/GodRays";
+import MarineSnow from "./environment/MarineSnow";
+import CinematicPipeline from "./environment/CinematicPipeline";
 import CameraManager from './cameras/CameraManager';
 import MissionDirector from './mission/MissionDirector';
-import React, { useRef } from 'react';
-
-// Highly realistic marine snow (particulates)
-function MarineSnow() {
-  const currentAssist = useSimulationStore(s => s.currentAssist);
-  
-  // When currentAssist is high, speed up the particles drastically to simulate riding the flow
-  const particleSpeed = 0.2 + (currentAssist * 2.0);
-  const particleOpacity = 0.15 + (currentAssist * 0.1);
-  
-  return (
-    <Sparkles 
-      count={4000} 
-      scale={[200, 200, 200]} 
-      size={1.5} 
-      speed={particleSpeed} 
-      opacity={particleOpacity} 
-      color="#aaddff" 
-      noise={[20, 5, 20]}
-    />
-  );
-}
-
-// AAA Light shafts penetrating the water from the surface
-function GodRays() {
-  const depth = useSimulationStore((s) => s.depth);
-  const groupRef = useRef<THREE.Group>(null);
-  
-  const rays = React.useMemo(() => {
-    return [...Array(6)].map(() => ({
-      // Keep them away from the direct 0,0,0 center where the camera is
-      position: [(Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 30), 0, (Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 30)] as [number, number, number],
-      rotation: [Math.random() * 0.1, Math.random() * Math.PI, Math.random() * 0.1] as [number, number, number],
-      args: [2 + Math.random() * 8, 150, 16, 1, true, 0, Math.PI * 2] as any,
-      opacityMult: 0.1 + Math.random() * 0.15
-    }));
-  }, []);
-
-  useFrame(({ clock }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.x = Math.sin(clock.elapsedTime * 0.2) * 0.05;
-      groupRef.current.rotation.z = Math.cos(clock.elapsedTime * 0.15) * 0.05;
-    }
-  });
-
-  // Start fading immediately, completely gone by 80m
-  const opacity = Math.max(0, 0.5 - (depth / 160));
-
-  if (opacity <= 0 || depth < 5) return null; // Don't render when on the surface!
-
-  return (
-    <group ref={groupRef} position={[0, 10, 0]}>
-      {rays.map((ray, i) => (
-        <mesh key={i} position={ray.position} rotation={ray.rotation}>
-          <coneGeometry args={ray.args} />
-          <meshBasicMaterial 
-            color="#99ddff" 
-            transparent 
-            opacity={opacity * ray.opacityMult} 
-            blending={THREE.AdditiveBlending} 
-            depthWrite={false} 
-            side={THREE.DoubleSide} 
-          />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
-function Seafloor() {
-  const geo = React.useMemo(() => {
-    const g = new THREE.PlaneGeometry(1000, 1000, 128, 128);
-    const pos = g.attributes.position;
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i);
-      const y = pos.getY(i);
-      const z = Math.sin(x * 0.1) * 2 + Math.cos(y * 0.05) * 3 + Math.sin((x+y)*0.01)*5;
-      pos.setZ(i, z);
-    }
-    g.computeVertexNormals();
-    return g;
-  }, []);
-  
-  return (
-    <group position={[0, -142, 0]}>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} receiveShadow>
-        <meshStandardMaterial color="#050a0f" roughness={1.0} metalness={0.0} flatShading />
-      </mesh>
-    </group>
-  );
-}
 
 function OceanEnvironment() {
-  const depth = useSimulationStore((s) => s.depth);
-
-  const surfaceColor = new THREE.Color('#001122'); // Darker ocean blue
-  const deepColor = new THREE.Color('#000205');   // Pitch black/blue
-  const fogColor = surfaceColor.clone().lerp(deepColor, Math.min(depth / 80, 1));
-  const fogDensity = THREE.MathUtils.lerp(0.005, 0.03, Math.min(depth / 150, 1));
-  
-  // Dramatic moody lighting
-  const ambientIntensity = Math.max(0.01, 0.3 - (depth / 100));
-  const sunIntensity = Math.max(0, 1.5 - (depth / 50));
-
-  const scene = useThree((state) => state.scene);
-  
-  useFrame(() => {
-    // Only use fog, not background, to keep the sky dome visible
-    if (scene.fog instanceof THREE.FogExp2) {
-      scene.fog.color.lerp(fogColor, 0.1);
-      scene.fog.density = fogDensity;
-    } else {
-      scene.fog = new THREE.FogExp2(fogColor, fogDensity);
-    }
-  });
-
   return (
     <>
-      <ambientLight intensity={ambientIntensity} color="#4080ff" />
-      <directionalLight 
-        position={[20, 50, -20]} 
-        intensity={sunIntensity} 
-        color="#aaddff" 
-        castShadow
-        shadow-mapSize={[2048, 2048]}
-      />
-
+      <Lighting />
       <MarineSnow />
       <GodRays />
 
       <SurfaceEnvironment />
 
-      <IceShelf />
+      <IceShelfModel />
       <DeepEnvironment />
+      <AbyssalTerrainModel />
       <DebrisField />
       <SonarSweep />
       
-      <Seafloor />
+      <SeafloorModel />
     </>
   );
 }
@@ -156,8 +38,12 @@ function OceanEnvironment() {
 export default function AntarcticScene() {
   return (
     <div className="w-full h-full bg-[#000000]">
-      <Canvas shadows camera={{ position: [10, 5, 10], fov: 60, near: 0.1, far: 1000 }}>
-        <SoftShadows size={20} samples={16} focus={0.5} />
+      <Canvas
+        shadows
+        dpr={[1, 1.5]}
+        camera={{ position: [10, 5, 10], fov: 60, near: 0.1, far: 1000 }}
+        gl={{ preserveDrawingBuffer: true, antialias: false, powerPreference: 'high-performance' }}
+      >
         <OceanEnvironment />
         <BubbleSystem />
         <MissionDirector />
@@ -165,6 +51,7 @@ export default function AntarcticScene() {
         <group>
           <AUVModel />
         </group>
+        <CinematicPipeline />
       </Canvas>
     </div>
   );

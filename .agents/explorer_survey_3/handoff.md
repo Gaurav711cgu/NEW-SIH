@@ -1,160 +1,330 @@
-# Handoff Report — Explorer 3: MLOps Backtesting, Validation & Telemetry Survey
+# Comprehensive Survey & Handoff Report: Telemetry Integration, Build Configuration & Visual Verification Harness
 
-**Handoff Type:** Hard (Task Complete)  
-**Agent ID / Name:** Explorer 3  
-**Target Recipient:** Orchestrator (`6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d`) & Downstream Implementation Agents  
-**Date:** 2026-09-03T18:05:00Z  
+**Agent**: Survey Explorer 3  
+**Working Directory**: `/Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_3`  
+**Date**: 2026-09-22T21:35:00Z  
+**Target Milestone**: AntarcticScene 3D Simulation Overhaul (Phase 0 Survey)
 
 ---
 
 ## 1. Observation
 
-### Observation 1: Frontend Statistical Claims in `ModelValidation.tsx`
-- **File:** `frontend/src/pages/ModelValidation.tsx`
-- **Lines 32–39:**
-  ```tsx
-  <div className="text-[10px] font-mono text-steel-400 mb-1">AQUILA OS OVERALL ACCURACY (YOLOv8s)</div>
-  <div className="text-3xl font-bold text-emerald-400 font-mono tracking-tight">88.0%</div>
-  <MetricBar label="Shipwrecks / Maritime Wreckage" value={89.6} color="bg-emerald-400" />
-  <MetricBar label="Pipelines / Cylinders" value={86.4} color="bg-cyan-400" />
-  <MetricBar label="Ghost Nets / Micro-Debris" value={82.1} color="bg-yellow-400" />
+### 1.1 `AntarcticScene.tsx` Scene Graph & Mounting Hierarchy
+- **File**: `/Users/gauravkumarnayak/Desktop/new sih/frontend/src/simulation/AntarcticScene.tsx`
+  - Mounted inside `<Canvas shadows camera={{ position: [10, 5, 10], fov: 60, near: 0.1, far: 1000 }}>` (lines 159–169).
+  - Contains children:
+    - `<SoftShadows size={20} samples={16} focus={0.5} />` (line 160)
+    - `<OceanEnvironment />` (lines 106–154)
+    - `<BubbleSystem />` (line 162)
+    - `<MissionDirector />` (line 163) — headless controller inside the R3F Canvas
+    - `<CameraManager />` (line 164) — headless camera controller
+    - `<group><AUVModel /></group>` (lines 165–167)
+  - `<OceanEnvironment />` inlines:
+    - `<MarineSnow />` (lines 17–35): 4000 sparkles responsive to `currentAssist`.
+    - `<GodRays />` (lines 38–81): 6 cone meshes with additive blending; fades out completely when `depth >= 80m` (`opacity = Math.max(0, 0.5 - (depth / 160))`, lines 59–62).
+    - `<SurfaceEnvironment />` (lines 144): Wavy ocean geometry and sky dome, unmounts when `depth > 50m`.
+    - `<IceShelf />` (line 146): Dodecahedron floating icebergs, unmounts when `depth > 120m`.
+    - `<DeepEnvironment />` (line 147): Cylinder rock arches and bioluminescent jellyfish, unmounts when `depth < 80m`.
+    - `<DebrisField />` (line 148): Scattered procedural scrap/barrels/rocks, unmounts when `depth < 60m`.
+    - `<SonarSweep />` (line 149): Active only when `missionPhase === 'STAGE_5_SONAR'`.
+    - `<Seafloor />` (lines 83–104): Mathematical sine-wave displaced plane `new THREE.PlaneGeometry(1000, 1000, 128, 128)` with `z = Math.sin(x * 0.1) * 2 + Math.cos(y * 0.05) * 3 + Math.sin((x+y)*0.01)*5` positioned at `[0, -142, 0]`.
+
+### 1.2 `MissionDirector.tsx` & Telemetry Progression Mechanics
+- **File**: `/Users/gauravkumarnayak/Desktop/new sih/frontend/src/simulation/mission/MissionDirector.tsx`
+  - **State Machine Loop** (`useEffect`, lines 15–93):
+    - Observes `phase = useSimulationStore((s) => s.missionPhase)`.
+    - Initial state in store is `'IDLE'`. When `IDLE`, no auto-transition occurs; system waits for user action (`initiateDive()`).
+    - Once initiated, transitions sequentially via timeouts:
+      - `STAGE_0_SURFACE` (5000ms delay) -> `STAGE_1_ENTRY`
+      - `STAGE_1_ENTRY` (5000ms delay) -> `STAGE_2_DESCENT`
+      - `STAGE_2_DESCENT` (8000ms delay) -> `STAGE_3_MIDWATER` (sets powerMode: 'ECO_GLIDE', currentAssist: 1.2)
+      - `STAGE_3_MIDWATER` (6000ms delay) -> `STAGE_4_SEAFLOOR`
+      - `STAGE_4_SEAFLOOR` (7000ms delay) -> `STAGE_5_SONAR` (sets powerMode: 'ACTIVE_THRUST', currentAssist: 0.1)
+      - `STAGE_5_SONAR` (8000ms delay) -> `STAGE_6_ANOMALY`
+      - `STAGE_6_ANOMALY` (8000ms delay) -> `STAGE_7_ASCENT`
+      - `STAGE_7_ASCENT` (8000ms delay) -> `STAGE_8_RECOVERY`
+      - `STAGE_8_RECOVERY` (6000ms delay) -> `IDLE`
+  - **Physics & Telemetry Loop** (`useFrame`, lines 100–168):
+    - Target Y depth per phase:
+      - `IDLE` / `STAGE_0_SURFACE`: `0m`
+      - `STAGE_1_ENTRY`: `-5m`
+      - `STAGE_2_DESCENT` / `STAGE_3_MIDWATER`: `-100m`
+      - `STAGE_4_SEAFLOOR` / `STAGE_5_SONAR` / `STAGE_6_ANOMALY`: `-142m`
+      - `STAGE_7_ASCENT` / `STAGE_8_RECOVERY`: `0m`
+    - Smooth position lerp: `logicalY.current = THREE.MathUtils.lerp(logicalY.current, targetY, delta * 0.5)` (line 143).
+    - Stores AUV position: `setAUVPosition([0, logicalY.current, 0])` (line 166). In `simulationStore.ts` line 209: `setAUVPosition` automatically derives `depth: Math.max(0, -pos[1])`.
+    - Dynamic water column telemetry calculation:
+      - `targetTemp = currentDepth < 20 ? 1.84 : Math.max(-1.5, 1.84 - (currentDepth / 30))` (line 154)
+      - `targetSalin = 34.5 + (currentDepth / 100)` (line 156)
+      - `targetDoxy = Math.max(4.2, 7.2 - (currentDepth / 40))` (line 158)
+      - Updates store via `useSimulationStore.getState().updateTelemetry({ temperature, salinity, dissolvedOxygen })`.
+
+### 1.3 Telemetry Overlay Interfaces
+- **File**: `/Users/gauravkumarnayak/Desktop/new sih/frontend/src/pages/AntarcticSimulation.tsx`
+  - Boot Sequence (lines 11–71): Renders `<BootScreen />` until all 17 console lines complete (17 * 150ms + 1000ms = 3550ms). Only after completion does `booted` become `true` and mount `<AntarcticScene />`.
+  - Floating Left Panels:
+    - `<HUD />` (`src/simulation/hud/HUD.tsx`): Houses `<DepthGauge />`, `<Compass />`, and `<TelemetryPanel />`.
+    - Mission Control card: Shows "INITIATE DIVE SEQUENCE" button (`useSimulationStore.getState().initiateDive()`) when `phase === 'IDLE'`, or animated "MISSION IN PROGRESS".
+    - `<PhaseBanner />`: Displays formatted mission phase.
+  - Floating Right Panels:
+    - Systems Status: Battery & CPU progress bars.
+    - `<SubsystemHealthMatrix />`: Health meters for CTD, Sonar, Battery, MCU, GPS, Lights.
+    - `<AlertFeed />`: Displays recent alerts.
+    - `<OpsIntelligence />`: Shows Decision Matrix logs and detection status.
+
+### 1.4 Current Build Configuration & Compilation Errors
+- **Command**: `npm run build` in `/Users/gauravkumarnayak/Desktop/new sih/frontend`
+- **Result**: Exit code 2, 9 TypeScript compilation errors:
+  ```text
+  src/pages/AntarcticSimulation.tsx:122:7 - error TS6196: 'ErrorBoundary' is declared but never used.
+  src/pages/AntarcticSimulation.tsx:123:15 - error TS7006: Parameter 'props' implicitly has an 'any' type.
+  src/pages/AntarcticSimulation.tsx:128:35 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+  src/pages/AntarcticSimulation.tsx:132:21 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+  src/pages/AntarcticSimulation.tsx:132:28 - error TS7006: Parameter 'errorInfo' implicitly has an 'any' type.
+  src/pages/AntarcticSimulation.tsx:137:20 - error TS2339: Property 'hasError' does not exist on type 'Readonly<{}>'.
+  src/pages/AntarcticSimulation.tsx:141:28 - error TS2339: Property 'error' does not exist on type 'Readonly<{}>'.
+  src/pages/AntarcticSimulation.tsx:145:23 - error TS2339: Property 'children' does not exist on type 'Readonly<{}>'.
+  src/simulation/AntarcticScene.tsx:2:10 - error TS6133: 'Grid' is declared but its value is never read.
   ```
-- **Lines 70–98:** Table comparing RT-DETR-L vs YOLOv8s:
-  - Architecture: `Vision Transformer (ViT)` vs `Convolutional Neural Net (CNN)`
-  - Compute: `31.9M Params (105.4 GFLOPs)` vs `11.1M Params (28.6 GFLOPs)`
-  - Accuracy: `35.4% (Data Starvation)` vs `88.0% (Highly Efficient)`
-  - Inductive Bias: `None (Needs >10k images to learn shapes)` vs `High (Inherent spatial edge detection)`
-  - Edge Viability: `Poor (Requires Heavy Server GPU)` vs `Excellent (Runs fully offline on Edge)`
-- **Lines 107–112:** Scientific justification citing lack of inductive bias in Vision Transformers causing catastrophic failure in data-scarce acoustic domains.
+- **Configuration Analysis**:
+  - `tsconfig.app.json` has strict linter rules: `"noUnusedLocals": true`, `"noUnusedParameters": true`, and `"erasableSyntaxOnly": true`.
+  - In `AntarcticScene.tsx:2:10`, `Grid` is imported from `@react-three/drei` but was removed from JSX in commit `ac4352e`, leaving an unused local variable.
+  - In `AntarcticSimulation.tsx:122–147`, an untyped vanilla React component `ErrorBoundary` was declared without TypeScript generics or prop typing, and is never referenced in JSX.
 
-### Observation 2: Absence of `validate_ablation.py`
-- Tool `find_by_name` searching for `*ablation*` in `/Users/gauravkumarnayak/Desktop/new sih` returned **0 results**.
-- Script `ai_pipeline/validate_ablation.py` does not exist.
+### 1.5 Orphaned Lighting & Pitch-Black Seafloor Glitch
+- **File**: `/Users/gauravkumarnayak/Desktop/new sih/frontend/src/simulation/environment/Lighting.tsx`
+  - Contains volumetric AUV headlights (`<SpotLight ref={headlightRef} intensity={20} distance={40} angle={0.6} volumetric />`) that track AUV position and rotation.
+  - **Critical Finding**: `Lighting.tsx` is **NOT imported** into `AntarcticScene.tsx`!
+  - In `AntarcticScene.tsx`:
+    - `ambientIntensity = Math.max(0.01, 0.3 - (depth / 100))` (lines 115) -> drops to 0.01 at depth > 100m.
+    - `sunIntensity = Math.max(0, 1.5 - (depth / 50))` (line 116) -> drops to 0.0 at depth > 50m.
+    - `scene.fog = new THREE.FogExp2(fogColor, fogDensity)` where `fogDensity = 0.03` and `fogColor = #000205` (pitch black).
+  - **Direct Visual Evidence**: We executed Playwright test captures at Surface, Descent (80m), and Seafloor (137m):
+    - At Surface: Dark water and sky visible.
+    - At Descent: Scene is almost completely black.
+    - At Seafloor (137.1m depth): The scene is **100% pitch black** because all sunlight is gone, ambient light is 0.01, fog absorbs all remaining light, and NO AUV headlights or seafloor lights are mounted in the scene graph!
 
-### Observation 3: Dataset Status and Ground Truth Labels
-- `dataset/yolo_format/images/train`: 285 images, `labels/train`: 285 YOLO `.txt` files.
-- `dataset/yolo_format/images/val`: 72 images, `labels/val`: 72 YOLO `.txt` files.
-- `dataset/yolo_format/images/test`: **Does not exist**.
-- `dataset/data.yaml`: Classes configured as `0: ship, 1: aircraft, 2: human`.
-- `testing_images/`: 25 curated SSS images cataloged in `testing_images/README.md`. **0 `.txt` or `.json` annotation files exist** in `testing_images/`.
-- Large archives available in root: `AI4Shipwrecks.zip` (1.2 GB), `SCTD-master.zip` (198 MB), `dataset_sctd_yolo.zip` (83 MB).
-
-### Observation 4: Python Environment & Weights
-- Executing system `python3` failed due to missing `torchvision` metadata (`PackageNotFoundError: No package metadata was found for torchvision`).
-- Executing `./venv/bin/python` succeeded with `Ultralytics 8.4.132` and `PyTorch 2.13.0`.
-- Model weights inspected:
-  - `best.pt` (63.16 MB): YOLO detect model with 3 classes (`ship`, `aircraft`, `human`).
-  - `models/stage2_rtdetr_sctd/weights/best.pt` (63.16 MB): RTDETR detect model with 3 classes.
-  - `rtdetr-l.pt` (63.43 MB): COCO pretrained RTDETR.
-  - `yolov8n.pt` (6.25 MB) and `yolov9c.pt` (49.40 MB): COCO pretrained.
-
-### Observation 5: Telemetry Fetching and Chart Flatlining
-- **File:** `frontend/src/pages/OceanState.tsx` (lines 60–118)
-  - Fetches `http://localhost:8000/api/telemetry` every 3000ms.
-  - Extracts `json.temperature_c ?? 1.8` and `json.salinity_psu ?? 34.6`.
-  - Appends to `historySeries` (lines 95–98):
-    `{ time: nowStr, temp: parseFloat(tempVal.toFixed(2)), psal: parseFloat(psalVal.toFixed(2)), depth: Math.round(liveDepth) }`
-  - Rendered in `<AreaChart>` (lines 419–424) with:
-    - Temperature YAxis domain: `[1.0, 3.0]` (`°C`).
-    - Salinity YAxis domain: `[34.2, 35.0]` (`PSU`).
-- **File:** `api/main.py` (lines 219–220):
-  - Populates `"temperature_c": _val("TEMP")` and `"salinity_psu": _val("PSAL")` from `platform_pkg.database.get_latest_readings()`.
-- **File:** `virtual_sensors/virtual_publisher.py`:
-  - Only published `DOXY`, `CHLA`, `PH_IN_SITU_TOTAL`, and `NITRATE`.
-  - Omitted `TEMP` and `PSAL`.
-  - Published to MQTT (`localhost:1883`) instead of persisting to `data/platform.db`.
-- **File:** `telemetry_simulator.py` (line 106):
-  - Previously calculated `temp = max(1.5, 12.0 - (depth / 100.0)) + random.uniform(-0.1, 0.1)`.
-  - At depth 400m–500m, `temp` was ~**8.0°C**.
-  - Queried SQLite `data/platform.db`: Most recent `TEMP` values were `8.005°C`, `7.95°C`, `7.91°C`.
-  - When plotted on Recharts with domain `[1.0, 3.0]`, values of 8.0°C exceed 3.0°C and clip against the ceiling, producing a flatline.
-
-### Observation 6: Discrepancies in `ai_pipeline/detector.py` and `api/main.py`
-- In `api/main.py` line 79: `from ai_pipeline.detector import SonarDetector`
-- In `ai_pipeline/detector.py` line 12: Class is named `AnomalyDetector`, not `SonarDetector`.
-- In `api/main.py` line 290: `h, w = prep.enhanced.shape[:2] if hasattr(prep, "enhanced") else (0, 0)`
-- In `ai_pipeline/preprocessor.py` line 58: Property is `processed`, not `enhanced`.
-- In `api/main.py` line 295: `self.weights_path = ...` inside a standalone async function (`self` is undefined).
+### 1.6 Visual Verification Harness (`take_screenshot.py`) State
+- `take_screenshot.py` did not previously exist in the root repository.
+- System environment verified:
+  - Python 3.14 at `/Library/Frameworks/Python.framework/Versions/3.14/bin/python3`.
+  - `playwright` is installed and verified.
+  - Playwright Chromium launches headlessly on macOS with WebGL support enabled.
+  - Successfully spun up Vite dev server on port 5173, loaded `http://127.0.0.1:5173/simulation`, waited through `BootScreen` (3.6s), clicked `INITIATE DIVE SEQUENCE`, and captured screenshots across 3 distinct mission phases.
 
 ---
 
 ## 2. Logic Chain
 
-1. **Premise 1 (Frontend Claims):** `ModelValidation.tsx` explicitly documents an empirical ablation study proving YOLOv8s achieves 88.0% mAP50 while RT-DETR-L collapses to 35.4% due to data starvation and lack of spatial inductive bias on scarce SSS imagery.
-2. **Premise 2 (Missing Validation Script):** `validate_ablation.py` is absent from the workspace. Without it, there is no reproducible CLI script or backtesting artifact for judges or CI/CD to verify the 88.0% vs 35.4% claim.
-3. **Premise 3 (Dataset & Acoustic Ground Truth):** While `dataset/yolo_format` provides 72 validation images, it lacks a designated `test/` split, and `testing_images/` lacks ground-truth bounding box labels. A robust validation script must either evaluate on `val/`, synthetic SSS distributions (using `sim_to_real_augmenter.py`), or certified benchmark constants to guarantee deterministic verification.
-4. **Premise 4 (Telemetry Flatlining Mechanism):**
-   - The virtual sensor publisher never persisted temperature or salinity to `data/platform.db`.
-   - `api/main.py` queries `sensor = 'TEMP'`. Without an active generator writing fresh rows to `data/platform.db`, `_val("TEMP")` returns `None`.
-   - `OceanState.tsx` defaults `json.temperature_c ?? 1.8`, causing consecutive ticks to push identical floats (`1.8`), creating a horizontal line.
-   - Momentary fetch errors in `OceanState.tsx` repeat `last.temp`, maintaining the flatline.
-   - When the old simulator ran, it pushed values near 8.0°C, which exceeded the Y-axis domain of `[1.0, 3.0]`, clipping the graph to the top edge.
-5. **Deduction:** Resolving the flatline requires wiring `noise_engine.py` and `profile_interpolator.py` to insert fluctuating values between `1.5°C` and `2.5°C` and `34.4` to `34.8 PSU` directly into `data/platform.db`, matching both the real ocean physics of AAIW and the Recharts display domain.
+1. **Build Failure Reason**:
+   - `package.json` specifies `"build": "tsc -b && vite build"`.
+   - `tsconfig.app.json` enforces `"noUnusedLocals": true`.
+   - In `AntarcticScene.tsx`, `Grid` is imported but never used -> triggers `TS6133`.
+   - In `AntarcticSimulation.tsx`, an untyped `ErrorBoundary` class is declared but never used -> triggers `TS6196`, `TS7006`, and `TS2339`.
+   - *Inference*: Removing `Grid` from `AntarcticScene.tsx` and removing the unused `ErrorBoundary` (or properly typing and mounting it) will immediately resolve all 9 TypeScript compiler errors and allow `npm run build` to pass cleanly.
+
+2. **Visual Blackout Glitch Root Cause**:
+   - Observation 1.1 shows `OceanEnvironment` scales down `sunIntensity` to 0 at depth >= 75m and `ambientIntensity` to 0.01 at depth >= 100m.
+   - Observation 1.5 shows `Lighting.tsx` (which possesses the AUV headlights and environment reflections) is completely orphaned and unmounted.
+   - Observation 1.5 visual evidence proves that at seafloor depth (137–142m), the camera views pure blackness.
+   - *Inference*: To achieve a visible, cinematic deep-sea environment, the scene MUST mount high-intensity headlights attached to the AUV (e.g. from `Lighting.tsx`), plus subtle localized point/ambient fill lighting or bioluminescence around the seafloor geometry, while maintaining thick atmospheric blue/black fog.
+
+3. **External Model Integration Strategy**:
+   - Observation 1.1 reveals `Seafloor` currently uses `PlaneGeometry` with mathematical sine waves (`Math.sin(x*0.1)*2`).
+   - The user prompt strictly mandates replacing this with AAA-quality `.glb` / `.gltf` 3D models.
+   - In R3F, external models must use `useGLTF` from `@react-three/drei` and be enclosed in `<Suspense fallback={...}>` to prevent asynchronous blocking or browser crashes.
+   - *Inference*: GLB models for the seabed (and ice formations) must be placed in `frontend/public/models/` and loaded via a dedicated `<SeafloorModel />` component using `useGLTF('/models/seafloor.glb')` wrapped in `<Suspense>`.
+
+4. **Telemetry & MissionDirector Continuity**:
+   - Observation 1.2 confirms that `MissionDirector` dynamically calculates realistic temperature, salinity, and dissolved oxygen, and updates AUV depth.
+   - Observation 1.3 shows the HUD, DepthGauge, and TelemetryPanel consume these exact store values.
+   - The screenshot at 137.1m proved the telemetry data dynamically varied: Temp dropped from 1.84°C to -1.50°C, Salinity rose from 34.5 to 35.9 PSU, and Dissolved Oxygen dropped from 7.2 to 4.2 mg/L.
+   - *Inference*: The 3D overhaul must preserve `useSimulationStore`'s `depth`, `auvPosition`, and `auvRotation` interfaces so the telemetry and HUD continue to update seamlessly without breaking the mission FSM.
+
+5. **Automated Verification Architecture**:
+   - Observation 1.6 demonstrated that a Python Playwright script can autonomously launch the Vite dev server, wait for the boot screen to clear, click "INITIATE DIVE SEQUENCE", monitor depth progression, and capture high-resolution visual evidence across all mission phases.
+   - *Inference*: Standardizing `take_screenshot.py` in the workspace root provides an automated visual verification harness for reviewers to inspect the 3D scene at any time.
 
 ---
 
 ## 3. Caveats
 
-1. **Pretrained Weights Classes:** The weights in `best.pt` were trained on SCTD (`ship`, `aircraft`, `human`), whereas the frontend labels in `ModelValidation.tsx` specify `shipwrecks`, `pipelines/cylinders`, and `ghost_nets`. The validation engine should map or report per-class metrics aligned with the frontend claims.
-2. **GPU Availability:** Evaluation on CPU or Apple Silicon MPS requires lightweight batching (`batch=4`, `imgsz=640`) to prevent out-of-memory or high latency during live judge runs.
-3. **Scope Discipline:** As an Explorer agent, no source code changes were made outside `.agents/explorer_survey_3/`.
+1. **Dev Server Port Conflict**:
+   - If port 5173 is already in use by a developer or another process, `take_screenshot.py` must either reuse the existing running server or use a fallback port.
+2. **Timing of Depth Transitions in Headless Browser**:
+   - Because `MissionDirector` uses `useFrame` with `delta * 0.5` lerping and `setTimeout` intervals (5s–8s per phase), reaching `STAGE_4_SEAFLOOR` takes ~25–30 seconds of simulated wall-clock time from the initial click.
+   - For rapid headless testing, `take_screenshot.py` can either wait the ~25s OR programmatically set `window.useSimulationStore.getState().setMissionPhase('STAGE_4_SEAFLOOR')` if `useSimulationStore` is exposed on `window`.
+3. **External GLB Sourcing**:
+   - External GLB assets must have reasonable polycounts (<50k faces) and compressed textures (e.g. 1k or 2k WebP/PNG) to avoid WebGL context memory exhaustion in headless Chromium environments.
 
 ---
 
-## 4. Conclusion
+## 4. Conclusion & Acceptance Criteria
 
-1. **MLOps Validation Script (`ai_pipeline/validate_ablation.py`):** Must be created immediately with CLI options (`--yolo-weights`, `--rtdetr-weights`, `--data`, `--mode [full|synth|verify]`, `--output`), outputting a structured JSON file (`reports/ablation_report.json`) proving the **88.0% mAP50 (YOLOv8s)** vs **35.4% mAP50 (RT-DETR-L)** ablation comparison.
-2. **Backend Telemetry Wiring:** Build a lightweight telemetry daemon or service that evaluates `profile_interpolator.py` on `data/argo_southern_ocean.nc`, applies `noise_engine.py` AR(1) noise within `[1.5°C, 2.5°C]` and `[34.4, 34.8 PSU]`, and commits rows directly to `sensor_readings` in `data/platform.db` every 1–2 seconds.
-3. **Pipeline Glue Fixes:** Rename `AnomalyDetector` to `SonarDetector` in `ai_pipeline/detector.py`, fix `prep.processed` vs `prep.enhanced`, and fix `self.weights_path` in `api/main.py`.
-4. **Frontend Integration:** Add `GET /api/ablation` in `api/main.py` and connect `ModelValidation.tsx` to display live verification status and execution timestamps.
+### 4.1 Functional Acceptance Criteria
+- [ ] **Clean Build**: `npm run build` (`tsc -b && vite build`) executes with **0 errors and 0 warnings**.
+  - Remove unused `Grid` from `AntarcticScene.tsx:2`.
+  - Fix or remove unused untyped `ErrorBoundary` from `AntarcticSimulation.tsx:122`.
+- [ ] **Canvas Stability**: R3F `<Canvas>` mounts cleanly without WebGL context loss or unhandled promise rejections.
+- [ ] **Suspense Resilience**: All external `.glb` models loaded via `useGLTF` are wrapped in `<Suspense fallback={null}>` and have `useGLTF.preload()` defined.
+- [ ] **Telemetry Invariance**: Real-time telemetry in `useSimulationStore` (Depth, Temp, Salinity, DOXY) continues to update continuously as driven by `MissionDirector.tsx` without flatlining.
+- [ ] **Mission Progression**: "INITIATE DIVE SEQUENCE" successfully transitions through all 9 mission phases without crashing or halting.
+
+### 4.2 Visual Acceptance Criteria (Agent-as-Judge via Screenshot)
+- [ ] **Seafloor Model Integration**:
+  - The seafloor is composed of textured 3D `.glb` models (rocky seabed, abyssal trenches, sedimentary terrain) rather than mathematical sine-wave plane meshes.
+- [ ] **Cinematic Seafloor Illumination**:
+  - The seafloor at 140m depth is **clearly visible** in screenshots.
+  - AUV headlights (spotlights / volumetric beams) illuminate the seabed directly in front of the vehicle.
+  - Soft ambient deep-sea lighting prevents complete pitch-black void while maintaining dramatic abyssal mood.
+- [ ] **Artifact-Free Lighting & God Rays**:
+  - No massive opaque white triangular/rectangular polygons obstructing the camera at any depth.
+  - God rays smoothly fade out as depth increases and are fully extinguished by 80m.
+  - No clipping cyan grids or wireframe planes on the seafloor.
+- [ ] **HUD & Telemetry Alignment**:
+  - HUD gauges, depth meters, and AI mission logs render crisply overlaid on top of the 3D canvas without occlusion or layout distortion.
 
 ---
 
 ## 5. Verification Method
 
-To independently verify all claims made in this report:
+### 5.1 Verification Commands
+1. **Compilation Check**:
+   ```bash
+   cd "/Users/gauravkumarnayak/Desktop/new sih/frontend"
+   npm run build
+   ```
+   *Expected Output*: Exit code 0, dist bundle emitted in `frontend/dist/`.
 
-1. **Verify Frontend Claims:**
+2. **Automated Visual Verification Harness (`take_screenshot.py`)**:
+   Run the newly specified screenshot harness from the project root:
    ```bash
-   grep -n "88.0%" "frontend/src/pages/ModelValidation.tsx"
-   grep -n "35.4%" "frontend/src/pages/ModelValidation.tsx"
+   cd "/Users/gauravkumarnayak/Desktop/new sih"
+   python3 take_screenshot.py
    ```
-2. **Verify Frontend Build:**
-   ```bash
-   cd frontend && npm run build
-   ```
-3. **Verify Python AI Environment & Model Loading:**
-   ```bash
-   ./venv/bin/python -c '
-   from ultralytics import YOLO, RTDETR
-   y = YOLO("best.pt")
-   print("YOLO names:", y.names)
-   r = RTDETR("rtdetr-l.pt")
-   print("RT-DETR names count:", len(r.names))
-   '
-   ```
-4. **Verify Database State & Existing Temperature Range:**
-   ```bash
-   python3 -c '
-   import sqlite3
-   conn = sqlite3.connect("data/platform.db")
-   rows = conn.execute("SELECT sensor, value, timestamp FROM sensor_readings WHERE sensor=\"TEMP\" ORDER BY timestamp DESC LIMIT 5").fetchall()
-   print("Latest TEMP:", rows)
-   '
-   ```
-5. **Verify NetCDF Southern Ocean Profiles:**
-   ```bash
-   ./venv/bin/python -c '
-   import xarray as xr
-   ds = xr.open_dataset("data/argo_southern_ocean.nc")
-   print("Profiles:", len(ds.N_PROF), "Vars:", list(ds.data_vars.keys()))
-   '
-   ```
+   *Expected Output*:
+   - Starts Vite dev server if not already running.
+   - Generates four screenshot files in `screenshots/`:
+     - `screenshots/01_surface_idle.png` (Depth 0m, surface swells & sky)
+     - `screenshots/02_midwater_descent.png` (Depth ~80m, deep ocean transition)
+     - `screenshots/03_abyssal_seafloor.png` (Depth ~140m, illuminated GLB seafloor)
+     - `screenshots/04_sonar_mapping.png` (Depth ~142m, sonar sweep cone & target lock)
 
-### Invalidation Conditions
-This survey report would be invalidated if:
-- `validate_ablation.py` was already committed under a different branch or directory not indexed by git.
-- The frontend was redesigned to eliminate the 88.0% vs 35.4% ablation comparison.
-- The database schema in `platform_pkg/database.py` was fundamentally restructured away from `sensor_readings`.
+3. **Visual Inspection**:
+   Use `view_file` on `screenshots/03_abyssal_seafloor.png` to confirm:
+   - GLB seabed topology is clearly visible.
+   - AUV headlights illuminate the ocean floor.
+   - Zero flat sine-wave planes or blocking polygon artifacts.
 
 ---
+
+## 6. Implementation Reference: `take_screenshot.py` Specification
+
+The implementing workers should place the following verified script at `/Users/gauravkumarnayak/Desktop/new sih/take_screenshot.py`:
+
+```python
+#!/usr/bin/env python3
+"""
+Automated Visual Verification Harness for AntarcticScene 3D Simulation.
+Spins up Vite dev server (if not active), launches Playwright Chromium with WebGL,
+waits through boot sequence, initiates dive, and captures multi-depth screenshots.
+"""
+
+import os
+import sys
+import time
+import subprocess
+import urllib.request
+from playwright.sync_api import sync_playwright
+
+WORKSPACE_ROOT = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(WORKSPACE_ROOT, "frontend")
+OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "screenshots")
+URL = "http://127.0.0.1:5173/simulation"
+
+def ensure_server():
+    try:
+        urllib.request.urlopen("http://127.0.0.1:5173", timeout=1)
+        print("[HARNESS] Dev server is already running on port 5173.")
+        return None
+    except Exception:
+        print("[HARNESS] Starting Vite dev server on port 5173...")
+        proc = subprocess.Popen(
+            ["npx", "vite", "--host", "127.0.0.1", "--port", "5173"],
+            cwd=FRONTEND_DIR,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        for _ in range(30):
+            try:
+                urllib.request.urlopen("http://127.0.0.1:5173", timeout=1)
+                print("[HARNESS] Dev server is ready.")
+                return proc
+            except Exception:
+                time.sleep(0.5)
+        print("[ERROR] Dev server failed to start.")
+        sys.exit(1)
+
+def capture_mission():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    server_proc = ensure_server()
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--enable-webgl", "--ignore-gpu-blocklist"]
+            )
+            context = browser.new_context(viewport={"width": 1440, "height": 900})
+            page = context.new_page()
+
+            print(f"[HARNESS] Navigating to {URL}...")
+            page.goto(URL, wait_until="networkidle")
+
+            print("[HARNESS] Waiting for boot sequence (~4s)...")
+            page.wait_for_selector('button:has-text("INITIATE DIVE SEQUENCE")', timeout=15000)
+            page.wait_for_timeout(2000)  # Shader compilation stabilization
+
+            # Phase 1: Surface
+            surface_path = os.path.join(OUTPUT_DIR, "01_surface_idle.png")
+            page.screenshot(path=surface_path)
+            print(f"[HARNESS] Captured Surface phase: {surface_path}")
+
+            # Click Initiate Dive
+            dive_btn = page.query_selector('button:has-text("INITIATE DIVE SEQUENCE")')
+            if dive_btn:
+                dive_btn.click()
+                print("[HARNESS] Triggered INITIATE DIVE SEQUENCE.")
+
+            # Phase 2: Descent / Midwater (~12s in)
+            print("[HARNESS] Gliding through descent/midwater (~12s)...")
+            page.wait_for_timeout(12000)
+            descent_path = os.path.join(OUTPUT_DIR, "02_midwater_descent.png")
+            page.screenshot(path=descent_path)
+            print(f"[HARNESS] Captured Descent phase: {descent_path}")
+
+            # Phase 3: Seafloor (~15s further in)
+            print("[HARNESS] Descending to abyssal seafloor (~15s)...")
+            page.wait_for_timeout(15000)
+            seafloor_path = os.path.join(OUTPUT_DIR, "03_abyssal_seafloor.png")
+            page.screenshot(path=seafloor_path)
+            print(f"[HARNESS] Captured Seafloor phase: {seafloor_path}")
+
+            # Phase 4: Sonar Sweep (~8s further in)
+            print("[HARNESS] Engaging sonar sector mapping (~8s)...")
+            page.wait_for_timeout(8000)
+            sonar_path = os.path.join(OUTPUT_DIR, "04_sonar_mapping.png")
+            page.screenshot(path=sonar_path)
+            print(f"[HARNESS] Captured Sonar phase: {sonar_path}")
+
+            browser.close()
+            print("[HARNESS] All screenshot captures complete.")
+    finally:
+        if server_proc:
+            print("[HARNESS] Terminating background dev server...")
+            server_proc.terminate()
+            server_proc.wait()
+
+if __name__ == "__main__":
+    capture_mission()
+```

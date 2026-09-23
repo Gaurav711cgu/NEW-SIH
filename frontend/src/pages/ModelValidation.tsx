@@ -112,7 +112,7 @@ export function ModelValidation() {
               Our ablation study empirically proves that while state-of-the-art Vision Transformers (RT-DETR) dominate optical datasets, they suffer from catastrophic failure in data-scarce acoustic domains due to a lack of inductive bias. Convolutional Neural Networks (YOLOv8) natively extract spatial features (like acoustic shadows), yielding an <strong>88.0% mAP</strong> on limited data. 
             </p>
             <p className="text-xs font-mono text-zinc-300 leading-relaxed">
-              <strong>Phase 2 Roadmap:</strong> To unlock Transformer capabilities for MoES, we are designing a Synthetic Sonar Data Engine using <strong>CycleGANs</strong> and Unreal Engine 5 to synthetically generate 10,000+ SSS images, bypassing the extreme cost of physical data collection.
+              <strong>Phase 2 Roadmap:</strong> To unlock Transformer capabilities for MoES, we are designing a Neural Acoustic Augmentation using <strong>CycleGANs</strong> and Unreal Engine 5 to generate 10,000+ SSS images, bypassing the extreme cost of physical data collection.
             </p>
           </div>
 

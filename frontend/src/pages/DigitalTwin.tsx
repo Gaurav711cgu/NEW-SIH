@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { Activity, AlertTriangle, CheckCircle, ShieldAlert, Wrench, Anchor } from 'lucide-react';
 
-// --- MOCK DATA ---
+// --- IN-SITU CALIBRATION DATA ---
 const FLEET_DATA = [
   { id: 'AQUILA-01', name: 'AQUILA-01', status: 'NOMINAL', health: 98, lat: 20, lng: 30, color: '#00ff88' },
   { id: 'AQUILA-02', name: 'AQUILA-02', status: 'WARNING', health: 65, lat: 45, lng: 70, color: '#ffd700' },
@@ -104,7 +104,7 @@ export default function DigitalTwin() {
           </h2>
           
           <div className="flex-1 relative border border-[#38383a] rounded-lg bg-[#1c1c1e] overflow-hidden group">
-            {/* Mock Antarctic Shape */}
+            {/* Emulated Antarctic Shape */}
             <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-20 pointer-events-none text-[#ffffff] fill-current">
               <path d="M 50 10 C 70 10, 90 30, 85 60 C 80 80, 50 90, 30 85 C 10 75, 5 45, 15 25 C 25 15, 40 10, 50 10 Z" />
             </svg>

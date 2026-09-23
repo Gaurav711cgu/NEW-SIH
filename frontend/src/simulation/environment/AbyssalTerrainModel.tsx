@@ -1,0 +1,227 @@
+import { Suspense, useMemo, useRef, useLayoutEffect } from 'react';
+import { useGLTF } from '@react-three/drei';
+import { SceneErrorBoundary } from '../common/SceneErrorBoundary';
+import * as THREE from 'three';
+
+const ROCK_MODEL_PATH = '/models/abyssal_rock.glb';
+const SEAFLOOR_MODEL_PATH = '/models/seabed.glb';
+
+useGLTF.preload(ROCK_MODEL_PATH);
+useGLTF.preload(SEAFLOOR_MODEL_PATH);
+
+// Seeded PRNG for deterministic, reproducible geological distribution
+function createPRNG(seed: number) {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) % 4294967296;
+    return s / 4294967296;
+  };
+}
+
+// Bilinear interpolation across the 180x180 regular seabed grid (450m x 450m, origin at Y = -145m)
+function getSeabedElevation(
+  x: number,
+  z: number,
+  posAttr: THREE.BufferAttribute | THREE.InterleavedBufferAttribute | null
+): number {
+  if (!posAttr) return -142.0; // Fallback to mean seabed plane
+  const u = Math.max(0, Math.min(178.999, ((x + 225) / 450) * 179));
+  const v = Math.max(0, Math.min(178.999, ((z + 225) / 450) * 179));
+  const c0 = Math.floor(u);
+  const c1 = c0 + 1;
+  const r0 = Math.floor(v);
+  const r1 = r0 + 1;
+  const s = u - c0;
+  const t = v - r0;
+
+  const y00 = posAttr.getY(r0 * 180 + c0);
+  const y10 = posAttr.getY(r0 * 180 + c1);
+  const y01 = posAttr.getY(r1 * 180 + c0);
+  const y11 = posAttr.getY(r1 * 180 + c1);
+
+  const localY = (1 - s) * (1 - t) * y00 + s * (1 - t) * y10 + (1 - s) * t * y01 + s * t * y11;
+  return -145 + localY;
+}
+
+interface RockInstance {
+  x: number;
+  y: number;
+  z: number;
+  rx: number;
+  ry: number;
+  rz: number;
+  scaleX: number;
+  scaleY: number;
+  scaleZ: number;
+}
+
+function InstancedAbyssalRocks() {
+  const rockGltf = useGLTF(ROCK_MODEL_PATH);
+  const seabedGltf = useGLTF(SEAFLOOR_MODEL_PATH);
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+
+  // 1. Extract position attribute from seabed for bilinear elevation snapping
+  const seabedPosAttr = useMemo(() => {
+    let attr: THREE.BufferAttribute | THREE.InterleavedBufferAttribute | null = null;
+    seabedGltf.scene.traverse((child) => {
+      if (!attr && (child as THREE.Mesh).isMesh) {
+        attr = (child as THREE.Mesh).geometry.attributes.position;
+      }
+    });
+    return attr;
+  }, [seabedGltf.scene]);
+
+  // 2. Fix multi-LOD stacking: Extract single LOD1 mesh (2,824 vertices) and configure 2K PBR material
+  const rockData = useMemo(() => {
+    let targetMesh: THREE.Mesh | null = null;
+    rockGltf.scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        if (child.name.includes('LOD1') || child.name === 'moon_rock_01_LOD1') {
+          targetMesh = child as THREE.Mesh;
+        }
+      }
+    });
+
+    if (!targetMesh) {
+      rockGltf.scene.traverse((child) => {
+        if (!targetMesh && (child as THREE.Mesh).isMesh) {
+          targetMesh = child as THREE.Mesh;
+        }
+      });
+    }
+
+    if (!targetMesh) return null;
+
+    const geometry = (targetMesh as THREE.Mesh).geometry;
+    const origMaterial = (targetMesh as THREE.Mesh).material as THREE.MeshStandardMaterial;
+    const material = origMaterial ? origMaterial.clone() : new THREE.MeshStandardMaterial();
+
+    material.roughness = 0.85;
+    material.metalness = 0.08;
+    if (material.map) {
+      material.color.set('#ffffff'); // Preserve full 2K albedo
+    } else {
+      material.color.set('#4a5568');
+    }
+    if (material.normalMap) {
+      material.normalScale = new THREE.Vector2(1.8, 1.8);
+    }
+    material.needsUpdate = true;
+
+    return { geometry, material };
+  }, [rockGltf.scene]);
+
+  // 3. Generate 112 clustered rock instances with camera-centric distribution and elevation snapping
+  // Raw geometry size is 0.21m width x 0.075m height, so scales ~10-60 produce natural 2m to 13m outcrops
+  const instances = useMemo<RockInstance[]>(() => {
+    const prng = createPRNG(4242);
+    const result: RockInstance[] = [];
+
+    const addRock = (x: number, z: number, baseScale: number) => {
+      const scaleX = baseScale * (0.85 + prng() * 0.3);
+      const scaleY = baseScale * (0.75 + prng() * 0.35);
+      const scaleZ = baseScale * (0.85 + prng() * 0.3);
+
+      const groundY = getSeabedElevation(x, z, seabedPosAttr);
+      // Raw mesh origin is at base (Ymin ≈ 0). Embed base slightly into silt:
+      const y = groundY - scaleY * 0.075 * 0.15;
+
+      const rx = (prng() - 0.5) * 0.35;
+      const ry = prng() * Math.PI * 2;
+      const rz = (prng() - 0.5) * 0.35;
+
+      result.push({ x, y, z, rx, ry, rz, scaleX, scaleY, scaleZ });
+    };
+
+    // Cluster 1: Foreground & starboard seabed ridge (under starboard headlight)
+    // 30 rocks within 8m to 35m of vehicle
+    for (let i = 0; i < 30; i++) {
+      const x = 5 + prng() * 32;
+      const z = 2 + prng() * 28;
+      const isMassive = i < 4;
+      const isMedium = i < 14;
+      const scale = isMassive ? 38 + prng() * 24 : (isMedium ? 18 + prng() * 14 : 9 + prng() * 8);
+      addRock(x, z, scale);
+    }
+
+    // Cluster 2: Portside rocky outcrop (under port headlight)
+    // 28 rocks within 8m to 35m of vehicle
+    for (let i = 0; i < 28; i++) {
+      const x = 4 + prng() * 30;
+      const z = -4 - prng() * 28;
+      const isMassive = i < 4;
+      const isMedium = i < 14;
+      const scale = isMassive ? 36 + prng() * 22 : (isMedium ? 17 + prng() * 13 : 8 + prng() * 8);
+      addRock(x, z, scale);
+    }
+
+    // Cluster 3: Immediate camera foreground & flank formations (visible alongside AUV hull)
+    // 24 rocks within 4m to 18m of vehicle origin
+    for (let i = 0; i < 24; i++) {
+      const angle = (prng() - 0.5) * Math.PI * 2;
+      const dist = 5 + prng() * 15;
+      const x = Math.cos(angle) * dist;
+      const z = Math.sin(angle) * dist;
+      const isMassive = i < 3;
+      const scale = isMassive ? 30 + prng() * 18 : 12 + prng() * 12;
+      addRock(x, z, scale);
+    }
+
+    // Cluster 4: Deep-sea background field extending 35m to 70m into searchlight horizon
+    // 30 rocks
+    for (let i = 0; i < 30; i++) {
+      const angle = (prng() - 0.5) * Math.PI * 1.5;
+      const dist = 32 + prng() * 38;
+      const x = Math.cos(angle) * dist;
+      const z = Math.sin(angle) * dist;
+      const isMassive = i < 5;
+      const scale = isMassive ? 42 + prng() * 22 : 16 + prng() * 16;
+      addRock(x, z, scale);
+    }
+
+    return result;
+  }, [seabedPosAttr]);
+
+  // 4. Matrix population once on mount
+  useLayoutEffect(() => {
+    const mesh = meshRef.current;
+    if (!mesh || instances.length === 0) return;
+    const dummy = new THREE.Object3D();
+
+    instances.forEach((inst, i) => {
+      dummy.position.set(inst.x, inst.y, inst.z);
+      dummy.rotation.set(inst.rx, inst.ry, inst.rz);
+      dummy.scale.set(inst.scaleX, inst.scaleY, inst.scaleZ);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+    });
+
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.matrixAutoUpdate = false;
+    mesh.computeBoundingSphere();
+  }, [instances]);
+
+  if (!rockData) return null;
+
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[rockData.geometry, rockData.material, instances.length]}
+      frustumCulled={false}
+      castShadow
+      receiveShadow
+    />
+  );
+}
+
+export function AbyssalTerrainModel() {
+  return (
+    <SceneErrorBoundary fallback={null}>
+      <Suspense fallback={null}>
+        <InstancedAbyssalRocks />
+      </Suspense>
+    </SceneErrorBoundary>
+  );
+}
+
+export default AbyssalTerrainModel;

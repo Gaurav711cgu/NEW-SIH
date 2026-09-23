@@ -1,43 +1,48 @@
-# BRIEFING — 2026-09-03T17:57:30Z
+# BRIEFING — 2026-09-23T04:53:20Z
 
 ## Mission
-Investigate ML Inference Pipeline components, SSS imagery, Python ML dependencies, and requirements for ai_pipeline/detector.py in AQUILA OS.
+Deep technical survey and code-level inspection of GovernmentIntel.tsx and related policy/intelligence/SITREP components to prepare scannable, authentic MoES/NCPOR Antarctic redesign proposals.
 
 ## 🔒 My Identity
-- Archetype: Teamwork explorer
-- Roles: Read-only investigator, ML Pipeline Analyst
+- Archetype: explorer
+- Roles: Teamwork explorer (read-only investigation, code-level survey, UX/data restructuring)
 - Working directory: /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_2
-- Original parent: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d
-- Milestone: M1 - Workspace & ML Pipeline Exploration
+- Original parent: 25f019df-1b32-471c-aa59-3fd948b862d9
+- Milestone: Explorer Survey 2 - GovernmentIntel & Policy/SITREP Analysis
 
 ## 🔒 Key Constraints
-- Read-only investigation — do NOT implement or modify source code
-- Work within /Users/gauravkumarnayak/Desktop/new sih/.agents/explorer_survey_2/
-- Produce survey_ml.md and handoff.md in working directory
-- Send message to parent orchestrator (6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d) when complete
+- Read-only investigation — do NOT implement changes in frontend source code directly
+- Strict ban on terms: "Virtual", "Mock", "Simulation", "Fake"
+- All proposed text blocks must be <= 3 lines
+- Ground context strictly in MoES, NCPOR, Deep Ocean Mission, Bharati Station (69°24′S 76°11′E), Maitri Station (70°46′S 11°44′E)
+- Incorporate "Proposed System" architecture detailing autonomous & indigenous justification: physical sensor mounting + Edge AI pipeline (detection -> processing -> converting -> compressing -> satellite telemetry)
+- Include interactive inspection card/modal architecture for all hardware components and sensors (Tech Specs, Industry Application, MoES Polar Differentiator)
+- Write handoff report with 5 components to .agents/explorer_survey_2/handoff.md
 
 ## Current Parent
-- Conversation ID: 6355c6e9-bc73-4523-8ddf-ac64d3ff9d5d
-- Updated: 2026-09-03T17:57:30Z
+- Conversation ID: 25f019df-1b32-471c-aa59-3fd948b862d9
+- Updated: 2026-09-23T04:53:20Z
 
 ## Investigation State
-- **Explored paths**: `ai_pipeline/` (`detector.py`, `preprocessor.py`, `confidence_calibrator.py`, `geotagger.py`, `reporter.py`, `train.py`, `cbam.py`, `sim_to_real_augmenter.py`, `demo_live_inference.py`), `api/main.py`, `testing_images/`, `dataset/SCTD/`, `dataset/yolo_format/`, `models/`, `frontend/src/pages/ModelValidation.tsx`, `frontend/src/pages/SeafloorIntelligence.tsx`, `README.md`, `requirements.txt`.
+- **Explored paths**: `frontend/src/pages/GovernmentIntel.tsx`, `frontend/src/pages/AUVTwin.tsx`, `frontend/src/pages/ModelValidation.tsx`, `frontend/src/pages/OceanState.tsx`, `Judge_Documents/AQUILA_OS_Hardware_Architecture.md`, `Judge_Documents/AQUILA_OS_Research_Paper.md`, `Judge_Documents/AQUILA_OS_Business_Model.md`, `ai_pipeline/detector.py`, `ai_pipeline/confidence_calibrator.py`, `ai_pipeline/reporter.py`, `api/main.py`
 - **Key findings**:
-  1. `ai_pipeline/` exists; `detector.py` defines `AnomalyDetector` instead of `SonarDetector` expected by `api/main.py` and has broken bare imports (`from preprocessor import ...`).
-  2. Fine-tuned RT-DETR weights `best.pt` (66.2 MB) exist and successfully detect shipwrecks with 93.4% confidence on `01_shipwreck_large_waterfall.jpg`.
-  3. Sample SSS imagery is abundant: 25 benchmark images in `testing_images/` and 357 images in `dataset/SCTD/`.
-  4. Environment has PyTorch 2.13.0 (MPS enabled), Ultralytics 8.4.132, OpenCV 5.0.0, NumPy 2.5.2.
-  5. Frontend expects normalized bounding boxes `[bx, by, bw, bh]`, while calibrator calculates pixel centroids.
-  6. `validate_ablation.py` is missing and must validate the 88.0% (YOLOv8s) vs 35.4% (RT-DETR) mAP claim.
-- **Unexplored areas**: None for ML exploration scope; ready for ML Engineer implementation.
+  1. Complete 8-section breakdown of `GovernmentIntel.tsx` (792 lines).
+  2. Banned term violations: line 125 ("SIMULATED 14-DAY MISSION REPLAY"), line 727 ("SATCOM BURST UPLINK SIMULATION"), line 709 (comment).
+  3. All paragraphs exceeding 3 lines cataloged (Roadmap cards 1-4, Finding cards, Policy recommendations).
+  4. 0 occurrences of NCPOR, 0 of Bharati Station (69°24′S 76°11′E), 0 of Maitri Station (70°46′S 11°44′E) in `GovernmentIntel.tsx`.
+  5. Scannable replacements designed (sparklines, SITREP telemetry cards, status chips).
+  6. Peak UI styling specified (Tailwind glassmorphism `backdrop-blur-md`, subtle cyan/emerald/amber glows, custom scrollbars, lucide icons).
+  7. Detailed "Proposed System: Autonomous & Indigenous Architecture" specified with physical sensor layout (Nosecone, Ventral Keel, Internal Dry Pod, Dorsal Fairing) and 5-stage Edge AI pipeline (CLAHE -> YOLOv8s -> Shadow Law -> 340B Compression -> Iridium SBD / INSAT burst).
+  8. Interactive hardware inspection modal/card architecture specified for all 8 components (Tech Specs, Industry Application, MoES Polar Differentiator).
+- **Unexplored areas**: None. All core and parent-directed requirements investigated and documented.
 
 ## Key Decisions Made
-- Fully documented all 5 mission requirements in `survey_ml.md`.
-- Formulated complete 5-component handoff report in `handoff.md`.
+- Fully documented all findings and drop-in code specifications in `handoff.md`.
+- Ready for handoff to Parent orchestrator and implementation agent.
 
 ## Artifact Index
-- DISPATCH.md — Initial dispatch instruction log
-- BRIEFING.md — Situational awareness and working memory
+- DISPATCH.md — Received dispatch instructions and urgent updates
+- BRIEFING.md — Persistent working memory
 - progress.md — Liveness heartbeat and milestone tracking
-- survey_ml.md — Comprehensive ML survey and architecture design
-- handoff.md — 5-component handoff report
+- handoff.md — 5-component comprehensive technical survey and architectural redesign report
+

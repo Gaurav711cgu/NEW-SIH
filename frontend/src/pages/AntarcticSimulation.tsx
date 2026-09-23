@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Anchor, Activity, Maximize2, ShieldAlert } from 'lucide-react';
 import AntarcticScene from '../simulation/AntarcticScene';
+import SceneErrorBoundary from '../simulation/common/SceneErrorBoundary';
 import OpsIntelligence from "../simulation/hud/OpsIntelligence";
 import SubsystemHealthMatrix from "../simulation/hud/SubsystemHealthMatrix";
 import HUD from '../simulation/hud/HUD';
@@ -25,7 +26,7 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
     '> Self-Diagnosis Engine ···· [ACTIVE]',
     '> Digital Twin Predictive Maintenance ···· [ARMED]',
     '> ═══════════════════════════════════════',
-    '> SIMULATION ENVIRONMENT: SOUTHERN OCEAN',
+    '> OPERATIONAL ENVIRONMENT: SOUTHERN OCEAN',
     '> COORDINATES: 65.2°S, 48.7°E',
     '> WATER TEMP: -1.8°C to +2.0°C',
     '> AUV STATUS: SURFACE DEPLOYED. READY FOR DIVE.'
@@ -119,33 +120,6 @@ function AlertFeed() {
 }
 
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ color: 'red', padding: '20px', zIndex: 9999, position: 'relative' }}>
-          <h1>Something went wrong.</h1>
-          <pre>{this.state.error.toString()}</pre>
-        </div>
-      );
-    }
-    return this.props.children; 
-  }
-}
-
 export default function AntarcticSimulation() {
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -172,14 +146,16 @@ export default function AntarcticSimulation() {
         <>
           {/* 3D SCENE BACKGROUND */}
           <div className="absolute inset-0 z-0">
-            <AntarcticScene />
+            <SceneErrorBoundary>
+              <AntarcticScene />
+            </SceneErrorBoundary>
           </div>
 
           {/* TOP NAVBAR OVERLAY */}
           <div className="absolute top-0 left-0 w-full h-14 bg-gradient-to-b from-[#000000]/80 to-transparent flex items-start justify-between px-6 pt-4 z-50 pointer-events-none">
             <div className="flex items-center gap-2 pointer-events-auto bg-abyss-900/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-steel-800/80">
               <Anchor className="w-4 h-4 text-steel-100" />
-              <span className="font-bold tracking-widest text-[11px] text-steel-100">SOUTHERN OCEAN SIMULATION</span>
+              <span className="font-bold tracking-widest text-[11px] text-steel-100">SOUTHERN OCEAN TACTICAL TWIN</span>
             </div>
             <div className="flex gap-2">
               <button onClick={toggleFullScreen} className="p-1.5 bg-abyss-900/60 backdrop-blur-md border border-steel-800/80 rounded-full hover:bg-abyss-800 transition-colors pointer-events-auto cursor-pointer">

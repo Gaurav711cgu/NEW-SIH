@@ -131,3 +131,181 @@ The implementing agents must strictly follow the `planning-with-files` and `plan
 - [ ] R3: Running `python dispatcher.py --test` generates a valid JSON SITREP and successfully sends an HTTP POST request to a mocked Telegram Bot API endpoint.
 - [ ] R4: Running `npm run build` in the `webgis_dashboard` directory succeeds without compilation errors.
 - [ ] R5: The project root directory visibly contains up-to-date `task_plan.md`, `findings.md`, and `progress.md` files that accurately reflect the step-by-step development and debugging history of the project.
+
+## 2026-09-22T21:24:15Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Ready for launch — awaiting user approval
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full team
+
+Fix the React Three Fiber 3D simulation environment (`AntarcticScene.tsx` and related components) so that it loads beautifully without visual glitches. Completely overhaul the environment by importing external AAA-quality 3D models (.glb/.gltf) for the seafloor and surroundings instead of relying on procedural geometry. 
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih
+Integrity mode: benchmark
+
+## Requirements
+
+### R1. External Asset Integration
+Replace the existing procedural geometry (Seafloor, IceShelf, etc.) with high-quality external `.glb` or `.gltf` models. The assets must seamlessly fit the deep-sea Antarctic environment (e.g., rocky seabed, underwater ice structures).
+
+### R2. Cinematic Lighting & Atmosphere
+Overhaul the lighting, fog, and volumetric effects (God Rays, Marine Snow). The aesthetic must be a moody, immersive deep-sea environment. The light rays must not glitch into massive solid white polygons that blind the camera.
+
+### R3. Performance and Integration
+The external models must be properly loaded (e.g., using `useGLTF` or `Suspense`) so they do not crash the browser. The scene must continue to work perfectly with the existing `MissionDirector` dive sequence and telemetry UI.
+
+## Verification Resources
+The current project is located in `/Users/gauravkumarnayak/Desktop/new sih/frontend`. You may use Python Playwright scripts (like `take_screenshot.py` in the root) to spin up the local dev server and capture visual evidence of your changes.
+
+## Acceptance Criteria
+
+### Build & Execution
+- [ ] The `frontend` project compiles successfully with `npm run build` with zero TypeScript or syntax errors.
+- [ ] The React Three Fiber `Canvas` mounts and runs without crashing or throwing WebGL context errors.
+
+### Visual Polish (Agent-as-Judge via Screenshot)
+- [ ] The environment features distinct 3D models (GLB/GLTF) for the seafloor rather than mathematical sine-wave planes.
+- [ ] The lighting is dark and atmospheric, with proper fog depth.
+- [ ] There are no massive, flat, blocky polygons (glitched God Rays or clipping Grids) obstructing the camera view.
+
+## 2026-09-22T22:20:51Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Ready for launch — awaiting user approval
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full team
+
+Drastically enhance the React Three Fiber 3D simulation environment (`AntarcticScene.tsx` and related components) to achieve photorealistic, highly detailed, real-life deep-sea scenarios. This includes advanced lighting, post-processing effects, high-fidelity textures, and dynamic organic elements.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih
+Integrity mode: benchmark
+
+## Requirements
+
+### R1. Hyper-Realistic Environment Elements
+Enhance the current 3D environment by adding highly detailed, authentic elements found in real-life deep-sea scenarios. This includes dynamic underwater caustics (moving light refractions on the seafloor), organic seabed clutter, and realistic material properties for the ice and rocks (e.g., normal maps, roughness, metalness).
+
+### R2. Cinematic Post-Processing Pipeline
+Implement `@react-three/postprocessing` to build a high-end cinematic render pipeline. The scene must include Depth of Field (to create camera focus on the AUV and targets), Bloom (to make the AUV's lights and LEDs physically glow), and Ambient Occlusion (to bake realistic deep shadows into the crevices of the 3D models).
+
+### R3. Performance and Stability
+Despite the heavy post-processing and detailed assets, the React Three Fiber scene must remain stable and not crash the browser. The integration must not break the existing `MissionDirector` dive sequence or the telemetry UI.
+
+## Verification Resources
+The current project is located in `/Users/gauravkumarnayak/Desktop/new sih/frontend`. You must use Python Playwright scripts (like `take_screenshot.py` in the root) to spin up the local dev server and capture visual evidence of your changes.
+
+## Acceptance Criteria
+
+### Build & Execution
+- [ ] The `frontend` project compiles successfully with `npm run build` with zero TypeScript or syntax errors.
+- [ ] The React Three Fiber `Canvas` mounts and renders the post-processing effects without crashing or throwing WebGL context errors.
+
+### Visual Polish (Agent-as-Judge via Screenshot)
+- [ ] Screenshots verify the presence of active Bloom (glowing lights) and Ambient Occlusion (dark shadows in crevices).
+- [ ] Screenshots verify that underwater caustics or dynamic lighting patterns are visible on the seafloor.
+- [ ] The overall visual fidelity looks distinctly more photorealistic and cinematic than a standard flat WebGL render.
+
+## 2026-09-22T23:21:37Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Launched
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full team
+
+Redesign the UI dashboards (`OceanState.tsx`, `GovernmentIntel.tsx`, and any other dashboard panels) to make the simulation data look incredibly authentic, presentable, and highly relevant to the Indian Ministry of Earth Sciences (MoES) and the Maitri/Bharati Antarctic stations.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih
+Integrity mode: benchmark
+
+## Requirements
+
+### R1. Authentic MoES / NCPOR Scientific Focus
+Refactor all metrics, charts, and text content to focus strictly on real-world Indian Southern Ocean research priorities: hydrodynamics, biogeochemistry, carbon sequestration, plankton/chlorophyll dynamics, and air-sea interactions. Explicitly reference "Bharati Station" and "Maitri Station" data links.
+
+### R2. Strict Ban on "Virtual" or Fake Terminology
+The UI must look like a 100% authentic, real-world deployment dashboard used in a MoES video demo. Remove all instances of the words "Virtual", "Simulated", "Mock", or "Fake". All sensors must be presented as actual hardware (e.g., "CTD Profiler", "Acoustic Doppler Current Profiler", "RT-DETR Sonar Array").
+
+### R3. Highly Scannable, Presentable UI Layout
+Completely redesign any cards containing long paragraphs of text (especially research findings, citations, or policy recommendations). Break down large text blocks into highly scannable, visually appealing components: use bullet points, data grids, sparkline charts, severity badges, and structured key-value pairs. Nobody should have to read a long paragraph. 
+
+### R4. Peak UI Detailing
+Upgrade the CSS/Tailwind detailing across all cards. Add subtle glowing borders, glassmorphism, precise padding, custom scrollbars, and high-quality iconography (using `lucide-react`) to make every panel look like a premium military/scientific intelligence system.
+
+## Acceptance Criteria
+
+### Content Authenticity
+- [ ] Absolutely zero occurrences of the words "Virtual", "Mock", or "Simulation" in the rendered UI.
+- [ ] Data metrics strictly align with Antarctic/Southern Ocean parameters (e.g., negative water temperatures, PSU salinity, dissolved oxygen, chlorophyll-a).
+
+### Layout and Presentability
+- [ ] No single block of text exceeds 3 lines. Long research findings are broken down into scannable lists or metric grids.
+- [ ] The `GovernmentIntel` and `OceanState` pages compile cleanly with zero TypeScript errors.
+
+### Visual Quality (Agent-as-Judge)
+- [ ] Screenshots verify that the UI components feature high-end detailing (badges, sparklines, clean typography, consistent spacing).
+- [ ] Screenshots verify that the layout looks like a professional, operational government dashboard rather than an amateur mockup.
+
+## 2026-09-22T23:23:44Z
+
+### Follow-up / Requirement Update: Proposed System Component ("Autonomous" & "Indigenous")
+
+In addition to the previous requirements, the user explicitly requested a "Proposed System" component/section that justifies the words "autonomous" and "indigenous".
+- It must detail the combination of physical components (sensors, AUV structure, how they will be mounted).
+- It must also detail the Edge AI intelligence system, the steps for detection -> processing -> converting -> compressing -> sending useful data to the satellite.
+- Make this extremely detailed, professional, and visually impressive (no long paragraphs, use diagrams/structured lists).
+
+## 2026-09-22T23:25:38Z
+
+### Follow-up / Requirement Update 2: Interactive Hardware Components & Deep Contextual Cards
+
+Regarding the "Proposed System" and hardware components:
+- Make sure ALL hardware components and sensors are interactive.
+- When a component is clicked or hovered, it must display a detailed tooltip/card showing:
+  1. Its specific info and technical specifications.
+  2. Where else this tech is typically used (industry context).
+  3. What makes our implementation/usage DIFFERENT or unique for this specific MoES autonomous mission.
+
+## 2026-09-23T04:48:35Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Launched
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full team
+
+Resume and complete the comprehensive UI overhaul of the AQUILA OS frontend dashboards (`OceanState.tsx`, `GovernmentIntel.tsx`, and `ResearchCitations.tsx`), ensuring absolute authenticity for the MoES and Bharati/Maitri stations, and presenting all data in highly scannable, premium military/scientific UI layouts.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih
+Integrity mode: benchmark
+
+## Requirements
+
+### R1. Complete the Dashboard Audits (OceanState & GovernmentIntel)
+Finish analyzing `OceanState.tsx` and `GovernmentIntel.tsx`. Ensure all telemetry parameters and MoES/NCPOR policies fit perfectly. All data must reflect authentic Southern Ocean metrics (e.g., negative water temperatures, PSU salinity). 
+
+### R2. Strict Terminology Ban Verification
+Conduct a final cross-dashboard scan to ruthlessly enforce the terminology ban. Ensure there are absolutely zero occurrences of the words "Virtual", "Mock", "Fake", or "Simulated" across all rendered UI components. Replace them with authentic hardware terminology (e.g., "CTD Profiler", "Acoustic Doppler").
+
+### R3. Eradicate Long Paragraphs (Highly Scannable UI)
+Target `ResearchCitations.tsx` and any remaining long paragraphs in `GovernmentIntel.tsx` or `OceanState.tsx`. Break down all large text blocks into highly scannable, visually appealing components: use bullet points, data grids, sparkline charts, severity badges, and structured key-value pairs. 
+
+### R4. Peak UI Detailing & Interactive "Proposed System"
+Ensure the "Proposed System" layout (physical architecture and 5-stage Edge AI pipeline) features highly scannable tech-spec grids and dynamic hover/click states that display technical specifications, industry context, and our unique innovation. Upgrade CSS detailing across all cards with glowing borders, glassmorphism, precise padding, and high-quality `lucide-react` iconography.
+
+## Acceptance Criteria
+
+### Content Authenticity
+- [ ] Automated scan confirms zero instances of banned terminology ("Virtual", "Mock", etc.) in the `src/` directory.
+- [ ] Data metrics strictly align with Antarctic/Southern Ocean parameters.
+
+### Layout and Presentability
+- [ ] No single block of text exceeds 3 lines. Long research findings and citations are broken down into scannable lists or metric grids.
+- [ ] The `ProposedSystem`, `GovernmentIntel`, and `OceanState` pages compile cleanly with zero TypeScript errors.
+
+### Visual Quality (Agent-as-Judge)
+- [ ] Visual verification confirms that all interactive hardware components feature premium data cards on hover/click.
+- [ ] Visual verification confirms the layout looks like a professional, operational government dashboard (glassmorphism, glowing borders) rather than an amateur mockup.

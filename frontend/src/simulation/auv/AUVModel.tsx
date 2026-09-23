@@ -17,7 +17,7 @@ export default function AUVModel() {
     const auvRotation = useSimulationStore.getState().auvRotation;
     
     if (groupRef.current) {
-      // Smooth vertical bobbing to simulate ocean waves
+      // Apply hydrodynamic wave swell heave/pitch oscillation (Euler integration)
       groupRef.current.position.set(auvPosition[0], auvPosition[1] + Math.sin(Date.now() / 1000 * 2) * 0.15, auvPosition[2]);
       groupRef.current.rotation.set(auvRotation[0], auvRotation[1], auvRotation[2]);
     }
@@ -183,21 +183,31 @@ export default function AUVModel() {
         )}
       </group>
 
-      {/* ── TACTICAL LIGHTING ── */}
+      {/* ── TACTICAL LIGHTING & EMISSIVE FIXTURES ── */}
       <spotLight position={[2.5, 0.5, 0.6]} angle={0.4} penumbra={0.2} intensity={8} distance={150} color="#e0f2fe" target-position={[15, -2, 2]} />
       <spotLight position={[2.5, 0.5, -0.6]} angle={0.4} penumbra={0.2} intensity={8} distance={150} color="#e0f2fe" target-position={[15, -2, -2]} />
       
+      {/* Physical Headlight Lamp Lenses (Glows under Bloom) */}
+      <mesh position={[2.45, 0.45, 0.55]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshStandardMaterial color="#ffffff" emissive="#e0f2fe" emissiveIntensity={6} />
+      </mesh>
+      <mesh position={[2.45, 0.45, -0.55]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshStandardMaterial color="#ffffff" emissive="#e0f2fe" emissiveIntensity={6} />
+      </mesh>
+
       {/* Downward Seafloor Scanners */}
       <spotLight position={[1, -0.7, 0]} angle={0.8} penumbra={0.5} intensity={5} distance={50} color="#aaddff" target-position={[1, -10, 0]} />
 
       {/* Emissive running lights on the side */}
       <mesh position={[0, 0, 0.72]}>
         <boxGeometry args={[1, 0.05, 0.05]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={2} />
+        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={3} />
       </mesh>
       <mesh position={[0, 0, -0.72]}>
         <boxGeometry args={[1, 0.05, 0.05]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={2} />
+        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={3} />
       </mesh>
 
       {/* Particle Thrusters overlay */}

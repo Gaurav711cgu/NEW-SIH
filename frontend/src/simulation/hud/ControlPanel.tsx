@@ -85,7 +85,7 @@ export default function ControlPanel() {
               >
                 <div className="flex items-center gap-2">
                   <AlertTriangle size={14} />
-                  <span>SIMULATE FAILURES</span>
+                  <span>SYSTEM DIAGNOSTIC FAULTS</span>
                 </div>
                 {showFailures ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
               </button>
@@ -113,7 +113,7 @@ export default function ControlPanel() {
               className="flex items-center justify-center gap-2 py-2 px-3 mt-2 border border-red-500/40 text-red-400 hover:bg-red-500/20 rounded text-xs transition-colors"
             >
               <RefreshCw size={14} />
-              RESET SIMULATION
+              RECALIBRATE SENSORS
             </button>
 
           </motion.div>

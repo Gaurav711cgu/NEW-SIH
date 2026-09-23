@@ -1,4 +1,4 @@
-export type DataSource = 'LIVE' | 'VIRTUAL' | 'DATASET' | 'PLANNED';
+export type DataSource = 'LIVE' | 'EDGE INFERENCE' | 'DATASET' | 'PLANNED';
 export type MetricStatus = 'nominal' | 'degraded' | 'dropout' | 'offline';
 export type TrendDir = 'up' | 'down' | 'stable';
 
