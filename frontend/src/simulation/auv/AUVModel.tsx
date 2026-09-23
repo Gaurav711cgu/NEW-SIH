@@ -56,7 +56,7 @@ export default function AUVModel() {
         </div>
         {onClose && (
           <button
-            onClick={(e) => {
+            onPointerDown={(e) => {
               e.stopPropagation();
               onClose();
             }}
@@ -92,7 +92,7 @@ export default function AUVModel() {
           rotation={[0, 0, Math.PI / 2]} 
           castShadow 
           receiveShadow
-          onClick={(e) => toggleComponent('BATTERY', e)}
+          onPointerDown={(e) => toggleComponent('BATTERY', e)}
           onPointerOver={(e) => { e.stopPropagation(); setHovered('BATTERY'); }}
           onPointerOut={(e) => { e.stopPropagation(); setHovered(null); }}
         >
@@ -135,7 +135,7 @@ export default function AUVModel() {
         <mesh 
           position={[2.8, 0, 0]} 
           rotation={[0, 0, -Math.PI / 2]}
-          onClick={(e) => toggleComponent('SENSOR', e)}
+          onPointerDown={(e) => toggleComponent('SENSOR', e)}
           onPointerOver={(e) => { e.stopPropagation(); setHovered('SENSOR'); }}
           onPointerOut={(e) => { e.stopPropagation(); setHovered(null); }}
         >
@@ -180,7 +180,7 @@ export default function AUVModel() {
       <Select enabled={hovered === 'COMMS'}>
         <group 
           position={[0.5, 0.9, 0]}
-          onClick={(e) => toggleComponent('COMMS', e)}
+          onPointerDown={(e) => toggleComponent('COMMS', e)}
           onPointerOver={(e) => { e.stopPropagation(); setHovered('COMMS'); }}
           onPointerOut={(e) => { e.stopPropagation(); setHovered(null); }}
         >
@@ -240,7 +240,7 @@ export default function AUVModel() {
       <Select enabled={hovered === 'THRUSTER'}>
         <group 
           position={[-4.1, 0, 0]}
-          onClick={(e) => toggleComponent('THRUSTER', e)}
+          onPointerDown={(e) => toggleComponent('THRUSTER', e)}
           onPointerOver={(e) => { e.stopPropagation(); setHovered('THRUSTER'); }}
           onPointerOut={(e) => { e.stopPropagation(); setHovered(null); }}
         >

@@ -296,7 +296,7 @@ export function OceanState() {
     <div className="h-full overflow-y-auto p-4 md:p-6 flex flex-col gap-5 text-steel-100 bg-transparent selection:bg-cyan-500/30">
       
       {/* ── TOP MISSION OPERATIONAL STRIP (MILITARY / SCIENTIFIC HUD) ── */}
-      <div className="bg-slate-900/85 border border-cyan-500/30 rounded-lg p-4 shadow-[0_4px_24px_-1px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
+      <div className="bg-slate-900/85 border border-cyan-500/30 rounded-lg p-4 shadow-[0_4px_24px_-1px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative shrink-0">
         {/* Corner HUD reticles */}
         <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyan-400/60" />
         <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyan-400/60" />
