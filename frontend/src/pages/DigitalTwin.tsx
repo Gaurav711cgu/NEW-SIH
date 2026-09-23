@@ -18,6 +18,12 @@ const FLEET_DATA = [
   { id: 'AQUILA-04', status: 'CRITICAL', health: 25, lat: BHARATI_LAT - 0.025, lng: BHARATI_LNG + 0.030, heading: 0, depth: 50 },
   { id: 'AQUILA-05', status: 'NOMINAL', health: 91, lat: BHARATI_LAT + 0.020, lng: BHARATI_LNG + 0.005, heading: 180, depth: 210 },
   { id: 'AQUILA-06', status: 'NOMINAL', health: 88, lat: BHARATI_LAT - 0.010, lng: BHARATI_LNG - 0.005, heading: 90, depth: 100 },
+  { id: 'AQUILA-07', status: 'NOMINAL', health: 96, lat: BHARATI_LAT + 0.025, lng: BHARATI_LNG + 0.020, heading: 135, depth: 310 },
+  { id: 'AQUILA-08', status: 'NOMINAL', health: 99, lat: BHARATI_LAT + 0.030, lng: BHARATI_LNG - 0.015, heading: 45, depth: 180 },
+  { id: 'AQUILA-09', status: 'WARNING', health: 71, lat: BHARATI_LAT - 0.035, lng: BHARATI_LNG - 0.010, heading: 210, depth: 450 },
+  { id: 'AQUILA-10', status: 'NOMINAL', health: 94, lat: BHARATI_LAT - 0.005, lng: BHARATI_LNG - 0.035, heading: 300, depth: 260 },
+  { id: 'AQUILA-11', status: 'NOMINAL', health: 89, lat: BHARATI_LAT + 0.015, lng: BHARATI_LNG + 0.035, heading: 90, depth: 115 },
+  { id: 'AQUILA-12', status: 'NOMINAL', health: 97, lat: BHARATI_LAT - 0.040, lng: BHARATI_LNG + 0.010, heading: 15, depth: 80 },
 ];
 
 const HEALTH_TIMELINE = Array.from({ length: 30 }, (_, i) => ({
@@ -26,12 +32,14 @@ const HEALTH_TIMELINE = Array.from({ length: 30 }, (_, i) => ({
 })).reverse();
 
 const COMPONENT_HEALTH = [
-  { name: 'CTD (SBE-37)', health: 65 },
-  { name: 'Sonar (EdgeTech)', health: 92 },
-  { name: 'Battery (Li-Po)', health: 25 },
-  { name: 'MCU (Jetson Orin)', health: 99 },
-  { name: 'GPS (U-Blox)', health: 100 },
-  { name: 'Lights (LED)', health: 91 },
+  { name: 'CTD (SBE-37)', health: 65, diag: 'Temp Drift: +0.02°C/hr' },
+  { name: 'Sonar (EdgeTech)', health: 92, diag: 'Ping Rate: 10Hz (Nominal)' },
+  { name: 'Battery (Li-Po)', health: 25, diag: 'Cell 3 Voltage Drop (3.2V)' },
+  { name: 'MCU (Jetson Orin)', health: 99, diag: 'Temp: 45°C, Load: 82%' },
+  { name: 'GPS (U-Blox)', health: 100, diag: '3D Fix, 12 Satellites' },
+  { name: 'Lights (LED)', health: 91, diag: 'Draw: 2.1A (Normal)' },
+  { name: 'Thrusters', health: 88, diag: 'RPM: 1200, Torque: 1.2Nm' },
+  { name: 'Acoustic Modem', health: 95, diag: 'Tx/Rx: 14kbps, SNR: 12dB' },
 ];
 
 const MAINTENANCE_RECS = [
@@ -116,11 +124,11 @@ export default function DigitalTwin() {
         <div className="flex gap-4">
           <div className="bg-abyss-900 border border-steel-800 rounded px-4 py-2 text-center">
             <div className="text-[10px] text-steel-500 font-mono">ACTIVE FLEET</div>
-            <div className="text-xl font-bold text-ice-300">6</div>
+            <div className="text-xl font-bold text-ice-300">{FLEET_DATA.length}</div>
           </div>
           <div className="bg-abyss-900 border border-steel-800 rounded px-4 py-2 text-center">
             <div className="text-[10px] text-steel-500 font-mono">CRITICAL NODES</div>
-            <div className="text-xl font-bold text-red-400">1</div>
+            <div className="text-xl font-bold text-red-400">{FLEET_DATA.filter(f => f.status === 'CRITICAL').length}</div>
           </div>
           <div className="bg-abyss-900 border border-steel-800 rounded px-4 py-2 text-center">
             <div className="text-[10px] text-steel-500 font-mono">SWARM COHESION</div>
@@ -153,8 +161,8 @@ export default function DigitalTwin() {
               attributionControl={false}
             >
               <TileLayer
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-                opacity={0.6}
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                opacity={0.8}
               />
               
               {/* Swarm Communication Relays (Lines) */}
@@ -259,21 +267,28 @@ export default function DigitalTwin() {
                 else if (comp.health < 75) colorClass = 'bg-amber-400';
 
                 return (
-                  <div key={comp.name} className="flex items-center gap-3">
-                    <span className="w-24 text-[10px] font-mono text-steel-400 text-right truncate">
-                      {comp.name}
-                    </span>
-                    <div className="flex-1 h-2 bg-abyss-950 rounded overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${comp.health}%` }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                        className={`h-full ${colorClass}`}
-                      />
+                  <div key={comp.name} className="flex flex-col gap-1 mb-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-steel-300 font-bold">
+                        {comp.name}
+                      </span>
+                      <span className="text-[10px] font-mono text-steel-500">
+                        {comp.diag}
+                      </span>
                     </div>
-                    <span className="w-8 text-[10px] font-mono text-steel-500">
-                      {comp.health}%
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 h-2 bg-abyss-950 rounded overflow-hidden border border-steel-800/50">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${comp.health}%` }}
+                          transition={{ duration: 1, delay: 0.2 }}
+                          className={`h-full ${colorClass} shadow-[0_0_8px_${colorClass}]`}
+                        />
+                      </div>
+                      <span className={`w-8 text-[11px] font-mono font-bold ${comp.health < 40 ? 'text-red-400' : comp.health < 75 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                        {comp.health}%
+                      </span>
+                    </div>
                   </div>
                 );
               })}
