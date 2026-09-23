@@ -239,13 +239,8 @@ function InstancedAbyssalRocks() {
 }
 
 export function AbyssalTerrainModel() {
-  return (
-    <SceneErrorBoundary fallback={null}>
-      <Suspense fallback={null}>
-        <InstancedAbyssalRocks />
-      </Suspense>
-    </SceneErrorBoundary>
-  );
+  // Disabled rocky clutter for a clean, unobstructed digital twin aesthetic.
+  return null;
 }
 
 export default AbyssalTerrainModel;
