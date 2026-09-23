@@ -50,11 +50,10 @@ export default function SurfaceEnvironment() {
       {/* Semi-transparent ocean surface */}
       <mesh ref={waterRef} position={[0, 0, 0]} geometry={geometry} receiveShadow>
         <meshPhysicalMaterial 
-          color="#001a22" 
-          roughness={0.1}
-          metalness={0.5}
-          transmission={0.8}
-          opacity={0.8}
+          color="#002a3a" 
+          roughness={0.2}
+          metalness={0.8}
+          opacity={0.7}
           transparent={true}
           flatShading={true}
           side={THREE.DoubleSide}

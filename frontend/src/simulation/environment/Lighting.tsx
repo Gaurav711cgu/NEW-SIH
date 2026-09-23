@@ -144,15 +144,11 @@ export default function Lighting() {
       scene.fog = new THREE.FogExp2(fogColor, fogDensity);
     }
 
-    // Set scene background in the deep ocean so it seamlessly matches deep ocean fog
-    if (depth > 40) {
-      if (!scene.background || !(scene.background instanceof THREE.Color)) {
-        scene.background = fogColor.clone();
-      } else {
-        scene.background.lerp(fogColor, 0.08);
-      }
+    // Set scene background to match fog color so transmission materials (like water) refract correctly
+    if (!scene.background || !(scene.background instanceof THREE.Color)) {
+      scene.background = fogColor.clone();
     } else {
-      scene.background = null; // Allow sky dome to render at surface
+      scene.background.lerp(fogColor, 0.08);
     }
 
     // 2. Derive AUV forward orientation in world coordinates
