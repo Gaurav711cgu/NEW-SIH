@@ -156,7 +156,7 @@ export default function DigitalTwin() {
             <MapContainer 
               center={[BHARATI_LAT, BHARATI_LNG]} 
               zoom={11} 
-              className="w-full h-full bg-[#0a192f]"
+              className="w-full h-full bg-[#0a192f] [&_.leaflet-layer]:invert [&_.leaflet-layer]:hue-rotate-180 [&_.leaflet-layer]:brightness-90 [&_.leaflet-layer]:contrast-125"
               zoomControl={false}
               attributionControl={false}
             >
