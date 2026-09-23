@@ -118,25 +118,25 @@ export default function Lighting() {
   const coneDown = useMemo(() => new THREE.Vector3(0, -1, 0), []);
 
   // Lighting calculations per frame
-  // Calibrated ambient floor strictly ~0.20 to ensure seafloor clutter, rocks, and caustics are crisply visible
-  const ambientFloor = 0.20;
-  const ambientIntensity = Math.max(ambientFloor, THREE.MathUtils.lerp(0.35, ambientFloor, Math.min(depth / 80, 1)));
-  const sunIntensity = Math.max(0, 1.4 - (depth / 50));
+  // Calibrated ambient floor increased for a clean, clear, and realistic view
+  const ambientFloor = 1.2;
+  const ambientIntensity = Math.max(ambientFloor, THREE.MathUtils.lerp(1.5, ambientFloor, Math.min(depth / 80, 1)));
+  const sunIntensity = Math.max(0.5, 1.4 - (depth / 50)); // Keep some sun even at depth
 
   // High-intensity searchlight headlights ramp up with depth
   const headlightIntensity = depth < 4 ? 15 : THREE.MathUtils.lerp(15, 35, Math.min((depth - 4) / 40, 1));
   const floodIntensity = depth < 4 ? 10 : THREE.MathUtils.lerp(10, 30, Math.min((depth - 4) / 40, 1));
   const vehicleLightIntensity = depth < 4 ? 10 : THREE.MathUtils.lerp(10, 25, Math.min((depth - 4) / 40, 1));
 
-  // Fog tuning: deep ocean fog transitioning from rich cyan-navy to atmospheric abyssal blue
-  const surfaceFogColor = useMemo(() => new THREE.Color('#03162a'), []);
-  const deepFogColor = useMemo(() => new THREE.Color('#020f22'), []);
+  // Fog tuning: Clean, bright, and realistic blue environment (Digital Twin style)
+  const surfaceFogColor = useMemo(() => new THREE.Color('#004a80'), []);
+  const deepFogColor = useMemo(() => new THREE.Color('#003366'), []);
   const fogColor = useMemo(() => new THREE.Color(), []);
 
   useFrame(() => {
-    // 1. Update deep ocean fog & background
+    // 1. Update clean deep ocean fog & background
     fogColor.copy(surfaceFogColor).lerp(deepFogColor, Math.min(depth / 90, 1));
-    const fogDensity = THREE.MathUtils.lerp(0.005, 0.010, Math.min(depth / 120, 1));
+    const fogDensity = THREE.MathUtils.lerp(0.001, 0.002, Math.min(depth / 120, 1)); // Very low density for clear view
 
     if (scene.fog instanceof THREE.FogExp2) {
       scene.fog.color.lerp(fogColor, 0.08);
