@@ -114,37 +114,44 @@ export default function DebrisField() {
   const highlightColor = new THREE.Color(0xff0000); // Red
   const tempMatrix = new THREE.Matrix4();
   const dummyObj = new THREE.Object3D();
+  const detectedIndices = useRef<Set<number>>(new Set());
 
   useFrame(() => {
     const auvPos = useSimulationStore.getState().auvPosition;
+    const addAILog = useSimulationStore.getState().addAILog;
     
-    // Check ghost nets
+    // Check ghost nets and anomalies
     if (ghostNetRef.current) {
-      let detectedAnomalies = 0;
+      let newlyDetected = 0;
       for (let i = 0; i < clutterData.ghostNets.length; i++) {
         ghostNetRef.current.getMatrixAt(i, tempMatrix);
         dummyObj.position.setFromMatrixPosition(tempMatrix);
         
-        // Sonar beam logic: Forward cone from AUV
-        // A simple distance and angle check. For now, distance < 40m and in front of AUV
-        const distance = dummyObj.position.distanceTo(new THREE.Vector3(auvPos[0], auvPos[1], auvPos[2]));
+        // Side-Scan Sonar covers lateral swaths (left and right of the vehicle)
+        // Assuming AUV moves mostly along X-axis:
+        const dx = Math.abs(dummyObj.position.x - auvPos[0]);
+        const dz = Math.abs(dummyObj.position.z - auvPos[2]);
+        const isLateral = dx < 12; // Object is longitudinally aligned with AUV
+        const inSwathRange = dz > 8 && dz < 45; // Object is in the lateral acoustic beam range
         
-        // Let's assume AUV is pointing mostly along X-axis (forward)
-        // Just use distance for now to simulate the acoustic sweep radius
-        if (distance < 35 && dummyObj.position.x > auvPos[0] - 10) {
+        if (isLateral && inSwathRange && dummyObj.position.y < auvPos[1]) {
           ghostNetRef.current.setColorAt(i, highlightColor);
-          detectedAnomalies++;
+          if (!detectedIndices.current.has(i)) {
+            detectedIndices.current.add(i);
+            newlyDetected++;
+            // Simulate processing and saving to DB
+            addAILog(`[AI VISION] Contact acquired! Sonar signature matching Ghost Net at Z:${dummyObj.position.z.toFixed(0)}m.`);
+            addAILog(`[DB] Identifying object class via YOLOv8 and saving telemetry to platform.db...`);
+          }
         } else {
-          ghostNetRef.current.setColorAt(i, defaultColor);
+          // If not permanently detected, keep cyan (or could leave them red once found)
+          if (!detectedIndices.current.has(i)) {
+             ghostNetRef.current.setColorAt(i, defaultColor);
+          }
         }
       }
       if (ghostNetRef.current.instanceColor) {
         ghostNetRef.current.instanceColor.needsUpdate = true;
-      }
-      
-      // Update global store if we found something so UI can react (YOLO detection)
-      if (detectedAnomalies > 0) {
-         // Optionally update store state here
       }
     }
   });

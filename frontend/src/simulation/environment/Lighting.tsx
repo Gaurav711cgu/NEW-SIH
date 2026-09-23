@@ -124,9 +124,9 @@ export default function Lighting() {
   const sunIntensity = Math.max(0, 1.4 - (depth / 50));
 
   // High-intensity searchlight headlights ramp up with depth
-  const headlightIntensity = depth < 4 ? 20 : THREE.MathUtils.lerp(60, 240, Math.min((depth - 4) / 40, 1));
-  const floodIntensity = depth < 4 ? 15 : THREE.MathUtils.lerp(40, 220, Math.min((depth - 4) / 40, 1));
-  const vehicleLightIntensity = depth < 4 ? 10 : THREE.MathUtils.lerp(30, 100, Math.min((depth - 4) / 40, 1));
+  const headlightIntensity = depth < 4 ? 15 : THREE.MathUtils.lerp(15, 35, Math.min((depth - 4) / 40, 1));
+  const floodIntensity = depth < 4 ? 10 : THREE.MathUtils.lerp(10, 30, Math.min((depth - 4) / 40, 1));
+  const vehicleLightIntensity = depth < 4 ? 10 : THREE.MathUtils.lerp(10, 25, Math.min((depth - 4) / 40, 1));
 
   // Fog tuning: deep ocean fog transitioning from rich cyan-navy to atmospheric abyssal blue
   const surfaceFogColor = useMemo(() => new THREE.Color('#03162a'), []);
