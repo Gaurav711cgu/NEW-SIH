@@ -1,5 +1,5 @@
 import { Suspense, useMemo, useRef, useLayoutEffect } from 'react';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, useTexture } from '@react-three/drei';
 import { SceneErrorBoundary } from '../common/SceneErrorBoundary';
 import * as THREE from 'three';
 
@@ -8,6 +8,9 @@ const SEAFLOOR_MODEL_PATH = '/models/seabed.glb';
 
 useGLTF.preload(ROCK_MODEL_PATH);
 useGLTF.preload(SEAFLOOR_MODEL_PATH);
+useTexture.preload('/textures/rock/aerial_rocks_01_diff_2k.jpg');
+useTexture.preload('/textures/rock/aerial_rocks_01_nor_gl_2k.jpg');
+useTexture.preload('/textures/rock/aerial_rocks_01_rough_2k.jpg');
 
 // Seeded PRNG for deterministic, reproducible geological distribution
 function createPRNG(seed: number) {
@@ -58,6 +61,13 @@ interface RockInstance {
 function InstancedAbyssalRocks() {
   const rockGltf = useGLTF(ROCK_MODEL_PATH);
   const seabedGltf = useGLTF(SEAFLOOR_MODEL_PATH);
+  
+  const [diffuse, normal, rough] = useTexture([
+    '/textures/rock/aerial_rocks_01_diff_2k.jpg',
+    '/textures/rock/aerial_rocks_01_nor_gl_2k.jpg',
+    '/textures/rock/aerial_rocks_01_rough_2k.jpg'
+  ]);
+
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   // 1. Extract position attribute from seabed for bilinear elevation snapping
@@ -93,23 +103,24 @@ function InstancedAbyssalRocks() {
     if (!targetMesh) return null;
 
     const geometry = (targetMesh as THREE.Mesh).geometry;
-    const origMaterial = (targetMesh as THREE.Mesh).material as THREE.MeshStandardMaterial;
-    const material = origMaterial ? origMaterial.clone() : new THREE.MeshStandardMaterial();
+    
+    [diffuse, normal, rough].forEach(tex => {
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(1.5, 1.5);
+    });
 
-    material.roughness = 0.85;
-    material.metalness = 0.08;
-    if (material.map) {
-      material.color.set('#ffffff'); // Preserve full 2K albedo
-    } else {
-      material.color.set('#4a5568');
-    }
-    if (material.normalMap) {
-      material.normalScale = new THREE.Vector2(1.8, 1.8);
-    }
-    material.needsUpdate = true;
+    const material = new THREE.MeshStandardMaterial({
+      map: diffuse,
+      normalMap: normal,
+      roughnessMap: rough,
+      color: '#9ba4b5',
+      roughness: 0.95,
+      metalness: 0.05,
+      normalScale: new THREE.Vector2(2.5, 2.5)
+    });
 
     return { geometry, material };
-  }, [rockGltf.scene]);
+  }, [rockGltf.scene, diffuse, normal, rough]);
 
   // 3. Generate 112 clustered rock instances with camera-centric distribution and elevation snapping
   // Raw geometry size is 0.21m width x 0.075m height, so scales ~10-60 produce natural 2m to 13m outcrops
