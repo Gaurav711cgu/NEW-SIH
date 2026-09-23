@@ -46,20 +46,16 @@ function GLBIceShelf() {
             receiveShadow
             inject={
               <meshPhysicalMaterial
-                color="#dbeafe"
-                emissive="#003855"
-                emissiveIntensity={0.25}
-                transmission={0.85}
-                roughness={0.16}
-                metalness={0.02}
-                ior={1.31}
-                thickness={15}
-                attenuationColor="#006899"
-                attenuationDistance={12.0}
-                clearcoat={0.85}
-                clearcoatRoughness={0.15}
-                transparent
-                opacity={0.96}
+                color="#e0f2fe"
+                emissive="#0284c7"
+                emissiveIntensity={0.4}
+                roughness={0.3}
+                metalness={0.1}
+                clearcoat={1.0}
+                clearcoatRoughness={0.2}
+                transparent={true}
+                opacity={0.85}
+                side={THREE.DoubleSide}
               />
             }
           />
