@@ -347,3 +347,155 @@ There are magenta/pink untextured domes (likely jellyfish or similar environment
 - [ ] The AUV stays strictly above the terrain and does not clip through the ground.
 - [ ] The pink/magenta spheres are replaced with their intended materials (no missing textures in the scene).
 - [ ] `npm run build` executes with zero TypeScript errors.
+
+## 2026-09-23T16:11:54Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Launched
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Small, focused team
+
+Fix UI data hallucinations, correct side-scan sonar (SSS) object placement, and implement interactive 3D camera controls for the AUV Digital Twin simulation. This is a single self-contained set of frontend fixes; keep it small and focused.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih/frontend
+Integrity mode: development
+
+## Requirements
+
+### R1. UI Data Integrity (Remove "UXO/MINE")
+Audit the frontend components (specifically the Decision Matrix and any terminal/status windows) to remove all hardcoded references to "UXO / MINE" and replace them with "GHOST NET". The JSON payload in the UI must reflect the correct object class.
+
+### R2. Side-Scan Sonar Object Placement
+Modify the `DebrisField.tsx` (or relevant target spawning logic) so that ghost nets and chimneys spawn on the **sides** (port and starboard) of the AUV's trajectory, rather than directly in front of it, to accurately reflect how Side-Scan Sonar (SSS) detects targets.
+
+### R3. Interactive 3D Camera Controls
+Implement `OrbitControls` in the React Three Fiber scene, anchored to the AUV. The user must be able to click, drag, rotate, and zoom around the AUV in 360 degrees to observe the environment and side-scan detections interactively.
+
+### R4. Sonar Strike Highlighting
+Ensure that when the animated sonar ping expands and touches a 3D object on the sides, the object visually highlights (e.g., changes color or material brightness) to indicate a successful acoustic strike.
+
+## Acceptance Criteria
+
+### Automated Verification
+- [ ] A Playwright/Puppeteer script is written to load the frontend and assert that the text "UXO" or "MINE" does not exist anywhere in the DOM.
+
+### Code Review (Agent-as-Judge)
+- [ ] An independent agent reviews the PR/diff to confirm `OrbitControls` are present and attached to the correct camera/target.
+- [ ] Code review confirms the math in the spawning logic offsets the X/Z coordinates to the port/starboard sides of the AUV.
+
+### Manual Verification
+- [ ] The user can load the app on `localhost:5173`, successfully pan/rotate the camera 360 degrees around the AUV, and visually confirm objects spawn on the sides and light up upon sonar contact.
+
+## 2026-09-23T21:28:32Z
+
+# Teamwork Project Prompt — ConvectNow (SIH PS-26084)
+
+> Status: Launched
+> Goal: Multi-source data fusion nowcasting system for Thunderstorms, Hail & Cloudbursts (0–6h, 1–2 km resolution)
+> Requested team: Full multi-agent team (Ingestion Specialists, Nowcast ML Engineers, WebGIS Developers)
+
+Build ConvectNow: an operational convective-scale nowcasting system (0–6h lead time, 1–2 km resolution) for the Ministry of Earth Sciences (MoES) / NCMRWF (SIH PS-26084). The system ingests multi-source data streams (radar reflectivity/velocity, satellite IR/WV, lightning strike density, and NWP background), runs dual-horizon nowcasting (0–2h PySTEPS Lagrangian advection + 2–6h ML/NWP fusion), predicts four discrete convective hazards (Lightning density, Hail POSH/SHI, Downburst velocity, and Cloudburst >100mm/hr), and renders them on an interactive WebGIS command dashboard with per-storm arrival countdown clocks (ETA) and NDMA-compliant CAP alerts.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih/convectnow
+Integrity mode: development
+
+## Requirements
+
+### R1. Multi-Source Ingestion & Unified Analysis Cube
+Build an asynchronous ingestion pipeline that ingests Doppler Weather Radar (NEXRAD L2 proxy + IMD NetCDF/UF adapter stub), Geostationary Satellite (GOES-16 ABI / MOSDAC INSAT-3DR TIR/WV proxy), Geostationary Lightning (SEVIR GLM flashes), and NWP environmental fields (HRRR CAPE, CIN, 0°C freezing level). Resample and synchronize all streams onto a standardized 1 km EPSG:4326 spatiotemporal xarray analysis cube at 5-minute cadences. Apply automated radar clutter filtering (`GateFilter`) and velocity dealiasing.
+
+### R2. Dual-Horizon Spatio-Temporal Nowcasting Engine (0–6h)
+Implement a hybrid nowcasting pipeline:
+- **0–2h Near-Cast**: PySTEPS Lagrangian advection with Variational Echo Tracking (VET) and a 24-member ensemble perturbation producing mean precipitation and spread.
+- **2–6h Mid-Cast**: Spatiotemporal deep learning model (EarthFormer / SimVP) fine-tuned on convective storm sequences blended with downscaled HRRR convective potential via lead-time-dependent Bayesian Model Averaging (BMA).
+- **Storm Cell Tracking**: TINT cell identification and trajectory tracking to compute cell speed, heading, and projected corridor.
+
+### R3. Four-Parameter Convective Hazard Physics Engine
+Calculate four discrete hazard fields for every 5-minute nowcast step on the 1 km grid:
+1. **Lightning Strike Density**: XGBoost regressor on fused storm features (VIL, max dBZ, IR brightness temp, CAPE) with SHAP feature attribution.
+2. **Severe Hail Probability**: Severe Hail Index (SHI) and Probability of Severe Hail (POSH) via Witt et al. (1998) integration above the 0°C isotherm.
+3. **Downburst Wind Velocity**: Wet-Bulb Zero & MDAP regression model predicting peak surface gust velocity ($V_{db}$).
+4. **Cloudburst Threshold Detection**: Tropical Z-R precipitation ($R = (Z/300)^{1/1.5}\text{ mm/hr}$) with morphological filter flagging confirmed $>100\text{ mm/hr}$ extreme events.
+
+### R4. Real-Time WebGIS Command Dashboard & ETA Dispatcher
+Develop a responsive WebGIS command center (React / MapLibre GL / Leaflet):
+- Dynamic 1–2 km animated raster overlays for all 4 hazard layers with standard meteorological color ramps.
+- Tracked storm cells with centroid markers, motion vector arrows, and 4-tier severity tags (Advisory, Watch, Warning, Extreme).
+- **Location-Specific ETA Countdown Clocks**: Interactive arrival time distributions ($ETA \pm \text{uncertainty}$) for vulnerable infrastructure, tehsils, and airports.
+- Dual-role interface: Tactical Ministry/SDMA Command View vs Simplified Public Warning Card.
+- NDMA Common Alerting Protocol (CAP v1.2 XML) automated export.
+
+### R5. Scientific Verification & Replay Suite
+Implement an automated validation suite computing meteorology benchmark metrics:
+- Contingency table scores: Critical Success Index (CSI), Probability of Detection (POD), False Alarm Ratio (FAR).
+- Spatial scores: Fractions Skill Score (FSS) at 5, 10, 20, and 40 km neighborhood radii.
+- Calibration: Brier Score and reliability diagrams for probabilistic hazard fields.
+- Include 3 replay event packets: Kolkata Kalbaisakhi, Delhi Severe Downburst, and Uttarakhand Cloudburst.
+
+## Acceptance Criteria
+
+### Functional & Algorithmic
+- [ ] Ingestion engine successfully creates a synchronized 5-minute multi-channel analysis cube from raw inputs.
+- [ ] PySTEPS generates a 12-step (60 min) ensemble nowcast from consecutive radar frames without crashing.
+- [ ] All 4 hazard parameter functions (Lightning density, POSH/MESH, Downburst velocity, Cloudburst flag) return valid numerical arrays without NaN or infinite values.
+- [ ] TINT storm tracker assigns unique persistent cell IDs and calculates valid $u, v$ motion vectors.
+- [ ] ETA algorithm outputs valid arrival time windows with confidence intervals for target coordinates along the storm corridor.
+
+### Verification & Performance
+- [ ] Automated evaluation script runs on archived storm events and reports CSI $\ge 0.35$ at 1-hour lead times.
+- [ ] WebGIS dashboard renders hazard layers, storm tracks, and ETA countdowns at 60 FPS without UI freezes.
+- [ ] Production frontend compiles with zero TypeScript errors (`npm run build`).
+
+## 2026-09-24T13:00:59Z
+
+# Teamwork Project Prompt — ConvectNow Deep Learning & Scrollytelling Suite
+
+> Status: Launched
+> Goal: Multi-task PyTorch deep learning models for convective hazards, dual real-world data pipelines, physics-informed AI explainer, and interactive 4D storm anatomy scrollytelling experience (SIH PS-26084)
+> Requested team: Full multi-agent team (Deep Learning Specialists, Data Engineers, Scroll Architects, Met Experts)
+
+Build the Deep Learning Hazard Suite, End-to-End Data Pipeline, and Interactive Scrollytelling Experience for ConvectNow (MoES / NCMRWF · SIH PS-26084). The system ingests multi-source data (IMD DWR, MOSDAC INSAT-3DR, and SEVIR benchmarks), trains a unified Karpathy-grade PyTorch multi-task network (ConvectNet) for simultaneous prediction of Severe Hail, Cloudbursts, Downbursts, and Convective Initiation, provides physics-grounded AI feature attribution, and presents an interactive 4D scrollytelling experience exploring the physical lifecycle of severe convective storms.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih/convectnow
+Integrity mode: development
+
+## Requirements
+
+### R1. Dual Real-World Data Sourcing & Ingestion Pipeline (/data-engineer, /data-scientist)
+- Ingest real-world meteorological streams from live IMD Doppler Weather Radar (DWR) GeoServer feeds and MOSDAC INSAT-3DR multispectral products, synchronized with SEVIR high-resolution (1 km) convective storm cubes for reproducible evaluation.
+- Implement robust asynchronous ingestion workers with automated quality-control filtering (ground clutter rejection, missing value imputation) and coordinate re-projection onto a uniform 1 km EPSG:4326 grid.
+
+### R2. Unified Multi-Task PyTorch ConvectNet (/ml-engineer, /andrej-karpathy)
+- Build a clean, zero-bloat, transparent PyTorch multi-task spatiotemporal neural network (`ConvectNet`):
+  - 3D-CNN / Spatiotemporal ConvLSTM backbone processing 4D radar+satellite tensor sequences `(B, C, T, H, W)`.
+  - Shared convective feature representation with 4 task-specific heads:
+    1. **Hail Head**: Regression for Severe Hail Index (SHI), Probability of Severe Hail (POSH), and Maximum Estimated Size of Hail (MESH).
+    2. **Cloudburst Head**: Binary classification and rainfall rate regression for $>100\text{ mm/hr}$ extreme events.
+    3. **Downburst Head**: Peak surface wind gust velocity ($V_{db}$) regression.
+    4. **Convective Initiation Head**: Probability score ($0.0 - 1.0$) for newly forming updraft cores.
+  - Custom loss functions: Asymmetric Loss / Focal Loss to overcome severe class imbalance for rare high-impact events.
+  - Self-contained training and ablation script (`train_convectnet.py`) with reproducible loss logging and checkpoint generation.
+
+### R3. Physics-Grounded AI Explainer & Telemetry Tracking (/ai-analyzer, /analytics-tracking)
+- Feature attribution module computing atmospheric contribution scores (e.g. VIL density, $Z_{max}$ core height, cloud-top cooling rate, freezing level proximity) for every detected storm cell.
+- Operational telemetry and analytics tracking: inference latency, prediction confidence bands, and verification skill logs.
+
+### R4. Full Interactive 4D Storm Anatomy Scrollytelling Experience (/scroll-experience)
+- Build a cinematic, scroll-driven interactive narrative ("Anatomy of a Cloudburst: 60 Minutes to Catastrophe") integrated into the ConvectNow WebGIS dashboard:
+  - Step-by-step physical phases with parallax reveals: (1) Convective Initiation $\to$ (2) Rapid Explosive Updraft $\to$ (3) Hail Core Suspended Aloft $\to$ (4) Downdraft Collapse & Extreme Cloudburst $\to$ (5) Ground Impact & Flash Flood.
+  - Interactive vertical radar reflectivity cross-sections ($Z$ vs Height $0–18\text{ km}$), isotherm levels ($0^\circ\text{C}$, $-20^\circ\text{C}$), and live AI hazard telemetry updating dynamically as the user scrolls.
+  - Full adherence to the "Ice and Ships" design tokens ([`DESIGN.md`](file:///Users/gauravkumarnayak/Desktop/new%20sih/DESIGN.md): `ocean-950` to `ocean-600`, `ice-500` `#00e5ff`, `steel-800`, `JetBrains Mono` for telemetry).
+
+## Acceptance Criteria
+
+### Deep Learning & Pipeline
+- [ ] Automated data loader cleanly yields multi-modal batches `(B, C, T, H, W)` without corrupt frames.
+- [ ] `ConvectNet` successfully runs forward pass, backpropagates gradients with custom asymmetric loss without NaN/Inf, and achieves training convergence.
+- [ ] Inference engine returns all 4 hazard predictions for a storm frame in $<50\text{ ms}$.
+
+### Scrollytelling & UI Integration
+- [ ] The 4D Storm Anatomy scrollytelling panel renders smoothly at 60 FPS with sticky parallax visuals and fluid scroll progress tracking.
+- [ ] The AI feature attribution panel highlights the top physical drivers for any selected storm cell.
+- [ ] Frontend compiles cleanly with `npm run build` with zero TypeScript errors.
+
