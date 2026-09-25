@@ -20,9 +20,10 @@ CRITICAL: NO AdaptiveAvgPool3d — Apple MPS lacks aten::_adaptive_avg_pool3d.
           Uses AdaptiveAvgPool2d on the spatial dims after ConvLSTM.
           CBAM uses 2D operations on reshaped tensors.
 """
+from typing import Any
+
 import torch
-import torch.nn as nn
-from typing import Dict, Any
+from torch import nn
 
 
 class ChannelAttention(nn.Module):
@@ -258,7 +259,7 @@ class ConvectNet(nn.Module):
             nn.Conv2d(32, 1, kernel_size=3, padding=1)
         )
 
-    def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
+    def forward(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         """
         Args:
             x: (B, 4, T, H, W) or (B, T, 4, H, W) — 4 channels, T timesteps, H, W
@@ -303,7 +304,7 @@ class ConvectNet(nn.Module):
             'spatial_nowcast': spatial_nowcast,
         }
 
-    def predict_with_uncertainty(self, x: torch.Tensor, n_samples: int = 10) -> Dict[str, Any]:
+    def predict_with_uncertainty(self, x: torch.Tensor, n_samples: int = 10) -> dict[str, Any]:
         """
         Runs the model n_samples times with dropout enabled to estimate epistemic uncertainty.
         Returns mean predictions + std (uncertainty) for each head.

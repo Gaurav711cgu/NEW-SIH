@@ -5,8 +5,8 @@ ACL: Asymmetric Continuous Loss for regression heads (under-prediction 3x penalt
 ConvectNetLoss: Multi-task combined loss
 """
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class AsymmetricLoss(nn.Module):

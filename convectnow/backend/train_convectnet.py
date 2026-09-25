@@ -17,16 +17,18 @@ import time
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.utils.data import DataLoader
 
 # Allow running from project root or backend
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
+from convectnow.backend.data.real_nowcast_dataset import (
+    get_real_nowcast_loaders,
+)
 from convectnow.backend.models.convectnet import ConvectNet
-from convectnow.backend.models.losses import ConvectNetLoss
 from convectnow.backend.models.inference import ConvectNetInference
-from convectnow.backend.data.real_nowcast_dataset import RealSEVIRNowcastDataset, get_real_nowcast_loaders
+from convectnow.backend.models.losses import ConvectNetLoss
 
 
 def compute_contingency_scores(pred: np.ndarray, target: np.ndarray, threshold: float = 0.35) -> dict:
@@ -130,10 +132,10 @@ def main():
     else:
         device = torch.device(args.device)
 
-    print(f"===============================================================")
-    print(f"  ConvectNow Operational Deep Learning Training Pipeline")
-    print(f"  SIH PS-26084 · MoES/NCMRWF · 100% Real Meteorological Data")
-    print(f"===============================================================")
+    print("===============================================================")
+    print("  ConvectNow Operational Deep Learning Training Pipeline")
+    print("  SIH PS-26084 · MoES/NCMRWF · 100% Real Meteorological Data")
+    print("===============================================================")
     print(f"Device: {device}")
 
     # Load 100% Real Meteorological Dataset

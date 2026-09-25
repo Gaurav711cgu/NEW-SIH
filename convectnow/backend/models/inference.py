@@ -5,6 +5,7 @@ SLA: < 50ms mean inference latency
 """
 import os
 import time
+
 import numpy as np
 import torch
 import torch.nn.functional as F

@@ -16,12 +16,11 @@ Strict Data-Scientist & Database-Architect Standards:
 """
 
 import os
-from typing import Dict, List, Optional, Tuple, Union
 
 import h5py
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, Dataset
 
 
 def _resolve_path(path: str) -> str:
@@ -130,7 +129,7 @@ class RealSEVIRNowcastDataset(Dataset):
     def __len__(self) -> int:
         return len(self.samples)
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
         s_idx, t_start, cy, cx = self.samples[idx]
         half = self.crop_size // 2
         y0, y1 = cy - half, cy + half
@@ -213,7 +212,7 @@ def get_real_nowcast_loaders(
     hdf5_path: str = DEFAULT_SEVIR_VIL_PATH,
     batch_size: int = 8,
     num_workers: int = 0
-) -> Tuple[DataLoader, DataLoader, DataLoader]:
+) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
     Returns (train_loader, val_loader, test_loader) for genuine real-data training.
     """

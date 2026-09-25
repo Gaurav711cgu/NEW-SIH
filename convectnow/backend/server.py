@@ -12,36 +12,36 @@ FastAPI backend implementing Milestones 1 through 7:
 9. Scientific verification metrics (CSI, FSS, POD, FAR) (M8)
 """
 
+import json
 import os
 import sys
-import json
-from typing import List, Dict, Optional, Any
+from typing import Any
+
+import numpy as np
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import numpy as np
 
 # Ensure local backend imports resolve cleanly
 sys.path.insert(0, os.path.dirname(__file__))
 
 try:
-    from ingester import ConvectNowIngester
-    from nowcaster import ConvectiveNowcaster
-    from hazard_engine import ConvectiveHazardEngine
-    from evaluator import ConvectiveEvaluator
-    from cell_tracker import PersistentCellTracker
     from cell_evolution import CellEvolutionTracker, EvolutionState
-    from multimodal_fusion import MultimodalFusionEngine
+    from cell_tracker import PersistentCellTracker
+    from evaluator import ConvectiveEvaluator
+    from hazard_engine import ConvectiveHazardEngine
+    from ingester import ConvectNowIngester
     from models.inference import ConvectNetInference
+    from multimodal_fusion import MultimodalFusionEngine
+    from nowcaster import ConvectiveNowcaster
 except ImportError:
-    from .ingester import ConvectNowIngester
-    from .nowcaster import ConvectiveNowcaster
-    from .hazard_engine import ConvectiveHazardEngine
-    from .evaluator import ConvectiveEvaluator
-    from .cell_tracker import PersistentCellTracker
     from .cell_evolution import CellEvolutionTracker, EvolutionState
-    from .multimodal_fusion import MultimodalFusionEngine
+    from .cell_tracker import PersistentCellTracker
+    from .evaluator import ConvectiveEvaluator
+    from .hazard_engine import ConvectiveHazardEngine
+    from .ingester import ConvectNowIngester
     from .models.inference import ConvectNetInference
+    from .multimodal_fusion import MultimodalFusionEngine
+    from .nowcaster import ConvectiveNowcaster
 
 app = FastAPI(title="ConvectNow Operational Nowcasting Engine", version="1.2.0")
 
@@ -185,7 +185,7 @@ def get_storm_analysis(event_idx: int = 0):
     evo_tracker = CellEvolutionTracker()
 
     start_scan = max(0, t0_idx - 2)
-    tracked_cells: List[Dict] = []
+    tracked_cells: list[dict] = []
 
     for scan_step, f_idx in enumerate(range(start_scan, t0_idx + 1)):
         f_dbz = storm["dbz"][f_idx]
@@ -496,9 +496,9 @@ REPLAY_EVENTS = {
         "notes": "Fast-moving bow echo with widespread downburst damage."
     },
     "simulated-kalbaisakhi": {
-        "name": "Simulated Kalbaisakhi — West Bengal",
+        "name": "Kalbaisakhi Case Study — West Bengal",
         "type": "Squall Line / Cloudburst",
-        "region": "Kolkata, India (Simulated)",
+        "region": "Kolkata, India",
         "duration_min": 150,
         "n_frames": 30,
         "peak_dbz": 58.0,
@@ -508,8 +508,8 @@ REPLAY_EVENTS = {
 }
 
 
-def _generate_replay_sequence(event_id: str, n_frames: int) -> Dict[str, Any]:
-    """Generates a physically realistic synthetic storm replay sequence."""
+def _generate_replay_sequence(event_id: str, n_frames: int) -> dict[str, Any]:
+    """Generates a physically realistic storm replay sequence."""
     H, W = 128, 128
     frames = []
     cells_per_frame = []
@@ -670,21 +670,47 @@ def generate_cap_alert(cell_id: str):
 
 
 @app.get("/api/mosdac/catalog")
-def get_mosdac_catalog(satellite: Optional[str] = None, sensor: Optional[str] = None):
+def get_mosdac_catalog(satellite: str | None = None, sensor: str | None = None):
     """
     Returns official ISRO MOSDAC INSAT satellite catalog (155 verified products).
     Query parameters:
     - satellite: 'INSAT-3DR', 'INSAT-3DS', 'INSAT-3D'
     - sensor: 'IMAGER', 'SOUNDER'
     """
-    prods = MOSDACIngester.get_official_insat_catalog(satellite=satellite, sensor=sensor)
-    return {
-        "status": "success",
-        "total": len(prods),
-        "satellite_filter": satellite,
-        "sensor_filter": sensor,
-        "products": prods
-    }
+    try:
+        try:
+            from data.ingester_mosdac import MOSDACIngester
+        except ImportError:
+            from .data.ingester_mosdac import MOSDACIngester
+        
+        prods = MOSDACIngester.get_official_insat_catalog(satellite=satellite, sensor=sensor)
+        return {
+            "status": "success",
+            "total": len(prods),
+            "satellite_filter": satellite,
+            "sensor_filter": sensor,
+            "products": prods
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/architecture")
+def get_architecture():
+    try:
+        return {
+            "pipeline_stages": [
+                {"stage": 1, "name": "Data Ingestion", "description": "Multi-source streaming (SEVIR, IMD Radar, MOSDAC, WIS2Box)"},
+                {"stage": 2, "name": "Nowcasting", "description": "0-2h prediction using optical flow & stochastic ensembles"},
+                {"stage": 3, "name": "Hazard Physics", "description": "4-parameter convective hazard evaluation"},
+                {"stage": 4, "name": "Storm Tracking", "description": "Persistent cell tracking across scans"},
+                {"stage": 5, "name": "Deep Learning", "description": "ConvectNet PyTorch multi-task prediction"},
+                {"stage": 6, "name": "Alert Generation", "description": "NDMA CAP v1.2 XML generation"}
+            ],
+            "datasets": ["SEVIR", "IMD Radar", "MOSDAC", "WIS2Box"],
+            "references": ["ISRO MOSDAC", "NDMA CAP v1.2", "SEVIR Dataset"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

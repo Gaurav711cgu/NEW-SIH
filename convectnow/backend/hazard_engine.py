@@ -7,9 +7,10 @@ Implements:
 4. Lightning Strike Density Estimation (Flashes/km^2/hr)
 """
 
+
 import numpy as np
 from scipy.ndimage import binary_opening
-from typing import Dict, Tuple
+
 
 class ConvectiveHazardEngine:
     def __init__(self, grid_res_km: float = 1.0):
@@ -26,7 +27,7 @@ class ConvectiveHazardEngine:
         rain_rate = (np.maximum(0, Z_linear) / 300.0) ** (1.0 / 1.5)
         return np.nan_to_num(rain_rate, nan=0.0)
 
-    def detect_cloudburst(self, rain_rate: np.ndarray, threshold_mmh: float = 100.0) -> Dict:
+    def detect_cloudburst(self, rain_rate: np.ndarray, threshold_mmh: float = 100.0) -> dict:
         """
         Flags localized cloudburst regions exceeding WMO/IMD operational threshold (>= 100 mm/hr).
         Applies morphological opening (3x3 footprint) to prevent isolated noise triggers.
@@ -45,19 +46,26 @@ class ConvectiveHazardEngine:
             "threat_tier": "EXTREME" if peak_rate >= 150.0 else ("WARNING" if peak_rate >= 100.0 else "ADVISORY")
         }
 
-    def compute_hail_parameters(self, dbz: np.ndarray, freezing_level_km: float = 4.2) -> Dict:
+    def compute_hail_parameters(self, dbz: np.ndarray, freezing_level_km: float = 4.2) -> dict:
         """
-        Computes Severe Hail Index (SHI), Probability of Severe Hail (POSH), and
-        Maximum Expected Size of Hail (MESH) based on Witt et al. (1998).
+        Computes 2D Proxy Severe Hail Index (SHI), Probability of Severe Hail (POSH), and
+        Maximum Expected Size of Hail (MESH) adapted from Witt et al. (1998) / Waldvogel (1979).
+
+        NOTE ON OPERATIONAL FORMULATION (NCMRWF / IMD Context):
+        Witt et al. (1998) strictly requires a full 3D polar radar volume scan integrated
+        vertically across environmental temperature profiles (0°C to -20°C isotherms).
+        In operational composite / single-tilt MAX-Z mode without an active 3D thermodynamic
+        sounding cube, we compute an empirical 2D proxy: column-integrated hail energy E(Z)
+        weighted by effective convective core depth above the 0°C freezing level (0.45 empirical
+        attenuation factor). This provides immediate operational guidance prior to full Level-II
+        3D polar volume reconstruction.
         """
         # Linear reflectivity energy term E(Z)
         Z_lin = 10.0 ** (np.clip(dbz, 0, 75.0) / 10.0)
         E_z = np.where(dbz < 40.0, 0.0, (Z_lin - 10000.0) / 46000.0)
         E_z = np.maximum(0.0, E_z)
 
-        # Simplified vertical integration weighting above freezing level H0
-        # Standard: SHI = 0.1 * sum(w(T) * E(Z) * dh)
-        # Approximate column integrated SHI from surface maxZ
+        # 2D empirical vertical integration proxy above freezing level H0
         effective_depth_km = np.clip((dbz - 40.0) / 4.0, 0.0, 8.0)
         SHI = 0.1 * E_z * effective_depth_km * 0.45
 
@@ -77,7 +85,7 @@ class ConvectiveHazardEngine:
             "hail_risk_level": "SEVERE" if max_posh >= 60.0 else ("MODERATE" if max_posh >= 30.0 else "LOW")
         }
 
-    def compute_downburst_velocity(self, dbz: np.ndarray, vil: np.ndarray, cape: float = 1800.0) -> Dict:
+    def compute_downburst_velocity(self, dbz: np.ndarray, vil: np.ndarray, cape: float = 1800.0) -> dict:
         """
         Computes Downburst / Microburst peak wind velocity based on VIL Density and MDAP.
         VIL Density = VIL / EchoTopHeight
@@ -101,7 +109,7 @@ class ConvectiveHazardEngine:
             "downburst_risk": "EXTREME" if peak_gust_kmh >= 90.0 else ("SEVERE" if peak_gust_kmh >= 60.0 else "MODERATE")
         }
 
-    def compute_lightning_density(self, dbz: np.ndarray, vil: np.ndarray) -> Dict:
+    def compute_lightning_density(self, dbz: np.ndarray, vil: np.ndarray) -> dict:
         """
         Estimates total lightning strike flash density (flashes/km^2/hr)
         correlating VIL supercooled water with maximum column reflectivity.
@@ -120,7 +128,7 @@ class ConvectiveHazardEngine:
             "threat_level": "HIGH" if peak_density >= 5.0 else ("MEDIUM" if peak_density >= 1.5 else "LOW")
         }
 
-    def evaluate_cell_hazards(self, cell_dbz: float, cell_vil: float) -> Dict:
+    def evaluate_cell_hazards(self, cell_dbz: float, cell_vil: float) -> dict:
         """
         Evaluates point hazard indices for an isolated storm cell object.
         """

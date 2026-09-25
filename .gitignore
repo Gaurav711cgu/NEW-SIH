@@ -66,3 +66,4 @@ Thumbs.db
 *.rar
 telemetry.db
 data/platform.db
+node_modules/

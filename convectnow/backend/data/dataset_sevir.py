@@ -19,15 +19,15 @@ Handles:
 """
 
 import os
-from typing import Dict, List, Optional, Tuple, Union
 
 import h5py
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, Dataset
 
-def _resolve_path(path: Optional[str]) -> Optional[str]:
+
+def _resolve_path(path: str | None) -> str | None:
     if not path:
         return path
     if os.path.isabs(path) and os.path.exists(path):
@@ -35,11 +35,13 @@ def _resolve_path(path: Optional[str]) -> Optional[str]:
     if os.path.exists(path):
         return os.path.abspath(path)
     base_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.environ.get("CONVECTNOW_ROOT", os.path.abspath(os.path.join(base_dir, "../../..")))
     candidates = [
         os.path.abspath(os.path.join(base_dir, "../../..", path)),
         os.path.abspath(os.path.join(base_dir, "../..", path)),
         os.path.abspath(os.path.join("..", path)),
-        os.path.join("/Users/gauravkumarnayak/Desktop/new sih", path)
+        os.path.abspath(os.path.join(".", path)),
+        os.path.join(project_root, path)
     ]
     for c in candidates:
         if os.path.exists(c):
@@ -61,10 +63,10 @@ class ConvectDataset(Dataset):
     def __init__(
         self,
         vil_path: str = DEFAULT_VIL_PATH,
-        lght_path: Optional[str] = DEFAULT_LGHT_PATH,
-        catalog_path: Optional[str] = DEFAULT_CATALOG_PATH,
+        lght_path: str | None = DEFAULT_LGHT_PATH,
+        catalog_path: str | None = DEFAULT_CATALOG_PATH,
         sequence_length: int = 12,
-        crop_size: Tuple[int, int] = (128, 128),
+        crop_size: tuple[int, int] = (128, 128),
         center_crop_on_storm_core: bool = True,
         random_crop: bool = False,
         split: str = "train",
@@ -105,8 +107,8 @@ class ConvectDataset(Dataset):
             ]
 
         # Load catalog metadata if available
-        self.catalog_df: Optional[pd.DataFrame] = None
-        self.catalog_by_id: Dict[str, Dict] = {}
+        self.catalog_df: pd.DataFrame | None = None
+        self.catalog_by_id: dict[str, dict] = {}
         if self.catalog_path and os.path.exists(self.catalog_path):
             try:
                 cat = pd.read_csv(self.catalog_path, low_memory=False)
@@ -153,7 +155,7 @@ class ConvectDataset(Dataset):
     def _extract_crop(
         self,
         vil_cube: np.ndarray
-    ) -> Tuple[np.ndarray, Tuple[int, int, int, int]]:
+    ) -> tuple[np.ndarray, tuple[int, int, int, int]]:
         """
         Extracts a (T, H, W) spatial patch centered on the storm's convective core.
         vil_cube shape: (T, 384, 384)
@@ -189,9 +191,9 @@ class ConvectDataset(Dataset):
     def _compute_paired_lightning_channel(
         self,
         event_id: str,
-        crop_box: Tuple[int, int, int, int],
-        full_shape: Tuple[int, int] = (384, 384)
-    ) -> Optional[np.ndarray]:
+        crop_box: tuple[int, int, int, int],
+        full_shape: tuple[int, int] = (384, 384)
+    ) -> np.ndarray | None:
         """
         Rasterizes raw GLM lightning strikes for Paired Mode when event ID exists in GLM file.
         """
@@ -245,7 +247,7 @@ class ConvectDataset(Dataset):
         dbz_crop: np.ndarray,
         vil_crop: np.ndarray,
         event_type: str = ""
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """
         Computes ground truth regression and classification targets matching all 4 ConvectNet heads:
         1. Hail Head: POSH [0, 1], MESH [0, 100] mm
@@ -302,7 +304,7 @@ class ConvectDataset(Dataset):
             "ci_prob": np.float32(ci_prob)
         }
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, Dict[str, Union[torch.Tensor, float, str]]]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, dict[str, torch.Tensor | float | str]]:
         """
         Returns:
             tensor: torch.Tensor of shape (C=4, T=12, H=128, W=128), dtype torch.float32
@@ -318,8 +320,8 @@ class ConvectDataset(Dataset):
         # Transpose to (49, 384, 384) -> (time, height, width)
         vil_frames = np.transpose(raw_vil, (2, 0, 1)).astype(np.float32)
 
-        # Physical VIL (kg/m^2) conversion
-        vil_kg_m2 = vil_frames / 3.5
+        # Physical VIL (kg/m^2) conversion: SEVIR uint8 [0, 255] linearly represents [0, 84] kg/m^2
+        vil_kg_m2 = vil_frames * (84.0 / 255.0)
 
         # Take input sequence (first sequence_length timesteps)
         vil_seq = vil_kg_m2[:self.sequence_length]
@@ -342,10 +344,10 @@ class ConvectDataset(Dataset):
         c1[1:] = np.clip((dbz_crop[1:] - dbz_crop[:-1]) / 30.0, -1.0, 1.0)
 
         # ---------------------------------------------------------------------
-        # Channel 2: Satellite IR Cloud-Top Cooling / Inverted Tb [0.0, 1.0]
-        # Physics proxy: High VIL + cold overshooting tops correspond to ~1.0
+        # Channel 2: Convective Core Energy / Overshooting Top Proxy [0.0, 1.0]
+        # (Derived from physical VIL kg/m^2 normalized against severe threshold 70 kg/m^2)
         # ---------------------------------------------------------------------
-        c2 = np.clip(vil_crop / 45.0, 0.0, 1.0)
+        c2 = np.clip(vil_crop / 70.0, 0.0, 1.0)
 
         # ---------------------------------------------------------------------
         # Channel 3: Normalized Lightning Strike Density [0.0, 1.0]

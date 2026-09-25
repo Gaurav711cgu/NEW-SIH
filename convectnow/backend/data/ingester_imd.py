@@ -14,12 +14,10 @@ Handles:
 """
 
 import os
-import time
-import urllib.request
 import urllib.error
-from datetime import datetime, timezone
+import urllib.request
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Union
+from datetime import datetime, timezone
 
 import numpy as np
 from PIL import Image, ImageFile
@@ -134,13 +132,13 @@ class IMDRadarProduct:
     units: str
     timestamp: str
     is_live: bool
-    metadata: Dict = field(default_factory=dict)
+    metadata: dict = field(default_factory=dict)
 
     def to_epsg4326(
         self,
-        target_bbox: Optional[Tuple[float, float, float, float]] = None,
-        target_shape: Tuple[int, int] = (256, 256)
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        target_bbox: tuple[float, float, float, float] | None = None,
+        target_shape: tuple[int, int] = (256, 256)
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Reprojects the radar Cartesian product onto a 1 km EPSG:4326 regular lat/lon grid.
         Returns:
@@ -165,11 +163,13 @@ def _resolve_path(path: str) -> str:
     if os.path.exists(path):
         return os.path.abspath(path)
     base_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.environ.get("CONVECTNOW_ROOT", os.path.abspath(os.path.join(base_dir, "../../..")))
     candidates = [
         os.path.abspath(os.path.join(base_dir, "../../..", path)),
         os.path.abspath(os.path.join(base_dir, "../..", path)),
         os.path.abspath(os.path.join("..", path)),
-        os.path.join("/Users/gauravkumarnayak/Desktop/new sih", path)
+        os.path.abspath(os.path.join(".", path)),
+        os.path.join(project_root, path)
     ]
     for c in candidates:
         if os.path.exists(c):
@@ -208,11 +208,11 @@ class IMDGeoServerWorker:
             "vp2": "vp2_delhi.gif"
         }
 
-    def list_available_products(self) -> List[str]:
+    def list_available_products(self) -> list[str]:
         """Returns list of supported IMD operational product codes."""
         return list(self.product_map.keys())
 
-    def get_station_metadata(self) -> Dict:
+    def get_station_metadata(self) -> dict:
         """Returns station geolocation and operational hardware specifications."""
         return {
             "station": self.station.upper(),

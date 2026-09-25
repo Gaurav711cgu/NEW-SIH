@@ -5,7 +5,7 @@
 # COMPLETE MULTI-SOURCE METEOROLOGICAL SYSTEM:
 # 1. FOUNDATION PRE-TRAINING: 1.4 GB Authentic SEVIR Radar Benchmark (AWS Open Data)
 # 2. SOVEREIGN INDIAN INGESTION: ISRO MOSDAC INSAT-3DR/3DS Live Search & Download
-#    - Official credentials for download.mosdac.gov.in API: gaurav711
+#    - Official credentials for download.mosdac.gov.in API: <YOUR_MOSDAC_USERNAME>
 #    - Thermodynamic Planck Radiation Calibration (Digital Numbers -> Radiance -> Tb in K/°C)
 #    - TIR1 (10.8µm), TIR2 (12.0µm), Water Vapor (6.9µm), Visible (0.65µm)
 # 3. PRODUCTION DEEP LEARNING ARCHITECTURE (ConvectNet):
@@ -27,24 +27,22 @@
 # 6. PLUG-AND-PLAY: Exports 'convectnet_production.pth' for the ConvectNow FastAPI backend.
 # ═══════════════════════════════════════════════════════════════════════════════
 
-import os
-import sys
-import time
 import json
-import math
+import os
+import time
 import urllib.request
-import numpy as np
-import h5py
-import cv2
-import matplotlib.pyplot as plt
-from typing import Dict, List, Tuple, Optional, Any
-from tqdm import tqdm
+from typing import Any
 
+import cv2
+import h5py
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
+from torch import nn
 from torch.optim.lr_scheduler import CosineAnnealingLR
+from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 # -----------------------------------------------------------------------------
 # 1. AUTOMATIC DATASET ACQUISITION (AWS OPEN DATA — ANONYMOUS S3 ACCESS)
@@ -71,9 +69,9 @@ def ensure_real_dataset() -> str:
             return p
 
     target_path = os.path.join("/kaggle/working" if os.path.exists("/kaggle") else ".", DEFAULT_FILENAME)
-    print(f"[DATA PIPELINE] Real SEVIR dataset not found locally.")
+    print("[DATA PIPELINE] Real SEVIR dataset not found locally.")
     print(f"[DATA PIPELINE] Downloading authentic benchmark from AWS Open Data Registry: {SEVIR_URL}")
-    print(f"[DATA PIPELINE] Note: SEVIR is hosted on AWS Open Data (Free public access, no sign-in required).")
+    print("[DATA PIPELINE] Note: SEVIR is hosted on AWS Open Data (Free public access, no sign-in required).")
 
     class DownloadProgressBar(tqdm):
         def update_to(self, b=1, bsize=1, tsize=None):
@@ -112,7 +110,7 @@ class MOSDACIndiaPipeline:
     3. Rigorous Planck's Law thermodynamic calibration (Digital Counts -> Radiance -> Brightness Temp)
     4. Convective cloud-top cooling rate calculation (d(Tb)/dt) for Convective Initiation
     """
-    def __init__(self, username: str = "gaurav711", password: str = "Gaurav@2005"):
+    def __init__(self, username: str = "<YOUR_MOSDAC_USERNAME>", password: str = "<YOUR_MOSDAC_PASSWORD>"):
         self.username = username
         self.password = password
         self.search_url = "https://mosdac.gov.in/apios/datasets.json"
@@ -134,7 +132,7 @@ class MOSDACIndiaPipeline:
         tb_k = C2 / (w * np.log(term))
         return np.clip(tb_k, 160.0, 340.0)
 
-    def calibrate_digital_counts(self, counts: np.ndarray, channel: str = "TIR1") -> Dict[str, np.ndarray]:
+    def calibrate_digital_counts(self, counts: np.ndarray, channel: str = "TIR1") -> dict[str, np.ndarray]:
         """
         Converts raw 10-bit MOSDAC Digital Numbers (DN) to calibrated physical units:
         DN -> Spectral Radiance -> Brightness Temperature (Kelvin & Celsius).
@@ -152,7 +150,7 @@ class MOSDACIndiaPipeline:
         tb_c = tb_k - 273.15
         return {"radiance": radiance, "tb_k": tb_k, "tb_c": tb_c}
 
-    def query_live_catalog(self, dataset_id: str = "3RIMG_L1C_SGP", bbox: str = "68.0,8.0,97.0,37.0", count: int = 5) -> Dict:
+    def query_live_catalog(self, dataset_id: str = "3RIMG_L1C_SGP", bbox: str = "68.0,8.0,97.0,37.0", count: int = 5) -> dict:
         """
         Queries official ISRO MOSDAC Open Search API (no login needed for search).
         Bounding box: minLon,minLat,maxLon,maxLat (Default covers Indian subcontinent).
@@ -173,7 +171,7 @@ class MOSDACIndiaPipeline:
         except Exception as e:
             return {"error": str(e)}
 
-    def authenticate_download_token(self) -> Optional[str]:
+    def authenticate_download_token(self) -> str | None:
         """
         Acquires JWT bearer token from MOSDAC SSO Download API using approved credentials.
         """
@@ -524,7 +522,7 @@ class ConvectNet(nn.Module):
             'spatial_nowcast': spatial_nowcast,
         }
 
-    def predict_with_uncertainty(self, x: torch.Tensor, n_samples: int = 10) -> Dict[str, Any]:
+    def predict_with_uncertainty(self, x: torch.Tensor, n_samples: int = 10) -> dict[str, Any]:
         """
         Runs Monte Carlo Dropout to estimate Bayesian epistemic prediction uncertainty.
         Returns mean predictions + standard deviation uncertainty maps for each head.
@@ -671,7 +669,7 @@ def compute_metrics(pred: np.ndarray, target: np.ndarray, threshold: float = 0.3
 # -----------------------------------------------------------------------------
 def train_and_evaluate(epochs: int = 15, batch_size: int = 16, lr: float = 1e-3):
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
-    print(f"\n[SYSTEM] ConvectNet Training & Verification Suite Initialized")
+    print("\n[SYSTEM] ConvectNet Training & Verification Suite Initialized")
     print(f"[SYSTEM] Hardware Accelerator: {device} | PyTorch: {torch.__version__}")
 
     # Step 1: Ensure real SEVIR benchmark dataset
@@ -763,7 +761,7 @@ def train_and_evaluate(epochs: int = 15, batch_size: int = 16, lr: float = 1e-3)
             best_val_loss = avg_val
             torch.save(model.state_dict(), "convectnet_st_nowcaster.pt")
             torch.save(model.state_dict(), "convectnet_production.pth")
-            print(f"  [CHECKPOINT] New best weights saved to convectnet_st_nowcaster.pt & convectnet_production.pth")
+            print("  [CHECKPOINT] New best weights saved to convectnet_st_nowcaster.pt & convectnet_production.pth")
 
     print(f"\n[BENCHMARK] Training completed in {(time.time() - t0_train)/60:.1f} minutes.")
 
@@ -809,8 +807,8 @@ def train_and_evaluate(epochs: int = 15, batch_size: int = 16, lr: float = 1e-3)
     print("\n" + "=" * 68)
     print("  SCIENTIFIC VERIFICATION BENCHMARK ON UNSEEN SEVIR TEST STORMS")
     print("=" * 68)
-    print(f"  Method                        Mean CSI (35 dBZ)   Skill vs Persist")
-    print(f"  -------------------------------------------------------------")
+    print("  Method                        Mean CSI (35 dBZ)   Skill vs Persist")
+    print("  -------------------------------------------------------------")
     print(f"  Persistence Baseline          {mean_pers:.4f}              --")
     print(f"  PySteps Optical Flow          {mean_of:.4f}              {((mean_of - mean_pers)/max(1e-4, mean_pers))*100:+.1f}%")
     print(f"  ConvectNet (Ours)             {mean_cn:.4f}              {((mean_cn - mean_pers)/max(1e-4, mean_pers))*100:+.1f}%")
@@ -838,7 +836,7 @@ def train_and_evaluate(epochs: int = 15, batch_size: int = 16, lr: float = 1e-3)
     # 10. ISRO MOSDAC SOVEREIGN INDIAN DEPLOYMENT DEMO
     # -------------------------------------------------------------------------
     print("\n[MOSDAC PIPELINE] Demonstrating Live ISRO Satellite Ingestion & Planck Calibration...")
-    mosdac_pipe = MOSDACIndiaPipeline(username="gaurav711", password="Gaurav@2005")
+    mosdac_pipe = MOSDACIndiaPipeline(username="<YOUR_MOSDAC_USERNAME>", password="<YOUR_MOSDAC_PASSWORD>")
     catalog_res = mosdac_pipe.query_live_catalog(dataset_id="3RIMG_L1C_SGP", count=3)
     auth_token = mosdac_pipe.authenticate_download_token()
 
@@ -921,7 +919,7 @@ def train_and_evaluate(epochs: int = 15, batch_size: int = 16, lr: float = 1e-3)
             "gain_vs_optical_flow_pct": ((mean_cn - mean_of)/max(1e-4, mean_of))*100,
         },
         "mosdac_integration": {
-            "user": "gaurav711",
+            "user": "<YOUR_MOSDAC_USERNAME>",
             "channels": ["TIR1", "TIR2", "WV", "VIS"],
             "planck_calibration": True
         },

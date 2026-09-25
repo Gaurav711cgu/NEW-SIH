@@ -51,3 +51,67 @@ Integrity mode: development
 - [ ] The 4D Storm Anatomy scrollytelling panel renders smoothly at 60 FPS with sticky parallax visuals and fluid scroll progress tracking.
 - [ ] The AI feature attribution panel highlights the top physical drivers for any selected storm cell.
 - [ ] Frontend compiles cleanly with `npm run build` with zero TypeScript errors.
+
+## 2026-09-24T22:46:09Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Launched
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full team
+
+Conduct deep scientific research and generate presentation-ready artifacts (architecture diagrams, bibliographies) for SIH PS 26084 (MoES Convective Nowcaster). The output must scientifically validate the MVP by perfectly mapping its inputs to real Indian government data sources (IMD DWR, INSAT-3D) and citing credible meteorological papers, proving the system is fully capable of handling live, real-world data.
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih
+Integrity mode: benchmark
+
+## Requirements
+
+### R1. Real-World Data Pipeline Architecture
+Design a highly detailed 2D Data Flow Architecture (using Mermaid.js) that maps exactly how the MVP ingests, processes, and outputs data. It must explicitly state the real-world sources (e.g., IMD Doppler Weather Radar NetCDF files, INSAT-3DR Imager/Sounder data via MOSDAC API, IITM Lightning Location Network). No "virtual" or "simulated" terminology is allowed; frame the MVP as a production-ready staging environment waiting for live MoES streams.
+
+### R2. Scientific Bibliography & Reference Documentation
+Compile a heavily researched documentation artifact detailing the exact physics and equations used in the MVP. This must include credible, real-world research papers (e.g., Z-R relationships for rainfall, Hail detection algorithms, optical flow for nowcasting). This document will be directly copy-pasted into the team's SIH presentation slides to establish absolute credibility with the judges.
+
+### R3. PS 26084 Alignment Audit
+Review the exact wording of Smart India Hackathon Problem Statement 26084 (NCMRWF / MoES). Generate a mapping matrix showing how every single requirement of the PS (lead times, resolution, convective hazard types) is satisfied by the current MVP architecture.
+
+## Acceptance Criteria
+
+### Scientific Integrity & Credibility
+- [ ] The architecture diagram contains zero references to "mock", "fake", or "synthetic" data.
+- [ ] At least 4 real, verifiable meteorological research papers are cited with their specific application to the MVP's codebase (e.g., citing the specific algorithm used for cloudburst prediction).
+- [ ] The data sources explicitly name actual Indian government portals/APIs (IMD, MOSDAC, NCMRWF).
+- [ ] The output is formatted cleanly in a markdown artifact that the user can immediately use for their PowerPoint presentation.
+
+## 2026-09-25T15:24:45Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Step 1 — Eliciting project idea
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: Full team
+
+Build an intelligence dispatch system and public alert view for the ConvectNow dashboard, allowing MoES administrators to route real-time severe weather alerts to rescue centers and citizens (via the Mausam app).
+
+Working directory: /Users/gauravkumarnayak/Desktop/new sih/convectnow/frontend
+
+## Requirements
+
+### R1. Admin Intelligence Panel (MoES / SDMA)
+Create a command interface that allows administrators to select an active storm cell and view impacted populations, building risks, and distance to the nearest NDRF/SDRF rescue centers. It must include a "Dispatch Alert" action to push warnings to the affected radius.
+
+### R2. Citizen Warning Interface (Mausam App POV)
+Create a customer-facing UI component simulating the "Mausam App" push notification and alert screen. When the admin dispatches an alert, this view should display the storm's ETA, NDMA-compliant SOPs (e.g., "Seek enclosed shelter", "Unplug appliances"), and navigation to the nearest safe rescue center.
+
+## Acceptance Criteria
+
+### Content and Layout
+- [ ] The Admin panel successfully calculates and displays simulated risk metrics (population, building density) and lists nearby rescue centers.
+- [ ] The Citizen view displays clear, scannable NDMA safety guidelines without relying on dense paragraphs.
+
+### Verification
+- [ ] An agent will visually verify the UI using playwright screenshots to ensure the styling matches the existing Blizzard/Glassmorphism design system.
+- [ ] Both components render without TypeScript or compilation errors.
+
+
