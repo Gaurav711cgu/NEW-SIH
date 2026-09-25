@@ -117,10 +117,10 @@ const SENSOR_SPECS: SensorSpec[] = [
   },
   {
     id: 'salinity_ai',
-    name: 'In-Situ Practical Salinity (UNESCO EOS-80 / TEOS-10)',
-    tier: 'DL_EDGE INFERENCE_REPLICATED',
-    hardwareBOM: 'Pure Software TEOS-10 Model (Derives from OpenCTD + Temp Input)',
-    componentCostINR: 0,
+    name: 'Hardware Conductivity & Temperature (CT) Sensor',
+    tier: 'INDIGENOUS_PHYSICAL',
+    hardwareBOM: 'Dual Graphite Rods + Precision Thermistor Array',
+    componentCostINR: 1200,
     importedEquivalent: 'Sea-Bird SBE 49 FastCAT CTD Sensor',
     importedCostINR: 1800000,
     position3D: [-0.6, 0.5, 0.35],
@@ -131,16 +131,16 @@ const SENSOR_SPECS: SensorSpec[] = [
     max: 38.0,
     samplingRate: 'In-Situ Computed (Real-Time)',
     operatingRange: '33.5 to 36.5 Practical Salinity Units',
-    desc: 'Real-time thermodynamic calculation combining in-situ electrical conductivity, temperature, and hydrostatic pressure using the international UNESCO EOS-80 standard.',
-    indigenousAdvantage: 'Indigenous TDS and hydrostatic depth proxy delivering practical salinity estimation at student budget, backed by BGC-Argo historical profile ground truth.',
+    desc: 'Physical conductivity cell utilizing graphite electrodes to measure electrical conductivity directly in seawater, enabling highly accurate practical salinity calculation without software hallucination.',
+    indigenousAdvantage: 'Cost: ₹1,200 (Hardware BOM) vs Imported ₹18 Lakhs. 100% physical measurement, zero derived AI data.',
     status: 'ONLINE'
   },
   {
     id: 'doxy_ai',
-    name: 'Dissolved Oxygen Marine Telemetry (Garcia-Gordon Model)',
-    tier: 'DL_EDGE INFERENCE_REPLICATED',
-    hardwareBOM: 'Garcia & Gordon Seawater O2 Solubility In-Situ Model',
-    componentCostINR: 0,
+    name: 'Galvanic Dissolved Oxygen Sensor',
+    tier: 'INDIGENOUS_PHYSICAL',
+    hardwareBOM: 'Subsea Galvanic DO Probe + Analog Signal Conditioner',
+    componentCostINR: 4500,
     importedEquivalent: 'Aanderaa Optode 4330 Dissolved Oxygen',
     importedCostINR: 900000,
     position3D: [-0.6, -0.5, -0.35],
@@ -157,10 +157,10 @@ const SENSOR_SPECS: SensorSpec[] = [
   },
   {
     id: 'chla_ai',
-    name: 'Chlorophyll-a Bio-Optical Biomass (Morel Model)',
-    tier: 'DL_EDGE INFERENCE_REPLICATED',
-    hardwareBOM: 'Morel & Maritorena Downwelling Irradiance Spectral Model',
-    componentCostINR: 0,
+    name: 'Fluorescence Chlorophyll-a Biomass Sensor',
+    tier: 'INDIGENOUS_PHYSICAL',
+    hardwareBOM: '470nm LED + Photodiode Optical Chamber',
+    componentCostINR: 3500,
     importedEquivalent: 'WET Labs ECO-AFL Fluorometer Sensor',
     importedCostINR: 1200000,
     position3D: [0.8, -0.4, 0],
@@ -1120,7 +1120,7 @@ export default function AUVTwin() {
               </span>
             </div>
             <p className="text-xs font-mono text-steel-400 mt-0.5">
-              LAB PROTOTYPE: <span className="text-emerald-300 font-semibold">₹19,500</span> · TARGET AT SCALE: <span className="text-ice-300 font-semibold">₹75,000 – ₹1.0 LAKH</span> · IMPORTED FLOAT BENCHMARK: <span className="text-red-300 font-semibold">₹25–30 LAKHS (e.g., Kongsberg Seaglider)</span>
+              LAB PROTOTYPE: <span className="text-emerald-300 font-semibold">₹20,500</span> · FULLY LOADED AT SCALE: <span className="text-ice-300 font-semibold">~₹4.5 LAKHS</span> · IMPORTED FLOAT BENCHMARK: <span className="text-red-300 font-semibold">₹25–30 LAKHS (e.g., Kongsberg Seaglider)</span>
             </p>
           </div>
         </div>
@@ -1129,15 +1129,15 @@ export default function AUVTwin() {
         <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
             <span className="text-steel-500 mr-2">LAB PROTOTYPE:</span>
-            <span className="text-emerald-400 font-bold">₹19,500 BOM</span>
+            <span className="text-emerald-400 font-bold">₹20,500 BOM</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
-            <span className="text-steel-500 mr-2">TARGET AT SCALE:</span>
-            <span className="text-ice-400 font-bold">₹75,000 – ₹1.0 L</span>
+            <span className="text-steel-500 mr-2">FULLY LOADED:</span>
+            <span className="text-ice-400 font-bold">~₹4.5 LAKHS</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
-            <span className="text-steel-500 mr-2">SAVINGS AT SCALE:</span>
-            <span className="text-amber-400 font-bold">~96% COST REDUCTION (30x)</span>
+            <span className="text-steel-500 mr-2">REALISTIC SAVINGS:</span>
+            <span className="text-amber-400 font-bold">~85% COST REDUCTION (6x)</span>
           </div>
         </div>
       </div>
@@ -1172,17 +1172,7 @@ export default function AUVTwin() {
             1. IN-SITU PHYSICAL SENSORS (₹19.5k BOM)
           </button>
 
-          <button
-            onClick={() => setSelectedTier('DL_EDGE INFERENCE_REPLICATED')}
-            className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
-              selectedTier === 'DL_EDGE INFERENCE_REPLICATED'
-                ? 'bg-amber-400 text-abyss-950 shadow-md'
-                : 'text-amber-400 hover:bg-amber-950/30 bg-abyss-950 border border-amber-900/50'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            2. EDGE-COMPUTED SENSOR FUSION (UNESCO EOS-80)
-          </button>
+          
 
           <button
             onClick={() => setSelectedTier('MODULAR_UPGRADE')}
@@ -1193,7 +1183,7 @@ export default function AUVTwin() {
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            3. POST-SELECTION MODULAR BAYS
+            2. POST-SELECTION MODULAR BAYS
           </button>
         </div>
 
