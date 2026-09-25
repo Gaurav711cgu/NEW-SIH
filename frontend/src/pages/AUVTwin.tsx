@@ -1169,7 +1169,7 @@ export default function AUVTwin() {
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
-            1. IN-SITU PHYSICAL SENSORS (₹6.1k BOM)
+            1. IN-SITU PHYSICAL SENSORS (₹19.5k BOM)
           </button>
 
           <button
@@ -1181,7 +1181,7 @@ export default function AUVTwin() {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            2. PHYSICS-DERIVED PARAMETERS (UNESCO EOS-80)
+            2. EDGE-COMPUTED SENSOR FUSION (UNESCO EOS-80)
           </button>
 
           <button
@@ -1470,7 +1470,7 @@ export default function AUVTwin() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-md" style={{ backgroundColor: selectedSensor.color }} />
                 <span className="text-[10px] font-mono font-bold tracking-widest text-steel-400 uppercase">
-                  {selectedSensor.tier === 'DL_EDGE INFERENCE_REPLICATED' ? 'PHYSICS-DERIVED (UNESCO EOS-80 / TEOS-10)' : selectedSensor.tier.replace(/_/g, ' ')}
+                  {selectedSensor.tier === 'DL_EDGE INFERENCE_REPLICATED' ? 'EDGE-COMPUTED SENSOR FUSION (UNESCO EOS-80 / TEOS-10)' : selectedSensor.tier.replace(/_/g, ' ')}
                 </span>
               </div>
               <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
