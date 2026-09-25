@@ -106,11 +106,13 @@ def _resolve_path(path: str) -> str:
     if os.path.exists(path):
         return os.path.abspath(path)
     base_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.environ.get("CONVECTNOW_ROOT", os.path.abspath(os.path.join(base_dir, "../../..")))
     candidates = [
         os.path.abspath(os.path.join(base_dir, "../../..", path)),
         os.path.abspath(os.path.join(base_dir, "../..", path)),
         os.path.abspath(os.path.join("..", path)),
-        os.path.join("/Users/gauravkumarnayak/Desktop/new sih", path)
+        os.path.abspath(os.path.join(".", path)),
+        os.path.join(project_root, path)
     ]
     for c in candidates:
         if os.path.exists(c):
@@ -253,6 +255,30 @@ class MOSDACIngester:
                 raise KeyError(f"Dataset {ds_name} not found in {h5_path}. Available: {available}")
 
             raw_counts = f[ds_name][:]
+
+            # If official ISRO ground-station calibrated temperature LUT exists, use it directly!
+            temp_lut_name = f"IMG_{channel}_TEMP"
+            if temp_lut_name in f or f"{ds_name}_TEMP" in f:
+                lut_key = temp_lut_name if temp_lut_name in f else f"{ds_name}_TEMP"
+                lut = f[lut_key][:]
+                counts_clipped = np.clip(raw_counts, 0, len(lut) - 1).astype(int)
+                tb_k = lut[counts_clipped]
+                tb_c = tb_k - 273.15
+                spec = CHANNEL_SPECS.get(channel, CHANNEL_SPECS["TIR1"])
+                rad = self.planck_radiance(tb_k, spec["wavelength_um"])
+                return MOSDACProduct(
+                    tb_k=tb_k,
+                    tb_c=tb_c,
+                    radiance=rad,
+                    raw_counts=raw_counts,
+                    channel=channel,
+                    wavelength_um=spec["wavelength_um"],
+                    satellite="INSAT-3DR",
+                    sub_lon=74.0,
+                    timestamp=datetime.now(timezone.utc).isoformat(),
+                    metadata={"source": "ISRO/MOSDAC Direct Calibration Table", "file": os.path.basename(h5_path)}
+                )
+
             # Read metadata attributes if available
             slope = float(f[ds_name].attrs.get("CAL_SLOPE", CHANNEL_SPECS[channel]["default_slope"]))
             offset = float(f[ds_name].attrs.get("CAL_OFFSET", CHANNEL_SPECS[channel]["default_offset"]))
@@ -314,3 +340,78 @@ class MOSDACIngester:
             results[ch] = self.calibrate_channel(counts, ch)
 
         return results
+
+    def fetch_live_catalog_metadata(self, dataset_id: str = "3RIMG_L1C_SGP", count: int = 5) -> Dict:
+        """
+        Queries official ISRO MOSDAC Open Search API (no authentication required)
+        to retrieve live INSAT-3DR metadata, latest granule IDs, and observation timestamps.
+        """
+        import requests
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        
+        url = "https://mosdac.gov.in/apios/datasets.json"
+        try:
+            r = requests.get(url, params={"datasetId": dataset_id, "count": count}, timeout=10, verify=False)
+            if r.status_code == 200:
+                data = r.json()
+                return {
+                    "status": "success",
+                    "dataset_id": dataset_id,
+                    "total_granules_in_archive": data.get("totalResults", 0),
+                    "latest_granules": [
+                        {
+                            "identifier": e.get("identifier"),
+                            "granule_id": e.get("id"),
+                            "timestamp": e.get("updated"),
+                            "date_coverage": e.get("dcDate"),
+                            "download_link": e.get("enclosureLink")
+                        }
+                        for e in data.get("entries", [])
+                    ]
+                }
+            return {"status": "error", "code": r.status_code}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    @staticmethod
+    def get_official_insat_catalog(satellite: Optional[str] = None, sensor: Optional[str] = None) -> List[Dict]:
+        """
+        Retrieves the verified official ISRO MOSDAC INSAT satellite product catalog (155 products)
+        scraped directly from MOSDAC catalog APIs.
+        Supports filtering by satellite ('INSAT-3DR', 'INSAT-3DS', 'INSAT-3D', 'INSAT-3A')
+        and sensor ('IMAGER', 'SOUNDER', 'CCD', 'VHRR').
+        """
+        import json
+        catalog_path = _resolve_path("datasets/imd_live/mosdac_insat_official_directory.json")
+        if catalog_path and os.path.exists(catalog_path):
+            try:
+                with open(catalog_path, "r") as f:
+                    prods = json.load(f)
+                if satellite:
+                    prods = [p for p in prods if satellite.lower() in p.get("satellite", "").lower()]
+                if sensor:
+                    prods = [p for p in prods if sensor.lower() in p.get("sensor", "").lower()]
+                return prods
+            except Exception:
+                pass
+
+        # Robust curated fallback catalog for core convective nowcasting products
+        fallback = [
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L1C_SGP", "level": "L1C", "description": "Standard Georeferenced Product"},
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L2B_HEM", "level": "L2B", "description": "Hydro-Estimator Rainfall Rate (mm/hr)"},
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L2B_CTP", "level": "L2B", "description": "Cloud Top Parameters (Pressure/Temp/Height)"},
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L2B_CMK", "level": "L2B", "description": "Cloud Mask (Convective Cloud Classification)"},
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L2G_IMR", "level": "L2G", "description": "IMSRA Multispectral Rainfall Estimate"},
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L2C_CMP", "level": "L2C", "description": "Convective Precipitation"},
+            {"satellite": "INSAT-3DR", "sensor": "IMAGER", "datasetId": "3RIMG_L2B_OLR", "level": "L2B", "description": "Outgoing Longwave Radiation (Deep Convection)"},
+            {"satellite": "INSAT-3DS", "sensor": "IMAGER", "datasetId": "3SIMG_L1C_SGP", "level": "L1C", "description": "INSAT-3DS Georeferenced Product"},
+            {"satellite": "INSAT-3DS", "sensor": "IMAGER", "datasetId": "3SIMG_L2B_HEM", "level": "L2B", "description": "INSAT-3DS Hydro-Estimator Precipitation"},
+            {"satellite": "INSAT-3D", "sensor": "IMAGER", "datasetId": "3DIMG_L1C_SGP", "level": "L1C", "description": "INSAT-3D Georeferenced Product"}
+        ]
+        if satellite:
+            fallback = [p for p in fallback if satellite.lower() in p.get("satellite", "").lower()]
+        if sensor:
+            fallback = [p for p in fallback if sensor.lower() in p.get("sensor", "").lower()]
+        return fallback
+

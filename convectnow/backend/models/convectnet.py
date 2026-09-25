@@ -247,36 +247,60 @@ class ConvectNet(nn.Module):
             nn.Linear(128, 32), nn.ReLU(inplace=True), nn.Linear(32, 1)
         )
 
+        # ── Spatial Nowcast Reconstruction Decoder (H/4, W/4 -> H, W) ─
+        self.spatial_nowcast_head = nn.Sequential(
+            nn.ConvTranspose2d(128, 64, kernel_size=2, stride=2),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True),
+            nn.ConvTranspose2d(64, 32, kernel_size=2, stride=2),
+            nn.BatchNorm2d(32),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(32, 1, kernel_size=3, padding=1)
+        )
+
     def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
         """
         Args:
-            x: (B, 4, T, H, W) — 4 channels, T=12 timesteps, H=W=128
+            x: (B, 4, T, H, W) or (B, T, 4, H, W) — 4 channels, T timesteps, H, W
         Returns:
-            dict with keys: hail, cloudburst, downburst, ci, latent
+            dict with keys: hail, cloudburst, downburst, ci, latent, spatial_nowcast
         """
+        if x.ndim == 4:
+            x = x.unsqueeze(0)
+        # Handle (B, T, C, H, W) permutation if passed from Kaggle or video loader
+        if x.ndim == 5 and x.shape[1] > x.shape[2] and x.shape[2] in (3, 4):
+            x = x.permute(0, 2, 1, 3, 4)
+        if x.shape[1] == 3:
+            c3 = torch.zeros_like(x[:, :1])
+            x = torch.cat([x, c3], dim=1)
+
         # 3D encode
         x = self.enc1(x)           # (B, 32,  T,   H,   W  )
         x = self.enc2(x)           # (B, 64,  T,   H/2, W/2)
         x = self.enc3(x)           # (B, 128, T,   H/4, W/4)
 
         # Temporal fusion → (B, 128, H/4, W/4)
-        x = self.convlstm(x)
+        feat_2d = self.convlstm(x)
+
+        # Spatial nowcast reconstruction → (B, 1, H, W)
+        spatial_nowcast = torch.sigmoid(self.spatial_nowcast_head(feat_2d))
 
         # MPS-safe pool → (B, 128)
-        x = self.spatial_pool(x)   # (B, 128, 1, 1)
-        x = x.flatten(1)           # (B, 128)
+        x_pooled = self.spatial_pool(feat_2d)   # (B, 128, 1, 1)
+        x_flat = x_pooled.flatten(1)            # (B, 128)
         
         # Squeeze-and-Excitation on latent
-        x = self.se_block(x)
+        x_se = self.se_block(x_flat)
 
-        latent = self.shared_fc(x) # (B, 128)
+        latent = self.shared_fc(x_se) # (B, 128)
 
         return {
-            'hail':       self.hail_head(latent),
-            'cloudburst': self.cloudburst_head(latent),
-            'downburst':  self.downburst_head(latent),
-            'ci':         self.ci_head(latent),
-            'latent':     latent,
+            'hail':            self.hail_head(latent),
+            'cloudburst':      self.cloudburst_head(latent),
+            'downburst':       self.downburst_head(latent),
+            'ci':              self.ci_head(latent),
+            'latent':          latent,
+            'spatial_nowcast': spatial_nowcast,
         }
 
     def predict_with_uncertainty(self, x: torch.Tensor, n_samples: int = 10) -> Dict[str, Any]:
@@ -290,7 +314,7 @@ class ConvectNet(nn.Module):
             if m.__class__.__name__.startswith('Dropout'):
                 m.train()
                 
-        preds = {k: [] for k in ['hail', 'cloudburst', 'downburst', 'ci', 'latent']}
+        preds = {k: [] for k in ['hail', 'cloudburst', 'downburst', 'ci', 'latent', 'spatial_nowcast']}
         
         with torch.no_grad():
             for _ in range(n_samples):
