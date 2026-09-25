@@ -60,7 +60,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     name: 'In-Situ Ocean Temperature Probe',
     tier: 'INDIGENOUS_PHYSICAL',
     hardwareBOM: 'DS18B20 Stainless Steel Waterproof Probe',
-    componentCostINR: 80,
+    componentCostINR: 250,
     importedEquivalent: 'Sea-Bird SBE 3plus Oceanographic Temp',
     importedCostINR: 150000,
     position3D: [2.5, -0.2, 0.4],
@@ -72,7 +72,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '2 Hz Live Hardware',
     operatingRange: '-1.8°C to +4.0°C (Antarctic Polar Validated)',
     desc: 'Low-cost stainless steel probe. Raw ±0.5°C error is corrected to ±0.05°C via onboard ML Kalman filtering against historical Argo baselines deployed directly on the outer intake shroud. Operates reliably at polar sea ice temperatures without foreign import dependency.',
-    indigenousAdvantage: 'Cost: ₹80 vs Imported ₹1.5 Lakhs SBE 3plus (1,875x savings). 100% locally serviceable.',
+    indigenousAdvantage: 'Cost: ₹250 (BOM) vs Imported ₹1.5 Lakhs SBE 3plus. (Massive Savings). 100% locally serviceable.',
     status: 'ONLINE'
   },
   {
@@ -80,7 +80,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     name: 'Hydrostatic Depth & Pressure Transducer',
     tier: 'INDIGENOUS_PHYSICAL',
     hardwareBOM: 'MS5837-30BA High-Res Subsea Pressure Sensor',
-    componentCostINR: 120,
+    componentCostINR: 7500,
     importedEquivalent: 'Keller Subsea High-Precision Pressure',
     importedCostINR: 280000,
     position3D: [1.8, -0.5, 0],
@@ -92,7 +92,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '10 Hz Continuous',
     operatingRange: '0 - 6,000 dbar pressure equivalent',
     desc: 'High-precision piezoresistive pressure transducer calibrated for subsea hydrostatic depth calculation via ocean water column density models.',
-    indigenousAdvantage: 'Cost: ₹3,200 vs Imported ₹2.8 Lakhs. 30-Bar rating handles 300m depth.. Direct I2C interface to ESP32 sensor bus.',
+    indigenousAdvantage: 'Cost: ₹7,500 (BOM) vs Imported ₹2.8 Lakhs. 30-Bar rating handles 300m depth.. Direct I2C interface to ESP32 sensor bus.',
     status: 'ONLINE'
   },
   {
@@ -100,7 +100,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     name: 'Subsea Attitude & Heading Reference (AHRS)',
     tier: 'INDIGENOUS_PHYSICAL',
     hardwareBOM: 'MPU6050 6-Axis Accelerometer + Gyroscope',
-    componentCostINR: 150,
+    componentCostINR: 250,
     importedEquivalent: 'Commercial Subsea MEMS AHRS Module',
     importedCostINR: 45000,
     position3D: [0.2, 0.1, 0],
@@ -112,7 +112,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '50 Hz IMU Stream',
     operatingRange: '±2g / ±250 deg/s Dynamic Range',
     desc: '6-axis MEMS inertial measurement unit providing real-time roll, pitch, and yaw stabilization vectors for the autopilot dead-reckoning filter.',
-    indigenousAdvantage: 'Cost: ₹150 (MPU6050) vs Imported ₹45,000 commercial subsea AHRS module. 6-axis attitude estimation filtered on edge.',
+    indigenousAdvantage: 'Cost: ₹250 (MPU6050) vs Imported ₹45,000 commercial subsea AHRS module. 6-axis attitude estimation filtered on edge.',
     status: 'ONLINE'
   },
   {
@@ -180,7 +180,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     name: 'Subsea Seawater Acidity (pH) Probe',
     tier: 'INDIGENOUS_PHYSICAL',
     hardwareBOM: 'SEN0161 Subsea Glass Electrode pH Module',
-    componentCostINR: 350,
+    componentCostINR: 2500,
     importedEquivalent: 'Honeywell Durafet Subsea ISFET pH Sensor',
     importedCostINR: 380000,
     position3D: [1.2, -0.4, -0.3],
@@ -192,7 +192,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '1 Hz Continuous',
     operatingRange: '7.60 to 8.25 pH Units (Ocean Acidification)',
     desc: 'Low-cost commercial glass electrode analog pH probe calibrated for ocean carbon sink monitoring and ocean acidification tracking.',
-    indigenousAdvantage: 'Cost: ₹350 vs Imported ₹3.8 Lakhs (1,080x savings). Directly interfaced to ADC.',
+    indigenousAdvantage: 'Cost: ₹2500 vs Imported ₹3.8 Lakhs (1,080x savings). Directly interfaced to ADC.',
     status: 'ONLINE'
   },
   {
@@ -200,7 +200,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     name: 'Analog TDS / Conductivity Proxy Cell',
     tier: 'INDIGENOUS_PHYSICAL',
     hardwareBOM: 'OpenCTD-Architecture Graphite Conductivity Cell',
-    componentCostINR: 200,
+    componentCostINR: 600,
     importedEquivalent: 'Aanderaa 4319 Subsea Conductivity Cell',
     importedCostINR: 620000,
     position3D: [0.9, -0.4, 0.3],
@@ -212,7 +212,7 @@ const SENSOR_SPECS: SensorSpec[] = [
     samplingRate: '5 Hz Continuous',
     operatingRange: '0 - 1000 ppm (Conductivity Proxy)',
     desc: 'Epoxy-potted graphite electrode cell based on OpenCTD open-source oceanography designs providing the base ionic density proxy feed used by the UNESCO EOS-80 Salinity model.',
-    indigenousAdvantage: 'Cost: ₹250 (Graphite+Epoxy) vs ₹6.2 Lakhs. Solves commercial TDS ocean-saturation limits.',
+    indigenousAdvantage: 'Cost: ₹600 (Graphite+Epoxy) vs ₹6.2 Lakhs. Solves commercial TDS ocean-saturation limits.',
     status: 'ONLINE'
   },
   {
@@ -1120,7 +1120,7 @@ export default function AUVTwin() {
               </span>
             </div>
             <p className="text-xs font-mono text-steel-400 mt-0.5">
-              LAB PROTOTYPE: <span className="text-emerald-300 font-semibold">₹6,100</span> · TARGET AT SCALE: <span className="text-ice-300 font-semibold">₹75,000 – ₹1.0 LAKH</span> · IMPORTED FLOAT BENCHMARK: <span className="text-red-300 font-semibold">₹25–30 LAKHS</span>
+              LAB PROTOTYPE: <span className="text-emerald-300 font-semibold">₹19,500</span> · TARGET AT SCALE: <span className="text-ice-300 font-semibold">₹75,000 – ₹1.0 LAKH</span> · IMPORTED FLOAT BENCHMARK: <span className="text-red-300 font-semibold">₹25–30 LAKHS (e.g., Kongsberg Seaglider)</span>
             </p>
           </div>
         </div>
@@ -1128,16 +1128,16 @@ export default function AUVTwin() {
         {/* Global Architecture Summary with Grounded Metrics */}
         <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
-            <span className="text-steel-500 mr-2">DEMO PROTOTYPE:</span>
-            <span className="text-emerald-400 font-bold">₹6,100 BOM</span>
+            <span className="text-steel-500 mr-2">LAB PROTOTYPE:</span>
+            <span className="text-emerald-400 font-bold">₹19,500 BOM</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
             <span className="text-steel-500 mr-2">TARGET AT SCALE:</span>
             <span className="text-ice-400 font-bold">₹75,000 – ₹1.0 L</span>
           </div>
           <div className="bg-abyss-950 px-3 py-1.5 rounded-lg border border-steel-800">
-            <span className="text-steel-500 mr-2">REALISTIC SAVINGS:</span>
-            <span className="text-amber-400 font-bold">25x–30x COST REDUCTION</span>
+            <span className="text-steel-500 mr-2">SAVINGS AT SCALE:</span>
+            <span className="text-amber-400 font-bold">~96% COST REDUCTION (30x)</span>
           </div>
         </div>
       </div>
