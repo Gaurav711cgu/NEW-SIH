@@ -683,9 +683,9 @@ def train_and_evaluate(epochs: int = 15, batch_size: int = 16, lr: float = 1e-3)
     val_ds = RealSEVIRNowcastDataset(data_path, split="val")
     test_ds = RealSEVIRNowcastDataset(data_path, split="test")
 
-    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=2 if os.name != 'nt' else 0)
-    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
+    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=0)
+    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=0)
+    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False, num_workers=0)
 
     print(f"[DATA PIPELINE] Train: {len(train_ds)} sequences | Val: {len(val_ds)} sequences | Test: {len(test_ds)} sequences")
 
