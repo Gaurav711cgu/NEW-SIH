@@ -67,3 +67,6 @@ Thumbs.db
 telemetry.db
 data/platform.db
 node_modules/
+archive/
+logs/
+.agents/teamwork/
