@@ -1,10 +1,4 @@
-<img src="https://img.shields.io/badge/SIH%202026-PS%2026065-0d47a1?style=flat-square" />
-<img src="https://img.shields.io/badge/MoES%20%2F%20NCPOR-Hardware-1565c0?style=flat-square" />
-<img src="https://img.shields.io/badge/Team-FusionX-263238?style=flat-square" />
-<img src="https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat-square&logo=fastapi&logoColor=white" />
-<img src="https://img.shields.io/badge/React-19-20232a?style=flat-square&logo=react&logoColor=61dafb" />
-<img src="https://img.shields.io/badge/PyTorch-RT--DETR%20%2B%20YOLOv9-ee4c2c?style=flat-square&logo=pytorch&logoColor=white" />
-<img src="https://img.shields.io/badge/License-MIT-37474f?style=flat-square" />
+
 
 # AQUILA OS
 
